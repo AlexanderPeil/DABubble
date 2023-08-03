@@ -8,19 +8,19 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { HeaderComponent } from './components/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, SidenavComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    MatSidenavModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    BrowserAnimationsModule,
-    MatSidenavModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
