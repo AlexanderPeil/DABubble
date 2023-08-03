@@ -8,7 +8,19 @@
     height: 55px;
   }
 
-  .icon {
-    height: 20px;
+  .icon-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    width: 35px;
+    img {
+      height: 20px;
+    }
+    &:hover {
+      cursor: pointer;
+      border-radius: 100%;
+      background-color: #eceefe;
+    }
   }
 }
