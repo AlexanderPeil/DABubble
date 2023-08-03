@@ -8,7 +8,8 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { HeaderComponent } from './components/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSidenavModule } from '@angular/material/sidenav';
+// import { MatSidenavModule } from '@angular/material/sidenav';
+
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -19,9 +20,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     BrowserAnimationsModule,
-    MatSidenavModule,
+    // MatSidenavModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
