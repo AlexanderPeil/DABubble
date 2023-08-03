@@ -9,7 +9,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { HeaderComponent } from './components/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { SidenavComponent } from './sidenav/sidenav.component';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, SidenavComponent],

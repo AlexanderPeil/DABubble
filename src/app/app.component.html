@@ -1,16 +1,13 @@
-<header>Hier ist der header</header>
+<app-header></app-header>
 
-<mat-drawer-container class="mat-drawer-container" autosize>
+<mat-drawer-container class="mat-drawer-container">
   <mat-drawer #drawer [opened]="true" mode="side">
-    <ul>
-      <li routerLink="">Sample1</li>
-      <li routerLink="">Sample2</li>
-      <li routerLink="">Sample3</li>
-      <li routerLink="">Sample4</li>
-    </ul>
+    <app-sidenav></app-sidenav>
   </mat-drawer>
 
   <div class="router-container">
     <router-outlet></router-outlet>
   </div>
+
+  <div id="test-für-thread-div"></div>
 </mat-drawer-container>
