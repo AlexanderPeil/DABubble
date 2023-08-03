@@ -1,0 +1,16 @@
+<header>Hier ist der header</header>
+
+<mat-drawer-container class="mat-drawer-container" autosize>
+  <mat-drawer #drawer [opened]="true" mode="side">
+    <ul>
+      <li routerLink="">Sample1</li>
+      <li routerLink="">Sample2</li>
+      <li routerLink="">Sample3</li>
+      <li routerLink="">Sample4</li>
+    </ul>
+  </mat-drawer>
+
+  <div class="router-container">
+    <router-outlet></router-outlet>
+  </div>
+</mat-drawer-container>
