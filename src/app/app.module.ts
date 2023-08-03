@@ -10,9 +10,11 @@ import { HeaderComponent } from './components/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
+
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, SidenavComponent],
+  declarations: [AppComponent, HeaderComponent, SidenavComponent, ChatHistoryComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -25,4 +27,4 @@ import { MatSidenavModule } from '@angular/material/sidenav';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

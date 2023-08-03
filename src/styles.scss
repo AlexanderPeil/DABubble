@@ -1,15 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+/* nunito-regular - latin */
+@font-face {
+  font-display: swap;
+  /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./assets/fonts/nunito-v25-latin-regular.woff2') format('woff2');
+  /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
 
 html,
 body {
   height: 100%;
 }
+
 body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-body {
-  background-color: #eceefe;
   min-height: 100vh;
   width: 100%;
+  margin: 0;
+  font-family: Nunito, sans-serif !important;
+  background-color: #eceefe;
+}
+
+.d-none {
+  display: none;
 }
