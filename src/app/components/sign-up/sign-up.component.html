@@ -2,7 +2,7 @@
 
 
 <div class="signupContainer">
-    <form>
+    <form [formGroup]="signupForm">
         <div class="goBackIcon" routerLink="/login"></div>
         <h2>Create account</h2>
         <span class="formHeaderText">With your name and email address, you've created your new DABubble account.</span>
@@ -18,6 +18,6 @@
             <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
             <input type="password" placeholder="Password" formControlName="password">
         </div>
-        <button class="nextBtn" routerLink="/forgot-password">Next</button>
+        <button class="nextBtn" routerLink="/forgot-password" type="submit" [disabled]="!signupForm.valid">Next</button>
     </form>
 </div>

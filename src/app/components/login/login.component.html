@@ -7,7 +7,7 @@
 </div>
 
 <div class="loginContainer">
-    <form>
+    <form [formGroup]="loginForm">
         <h2>Log in</h2>
         <span class="formHeaderText">We recommend you use the same email you use at work.</span>
         <div class="inputContainer">
@@ -18,7 +18,7 @@
             <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
             <input type="password" placeholder="Password" formControlName="password">
         </div>
-        <a class="forgotPasswordLink" routerLink="forgot-password">Forgot password?</a>
+        <a class="forgotPasswordLink" routerLink="/forgot-password">Forgot password?</a>
         <div class="alternatively">
             <div></div>
             <span>Alternatively</span>
@@ -26,7 +26,7 @@
         </div>
         <button class="googleLoginBtn">Login with Google</button>
         <div class="loginBottomContainer">
-            <button class="loginBtn">Login</button>
+            <button class="loginBtn" type="submit" [disabled]="!loginForm.valid">Login</button>
             <button class="guestLoginbtn">Guest-Login</button>
         </div>
     </form>

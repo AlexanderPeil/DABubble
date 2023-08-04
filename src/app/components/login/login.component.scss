@@ -220,3 +220,14 @@ h2 {
         background-color: #535af1;
     }
 }
+
+button:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+  }
+
+  button:disabled:hover {
+    background-color: grey;
+    cursor: not-allowed;
+  }
+  
