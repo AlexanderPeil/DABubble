@@ -1,0 +1,32 @@
+.containerInput {
+    margin-top: -30px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+
+    input {
+        width: 90%;
+        border: 1px solid #ADB0D9;
+        outline: unset;
+        border-radius: 20px;
+        font-weight: 400;
+        font-size: 18px;
+        padding: 15px 0 60px 15px;
+        font-family: Nunito, sans-serif;
+
+        &::placeholder {
+            color: #686868;
+            font-family: Nunito, sans-serif;
+        }
+
+        &:hover {
+            transition: all 225ms ease-in-out;
+            border: 1px solid #797EF3;
+        }
+
+        &:focus {
+            border: 1px solid #797EF3;
+        }
+    }
+}

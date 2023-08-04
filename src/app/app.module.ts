@@ -12,10 +12,12 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
 import { LoginComponent } from './components/login/login.component';
+import { MessageComponent } from './components/message/message.component';
+import { TextfieldInChathistoryComponent } from './components/textfield-in-chathistory/textfield-in-chathistory.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, SidenavComponent, ChatHistoryComponent, LoginComponent],
+  declarations: [AppComponent, HeaderComponent, SidenavComponent, ChatHistoryComponent, LoginComponent, MessageComponent, TextfieldInChathistoryComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

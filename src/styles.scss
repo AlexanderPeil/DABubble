@@ -22,6 +22,17 @@ body {
   background-color: #eceefe;
 }
 
+app-message {
+  position: relative;
+
+  &:hover {
+    .containerEmojis {
+      transition: all 225ms ease-in-out;
+      display: flex !important;
+    }
+  }
+}
+
 .d-none {
-  display: none;
+  display: none !important;
 }

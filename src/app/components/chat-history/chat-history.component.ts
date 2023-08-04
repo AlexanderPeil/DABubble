@@ -6,6 +6,9 @@ import { Component } from '@angular/core';
   templateUrl: './chat-history.component.html',
   styleUrls: ['./chat-history.component.scss']
 })
+
+
 export class ChatHistoryComponent {
+
 
 }

@@ -1,0 +1,177 @@
+.messageMainContainer {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 20px 0px 20px 50px;
+    margin-top: 20px;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+
+        .messageText {
+            background-color: white;
+        }
+
+        .lastAnswer {
+            color: black;
+        }
+    }
+}
+
+.messageChildContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profileImg {
+    border-radius: 50%;
+}
+
+.containerUserNameAndTime {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.userName {
+    font-weight: 700;
+    font-size: 18px;
+    margin: 0;
+
+    &:hover {
+        transition: all 225ms ease-in-out;
+        color: #444DF2;
+        font-weight: bolder;
+    }
+}
+
+.time {
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0;
+    color: #686868;
+}
+
+.messageText {
+    font-weight: 400;
+    font-size: 18px;
+    padding: 15px;
+    margin: 0;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-top-right-radius: 30px;
+    background-color: #ECEEFE;
+}
+
+.containerAmountOfAnswers {
+    display: flex;
+    gap: 20px;
+}
+
+.answers {
+    font-weight: 400;
+    font-size: 18px;
+    margin: 0;
+    color: #535AF1;
+
+    &:hover {
+        transition: all 225ms ease-in-out;
+        color: #444DF2;
+        font-weight: bolder;
+    }
+}
+
+.lastAnswer {
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0;
+    color: #686868;
+}
+
+.containerEmojis {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    top: -22px;
+    right: 60px;
+    padding: 5px 20px 5px 20px;
+    border-bottom-left-radius: 25px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border: 1px solid #ADB0D9;
+    background-color: white;
+
+    &:hover {
+
+        .messageMainContainer {
+            background-color: #ECEEFE;
+        }
+    }
+}
+
+.completeEmoji {
+    padding: 8px;
+    border-radius: 50%;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+}
+
+.handsUpEmoji {
+    padding: 8px;
+    border-radius: 50%;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+}
+
+.containerAddEmojiIcon {
+    display: flex;
+    padding: 8px;
+    border-radius: 50%;
+
+    img {
+        &:hover {
+            cursor: pointer;
+            transition: all 225ms ease-in-out;
+            transform: scale(1.05);
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+}
+
+.containerAnswerOnThreadIcon {
+    display: flex;
+    padding: 8px;
+    border-radius: 50%;
+
+    img {
+        &:hover {
+            cursor: pointer;
+            transition: all 225ms ease-in-out;
+            transform: scale(1.05);
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+}

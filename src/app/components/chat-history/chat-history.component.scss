@@ -93,17 +93,23 @@
     }
 }
 
-.time {
+.scrolleableContainer {
+    height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.date {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 130px 35px 0px 35px;
+    margin: 80px 35px 0px 35px;
 
     p {
         font-weight: 400;
         font-size: 18px;
         border-radius: 30px;
-        padding: 8px;
+        padding: 10px;
         margin: 0;
         border: 1px solid #ADB0D9;
         text-align: center;
@@ -116,7 +122,3 @@
         border-color: #ADB0D9;
     }
 }
-
-
-
-// border: 1px solid #ADB0D9;
