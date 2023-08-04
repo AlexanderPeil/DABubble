@@ -32,6 +32,7 @@
       border-radius: 100%;
       background-color: #eceefe;
       img {
+        transform: scale(1.1);
         filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
           saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
       }
@@ -39,7 +40,7 @@
   }
 }
 
-.channelMenu {
+.headMenu {
   padding-top: 20px;
   padding-bottom: 20px;
   padding-left: 35px;
@@ -69,6 +70,7 @@
       border-radius: 100%;
       background-color: #eceefe;
       img {
+        transform: scale(1.1);
         filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
           saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
       }
@@ -76,7 +78,7 @@
   }
 }
 
-.channelName {
+.headName {
   display: flex;
   .firstImg {
     margin-right: 25px;
@@ -85,6 +87,9 @@
     margin-right: 10px;
   }
   &:hover {
+    .firstImg {
+      transform: scale(1.1);
+    }
     cursor: pointer;
     filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%)
       hue-rotate(230deg) brightness(99%) contrast(91%);
