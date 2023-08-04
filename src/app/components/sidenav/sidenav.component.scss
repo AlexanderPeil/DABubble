@@ -1,8 +1,17 @@
+//////////////////////general styles//////////////////////////
+.padding {
+  padding: 25px;
+}
+
+.d-flex {
+  display: flex;
+}
+/////////////////////specific styles///////////////////////////
+
 .head-of-sidenav {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 25px;
 
   .main-channel-img {
     height: 55px;
@@ -19,8 +28,65 @@
     }
     &:hover {
       cursor: pointer;
+      transition: all 225ms ease-in-out;
       border-radius: 100%;
       background-color: #eceefe;
+      img {
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+          saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      }
     }
+  }
+}
+
+.channelMenu {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 35px;
+  padding-right: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  p {
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0;
+  }
+
+  .icon-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25px;
+    width: 25px;
+    img {
+      height: 14px;
+    }
+    &:hover {
+      cursor: pointer;
+      transition: all 225ms ease-in-out;
+      border-radius: 100%;
+      background-color: #eceefe;
+      img {
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+          saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      }
+    }
+  }
+}
+
+.channelName {
+  display: flex;
+  .firstImg {
+    margin-right: 25px;
+  }
+  img {
+    margin-right: 10px;
+  }
+  &:hover {
+    cursor: pointer;
+    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%)
+      hue-rotate(230deg) brightness(99%) contrast(91%);
   }
 }
