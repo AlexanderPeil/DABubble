@@ -11,10 +11,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
+import { LoginComponent } from './components/login/login.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, SidenavComponent, ChatHistoryComponent],
+  declarations: [AppComponent, HeaderComponent, SidenavComponent, ChatHistoryComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

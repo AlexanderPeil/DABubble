@@ -1,0 +1,79 @@
+.loginContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #eceefe;
+}
+
+.loginHeader {
+    position: relative;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    img {
+        height: 50px;
+    }
+}
+
+.signUpContainer {
+    display: flex;
+    flex-direction: column;
+
+    a {
+        color: #797EF3;
+        text-decoration: none;
+        cursor: pointer;
+    }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 606px;
+    height: 469px;
+    background-color: white;
+    border-radius: 30px;
+}
+
+.loginInput {
+    position: relative;
+
+    img {
+        position: absolute;
+        left: 15px;
+    }
+
+    input {
+        border: none;
+        width: 350px;
+        height: 14px;
+        background-color: #ECEEFE;
+        border-radius: 100px;
+        padding: 20px 50px;
+    }
+}
+
+.mailImg {
+    height: 13px;
+    top: 21px;
+}
+
+.passwordImg {
+    height: 18px;
+    top: 16px;
+}
+
+h2 {
+    color: #444df2;
+}
+
+.forgotPasswordLink {
+    text-decoration: none;
+    cursor: pointer;
+    color: #797EF3;
+}
