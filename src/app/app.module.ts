@@ -14,15 +14,20 @@ import { ChatHistoryComponent } from './components/chat-history/chat-history.com
 import { LoginComponent } from './components/login/login.component';
 import { MessageComponent } from './components/message/message.component';
 import { TextfieldInChathistoryComponent } from './components/textfield-in-chathistory/textfield-in-chathistory.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, SidenavComponent, ChatHistoryComponent, LoginComponent, MessageComponent, TextfieldInChathistoryComponent],
+  declarations: [AppComponent, HeaderComponent, SidenavComponent, ChatHistoryComponent, LoginComponent, MessageComponent, TextfieldInChathistoryComponent, SignUpComponent, ForgotPasswordComponent, ResetPasswordComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatSidenavModule,
+    ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

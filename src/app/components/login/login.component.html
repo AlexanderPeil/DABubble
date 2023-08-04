@@ -7,23 +7,27 @@
 </div>
 
 <div class="loginContainer">
-    <form>
+    <form [formGroup]="loginForm">
         <h2>Log in</h2>
-        <p>We recommend you use the same email you use at work.</p>
-        <div class="loginInput"> 
-            <img class="mailImg" src="../../../assets/img/icons/mail.svg" alt="Mail">
+        <span class="formHeaderText">We recommend you use the same email you use at work.</span>
+        <div class="inputContainer">
+            <img class="mailImg" src="../../../assets/img/icons/mail_icon.svg" alt="Email icon">
             <input type="email" placeholder="examplename@email.com" formControlName="email">
         </div>
-        <div class="loginInput">
-            <img class="passwordImg" src="../../../assets/img/icons/lock.svg" alt="Lock">
+        <div class="inputContainer">
+            <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
             <input type="password" placeholder="Password" formControlName="password">
         </div>
-        <a class="forgotPasswordLink" routerLink="forgot-password">Forgot password?</a>
-        <div>Alternatively</div>
-        <button>Log in with Google</button>
-        <div>
-            <button>Login</button>
-            <button>Guest Login</button>
+        <a class="forgotPasswordLink" routerLink="/forgot-password">Forgot password?</a>
+        <div class="alternatively">
+            <div></div>
+            <span>Alternatively</span>
+            <div></div>
+        </div>
+        <button class="googleLoginBtn">Login with Google</button>
+        <div class="loginBottomContainer">
+            <button class="loginBtn" type="submit" [disabled]="!loginForm.valid">Login</button>
+            <button class="guestLoginbtn">Guest-Login</button>
         </div>
     </form>
 </div>
