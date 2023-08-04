@@ -13,10 +13,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, SidenavComponent, ChatHistoryComponent, LoginComponent, SignUpComponent],
+  declarations: [AppComponent, HeaderComponent, SidenavComponent, ChatHistoryComponent, LoginComponent, SignUpComponent, ForgotPasswordComponent, ResetPasswordComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
