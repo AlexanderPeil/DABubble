@@ -7,7 +7,7 @@
 </div>
 
 <div class="loginContainer">
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <h2>Log in</h2>
         <span class="formHeaderText">We recommend you use the same email you use at work.</span>
         <div class="inputContainer">
@@ -27,7 +27,7 @@
         <button class="googleLoginBtn">Login with Google</button>
         <div class="loginBottomContainer">
             <button class="loginBtn" type="submit" [disabled]="!loginForm.valid">Login</button>
-            <button class="guestLoginbtn">Guest-Login</button>
+            <button class="guestLoginbtn" (click)="onGuestLogin()">Guest-Login</button>
         </div>
     </form>
 </div>

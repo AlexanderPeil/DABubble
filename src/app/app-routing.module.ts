@@ -9,6 +9,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 
 const routes: Routes = [
   { path: '', component: ChatHistoryComponent },
+  { path: 'chat-history', component: ChatHistoryComponent },
   { path: 'login', component: LoginComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
