@@ -12,15 +12,12 @@ export class LoginComponent implements OnInit {
 
   constructor (private authService: AuthService) { }
 
-
-
   ngOnInit() {
     this.loginForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, Validators.required),
     });
   }
-
 
   onSubmit() {
     if (this.loginForm.valid) {
@@ -37,9 +34,14 @@ export class LoginComponent implements OnInit {
       window.alert('Bitte überprüfen Sie die Formulardaten.');
     }
   }  
-  
 
   onGuestLogin() {
-    this.authService.signInAnonymously();
+    this.authService.signInAnonymously().catch((error) => {
+      window.alert('Anonyme Anmeldung fehlgeschlagen: ' + error.message);
+    });
+  }
+  
+  onLogOut() {
+    this.authService.signOut();
   }
 }

@@ -1,112 +1,99 @@
 import { Injectable } from '@angular/core';
 import { User } from '../services/user';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { doc, setDoc, Firestore } from '@firebase/firestore';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile, User as FirebaseUser, signInAnonymously, onAuthStateChanged, signOut } from '@firebase/auth';
 import { Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
-
+import { Observable, from, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
-
-
 export class AuthService {
-  private user: Observable<User | null>;
-
+  user$: Observable<User | null>;
 
   constructor(
-    public afs: AngularFirestore,
-    public afAuth: AngularFireAuth,
-    public router: Router
+    private firestore: Firestore,
+    private router: Router
   ) {
-    this.user = this.afAuth.authState;
-    this.user.subscribe(user => {
-      if (user) {
-        this.setUserData(user).then(() => {
-          this.router.navigate(['chat-history']);
-        });
-      }
-    });
-  }
-
-
-  signIn(email: string, password: string) {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.setUserData(result.user);
-        this.afAuth.authState.subscribe((user) => {
-          if (user) {
-            this.router.navigate(['chat-history']);  // Hier muss ich die Startseite nach dem Login eintragen!!!!
-          }
-        });
-      });
-  }
-
-
-  signInAnonymously() {
-    return this.afAuth.signInAnonymously()
-      .then((result) => {
-        this.setUserData(result.user);
-        this.router.navigate(['chat-history']); // Hier muss ich die Startseite nach dem Login eintragen!!!!
-      })
-      .catch((error) => {
-        window.alert(error.message);
-      });
-  }
-
-
-  signUp(displayName: string, email: string, password: string) {
-    return this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        if (result.user) {
-          result.user.updateProfile({
-            displayName: displayName
-          }).then(() => {
-            this.setUserData(result.user);
-            this.router.navigate(['login']);
-          });
+    const auth = getAuth();
+    this.user$ = new Observable<any>(subscriber => {
+      onAuthStateChanged(auth, subscriber);
+    }).pipe(
+      switchMap((firebaseUser: FirebaseUser | null) => {
+        if (firebaseUser) {
+          return from(this.setUserData(firebaseUser));
+        } else {
+          return of(null);
         }
       })
-      .catch((error) => {
-        return Promise.reject(error);
-      });
-  }
-
-
-  forgotPassword(passwordResetEmail: string) {
-    return this.afAuth.sendPasswordResetEmail(passwordResetEmail);
-  }
-
-
-
-  get isLoggedIn(): Observable<boolean> {
-    return this.user.pipe(map(user => !!user));
-  }
-
-
-  setUserData(user: any) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${user.uid}`
     );
+    
+  }
+
+  async signIn(email: string, password: string) {
+    const auth = getAuth();
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (userCredential.user) {
+        await this.setUserData(userCredential.user);
+        this.router.navigate(['chat-history']);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async signUp(displayName: string, email: string, password: string) {
+    const auth = getAuth();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      if (userCredential.user) {
+        await updateProfile(userCredential.user, { displayName });
+        await this.setUserData(userCredential.user);
+        this.router.navigate(['login']);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async signInAnonymously() {
+    const auth = getAuth();
+    try {
+      const userCredential = await signInAnonymously(auth);
+      if (userCredential.user) {
+        await this.setUserData(userCredential.user);
+        this.router.navigate(['chat-history']);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async forgotPassword(passwordResetEmail: string) {
+    const auth = getAuth();
+    try {
+      await sendPasswordResetEmail(auth, passwordResetEmail);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async signOut() {
+    const auth = getAuth();
+    await signOut(auth);
+    this.router.navigate(['login']);
+  }
+
+  async setUserData(user: FirebaseUser) {
     const userData: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       emailVerified: user.emailVerified,
     };
-    return userRef.set(userData, {
-      merge: true,
-    });
-  }
-
-
-  signOut() {
-    return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.router.navigate(['login']);
-    });
+    await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
+    return userData;
   }
 }

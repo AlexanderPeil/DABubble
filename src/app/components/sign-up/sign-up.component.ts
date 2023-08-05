@@ -33,19 +33,17 @@ export class SignUpComponent implements OnInit {
   }
 
 
-  onSubmit() {
+  async onSubmit() {
     if (this.signupForm.valid) {
       const displayName = this.signupForm.value.displayName;
       const email = this.signupForm.value.email;
       const password = this.signupForm.value.password;
-      this.authService.signUp(displayName, email, password).then(
-        () => {
-          console.log('Registrierung erfolgreich!');
-        },
-        (error) => {
-          console.log('Registrierung fehlgeschlagen: ' + error.message);
-        }
-      );
+      try {
+        await this.authService.signUp(displayName, email, password);
+        console.log('Registrierung erfolgreich!');
+      } catch (error) {
+        // console.log('Registrierung fehlgeschlagen: ' + error.message);
+      }
     } else {
       window.alert('Bitte überprüfen Sie die Formulardaten.');
     }
