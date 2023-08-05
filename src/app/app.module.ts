@@ -18,10 +18,23 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ThreadComponent } from './components/thread/thread.component';
+import { TextfieldInThreadComponent } from './components/textfield-in-thread/textfield-in-thread.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, SidenavComponent, ChatHistoryComponent, LoginComponent, MessageComponent, TextfieldInChathistoryComponent, SignUpComponent, ForgotPasswordComponent, ResetPasswordComponent],
+  declarations: [AppComponent,
+    HeaderComponent,
+    SidenavComponent,
+    ChatHistoryComponent,
+    LoginComponent,
+    MessageComponent,
+    TextfieldInChathistoryComponent,
+    SignUpComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    ThreadComponent,
+    TextfieldInThreadComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
