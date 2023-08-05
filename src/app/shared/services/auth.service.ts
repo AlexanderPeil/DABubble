@@ -28,7 +28,7 @@ export class AuthService {
         }
       })
     );
-    
+
   }
 
   async signIn(email: string, password: string) {
