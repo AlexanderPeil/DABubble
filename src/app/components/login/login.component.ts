@@ -40,8 +40,5 @@ export class LoginComponent implements OnInit {
       window.alert('Anonyme Anmeldung fehlgeschlagen: ' + error.message);
     });
   }
-  
-  onLogOut() {
-    this.authService.signOut();
-  }
+
 }
