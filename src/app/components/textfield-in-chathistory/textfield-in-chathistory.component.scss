@@ -1,18 +1,16 @@
 .containerInput {
-    margin-top: -30px;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
 
     input {
-        width: 90%;
+        position: absolute;
+        left: 20px;
+        bottom: 20px;
+        width: 95%;
         border: 1px solid #ADB0D9;
         outline: unset;
         border-radius: 20px;
         font-weight: 400;
         font-size: 18px;
-        padding: 15px 0 60px 15px;
+        padding: 15px 0 80px 15px;
         font-family: Nunito, sans-serif;
 
         &::placeholder {
@@ -29,4 +27,88 @@
             border: 1px solid #797EF3;
         }
     }
+
+    hr {
+        margin: 0;
+        height: 30px;
+        position: absolute;
+        left: 70px;
+        bottom: 32px;
+        border: 1px solid #ADB0D9;
+    }
+}
+
+.containerAddIcon {
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    position: absolute;
+    left: 35px;
+    bottom: 35px;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+
+    img {
+
+        &:hover {
+            transition: all 225ms ease-in-out;
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        }
+    }
+}
+
+.containerSmileyIcon {
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    position: absolute;
+    left: 75px;
+    bottom: 30px;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+
+    img {
+
+        &:hover {
+            transition: all 225ms ease-in-out;
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        }
+    }
+}
+
+.containerAtIcon {
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    position: absolute;
+    left: 115px;
+    bottom: 30px;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+
+    img {
+
+        &:hover {
+            transition: all 225ms ease-in-out;
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        }
+    }
+}
+
+.sendBtn {
+    position: absolute;
+    right: 40px;
+    bottom: 36px;
 }
