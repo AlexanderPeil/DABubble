@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
+
   onSubmit() {
     if (this.loginForm.valid) {
       const email = this.loginForm.value.email;
@@ -27,18 +28,27 @@ export class LoginComponent implements OnInit {
           .then(() => {
             console.log('Anmeldung erfolgreich!');
           })
-          .catch((error) => {
+          .catch((error: { message: string; }) => {
             window.alert('Anmeldung fehlgeschlagen: ' + error.message);
           });
     } else {
       window.alert('Bitte überprüfen Sie die Formulardaten.');
     }
   }  
+  
 
   onGuestLogin() {
     this.authService.signInAnonymously().catch((error) => {
       window.alert('Anonyme Anmeldung fehlgeschlagen: ' + error.message);
     });
   }
+
+
+  signInWithGoogle() {
+    this.authService.signInWithGoogle().catch(error => {
+      window.alert('Google Sign In failed: ' + error.message);
+    });
+  }
+  
 
 }

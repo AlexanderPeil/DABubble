@@ -1,40 +1,32 @@
-import { Injectable, OnDestroy, inject  } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { User } from '../services/user';
-import { doc, setDoc, Firestore, getFirestore  } from '@firebase/firestore';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile, User as FirebaseUser, signInAnonymously, onAuthStateChanged, signOut } from '@firebase/auth';
+import { doc, setDoc, Firestore, getFirestore } from '@firebase/firestore';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile, User as FirebaseUser, signInAnonymously, GoogleAuthProvider, onAuthStateChanged, signOut } from '@firebase/auth';
 import { Router } from '@angular/router';
-import { Observable, Subscription, from, of } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { Auth, user } from '@angular/fire/auth';
+import { Auth, signInWithPopup, user } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
   private auth: Auth;
-  private user$: any;
+  private user$: Observable<User | null>;
   private userSubscription: Subscription;
   private firestore!: Firestore;
 
-  constructor(public router: Router,) {
+  constructor(public router: Router) {
     this.auth = inject(Auth);
     this.user$ = user(this.auth);
     this.firestore = getFirestore();
     this.userSubscription = this.user$.subscribe((firebaseUser: User | null) => {
       if (firebaseUser) {
-        // Handle signed in user
         console.log(firebaseUser);
       } else {
-        // Handle signed out user
         console.log('User is not signed in');
       }
     });
-  }
-
-
-  ngOnDestroy(): void {
-    // When manually subscribing to an observable remember to unsubscribe in ngOnDestroy
-    this.userSubscription.unsubscribe();
   }
 
 
@@ -62,6 +54,7 @@ export class AuthService implements OnDestroy {
         this.router.navigate(['login']);
       }
     } catch (error) {
+      console.log('Sign up failed:', error);
       throw error;
     }
   }
@@ -70,19 +63,34 @@ export class AuthService implements OnDestroy {
   async signInAnonymously() {
     const auth = getAuth();
     try {
-      console.log('Attempting anonymous sign in...');
       const userCredential = await signInAnonymously(auth);
       if (userCredential.user) {
         console.log('Sign in successful, setting user data...');
         await this.setUserData(userCredential.user);
-        console.log('User data set, navigating to chat history...');
         this.router.navigate(['chat-history']);
       }
     } catch (error) {
       console.error('Sign in failed:', error);
       throw error;
     }
-  }  
+  }
+
+
+  async signInWithGoogle() {
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      if (user) {
+        await this.setUserData(user);
+        this.router.navigate(['chat-history']);
+      }
+    } catch (error) {
+      console.error('Google Sign In failed:', error);
+      throw error;
+    }
+  }
 
 
   async forgotPassword(passwordResetEmail: string) {
@@ -112,4 +120,10 @@ export class AuthService implements OnDestroy {
     await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
     return userData;
   }
+
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
+  }
+
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -9,13 +10,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class ResetPasswordComponent implements OnInit {
   newPasswordForm!: FormGroup;
 
+  constructor(private authService: AuthService) { }
+
 
   ngOnInit() {
     this.newPasswordForm = new FormGroup({
       password: new FormControl('', Validators.required),
       confirmPassword: new FormControl('', Validators.required)
     });
-
     this.newPasswordForm.get('password')?.valueChanges.subscribe(() => {
       this.checkPasswordsMatch();
     });
@@ -23,6 +25,11 @@ export class ResetPasswordComponent implements OnInit {
     this.newPasswordForm.get('confirmPassword')?.valueChanges.subscribe(() => {
       this.checkPasswordsMatch();
     });
+  }
+
+
+  onSubmit() {
+
   }
 
 
