@@ -25,6 +25,9 @@
             <div></div>
         </div>
         <button class="googleLoginBtn" (click)="signInWithGoogle()">Login with Google</button>
+        <div *ngIf="loginFailed" class="notification warning">
+            Could noch login. Please check your data and try again.
+        </div>
         <div class="loginBottomContainer">
             <button class="loginBtn" type="submit" [disabled]="!loginForm.valid">Login</button>
             <button class="guestLoginbtn" type="button" (click)="onGuestLogin()">Guest-Login</button>

@@ -38,6 +38,7 @@ export class ForgotPasswordComponent implements OnInit {
       .catch((error: { message: string; }) => {
         console.log(error); // Firebase error in the console.
         this.emailSendFailed = true;
+        this.sendMailForm.controls['email'].reset();
         setTimeout(() => {
           this.emailSendFailed = false;
         }, 3000);

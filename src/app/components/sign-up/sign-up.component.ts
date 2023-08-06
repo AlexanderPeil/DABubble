@@ -50,12 +50,11 @@ export class SignUpComponent implements OnInit {
       })
       .catch((error: { message: string; }) => {
         console.log(error); // Firebase error in the console.
-        if (error.message === 'The email address is already in use by another account.') {
           this.userExists = true;
+          this.signupForm.controls['email'].reset();
           setTimeout(() => {
             this.userExists = false;
           }, 3000);
-        }
       });
   }
 }

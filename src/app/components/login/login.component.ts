@@ -9,8 +9,9 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  loginFailed = false;
 
-  constructor (private authService: AuthService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -25,30 +26,25 @@ export class LoginComponent implements OnInit {
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
       this.authService.signIn(email, password)
-          .then(() => {
-            console.log('Anmeldung erfolgreich!');
-          })
-          .catch((error: { message: string; }) => {
-            window.alert('Anmeldung fehlgeschlagen: ' + error.message);
-          });
-    } else {
-      window.alert('Bitte überprüfen Sie die Formulardaten.');
+        .catch((error: { message: string; }) => {
+          this.loginFailed = true;
+          this.loginForm.controls['password'].reset();
+          setTimeout(() => {
+            this.loginFailed = false;
+          }, 3000);
+          console.log(error); // Firebase error in the console.
+        });
     }
-  }  
-  
+  }
+
 
   onGuestLogin() {
-    this.authService.signInAnonymously().catch((error) => {
-      window.alert('Anonyme Anmeldung fehlgeschlagen: ' + error.message);
-    });
+    this.authService.signInAnonymously();
   }
 
 
   signInWithGoogle() {
     this.authService.signInWithGoogle().catch(error => {
-      window.alert('Google Sign In failed: ' + error.message);
     });
   }
-  
-
 }

@@ -54,7 +54,6 @@ export class AuthService implements OnDestroy {
         this.router.navigate(['login']);
       }
     } catch (error) {
-      console.log('Sign up failed:', error);
       throw error;
     }
   }
