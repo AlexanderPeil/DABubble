@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,9 +11,13 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class SignUpComponent implements OnInit {
   signupForm!: FormGroup;
+  userCreated = false;
+  userExists = false;
 
 
-  constructor(public authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router) { }
 
 
   ngOnInit(): void {
@@ -32,20 +37,25 @@ export class SignUpComponent implements OnInit {
     return null;
   }
 
-
-  async onSubmit() {
-    if (this.signupForm.valid) {
-      const displayName = this.signupForm.value.displayName;
-      const email = this.signupForm.value.email;
-      const password = this.signupForm.value.password;
-      try {
-        await this.authService.signUp(displayName, email, password);
-        console.log('Registrierung erfolgreich!');
-      } catch (error) {
-        // console.log('Registrierung fehlgeschlagen: ' + error.message);
-      }
-    } else {
-      window.alert('Bitte überprüfen Sie die Formulardaten.');
-    }
+  onSubmit() {
+    const displayName = this.signupForm.value.displayName;
+    const email = this.signupForm.value.email;
+    const password = this.signupForm.value.password;
+    this.authService.signUp(displayName, email, password)
+      .then(() => {
+        this.userCreated = true;
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 3000);
+      })
+      .catch((error: { message: string; }) => {
+        console.log(error); // Firebase error in the console.
+        if (error.message === 'The email address is already in use by another account.') {
+          this.userExists = true;
+          setTimeout(() => {
+            this.userExists = false;
+          }, 3000);
+        }
+      });
   }
 }

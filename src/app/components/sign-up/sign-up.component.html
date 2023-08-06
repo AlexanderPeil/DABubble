@@ -18,6 +18,12 @@
             <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
             <input type="password" placeholder="Password" formControlName="password">
         </div>
+        <div *ngIf="userCreated" class="notification success">
+            User created! Redirecting to login.
+        </div>
+        <div *ngIf="userExists" class="notification warning">
+            User already exists. Please try another email.
+        </div>
         <button class="nextBtn" type="submit" [disabled]="!signupForm.valid">Next</button>
     </form>
 </div>
