@@ -1,10 +1,9 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
 import { User } from '../services/user';
 import { doc, setDoc, Firestore, getFirestore } from '@firebase/firestore';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile, User as FirebaseUser, signInAnonymously, GoogleAuthProvider, onAuthStateChanged, signOut } from '@firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile, User as FirebaseUser, signInAnonymously, GoogleAuthProvider, signOut } from '@firebase/auth';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { Auth, signInWithPopup, user } from '@angular/fire/auth';
 
 @Injectable({
@@ -12,7 +11,7 @@ import { Auth, signInWithPopup, user } from '@angular/fire/auth';
 })
 export class AuthService implements OnDestroy {
   private auth: Auth;
-  private user$: Observable<User | null>;
+  public user$: Observable<User | null>;
   private userSubscription: Subscription;
   private firestore!: Firestore;
 

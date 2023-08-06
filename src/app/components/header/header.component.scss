@@ -1,9 +1,100 @@
 .headerContainer {
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
 }
 
-.logoutBtn {
+.inputContainer {
+    position: relative;
+    left: -66px;
+    width: 55%;
+    height: 70px;
+    margin-left: 175px;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+
+    img {
+        position: absolute;
+        right: 20px;
+    }
+
+    input {
+        border: 1px solid white;
+        width: 100%;
+        height: 14px;
+        background-color: white;
+        border-radius: 100px;
+        padding: 28px 0 28px 40px;
+        box-sizing: border-box;
+        transition: all 125ms ease-in-out;
+
+        &:focus {
+                outline: 1px solid #444df2;
+        }
+
+        &:hover {
+            border: 1px solid #686868;
+        }
+
+        ::placeholder {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 32.74px;
+        }
+    }
+}
+
+.headerProfileContent {
+    display: flex;
+    align-items: center;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 43.65px;
+    cursor: pointer;
+}
+
+.userName {
+    padding-right: 30px;
+}
+
+.userImg {
+    width: 75px;
+    height: 75px;
+    border-radius: 100%;
+}
+
+.dropdownMenu {
+    background-color: white;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32.74px;
+    display: none; 
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
     position: absolute;
-    top: 40px;
-    right: 40px;
+    top: 85px;
+    right: 10px;
+    min-width: 160px;
+    min-height: 150px;
+    padding: 25px 16px;
+    z-index: 2;
+    flex-direction: column;
+    border-radius: 30px 0 30px 30px;
+
+    a {
+        color: black;
+        text-decoration: none;
+        display: block;
+        cursor: pointer;
+
+        &:hover {
+            color: #444df2;
+            font-size: 24.5px;
+            font-weight: 700;
+        }
+    }
 }

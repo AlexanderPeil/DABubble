@@ -24,7 +24,7 @@
             <span>Alternatively</span>
             <div></div>
         </div>
-        <button class="googleLoginBtn" (click)="signInWithGoogle()">Login with Google</button>
+        <button class="googleLoginBtn" type="button" (click)="signInWithGoogle()">Login with Google</button>
         <div *ngIf="loginFailed" class="notification warning">
             Could noch login. Please check your data and try again.
         </div>
