@@ -1,7 +1,14 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
 import { User } from '../services/user';
 import { doc, setDoc, Firestore, getFirestore } from '@firebase/firestore';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile, User as FirebaseUser, signInAnonymously, GoogleAuthProvider, signOut } from '@firebase/auth';
+import { getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  sendPasswordResetEmail, updateProfile, 
+  User as FirebaseUser, signInAnonymously, 
+  GoogleAuthProvider,
+  sendEmailVerification,  
+  signOut } from '@firebase/auth';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Auth, signInWithPopup, user } from '@angular/fire/auth';
@@ -10,15 +17,13 @@ import { Auth, signInWithPopup, user } from '@angular/fire/auth';
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  private auth: Auth;
-  public user$: Observable<User | null>;
+  private auth: Auth = inject(Auth);
+  public user$: Observable<User | null> = user(this.auth);
   private userSubscription: Subscription;
-  private firestore!: Firestore;
+  private firestore: Firestore = getFirestore();
+
 
   constructor(public router: Router) {
-    this.auth = inject(Auth);
-    this.user$ = user(this.auth);
-    this.firestore = getFirestore();
     this.userSubscription = this.user$.subscribe((firebaseUser: User | null) => {
       if (firebaseUser) {
         console.log(firebaseUser);
@@ -63,7 +68,7 @@ export class AuthService implements OnDestroy {
     try {
       const userCredential = await signInAnonymously(auth);
       if (userCredential.user) {
-        console.log('Sign in successful, setting user data...');
+        await updateProfile(userCredential.user, { displayName: 'Guest' });
         await this.setUserData(userCredential.user);
         this.router.navigate(['chat-history']);
       }
@@ -118,6 +123,22 @@ export class AuthService implements OnDestroy {
     await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
     return userData;
   }
+
+
+  async sendVerificationMail() {
+    const auth = getAuth();
+    if (auth.currentUser) {
+      try {
+        await sendEmailVerification(auth.currentUser);
+        console.log("Verification Email Sent!");
+      } catch (error) {
+        console.error("Failed to send verification email:", error);
+        throw error;
+      }
+    } else {
+      console.log("No user signed in");
+    }
+  }  
 
 
   ngOnDestroy() {

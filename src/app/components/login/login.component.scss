@@ -240,3 +240,9 @@ button:disabled {
   .warning {
     color: red;
   }
+
+  @media(max-width:600px) {
+    .signUpContainer {
+        display: none;
+    }
+  }

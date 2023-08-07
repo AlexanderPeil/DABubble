@@ -37,7 +37,8 @@ export class SignUpComponent implements OnInit {
     return null;
   }
 
-  onSubmit() {
+
+    onSubmit() {
     const displayName = this.signupForm.value.displayName;
     const email = this.signupForm.value.email;
     const password = this.signupForm.value.password;
@@ -57,4 +58,35 @@ export class SignUpComponent implements OnInit {
           }, 3000);
       });
   }
+
+
+  // This Code down here is for the verification mail function.
+  // I will implement this feature later.
+
+  // onSubmit() {
+  //   const displayName = this.signupForm.value.displayName;
+  //   const email = this.signupForm.value.email;
+  //   const password = this.signupForm.value.password;
+  //   this.authService.signUp(displayName, email, password)
+  //     .then(() => {
+  //       this.authService.sendVerificationMail()
+  //         .then(() => {
+  //           this.emailSent = true;
+  //           setTimeout(() => {
+  //             this.router.navigate(['/login']);
+  //           }, 3000);
+  //         })
+  //         .catch((error: { message: string; }) => {
+  //           console.error('Failed to send verification email:', error);
+  //         });
+  //     })
+  //     .catch((error: { message: string; }) => {
+  //       console.log(error); // Firebase error in the console.
+  //       this.userExists = true;
+  //       this.signupForm.controls['email'].reset();
+  //       setTimeout(() => {
+  //         this.userExists = false;
+  //       }, 3000);
+  //     });
+  // }
 }
