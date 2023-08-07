@@ -1,29 +1,40 @@
-import { Injectable, OnDestroy, inject } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { User } from '../services/user';
-import { doc, setDoc, Firestore, getFirestore } from '@firebase/firestore';
-import { getAuth, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  sendPasswordResetEmail, updateProfile, 
-  User as FirebaseUser, signInAnonymously, 
-  GoogleAuthProvider,
-  sendEmailVerification,  
-  signOut } from '@firebase/auth';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Auth, signInWithPopup, user } from '@angular/fire/auth';
+import {
+  getFirestore,
+  Firestore,
+  doc,
+  setDoc
+} from '@angular/fire/firestore';
+import {
+  Auth,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  updateProfile,
+  User as FirebaseUser,
+  signInAnonymously,
+  GoogleAuthProvider,
+  sendEmailVerification,
+  signOut,
+  user
+} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  private auth: Auth = inject(Auth);
-  public user$: Observable<User | null> = user(this.auth);
+  private firestore: Firestore;
+  public user$: Observable<User | null>;
   private userSubscription: Subscription;
-  private firestore: Firestore = getFirestore();
 
 
-  constructor(public router: Router) {
+  constructor(private auth: Auth, public router: Router) {
+    this.firestore = getFirestore();
+    this.user$ = user(this.auth);
     this.userSubscription = this.user$.subscribe((firebaseUser: User | null) => {
       if (firebaseUser) {
         console.log(firebaseUser);
@@ -33,11 +44,9 @@ export class AuthService implements OnDestroy {
     });
   }
 
-
   async signIn(email: string, password: string) {
-    const auth = getAuth();
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       if (userCredential.user) {
         await this.setUserData(userCredential.user);
         this.router.navigate(['chat-history']);
@@ -49,9 +58,8 @@ export class AuthService implements OnDestroy {
 
 
   async signUp(displayName: string, email: string, password: string) {
-    const auth = getAuth();
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName });
         await this.setUserData(userCredential.user);
@@ -64,9 +72,8 @@ export class AuthService implements OnDestroy {
 
 
   async signInAnonymously() {
-    const auth = getAuth();
     try {
-      const userCredential = await signInAnonymously(auth);
+      const userCredential = await signInAnonymously(this.auth);
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: 'Guest' });
         await this.setUserData(userCredential.user);
@@ -81,9 +88,8 @@ export class AuthService implements OnDestroy {
 
   async signInWithGoogle() {
     const provider = new GoogleAuthProvider();
-    const auth = getAuth();
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(this.auth, provider);
       const user = result.user;
       if (user) {
         await this.setUserData(user);
@@ -97,9 +103,8 @@ export class AuthService implements OnDestroy {
 
 
   async forgotPassword(passwordResetEmail: string) {
-    const auth = getAuth();
     try {
-      await sendPasswordResetEmail(auth, passwordResetEmail);
+      await sendPasswordResetEmail(this.auth, passwordResetEmail);
     } catch (error) {
       throw error;
     }
@@ -107,8 +112,7 @@ export class AuthService implements OnDestroy {
 
 
   async signOut() {
-    const auth = getAuth();
-    await signOut(auth);
+    await signOut(this.auth);
     this.router.navigate(['login']);
   }
 
@@ -126,10 +130,9 @@ export class AuthService implements OnDestroy {
 
 
   async sendVerificationMail() {
-    const auth = getAuth();
-    if (auth.currentUser) {
+    if (this.auth.currentUser) {
       try {
-        await sendEmailVerification(auth.currentUser);
+        await sendEmailVerification(this.auth.currentUser);
         console.log("Verification Email Sent!");
       } catch (error) {
         console.error("Failed to send verification email:", error);
@@ -138,7 +141,7 @@ export class AuthService implements OnDestroy {
     } else {
       console.log("No user signed in");
     }
-  }  
+  }
 
 
   ngOnDestroy() {

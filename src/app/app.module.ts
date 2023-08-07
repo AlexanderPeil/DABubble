@@ -20,6 +20,8 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { ReactiveFormsModule } from '@angular/forms';
 import { ThreadComponent } from './components/thread/thread.component';
 import { TextfieldInThreadComponent } from './components/textfield-in-thread/textfield-in-thread.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 
 
 @NgModule({
@@ -34,7 +36,9 @@ import { TextfieldInThreadComponent } from './components/textfield-in-thread/tex
     ForgotPasswordComponent,
     ResetPasswordComponent,
     ThreadComponent,
-    TextfieldInThreadComponent],
+    TextfieldInThreadComponent,
+    ProfileComponent,
+    EditProfileComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
