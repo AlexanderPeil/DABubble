@@ -2,39 +2,39 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { 
-  getFirestore, 
-  Firestore, 
-  doc, 
-  setDoc 
+import {
+  getFirestore,
+  Firestore,
+  doc,
+  setDoc
 } from '@angular/fire/firestore';
-import { Auth,
+import {
+  Auth,
   signInWithPopup,
-  onAuthStateChanged,
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  sendPasswordResetEmail, 
-  updateProfile, 
-  User as FirebaseUser, 
-  signInAnonymously, 
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  updateProfile,
+  User as FirebaseUser,
+  signInAnonymously,
   GoogleAuthProvider,
-  sendEmailVerification,  
-  signOut } from '@angular/fire/auth';
+  sendEmailVerification,
+  signOut,
+  user
+} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  private auth: Auth;
   private firestore: Firestore;
   public user$: Observable<User | null>;
   private userSubscription: Subscription;
 
 
-  constructor(private firebaseAuth: Auth, public router: Router) {
-    this.auth = firebaseAuth;
+  constructor(private auth: Auth, public router: Router) {
     this.firestore = getFirestore();
-    this.user$ = new Observable((subscriber) => onAuthStateChanged(this.auth, subscriber));
+    this.user$ = user(this.auth);
     this.userSubscription = this.user$.subscribe((firebaseUser: User | null) => {
       if (firebaseUser) {
         console.log(firebaseUser);
@@ -141,7 +141,7 @@ export class AuthService implements OnDestroy {
     } else {
       console.log("No user signed in");
     }
-  }  
+  }
 
 
   ngOnDestroy() {
