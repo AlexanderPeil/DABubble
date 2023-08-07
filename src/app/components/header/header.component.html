@@ -4,13 +4,15 @@
     <input type="text" placeholder="Search for code learning">
     <img src="../../../assets/img/icons/search_icon.svg" alt="Search Icon">
   </div>
-  <div class="headerProfileContent" (click)="showMenu = !showMenu">
+  <div class="headerProfileContent" (click)="toggleMenu(); $event.stopPropagation()">
     <div class="userName" *ngIf="user"> {{ user.displayName }} </div>
     <img class="userImg" src="assets/img/avatar1.svg">
     <img class="showDropdownBtn" src="../../../assets/img/icons/arrow_down.svg">
     <div class="dropdownMenu" [style.display]="showMenu ? 'flex' : 'none'">
       <a href="#">Profile</a>
-      <a (click)="onLogout()">Logout</a>
+      <a (click)="onLogout();  $event.stopPropagation()">Logout</a>
     </div>
   </div>
 </div>
+
+<div class="menuBackground" (click)="showMenu = false" [style.display]="showMenu ? 'block' : 'none'"></div>

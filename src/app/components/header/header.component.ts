@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
@@ -14,7 +14,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   showMenu = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private _eref: ElementRef) { }
 
 
   ngOnInit() {
@@ -31,8 +33,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
 
+  @HostListener('document:click', ['$event'])
+  clickout(event: { target: any; }) {
+    if (!this._eref.nativeElement.contains(event.target)) {
+      this.showMenu = false;
+    }
+  }
+
+
+  toggleMenu() {
+    this.showMenu = !this.showMenu;
+  }
+
+
   onLogout() {
     this.authService.signOut();
+    this.showMenu = false;
   }
 
 }
