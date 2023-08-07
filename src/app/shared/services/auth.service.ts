@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 import {
   getFirestore,
   Firestore,
@@ -49,6 +49,7 @@ export class AuthService implements OnDestroy {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       if (userCredential.user) {
         await this.setUserData(userCredential.user);
+        await this.setUserOnlineStatus(userCredential.user, true);
         this.router.navigate(['chat-history']);
       }
     } catch (error) {
@@ -112,6 +113,9 @@ export class AuthService implements OnDestroy {
 
 
   async signOut() {
+    if (this.auth.currentUser) {
+      await this.setUserOnlineStatus(this.auth.currentUser, false); 
+    }
     await signOut(this.auth);
     this.router.navigate(['login']);
   }
@@ -143,6 +147,18 @@ export class AuthService implements OnDestroy {
     }
   }
 
+
+  async setUserOnlineStatus(user: FirebaseUser, isOnline: boolean) {
+    const userData: User = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      emailVerified: user.emailVerified,
+      isOnline: isOnline
+    };
+    await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
+    return userData;
+  }
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
