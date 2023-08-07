@@ -95,3 +95,59 @@
       hue-rotate(230deg) brightness(99%) contrast(91%);
   }
 }
+
+#allChannels {
+  padding: 0px 45px 10px 45px;
+
+  .channel {
+    display: flex;
+    align-items: center;
+    margin: 0px 15px 12px 0px;
+    height: 30px;
+    img {
+      margin-inline-start: 25px;
+      height: 16px;
+      margin-right: 10px;
+    }
+    p {
+      font-size: 18px;
+      margin: 0;
+    }
+    &:hover {
+      cursor: pointer;
+      transition: all 225ms ease-in-out;
+      background-color: #eceefe;
+      border-radius: 20px;
+      img,
+      p {
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+          saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.addChannel {
+  display: flex;
+  align-items: center;
+  padding: 0px 0px 20px 68px;
+  img {
+    height: 16px;
+    margin-right: 10px;
+  }
+  p {
+    font-size: 18px;
+    margin: 0;
+  }
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+
+    img,
+    p {
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+    }
+  }
+}
