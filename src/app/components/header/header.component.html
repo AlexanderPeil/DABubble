@@ -9,7 +9,7 @@
     <img class="userImg" src="assets/img/avatar1.svg">
     <img class="showDropdownBtn" src="../../../assets/img/icons/arrow_down.svg">
     <div class="dropdownMenu" [style.display]="showMenu ? 'flex' : 'none'">
-      <a href="#">Profile</a>
+      <a routerLink="/profile">Profile</a>
       <a (click)="onLogout();  $event.stopPropagation()">Logout</a>
     </div>
   </div>
