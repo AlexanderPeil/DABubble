@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    padding: 10px 15px 0px 15px;
 }
 
 .inputContainer {
@@ -30,9 +30,12 @@
         padding: 28px 0 28px 40px;
         box-sizing: border-box;
         transition: all 125ms ease-in-out;
+        font-weight: 400px;
+        font-size: 24px;
+        color: #686868;
 
         &:focus {
-                outline: 1px solid #444df2;
+            outline: 1px solid #444df2;
         }
 
         &:hover {
@@ -71,7 +74,7 @@
     font-size: 24px;
     font-weight: 600;
     line-height: 32.74px;
-    display: none; 
+    display: none;
     align-items: center;
     justify-content: center;
     gap: 25px;

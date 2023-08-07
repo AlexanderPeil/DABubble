@@ -33,6 +33,12 @@ app-message {
   }
 }
 
+.scrolleableContainer {
+  height: 330px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .d-none {
   display: none !important;
 }

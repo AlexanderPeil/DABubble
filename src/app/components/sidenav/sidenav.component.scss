@@ -6,6 +6,7 @@
 .d-flex {
   display: flex;
 }
+
 /////////////////////specific styles///////////////////////////
 
 .head-of-sidenav {
@@ -23,18 +24,20 @@
     align-items: center;
     height: 35px;
     width: 35px;
+
     img {
       height: 20px;
     }
+
     &:hover {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       border-radius: 100%;
       background-color: #eceefe;
+
       img {
         transform: scale(1.1);
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-          saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
       }
     }
   }
@@ -61,18 +64,20 @@
     align-items: center;
     height: 25px;
     width: 25px;
+
     img {
       height: 14px;
     }
+
     &:hover {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       border-radius: 100%;
       background-color: #eceefe;
+
       img {
         transform: scale(1.1);
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-          saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
       }
     }
   }
@@ -80,19 +85,22 @@
 
 .headName {
   display: flex;
+
   .firstImg {
     margin-right: 25px;
   }
+
   img {
     margin-right: 10px;
   }
+
   &:hover {
     .firstImg {
       transform: scale(1.1);
     }
+
     cursor: pointer;
-    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%)
-      hue-rotate(230deg) brightness(99%) contrast(91%);
+    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
   }
 }
 
@@ -104,24 +112,27 @@
     align-items: center;
     margin: 0px 15px 12px 0px;
     height: 30px;
+
     img {
       margin-inline-start: 25px;
       height: 16px;
       margin-right: 10px;
     }
+
     p {
       font-size: 18px;
       margin: 0;
     }
+
     &:hover {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       background-color: #eceefe;
       border-radius: 20px;
+
       img,
       p {
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-          saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
         font-weight: 600;
       }
     }
@@ -132,22 +143,24 @@
   display: flex;
   align-items: center;
   padding: 0px 0px 20px 68px;
+
   img {
     height: 16px;
     margin-right: 10px;
   }
+
   p {
     font-size: 18px;
     margin: 0;
   }
+
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
 
     img,
     p {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -161,23 +174,32 @@ ul {
   display: flex;
   align-items: center;
   padding: 10px;
+
   img {
     border-radius: 100%;
     margin-right: 10px;
   }
+
   p {
     font-size: 18px;
     margin: 0;
   }
+
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
     background-color: #eceefe;
     border-radius: 20px;
+
     p {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
       font-weight: 600;
     }
   }
+}
+
+.scrolleableContainer {
+  height: 470px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
