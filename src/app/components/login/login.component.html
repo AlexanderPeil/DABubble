@@ -1,36 +1,43 @@
-<div class="loginHeader">
-    <img src="../../../assets/img/logo_animation.svg">
-    <div class="signUpContainer">
-        <p>New at DABubble?</p>
-        <a routerLink="/sign-up">Sign Up</a>
+<div class="loginContent">
+    <div class="loginHeader">
+        <img src="../../../assets/img/logo_animation.svg">
+        <div class="signUpContainer">
+            <p>New at DABubble?</p>
+            <a routerLink="/sign-up">Sign Up</a>
+        </div>
     </div>
-</div>
 
-<div class="loginContainer">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <h2>Log in</h2>
-        <span class="formHeaderText">We recommend you use the same email you use at work.</span>
-        <div class="inputContainer">
-            <img class="mailImg" src="../../../assets/img/icons/mail_icon.svg" alt="Email icon">
-            <input type="email" placeholder="examplename@email.com" formControlName="email">
-        </div>
-        <div class="inputContainer">
-            <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
-            <input type="password" placeholder="Password" formControlName="password">
-        </div>
-        <a class="forgotPasswordLink" routerLink="/forgot-password">Forgot password?</a>
-        <div class="alternatively">
-            <div></div>
-            <span>Alternatively</span>
-            <div></div>
-        </div>
-        <button class="googleLoginBtn" type="button" (click)="signInWithGoogle()">Login with Google</button>
-        <div *ngIf="loginFailed" class="notification warning">
-            Could noch login. Please check your data and try again.
-        </div>
-        <div class="loginBottomContainer">
-            <button class="loginBtn" type="submit" [disabled]="!loginForm.valid">Login</button>
-            <button class="guestLoginbtn" type="button" (click)="onGuestLogin()">Guest-Login</button>
-        </div>
-    </form>
+    <div class="loginContainer">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <h2>Log in</h2>
+            <span class="formHeaderText">We recommend you use the same email you use at work.</span>
+            <div class="inputContainer">
+                <img class="mailImg" src="../../../assets/img/icons/mail_icon.svg" alt="Email icon">
+                <input type="email" placeholder="examplename@email.com" formControlName="email">
+            </div>
+            <div class="inputContainer">
+                <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
+                <input type="password" placeholder="Password" formControlName="password">
+            </div>
+            <a class="forgotPasswordLink" routerLink="/forgot-password">Forgot password?</a>
+            <div class="alternatively">
+                <div></div>
+                <span>Alternatively</span>
+                <div></div>
+            </div>
+            <button class="googleLoginBtn" type="button" (click)="signInWithGoogle()">Login with Google</button>
+            <div *ngIf="loginFailed" class="notification warning">
+                Could noch login. Please check your data and try again.
+            </div>
+            <div class="loginBottomContainer">
+                <button class="loginBtn" type="submit" [disabled]="!loginForm.valid">Login</button>
+                <button class="guestLoginbtn" type="button" (click)="onGuestLogin()">Guest-Login</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="loginContainerBottom">
+        <a href="#">Imprint</a>
+        <a href="#">Legal Notice</a>
+    </div>
 </div>

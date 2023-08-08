@@ -1,0 +1,82 @@
+@mixin justify_content_center {
+    display: flex;
+    justify-content: center;
+}
+
+@mixin align_items_center {
+    display: flex;
+    align-items: center;
+}
+
+@mixin flex_center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin space_between {
+    display: flex;
+    justify-content: space-between;
+}
+
+@mixin space_between_center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@mixin flex_direction_column {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin column_center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@mixin colum_justify_center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@mixin justify_space_between_column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@mixin flex_column_center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin button_styles {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+}
+
+@mixin font($size, $weight, $line) {
+    font-size: $size;
+    font-weight: $weight;
+    line-height: $line;
+}
+
+@mixin width_height($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+@mixin margin_left_right($ml, $mr) {
+    margin-left: $ml;
+    margin-right: $mr;
+}
+
+@mixin padding_left_right($pl, $pr) {
+    padding-left: $pl;
+    padding-right: $pr;
+}

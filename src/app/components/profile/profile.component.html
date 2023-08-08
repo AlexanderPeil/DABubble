@@ -1,10 +1,19 @@
 <div class="profileContainer">
-    <div>
-        <h2>Profile</h2>
-        <img src="../../../assets/img/icons/closeIcon.svg" alt="Close icon">
+    <div class="profileHeader">
+        <p>Profile</p>
+        <img src="../../../assets/img/icons/closeIcon.svg" alt="Close icon" (click)="goBack()">
     </div>
     <img src="../../../assets/img/avatar1.svg" alt="User Image">
     <div>
-        <div class="userName" *ngIf="user"> {{ user.displayName }} </div>
+        <div class="userName"> {{ user?.displayName }} </div>
+        <a routerLink="/edit-profile">Edit</a>
     </div>
+    <div class="status">Status: {{ isOnline ? 'Online' : 'Away' }}</div>
+    <div>
+        <img src="../../../assets/img/icons/mail_icon.svg" alt="Mail Icon">
+        <span>E-Mail-Adress</span>
+    </div>
+    <div *ngIf="user">{{ user.email }}</div>
 </div>
+
+<!-- <div class="menuBackground"></div> -->
