@@ -5,10 +5,10 @@
     </div>
     <img src="../../../assets/img/avatar1.svg" alt="User Image">
     <div>
-        <div class="userName" *ngIf="user"> {{ user.displayName }} </div>
+        <div class="userName"> {{ user?.displayName }} </div>
         <a routerLink="/edit-profile">Edit</a>
     </div>
-    <div class="status"></div>
+    <div class="status">Status: {{ isOnline ? 'Online' : 'Away' }}</div>
     <div>
         <img src="../../../assets/img/icons/mail_icon.svg" alt="Mail Icon">
         <span>E-Mail-Adress</span>

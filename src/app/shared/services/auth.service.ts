@@ -6,7 +6,8 @@ import {
   getFirestore,
   Firestore,
   doc,
-  setDoc
+  setDoc,
+  docData
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -27,13 +28,14 @@ import {
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  private firestore: Firestore;
   public user$: Observable<User | null>;
   private userSubscription: Subscription;
 
 
-  constructor(private auth: Auth, public router: Router) {
-    this.firestore = getFirestore();
+  constructor(
+    private auth: Auth, 
+    public router: Router,
+    private firestore: Firestore) {
     this.user$ = user(this.auth);
     this.userSubscription = this.user$.subscribe((firebaseUser: User | null) => {
       if (firebaseUser) {
@@ -159,6 +161,15 @@ export class AuthService implements OnDestroy {
     await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
     return userData;
   }
+
+
+  getUserStatus(uid: string): Observable<boolean> {
+    const userDocRef = doc(this.firestore, `users/${uid}`);
+    return docData(userDocRef).pipe(
+      map((data: any) => data.isOnline)
+    );
+  }  
+
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();

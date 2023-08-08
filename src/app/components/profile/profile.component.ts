@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 })
 export class ProfileComponent implements OnInit {
   user: User | null = null;
+  isOnline: boolean = false;
   userSubscription!: Subscription;
 
   constructor(
@@ -19,8 +20,19 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.userSubscription = this.authService.user$.subscribe(user => {
-      this.user = user;
+      if (user) {
+        this.authService.getUserStatus(user.uid).subscribe(onlineStatus => {
+          this.isOnline = onlineStatus;
+        });
+      }
     });
+  }
+
+
+  ngOnDestroy() {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
 

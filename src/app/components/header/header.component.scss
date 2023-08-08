@@ -57,16 +57,22 @@
     font-weight: 700;
     line-height: 43.65px;
     cursor: pointer;
+    transition: all 125ms ease-in-out;
+
+    &:hover {
+        color: #444df2;
+    }
 }
 
 .userName {
-    padding-right: 30px;
+    padding-right: 15px;
 }
 
 .userImg {
     width: 75px;
     height: 75px;
     border-radius: 100%;
+    margin: 15px;
 }
 
 .dropdownMenu {
