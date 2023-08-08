@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogProfileComponent } from '../dialog-profile/dialog-profile.component';
 
 
 @Component({
@@ -16,12 +18,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private _eref: ElementRef) { }
+    private _eref: ElementRef,
+    public dialog: MatDialog) { }
 
 
   ngOnInit() {
     this.userSubscription = this.authService.user$.subscribe(user => {
       this.user = user;
+    });
+  }
+
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogProfileComponent, {
+      width: '600px',
+      height: '700px',
+      panelClass: 'custom-dialog-container'
     });
   }
 
