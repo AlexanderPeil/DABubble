@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
 
 
 @Component({
@@ -11,4 +13,12 @@ import { Component } from '@angular/core';
 export class ChatHistoryComponent {
 
 
+  constructor(public dialog: MatDialog) {
+
+  }
+
+
+  openDialogToEditChannel() {
+    this.dialog.open(DialogEditChannelComponent);
+  }
 }

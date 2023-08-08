@@ -1,0 +1,53 @@
+<div class="dialogMainContainer">
+    <div class="dialogTopContainer">
+        <div class="dialogTopChildContainer">
+            <img src="assets/img/icons/hashtag.svg">
+            <p>Channel Name (Placeholder)</p>
+        </div>
+
+        <div class="closeIconContainer">
+            <img mat-dialog-close src="assets/img/icons/closeIcon.svg">
+        </div>
+    </div>
+
+
+    <div class="dialogMiddleContainer" mat-dialog-content>
+        <div class="textChannelNameAndEditContainer">
+            <p class="textChannelName">Channel Name</p>
+            <p (click)="editChannelName()" class="textEdit">Edit</p>
+        </div>
+
+        <div class="channelNameAndHashtagIconContainer">
+            <img src="assets/img/icons/hashtag.svg">
+            <p>Channel Name (Placeholder)</p>
+        </div>
+
+        <div class="inputContainer d-none">
+            <img src="assets/img/icons/hashtag.svg">
+            <input type="text" placeholder="Channel Name (Placeholder)">
+        </div>
+    </div>
+
+
+    <div class="dialogBottomContainer" mat-dialog-content>
+        <div class="textChannelNameAndEditContainer">
+            <p class="textChannelName">Channel Name</p>
+            <p class="textEdit">Edit</p>
+        </div>
+
+        <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni eius voluptate rerum unde, asperiores nobis
+            neque fuga veniam. Magnam rerum suscipit dolorem repudiandae ipsam tenetur nulla, exercitationem blanditiis
+            dolor hic?
+        </p>
+
+        <hr>
+        <p class="textCreatedBy">Created by</p>
+        <p class="userName">User Name (Placeholder)</p>
+    </div>
+
+
+    <div class="btnContainer" mat-dialog-actions>
+        <button mat-button mat-dialog-close color="primary">Leave Channel</button>
+    </div>
+</div>

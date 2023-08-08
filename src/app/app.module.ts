@@ -10,7 +10,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import {MatDialogModule} from '@angular/material/dialog';
 import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
 import { LoginComponent } from './components/login/login.component';
 import { MessageComponent } from './components/message/message.component';
@@ -21,7 +20,10 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { ReactiveFormsModule } from '@angular/forms';
 import { ThreadComponent } from './components/thread/thread.component';
 import { TextfieldInThreadComponent } from './components/textfield-in-thread/textfield-in-thread.component';
-import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogEditChannelComponent } from './components/dialog-edit-channel/dialog-edit-channel.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { DialogProfileComponent } from './components/dialog-profile/dialog-profile.component';
 import { DialogEditProfileComponent } from './components/dialog-edit-profile/dialog-edit-profile.component';
 
@@ -39,7 +41,6 @@ import { DialogEditProfileComponent } from './components/dialog-edit-profile/dia
     ResetPasswordComponent,
     ThreadComponent,
     TextfieldInThreadComponent,
-    EditProfileComponent,
     DialogProfileComponent,
     DialogEditProfileComponent],
   imports: [
@@ -47,8 +48,10 @@ import { DialogEditProfileComponent } from './components/dialog-edit-profile/dia
     AppRoutingModule,
     BrowserAnimationsModule,
     MatSidenavModule,
-    MatDialogModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
