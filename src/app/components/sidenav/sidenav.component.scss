@@ -37,7 +37,8 @@
 
       img {
         transform: scale(1.1);
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+          saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
       }
     }
   }
@@ -77,7 +78,8 @@
 
       img {
         transform: scale(1.1);
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+          saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
       }
     }
   }
@@ -100,17 +102,17 @@
     }
 
     cursor: pointer;
-    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%)
+      hue-rotate(230deg) brightness(99%) contrast(91%);
   }
 }
 
 #allChannels {
-  padding: 0px 45px 10px 45px;
-
   .channel {
     display: flex;
     align-items: center;
-    margin: 0px 15px 12px 0px;
+    padding-left: 40px;
+    margin-bottom: 12px;
     height: 30px;
 
     img {
@@ -132,7 +134,8 @@
 
       img,
       p {
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+          saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
         font-weight: 600;
       }
     }
@@ -142,7 +145,7 @@
 .addChannel {
   display: flex;
   align-items: center;
-  padding: 0px 0px 20px 68px;
+  padding: 20px 0px 20px 63px;
 
   img {
     height: 16px;
@@ -160,39 +163,37 @@
 
     img,
     p {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
 
 ul {
-  padding-inline-start: 50px;
-  padding-inline-end: 40px;
+  padding-inline-start: 0px;
 }
 
 .selectableUserChat {
   display: flex;
   align-items: center;
-  padding: 10px;
-
+  padding: 5px 10px 5px 55px;
+  margin: 5px 0 5px 0;
   img {
     border-radius: 100%;
     margin-right: 10px;
   }
-
   p {
     font-size: 18px;
     margin: 0;
   }
-
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
     background-color: #eceefe;
     border-radius: 20px;
-
     p {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
       font-weight: 600;
     }
   }
