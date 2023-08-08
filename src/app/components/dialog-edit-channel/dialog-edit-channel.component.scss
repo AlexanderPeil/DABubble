@@ -1,0 +1,165 @@
+.dialogMainContainer {
+    width: 650px;
+}
+
+.dialogTopContainer {
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dialogTopChildContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    p {
+        margin: 0;
+        font-weight: 700;
+        font-size: 24px;
+    }
+}
+
+.closeIconContainer {
+    display: flex;
+    padding: 8px;
+    border-radius: 50%;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+
+    img {
+
+        &:hover {
+            cursor: pointer;
+            transition: all 225ms ease-in-out;
+            transform: scale(1.1);
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        }
+    }
+}
+
+.dialogMiddleContainer {
+    border: 1px solid #ADB0D9;
+    border-radius: 20px;
+    margin: 0px 25px 0 25px;
+    font-family: Nunito, sans-serif !important;
+}
+
+.inputContainer {
+    position: relative;
+
+    input {
+        width: 500px;
+        padding: 15px 0 15px 50px;
+        font-weight: 400;
+        font-size: 18px;
+        color: #686868;
+        border: 1px solid #ADB0D9;
+        border-radius: 40px;
+        outline: unset;
+        font-family: Nunito, sans-serif !important;
+    }
+
+    img {
+        width: 18px;
+        position: absolute;
+        top: 18px;
+        left: 22px;
+    }
+}
+
+.textChannelNameAndEditContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.textChannelName {
+    color: #000000;
+    font-weight: 700;
+    font-size: 18px;
+    margin: 0;
+}
+
+.textEdit {
+    color: #535AF1;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        font-weight: 700;
+        transform: scale(1.05);
+        color: #444DF2;
+    }
+}
+
+.channelNameAndHashtagIconContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    img {
+        width: 18px;
+    }
+
+    p {
+        color: #000000;
+        font-weight: 400;
+        font-size: 18px;
+        margin: 0;
+    }
+}
+
+.dialogBottomContainer {
+    border: 1px solid #ADB0D9;
+    border-radius: 20px;
+    margin: 20px 25px 0 25px;
+    font-family: Nunito, sans-serif !important;
+
+    hr {
+        margin: 25px 0 25px 0;
+        border: 1px solid #ADB0D9;
+    }
+}
+
+.textCreatedBy {
+    color: #000000;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.userName {
+    color: #535AF1;
+    font-weight: 400;
+    font-size: 24px;
+}
+
+.btnContainer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 25px;
+
+    button {
+        background-color: #444DF2;
+        color: white;
+        font-weight: 700;
+        font-size: 18px;
+        border-radius: 25px;
+        padding: 25px;
+        font-family: Nunito, sans-serif !important;
+
+        &:hover {
+            transition: all 225ms ease-in-out;
+            background-color: #797EF3;
+        }
+    }
+}

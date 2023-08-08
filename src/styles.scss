@@ -39,6 +39,17 @@ app-message {
   overflow-y: auto;
 }
 
+/************************************ Change Style from MatDialog ************************************/
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-top-left-radius: unset !important;
+  border-top-right-radius: 30px !important;
+  border-bottom-right-radius: 30px !important;
+  border-bottom-left-radius: 30px !important;
+  box-shadow: 0 6px 10px 0 #00000033 !important;
+}
+
+/************************************ Change Style from MatDialog ************************************/
+
 .d-none {
   display: none !important;
 }

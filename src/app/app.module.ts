@@ -22,6 +22,10 @@ import { ThreadComponent } from './components/thread/thread.component';
 import { TextfieldInThreadComponent } from './components/textfield-in-thread/textfield-in-thread.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogEditChannelComponent } from './components/dialog-edit-channel/dialog-edit-channel.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -38,13 +42,17 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
     ThreadComponent,
     TextfieldInThreadComponent,
     ProfileComponent,
-    EditProfileComponent],
+    EditProfileComponent,
+    DialogEditChannelComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatSidenavModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
