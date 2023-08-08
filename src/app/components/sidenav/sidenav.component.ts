@@ -8,14 +8,15 @@ import { Component } from '@angular/core';
 export class SidenavComponent {
   channelsVisible: boolean = true;
   chatsVisible: boolean = true;
-  arrowImageRotated: boolean = false;
+  arrowImageRotatedChannel: boolean = false;
+  arrowImageRotatedChat: boolean = false;
 
   hideChannels() {
     this.channelsVisible = !this.channelsVisible;
-    this.arrowImageRotated = !this.arrowImageRotated;
+    this.arrowImageRotatedChannel = !this.arrowImageRotatedChannel;
   }
   hideChats() {
     this.chatsVisible = !this.chatsVisible;
-    this.arrowImageRotated = !this.arrowImageRotated;
+    this.arrowImageRotatedChat = !this.arrowImageRotatedChat;
   }
 }
