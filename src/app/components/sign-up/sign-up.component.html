@@ -21,9 +21,11 @@
             <div *ngIf="userCreated" class="notification success">
                 Verification email sent. Please check your email inbox.
             </div>
-            <label class="checkboxSection">
-                <p>I agree to the <a routerLink="/data-protection">data protection</a>.</p>
-            </label>
+            <label class="checkboxContent">
+                <input type="checkbox" [(ngModel)]="checked">
+                <span class="checkmark"></span>
+                I agree to the <a routerLink="/data-protection">data protection</a>.
+              </label>              
             <div *ngIf="userExists" class="notification warning">
                 User already exists. Please try another email.
             </div>

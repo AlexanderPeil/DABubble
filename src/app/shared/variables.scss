@@ -141,7 +141,7 @@
     }
 }
 
-// This part is for the login, signup, forgot-password and reset-password components
+/***** Style for the login, signup, forgot-password and reset-password components *****/
 @mixin login_link {
     font-size: 18px;
     font-weight: 400;
@@ -152,7 +152,7 @@
     text-decoration: none;
     border-radius: 30px;
     border: 1px solid #eceefe;
-    transition: text-shadow 0.3s ease;
+    transition: text-shadow 225ms ease;
 
     &:hover {
         border: 1px solid #797EF3;
@@ -207,3 +207,4 @@
         }
     }
 }
+/***** Style for the login, signup, forgot-password and reset-password components *****/

@@ -1,5 +1,6 @@
 <app-header></app-header>
 
+
 <div>
   <mat-drawer-container class="mat-drawer-container">
     <mat-drawer #drawer [opened]="true" mode="side">
@@ -8,6 +9,7 @@
 
     <div class="router-container">
       <router-outlet></router-outlet>
+      <app-thread></app-thread>
       <app-thread></app-thread>
     </div>
   </mat-drawer-container>

@@ -28,11 +28,13 @@ import { DialogProfileComponent } from './components/dialog-profile/dialog-profi
 import { DialogEditProfileComponent } from './components/dialog-edit-profile/dialog-edit-profile.component';
 import { ImprintComponent } from './components/imprint/imprint.component';
 import { DataProtectionComponent } from './components/data-protection/data-protection.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
-
+import { DialogCreateChannelComponent } from './components/dialog-create-channel/dialog-create-channel.component';
 
 @NgModule({
-  declarations: [AppComponent,
+  declarations: [
+    AppComponent,
     HeaderComponent,
     SidenavComponent,
     ChatHistoryComponent,
@@ -48,8 +50,11 @@ import { FormsModule } from '@angular/forms';
     DialogEditProfileComponent,
     ImprintComponent,
     DataProtectionComponent,
+    DialogCreateChannelComponent,
+    DataProtectionComponent,
     DialogEditChannelComponent,
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -59,6 +64,7 @@ import { FormsModule } from '@angular/forms';
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    MatCheckboxModule,
     FormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),

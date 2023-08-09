@@ -21,7 +21,6 @@ form {
 
 .goBackIcon {
     @include go_back_icon;
-
 }
 
 .formHeaderText {
@@ -29,8 +28,70 @@ form {
 }
 
 .inputContainer {
-    @include login_input;  
+    @include login_input;
 }
+
+label {
+    @include font(16px, 400, 19.2px);
+}
+
+.checkboxContent {
+    margin-right: auto;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .checkmark {
+        @include width_height(15px, 15px);
+        position: absolute;
+        top: -2px;
+        left: 0;
+        background-color: transparent;
+        border: 2px solid #797EF3;
+    }
+
+    &:hover .checkmark {
+        border-color: #444df2;
+    }
+
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    input:checked~.checkmark:after {
+        display: block;
+    }
+
+    .checkmark:after {
+        @include width_height(5px, 12px);
+        left: 4px;
+        top: -1px;
+        border: solid #444df2;
+        border-width: 0 3px 3px 0;
+        transform: rotate(45deg);
+    }
+
+    a {
+        @include login_link;
+        border: none !important;
+
+        &:hover {
+            border: 1px solid #797EF3;
+            text-shadow: 0px 0px 1px black;
+        }
+    }
+}
+
 
 .userImg {
     height: 15px;
@@ -62,35 +123,35 @@ h2 {
 button:disabled {
     background-color: grey;
     cursor: not-allowed;
-  }
+}
 
-  button:disabled:hover {
+button:disabled:hover {
     background-color: grey;
     cursor: not-allowed;
-  }
+}
 
-  .notification {
+.notification {
     @include font(20px, 400, 24px);
-  }
+}
 
-  .success {
+.success {
     color: #444df2;
-  }
+}
 
-  .warning {
+.warning {
     color: red;
-  }
+}
 
-  .loginContainerLinks {
+.loginContainerLinks {
     @include flex_center;
     gap: 50px;
 
     a {
         padding: 10px 20px;
     }
-  }
+}
 
-  .loginLinks {
+.loginLinks {
     @include login_link;
     text-align: center;
     line-height: 24.5px !important;
