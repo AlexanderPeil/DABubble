@@ -23,7 +23,6 @@ import { TextfieldInThreadComponent } from './components/textfield-in-thread/tex
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from './components/dialog-edit-channel/dialog-edit-channel.component';
 import { MatButtonModule } from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogProfileComponent } from './components/dialog-profile/dialog-profile.component';
 import { DialogEditProfileComponent } from './components/dialog-edit-profile/dialog-edit-profile.component';
@@ -57,7 +56,6 @@ import { DataProtectionComponent } from './components/data-protection/data-prote
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    MatCheckboxModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
