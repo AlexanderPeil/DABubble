@@ -5,6 +5,8 @@ import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ImprintComponent } from './components/imprint/imprint.component';
+import { DataProtectionComponent } from './components/data-protection/data-protection.component';
 
 
 const routes: Routes = [
@@ -14,6 +16,8 @@ const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'imprint', component: ImprintComponent },
+  { path: 'data-protection', component: DataProtectionComponent },
 ];
 
 

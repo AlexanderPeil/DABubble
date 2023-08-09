@@ -1,9 +1,7 @@
 @import '../../shared/variables.scss';
 
 .loginContent {
-    @include colum_justify_center;
-    gap: 70px;
-    height: 100vh
+    @include login_standard_container;
 }
 
 .loginContainer {
@@ -33,18 +31,13 @@
 }
 
 .loginLinks {
-    @include login_links;
+    @include login_link;
     text-align: center;
     line-height: 24.5px !important;
 }
 
 form {
-    @include column_align_center;
-    gap: 30px;
-    width: 435px;
-    background-color: white;
-    border-radius: 30px;
-    padding: 40px 50px;
+    @include login_form;
 }
 
 .formHeaderText {
@@ -52,36 +45,7 @@ form {
 }
 
 .inputContainer {
-    position: relative;
-    width: 100%;
-
-    img {
-        position: absolute;
-        left: 25px;
-    }
-
-    input {
-        @include width_height(100%, 14px);
-        border: 1px solid white;
-        background-color: #ECEEFE;
-        border-radius: 100px;
-        padding: 28px 0 28px 60px;
-        box-sizing: border-box;
-        transition: all 225ms ease-in-out;
-
-        &:focus {
-                outline: 1px solid #444df2;
-        }
-
-        &:hover {
-            border: 1px solid #686868;
-        }
-
-        ::placeholder {
-            @include font(18px, 500, 21.6px);
-        }
-    }
-    
+    @include login_input;    
 }
 
 .mailImg {
@@ -196,7 +160,7 @@ button:disabled {
     color: red;
   }
 
-  .loginContainerBottom {
+  .loginContainerLinks {
     @include flex_center;
     gap: 50px;
 

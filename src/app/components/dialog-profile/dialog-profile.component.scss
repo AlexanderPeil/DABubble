@@ -26,7 +26,7 @@
     }
 
     div {
-        @include button_styles;
+        @include button_hover;
         @include width_height(40px, 40px);
         background: url('../../../assets/img/icons/closeIcon.svg');
         background-repeat: no-repeat;
@@ -57,7 +57,7 @@
 
     a {
         @include font(18px, 600, 24.55px);
-        @include button_styles;
+        @include button_hover;
         color: #535AF1;
 
         &:hover {
@@ -112,7 +112,7 @@
 
     a {
         @include font(19px, 500, 21.6px);
-        @include button_styles;
+        @include button_hover;
         color: #1381FF;
 
         &:hover {
