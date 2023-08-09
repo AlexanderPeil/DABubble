@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
+import { DialogAddMembersInChannelComponent } from '../dialog-add-members-in-channel/dialog-add-members-in-channel.component';
 
 
 @Component({
@@ -20,5 +21,10 @@ export class ChatHistoryComponent {
 
   openDialogToEditChannel() {
     this.dialog.open(DialogEditChannelComponent);
+  }
+
+
+  openDialogToAddMembersToChannel() {
+    this.dialog.open(DialogAddMembersInChannelComponent);
   }
 }

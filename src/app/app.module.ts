@@ -31,6 +31,8 @@ import { DataProtectionComponent } from './components/data-protection/data-prote
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { DialogCreateChannelComponent } from './components/dialog-create-channel/dialog-create-channel.component';
+import { DialogAddMembersInChannelComponent } from './components/dialog-add-members-in-channel/dialog-add-members-in-channel.component';
+
 
 @NgModule({
   declarations: [
@@ -53,6 +55,7 @@ import { DialogCreateChannelComponent } from './components/dialog-create-channel
     DialogCreateChannelComponent,
     DataProtectionComponent,
     DialogEditChannelComponent,
+    DialogAddMembersInChannelComponent,
   ],
 
   imports: [

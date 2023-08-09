@@ -11,7 +11,7 @@
     </div>
 
 
-    <div [class.removeBorder]="showInputToEditChannelName" class="dialogMiddleContainer" mat-dialog-content>
+    <div [class.removeBorder]="showInputToEditChannelName" class="dialogMiddleContainer">
         <div [ngClass]="{'translateToTop': showInputToEditChannelName, 'translateToTBottom': !showInputToEditChannelName}"
             class="textChannelNameAndEditContainer">
             <p class="textChannelName">Channel Name</p>
@@ -41,7 +41,7 @@
     </div>
 
 
-    <div [class.removeBorder]="showInputToEditChannelDescription" class="dialogBottomContainer" mat-dialog-content>
+    <div [class.removeBorder]="showInputToEditChannelDescription" class="dialogBottomContainer">
         <div [ngClass]="{'translateToTop': showInputToEditChannelDescription, 'translateToTBottom': !showInputToEditChannelDescription}"
             class="textChannelNameAndEditContainer">
             <p class="textChannelName">Channel Name</p>
@@ -75,7 +75,7 @@
     </div>
 
 
-    <div class="btnContainer" mat-dialog-actions>
+    <div class="btnContainer">
         <button mat-button mat-dialog-close color="primary">Leave Channel</button>
     </div>
 </div>
