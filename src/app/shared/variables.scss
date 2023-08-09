@@ -30,7 +30,7 @@
     flex-direction: column;
 }
 
-@mixin column_center {
+@mixin column_align_center {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -55,9 +55,52 @@
     align-items: center;
 }
 
-@mixin button_styles {
+@mixin button {
+    @include font(18px, 700, 24.5px);
+    border-radius: 25px;
+    padding: 15px 0;
+}
+
+@mixin button_primary {
+    width: 120px;
+    color: white;
+    background-color: #444df2;
+    border: none;
+
+    &:hover {
+        background-color: #797ef3;
+    }
+}
+
+@mixin button_secondary {
+    width: 150px;
+    color: #444df2;
+    background-color: white;
+
+    &:hover {
+        color: white;
+        background-color: #535af1;
+    }
+}
+
+@mixin button_hover{
     cursor: pointer;
     transition: all 225ms ease-in-out;
+}
+
+@mixin login_links {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    color: #797EF3;
+    text-decoration: none;
+    border-radius: 30px;
+    border: 1px solid #eceefe;
+    transition: text-shadow 0.3s ease;
+
+    &:hover {
+        border: 1px solid #797EF3;
+        text-shadow: 0px 0px 1px black;
+    }
 }
 
 @mixin font($size, $weight, $line) {

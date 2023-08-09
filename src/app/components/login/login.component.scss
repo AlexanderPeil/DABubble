@@ -1,9 +1,7 @@
 @import '../../shared/variables.scss';
 
 .loginContent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    @include colum_justify_center;
     gap: 70px;
     height: 100vh
 }
@@ -14,42 +12,34 @@
 }
 
 .loginHeader {
+    @include space_between_center;
     position: relative;
     top: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 
     img {
         height: 50px;
+        margin: 20px 0 0 75px;
     }
 }
 
 .signUpContainer {
     @include font(18px, 400, 21.6px);
-    display: flex;
-    flex-direction: column;
+    @include flex_direction_column;
+    margin: 20px 75px 0 0;
 
     a {
-        @include button_styles;
-        color: #797EF3;
-        text-decoration: none;
         padding: 5px 10px;
-        border-radius: 100px;
-        text-align: center;
-        line-height: 24.5px !important;
-
-        &:hover {
-            @include font(19px, 600, 24.5px);
-            background-color: white;
-        }
     }
 }
 
+.loginLinks {
+    @include login_links;
+    text-align: center;
+    line-height: 24.5px !important;
+}
+
 form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include column_align_center;
     gap: 30px;
     width: 435px;
     background-color: white;
@@ -67,7 +57,7 @@ form {
 
     img {
         position: absolute;
-        left: 20px;
+        left: 25px;
     }
 
     input {
@@ -75,9 +65,9 @@ form {
         border: 1px solid white;
         background-color: #ECEEFE;
         border-radius: 100px;
-        padding: 28px 0 28px 40px;
+        padding: 28px 0 28px 60px;
         box-sizing: border-box;
-        transition: all 125ms ease-in-out;
+        transition: all 225ms ease-in-out;
 
         &:focus {
                 outline: 1px solid #444df2;
@@ -111,21 +101,23 @@ h2 {
 
 .forgotPasswordLink {
     @include font(18px, 400, 21.6px);
-    @include button_styles;
+    @include button_hover;
     text-decoration: none;
-    padding: 5px 10px;
+    padding: 10px 15px;
     color: #797EF3;
-    border-radius: 100px;
+    border-radius: 30px;
+    transition: text-shadow 225ms ease;
 
     &:hover {
-        @include font(19px, 600, 21.6px);
+        font-size: 19px;
+        color: #444df2;
+        text-shadow: 0px 0px 1px black;
         background-color: #eceefe;
     }
 }
 
 .alternatively {
-    display: flex;
-    align-items: center;
+    @include align_items_center;
 
     div {
         @include width_height(150px, 1px);
@@ -140,18 +132,16 @@ h2 {
 
 .googleLoginBtn {
     @include font(18px, 400, 21.6px);
-    @include button_styles;
+    @include button_hover;
     @include width_height(100%, 14px);
-    display: flex;
-    justify-content: center;
+    @include flex_center;
     background-color: #eceefe;
     color: #444df2;
     padding: 26px 50px; 
     text-align: left; 
-    display: inline-flex;
-    align-items: center;
     border: 1px solid white;
     border-radius: 100px;
+    transition: text-shadow 225ms ease;
 
     &::before {
         @include width_height(30px, 30px);
@@ -164,7 +154,8 @@ h2 {
 
     &:hover {
         border: 1px solid #444df2;
-        font-weight: 600;
+        font-size: 19px;
+        text-shadow: 0px 0px 1px black;
     }
 }
 
@@ -173,33 +164,18 @@ h2 {
     gap: 20px;
 
     button {
-        @include font(18px, 700, 24.5px);
-        @include button_styles;
-        width: 150px;
-        border-radius: 25px;
-        padding: 15px 0;
+        @include button_hover;
+        @include button;
     }
 }
 
 .loginBtn {
-    color: white;
-    background-color: #444df2;
-    border: none;
-    
-    &:hover {
-        background-color: #797ef3;
-    }
+    @include button_primary;
 }
 
 .guestLoginbtn {
-    color: #444df2;
-    background-color: white;
+    @include button_secondary;
     border: 1px solid #444df2;
-
-    &:hover {
-        color: white;
-        background-color: #535af1;
-    }
 }
 
 button:disabled {
@@ -221,25 +197,11 @@ button:disabled {
   }
 
   .loginContainerBottom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex_center;
     gap: 50px;
 
     a {
-        @include font(18px, 400, 21.6px);
-        @include button_styles;
-        color: #797EF3;
-        text-decoration: none;
-        border: 1px solid #eceefe;
         padding: 10px 20px;
-
-        &:hover {
-            font-weight: 600;
-            color: #444df2;
-            border: 1px solid #797EF3;
-            border-radius: 100px;
-        }
     }
   }
 
