@@ -26,10 +26,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogProfileComponent } from './components/dialog-profile/dialog-profile.component';
 import { DialogEditProfileComponent } from './components/dialog-edit-profile/dialog-edit-profile.component';
-
+import { DialogCreateChannelComponent } from './components/dialog-create-channel/dialog-create-channel.component';
 
 @NgModule({
-  declarations: [AppComponent,
+  declarations: [
+    AppComponent,
     HeaderComponent,
     SidenavComponent,
     ChatHistoryComponent,
@@ -42,7 +43,9 @@ import { DialogEditProfileComponent } from './components/dialog-edit-profile/dia
     ThreadComponent,
     TextfieldInThreadComponent,
     DialogProfileComponent,
-    DialogEditProfileComponent],
+    DialogEditProfileComponent,
+    DialogCreateChannelComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -59,4 +62,4 @@ import { DialogEditProfileComponent } from './components/dialog-edit-profile/dia
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

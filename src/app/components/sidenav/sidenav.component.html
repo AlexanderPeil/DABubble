@@ -23,7 +23,7 @@
       <img src="./assets/img/icons/workspaces.svg" alt="" />
       <p>Channels</p>
     </div>
-    <div class="icon-div">
+    <div class="icon-div" (click)="openDialogToCreateChannel()">
       <img src="./assets/img/icons/add.svg" alt="" />
     </div>
   </div>
@@ -49,6 +49,7 @@
     id="addChannel"
     [ngStyle]="{ display: channelsVisible ? 'flex' : 'none' }"
     class="addChannel"
+    (click)="openDialogToCreateChannel()"
   >
     <img src="./assets/img/icons/add_circle.svg" alt="" />
     <p>Add new Channel</p>

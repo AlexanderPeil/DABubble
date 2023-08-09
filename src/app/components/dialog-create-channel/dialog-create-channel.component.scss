@@ -1,0 +1,39 @@
+@import "../../shared/variables.scss";
+
+//////////////// general classes ///////////////////////
+
+.padding {
+  padding: 30px;
+}
+
+//////////////// specific classes ///////////////////////
+.dialogHead {
+  @include space_between_center;
+  p {
+    margin: 0;
+    font-weight: 700;
+    font-size: 24px;
+  }
+}
+
+.closeIconContainer {
+  display: flex;
+  padding: 8px;
+  border-radius: 50%;
+
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #eceefe;
+  }
+
+  img {
+    &:hover {
+      cursor: pointer;
+      transition: all 225ms ease-in-out;
+      transform: scale(1.1);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+    }
+  }
+}
