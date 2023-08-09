@@ -26,6 +26,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogProfileComponent } from './components/dialog-profile/dialog-profile.component';
 import { DialogEditProfileComponent } from './components/dialog-edit-profile/dialog-edit-profile.component';
+import { ImprintComponent } from './components/imprint/imprint.component';
+import { DataProtectionComponent } from './components/data-protection/data-protection.component';
+import { FormsModule } from '@angular/forms';
 import { DialogCreateChannelComponent } from './components/dialog-create-channel/dialog-create-channel.component';
 
 @NgModule({
@@ -44,6 +47,8 @@ import { DialogCreateChannelComponent } from './components/dialog-create-channel
     TextfieldInThreadComponent,
     DialogProfileComponent,
     DialogEditProfileComponent,
+    ImprintComponent,
+    DataProtectionComponent,
     DialogCreateChannelComponent,
   ],
   imports: [
@@ -55,6 +60,7 @@ import { DialogCreateChannelComponent } from './components/dialog-create-channel
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    FormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
