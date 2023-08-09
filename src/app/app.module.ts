@@ -28,7 +28,7 @@ import { DialogProfileComponent } from './components/dialog-profile/dialog-profi
 import { DialogEditProfileComponent } from './components/dialog-edit-profile/dialog-edit-profile.component';
 import { ImprintComponent } from './components/imprint/imprint.component';
 import { DataProtectionComponent } from './components/data-protection/data-protection.component';
-
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent,
@@ -56,6 +56,7 @@ import { DataProtectionComponent } from './components/data-protection/data-prote
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    FormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
