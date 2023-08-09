@@ -1,3 +1,6 @@
+@import '../../shared/variables.scss';
+
+
 .dialogMainContainer {
     width: 650px;
 }
@@ -46,6 +49,7 @@
     border: 1px solid #ADB0D9;
     border-radius: 20px;
     margin: 0px 25px 0 25px;
+    padding: 25px;
     font-family: Nunito, sans-serif !important;
 }
 
@@ -62,6 +66,8 @@
         border-radius: 40px;
         outline: unset;
         font-family: Nunito, sans-serif !important;
+        @include focus_input_or_textarea;
+        @include hover_input_or_textarea;
     }
 
     img {
@@ -122,6 +128,7 @@
     border: 1px solid #ADB0D9;
     border-radius: 20px;
     margin: 20px 25px 0 25px;
+    padding: 25px;
     font-family: Nunito, sans-serif !important;
 
     hr {
@@ -149,17 +156,25 @@
     padding: 25px;
 
     button {
-        background-color: #444DF2;
-        color: white;
+        @include button_primary;
         font-weight: 700;
         font-size: 18px;
         border-radius: 25px;
         padding: 25px;
         font-family: Nunito, sans-serif !important;
-
-        &:hover {
-            transition: all 225ms ease-in-out;
-            background-color: #797EF3;
-        }
     }
+}
+
+.removeBorder {
+    border: unset;
+}
+
+.translateToTop {
+    transition: all 125ms ease-in-out;
+    transform: translate(0, -10px);
+}
+
+.translateToTBottom {
+    transition: all 125ms ease-in-out;
+    transform: translate(0, 0);
 }

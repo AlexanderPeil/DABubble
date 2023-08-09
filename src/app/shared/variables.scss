@@ -62,19 +62,20 @@
 }
 
 @mixin button_primary {
-    width: 120px;
+    // width: 120px;
     color: white;
     background-color: #444df2;
-    border: none;
+    border: unset;
 
     &:hover {
-        background-color: #797ef3;
+        cursor: pointer;
         transition: all 225ms ease-in-out;
+        background-color: #797ef3;
     }
 }
 
 @mixin button_secondary {
-    width: 150px;
+    // width: 150px;
     color: #444df2;
     background-color: white;
 
@@ -85,7 +86,7 @@
     }
 }
 
-@mixin button_hover{
+@mixin button_hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
 }
@@ -128,6 +129,17 @@
     }
 }
 
+@mixin focus_input_or_textarea {
+    &:focus {
+        border: 1px solid #797EF3;
+    }
+}
+
+@mixin hover_input_or_textarea {
+    &:hover {
+        border: 1px solid #797EF3;
+    }
+}
 
 // This part is for the login, signup, forgot-password and reset-password components
 @mixin login_link {
@@ -183,7 +195,7 @@
         transition: all 225ms ease-in-out;
 
         &:focus {
-                outline: 1px solid #444df2;
+            outline: 1px solid #444df2;
         }
 
         &:hover {

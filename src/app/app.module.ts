@@ -30,6 +30,7 @@ import { ImprintComponent } from './components/imprint/imprint.component';
 import { DataProtectionComponent } from './components/data-protection/data-protection.component';
 import { FormsModule } from '@angular/forms';
 
+
 @NgModule({
   declarations: [AppComponent,
     HeaderComponent,
@@ -46,7 +47,9 @@ import { FormsModule } from '@angular/forms';
     DialogProfileComponent,
     DialogEditProfileComponent,
     ImprintComponent,
-    DataProtectionComponent],
+    DataProtectionComponent,
+    DialogEditChannelComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

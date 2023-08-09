@@ -10,10 +10,25 @@ import { Component } from '@angular/core';
 
 export class DialogEditChannelComponent {
   showInputToEditChannelName: boolean = false;
+  showInputToEditChannelDescription: boolean = false;
 
 
-  // In Work
-  editChannelName() {
+  openInputToEditChannelName() {
+    this.showInputToEditChannelName = true;
+  }
 
+
+  closeInputToEditChannelName() {
+    this.showInputToEditChannelName = false;
+  }
+
+
+  openInputToEditChannelDescription() {
+    this.showInputToEditChannelDescription = true;
+  }
+
+
+  closeInputToEditChannelDescription() {
+    this.showInputToEditChannelDescription = false;
   }
 }

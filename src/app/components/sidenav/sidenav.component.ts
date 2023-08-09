@@ -14,12 +14,17 @@ export class SidenavComponent {
   arrowImageRotatedChannel: boolean = false;
   arrowImageRotatedChat: boolean = false;
 
+
   hideChannels() {
     this.channelsVisible = !this.channelsVisible;
     this.arrowImageRotatedChannel = !this.arrowImageRotatedChannel;
   }
+
+
   hideChats() {
     this.chatsVisible = !this.chatsVisible;
     this.arrowImageRotatedChat = !this.arrowImageRotatedChat;
   }
+
+
 }

@@ -1,3 +1,6 @@
+@import '../../shared/variables.scss';
+
+
 .containerTextarea {
 
     textarea {
@@ -19,14 +22,8 @@
             font-family: Nunito, sans-serif;
         }
 
-        &:hover {
-            transition: all 225ms ease-in-out;
-            border: 1px solid #797EF3;
-        }
-
-        &:focus {
-            border: 1px solid #797EF3;
-        }
+        @include hover_input_or_textarea;
+        @include focus_input_or_textarea;
     }
 
     hr {
