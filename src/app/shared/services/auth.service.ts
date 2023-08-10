@@ -6,8 +6,7 @@ import {
   Firestore,
   doc,
   setDoc,
-  docData,
-  updateDoc
+  docData
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -78,7 +77,7 @@ export class AuthService implements OnDestroy {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       if (userCredential.user) {
-        await this.setUserData(userCredential.user);
+        // await this.setUserData(userCredential.user);
         await this.setUserOnlineStatus(userCredential.user, true);
         this.router.navigate(['chat-history']);  // Maybe I have to change the route later.
       }
@@ -122,13 +121,13 @@ export class AuthService implements OnDestroy {
    * @returns {Promise<void>} Returns a promise that resolves when the anonymous sign-in process is complete.
    */
   async signInAnonymously() {
+    // debugger;
     try {
       const userCredential = await signInAnonymously(this.auth);
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: 'Guest' });
         await this.setUserData(userCredential.user);
-        await this.setUserOnlineStatus(userCredential.user, true);
-        this.router.navigate(['chat-history']); // Maybe I have to change the route later
+        this.router.navigate(['chat-history']);
       }
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -193,27 +192,6 @@ export class AuthService implements OnDestroy {
 
 
   /**
-   * Sets or updates the user's data in the Firestore.
-   * @async
-   * @param {FirebaseUser} user - The user object from Firebase Authentication.
-   * @returns {User} The data structure that was set in Firestore.
-   */
-  async setUserData(user: FirebaseUser) {
-    const userData: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      emailVerified: user.emailVerified,
-      photoURL: this.getRandomImage(), 
-    };
-    console.log("Setting user data with photoURL:", userData.photoURL);
-    await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
-    return userData;
-  }
-
-
-
-  /**
    * Sends a verification email to the currently authenticated user.
    * @async
    * @throws Will throw an error if sending the email fails.
@@ -241,10 +219,37 @@ export class AuthService implements OnDestroy {
    * @returns {User} The data structure that was set in Firestore.
    */
   async setUserOnlineStatus(user: FirebaseUser, isOnline: boolean) {
-    const userRef = doc(this.firestore, `users/${user.uid}`);
-    await updateDoc(userRef, { isOnline: isOnline });
+    const userData: User = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      emailVerified: user.emailVerified,
+      isOnline: isOnline,
+      photoURL: ''
+    };
+    await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
+    return userData;
   }
-  
+
+
+  /**
+   * Sets or updates the user's data in the Firestore.
+   * @async
+   * @param {FirebaseUser} user - The user object from Firebase Authentication.
+   * @returns {User} The data structure that was set in Firestore.
+   */
+  async setUserData(user: FirebaseUser, photoUrlValue?: string) {
+    const userData: User = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      emailVerified: user.emailVerified,
+      photoURL: this.getRandomImage(),
+    };
+    await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
+    return userData;
+  }
+
 
 
   /**
@@ -255,19 +260,17 @@ export class AuthService implements OnDestroy {
   getUserData(uid: string): Observable<User> {
     const userDocRef = doc(this.firestore, `users/${uid}`);
     return docData(userDocRef).pipe(
-      map((data: any): User => {
-        console.log("Fetched photoURL:", data.photoURL);
-        return {
+      map((data: any): User => ({
         uid: data.uid,
         email: data.email,
         displayName: data.displayName,
         emailVerified: data.emailVerified,
         isOnline: data.isOnline,
-        photoURL: data.photoURL, }
-      })
+        photoURL: data.photoURL,
+      }))
     );
   }
-  
+
 
 
   /**

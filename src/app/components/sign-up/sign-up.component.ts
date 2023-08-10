@@ -13,7 +13,7 @@ export class SignUpComponent implements OnInit {
   signupForm!: FormGroup;
   userCreated = false;
   userExists = false;
-  checked = false;
+  checked = new FormControl(false);
 
 
   constructor(
@@ -26,6 +26,7 @@ export class SignUpComponent implements OnInit {
       displayName: new FormControl(null, [Validators.required, this.fullNameValidator]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, Validators.required),
+      checked: this.checked,
     })
   }
 
