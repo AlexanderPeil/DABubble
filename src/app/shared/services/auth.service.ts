@@ -35,14 +35,8 @@ import {
  * @property {Subscription} userSubscription - Subscription to the user$ observable to handle user state changes.
  */
 export class AuthService implements OnDestroy {
-  public user$: Observable<any>;
+  public user$: Observable<User | null>;
   private userSubscription?: Subscription;
-
-  DEFAULT_IMAGES: string[] = [
-    '../assets/img/avatar1.svg',
-    '../assets/img/avatar2.svg',
-    '../assets/img/avatar3.svg'
-  ]
 
 
   /**
@@ -59,12 +53,6 @@ export class AuthService implements OnDestroy {
   }
 
 
-  getRandomImage(): string {
-    const randomIndex = Math.floor(Math.random() * this.DEFAULT_IMAGES.length);
-    return this.DEFAULT_IMAGES[randomIndex];
-  }
-
-
   /**
    * Sign in using email and password.
    * @async
@@ -77,7 +65,7 @@ export class AuthService implements OnDestroy {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       if (userCredential.user) {
-        // await this.setUserData(userCredential.user);
+        await this.setUserData(userCredential.user);
         await this.setUserOnlineStatus(userCredential.user, true);
         this.router.navigate(['chat-history']);  // Maybe I have to change the route later.
       }
@@ -121,13 +109,13 @@ export class AuthService implements OnDestroy {
    * @returns {Promise<void>} Returns a promise that resolves when the anonymous sign-in process is complete.
    */
   async signInAnonymously() {
-    // debugger;
     try {
       const userCredential = await signInAnonymously(this.auth);
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: 'Guest' });
         await this.setUserData(userCredential.user);
-        this.router.navigate(['chat-history']);
+        await this.setUserOnlineStatus(userCredential.user, true);
+        this.router.navigate(['chat-history']); // Maybe I have to change the route later
       }
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -192,6 +180,25 @@ export class AuthService implements OnDestroy {
 
 
   /**
+   * Sets or updates the user's data in the Firestore.
+   * @async
+   * @param {FirebaseUser} user - The user object from Firebase Authentication.
+   * @returns {User} The data structure that was set in Firestore.
+   */
+  async setUserData(user: FirebaseUser) {
+    const userData: User = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      emailVerified: user.emailVerified,
+    };
+    await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
+    return userData;
+  }
+
+
+
+  /**
    * Sends a verification email to the currently authenticated user.
    * @async
    * @throws Will throw an error if sending the email fails.
@@ -224,32 +231,11 @@ export class AuthService implements OnDestroy {
       email: user.email,
       displayName: user.displayName,
       emailVerified: user.emailVerified,
-      isOnline: isOnline,
-      photoURL: ''
+      isOnline: isOnline
     };
     await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
     return userData;
   }
-
-
-  /**
-   * Sets or updates the user's data in the Firestore.
-   * @async
-   * @param {FirebaseUser} user - The user object from Firebase Authentication.
-   * @returns {User} The data structure that was set in Firestore.
-   */
-  async setUserData(user: FirebaseUser, photoUrlValue?: string) {
-    const userData: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      emailVerified: user.emailVerified,
-      photoURL: this.getRandomImage(),
-    };
-    await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
-    return userData;
-  }
-
 
 
   /**
@@ -265,12 +251,11 @@ export class AuthService implements OnDestroy {
         email: data.email,
         displayName: data.displayName,
         emailVerified: data.emailVerified,
-        isOnline: data.isOnline,
-        photoURL: data.photoURL,
+        isOnline: data.isOnline
       }))
     );
   }
-
+  
 
 
   /**

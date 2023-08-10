@@ -4,5 +4,4 @@ export interface User {
     displayName: string | null;
     emailVerified: boolean;
     isOnline?: boolean; 
-    photoURL: string;
 }
