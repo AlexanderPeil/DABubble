@@ -204,5 +204,119 @@
         }
     }
 }
-
 /***** Style for the login, signup, forgot-password and reset-password components *****/
+
+/*********************** Style for the dialog-profile-components **********************/
+@mixin profileContainer {
+    @include flex_column_center;
+    position: relative;
+    z-index: 3;
+    gap: 38px;
+    width: 500px;
+    // border-top-left-radius: 30px;
+    // border-bottom-left-radius: 30px;
+    // border-bottom-right-radius: 30px;
+    padding: 45px 40px;
+}
+
+@mixin profileHeader {
+    @include space_between_center;
+    width: 100%;
+
+    p {
+        @include font(24px, 700, 32.74px);
+    }
+
+    div {
+        @include button_hover;
+        @include width_height(40px, 40px);
+        background: url('../../assets/img/icons/closeIcon.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+
+        &:hover {
+            background: url('../../assets/img/icons/close_icon_hover.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    }
+}
+
+@mixin userImg {
+    width: 215px;
+    border-radius: 100%;
+}
+
+@mixin userNameEdit {
+    @include space_between_center;
+    width: 100%;
+
+    div {
+        @include font(32px, 700, 43.65px);
+    }
+
+    a {
+        @include font(18px, 600, 24.55px);
+        @include button_hover;
+        color: #535AF1;
+
+        &:hover {
+            font-weight: 800;
+        }
+    }
+}
+
+@mixin status {
+    @include font(20px, 400, 27.28px);
+    margin-right: auto;
+
+    &.online {
+        color: #92C83E;
+
+        .circle {
+            background-color: #92C83E; 
+        }
+    }
+
+    &.away {
+        color: #686868;
+
+        .circle {
+            background-color: #686868; 
+        }
+    }
+}
+
+@mixin circle {
+    @include width_height(15px, 15px);
+    display: inline-block;
+    border-radius: 50%; 
+    margin-right: 5px; 
+    vertical-align: middle;
+}
+
+@mixin profileBottom {
+    display: flex;
+    flex-direction: row !important;
+    gap: 20px;
+    align-items: baseline;
+    margin-right: auto;
+}
+
+@mixin profileIconsText {
+    @include font(20px, 700, 27.28px);
+    @include flex_direction_column;
+    gap: 15px;
+
+    a {
+        @include font(19px, 500, 21.6px);
+        @include button_hover;
+        color: #1381FF;
+
+        &:hover {
+            font-weight: 600;
+        }
+    }
+}
+
+/*********************** Style for the dialog-profile-components **********************/
