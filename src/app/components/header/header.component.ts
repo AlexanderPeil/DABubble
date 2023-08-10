@@ -23,8 +23,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.userSubscription = this.authService.user$.subscribe(user => {
-      this.user = user;
+    this.userSubscription = this.authService.user$.subscribe(firebaseUser => {
+      if (firebaseUser) {
+        this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
+          this.user = userData;
+        });
+      }
     });
   }
 

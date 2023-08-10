@@ -6,7 +6,8 @@ import {
   Firestore,
   doc,
   setDoc,
-  docData
+  docData,
+  updateDoc
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -35,8 +36,14 @@ import {
  * @property {Subscription} userSubscription - Subscription to the user$ observable to handle user state changes.
  */
 export class AuthService implements OnDestroy {
-  public user$: Observable<User | null>;
+  public user$: Observable<any>;
   private userSubscription?: Subscription;
+
+  DEFAULT_IMAGES: string[] = [
+    '../assets/img/avatar1.svg',
+    '../assets/img/avatar2.svg',
+    '../assets/img/avatar3.svg'
+  ]
 
 
   /**
@@ -50,6 +57,12 @@ export class AuthService implements OnDestroy {
     public router: Router,
     private firestore: Firestore) {
     this.user$ = user(this.auth);
+  }
+
+
+  getRandomImage(): string {
+    const randomIndex = Math.floor(Math.random() * this.DEFAULT_IMAGES.length);
+    return this.DEFAULT_IMAGES[randomIndex];
   }
 
 
@@ -191,7 +204,9 @@ export class AuthService implements OnDestroy {
       email: user.email,
       displayName: user.displayName,
       emailVerified: user.emailVerified,
+      photoURL: this.getRandomImage(), 
     };
+    console.log("Setting user data with photoURL:", userData.photoURL);
     await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
     return userData;
   }
@@ -226,16 +241,10 @@ export class AuthService implements OnDestroy {
    * @returns {User} The data structure that was set in Firestore.
    */
   async setUserOnlineStatus(user: FirebaseUser, isOnline: boolean) {
-    const userData: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      emailVerified: user.emailVerified,
-      isOnline: isOnline
-    };
-    await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
-    return userData;
+    const userRef = doc(this.firestore, `users/${user.uid}`);
+    await updateDoc(userRef, { isOnline: isOnline });
   }
+  
 
 
   /**
@@ -246,13 +255,16 @@ export class AuthService implements OnDestroy {
   getUserData(uid: string): Observable<User> {
     const userDocRef = doc(this.firestore, `users/${uid}`);
     return docData(userDocRef).pipe(
-      map((data: any): User => ({
+      map((data: any): User => {
+        console.log("Fetched photoURL:", data.photoURL);
+        return {
         uid: data.uid,
         email: data.email,
         displayName: data.displayName,
         emailVerified: data.emailVerified,
-        isOnline: data.isOnline
-      }))
+        isOnline: data.isOnline,
+        photoURL: data.photoURL, }
+      })
     );
   }
   
