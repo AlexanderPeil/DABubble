@@ -62,7 +62,6 @@
 }
 
 @mixin button_primary {
-    // width: 120px;
     color: white;
     background-color: #444df2;
     border: unset;
@@ -75,7 +74,6 @@
 }
 
 @mixin button_secondary {
-    // width: 150px;
     color: #444df2;
     background-color: white;
 
@@ -162,7 +160,6 @@
 
 @mixin login_standard_container {
     @include colum_justify_center;
-    gap: 70px;
     height: 100vh
 }
 

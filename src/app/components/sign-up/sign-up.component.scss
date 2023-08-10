@@ -2,6 +2,7 @@
 
 .signUpContent {
     @include login_standard_container;
+    gap: 50px;
 }
 
 .mainLogo {
@@ -118,6 +119,7 @@ h2 {
     @include button_primary;
     @include button_hover;
     margin-left: auto;
+    padding: 15px 25px;
 }
 
 button:disabled {

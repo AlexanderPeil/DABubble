@@ -7,6 +7,7 @@
 .loginContainer {
     @include flex_column_center;
     background-color: #eceefe;
+    padding-bottom: 30px;
 }
 
 .loginHeader {
@@ -135,10 +136,12 @@ h2 {
 
 .loginBtn {
     @include button_primary;
+    padding: 15px 25px !important;
 }
 
 .guestLoginbtn {
     @include button_secondary;
+    padding: 15px 20px !important;
     border: 1px solid #444df2;
 }
 
