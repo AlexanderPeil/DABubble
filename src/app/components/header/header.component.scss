@@ -1,20 +1,17 @@
+@import '../../shared/variables.scss';
+
 .headerContainer {
+    @include space_between_center;
     position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 10px 30px 0px 40px;
 }
 
 .inputContainer {
+    @include align_items_center;
+    @include width_height(55%, 70px);
+    @include margin_left_right(175px, auto);
     position: relative;
     left: -66px;
-    width: 55%;
-    height: 70px;
-    margin-left: 175px;
-    margin-right: auto;
-    display: flex;
-    align-items: center;
 
     img {
         position: absolute;
@@ -22,9 +19,8 @@
     }
 
     input {
+        @include width_height(100%, 14px);
         border: 1px solid white;
-        width: 100%;
-        height: 14px;
         background-color: white;
         border-radius: 100px;
         padding: 28px 0 28px 40px;
@@ -43,24 +39,31 @@
         }
 
         ::placeholder {
-            font-size: 24px;
-            font-weight: 400;
-            line-height: 32.74px;
+            @include font(24px, 400, 32.74px);
         }
     }
 }
 
 .headerProfileContent {
-    display: flex;
-    align-items: center;
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 43.65px;
-    cursor: pointer;
-    transition: all 125ms ease-in-out;
+    @include align_items_center;
+    @include font(32px, 700, 43.65px);
+    @include button_hover;
 
     &:hover {
         color: #444df2;
+
+        .arrowDown {
+            background: url('../../../assets/img/icons/arrow_down_hover.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    }
+
+    .arrowDown {
+        @include width_height(40px, 40px);
+        background: url('../../../assets/img/icons/arrow_down.svg');
+        background-repeat: no-repeat;
+        background-position: center;
     }
 }
 
@@ -69,20 +72,15 @@
 }
 
 .userImg {
-    width: 75px;
-    height: 75px;
+    @include width_height(75px, 75px);
     border-radius: 100%;
     margin: 15px;
 }
 
 .dropdownMenu {
+    @include flex_column_center;
+    @include font(24px, 600, 32.74px);
     background-color: white;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 32.74px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 25px;
     position: absolute;
     top: 120px;
@@ -91,7 +89,6 @@
     min-height: 150px;
     padding: 25px 16px;
     z-index: 3;
-    flex-direction: column;
     border-radius: 30px 0 30px 30px;
 
     a {
@@ -99,11 +96,15 @@
         text-decoration: none;
         display: block;
         cursor: pointer;
+        border-radius: 30px;
+        transition: text-shadow 225ms ease;
+        padding: 10px 40px;
 
         &:hover {
+            font-size: 25px;
             color: #444df2;
-            font-size: 24.5px;
-            font-weight: 700;
+            text-shadow: 0px 0px 1px black;
+            background-color: #eceefe;
         }
     }
 }
@@ -115,6 +116,5 @@
     bottom: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2; 
-  }
-  
+    z-index: 2;
+}
