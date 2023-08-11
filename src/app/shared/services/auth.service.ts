@@ -2,11 +2,13 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
 import { Observable, Subscription, map } from 'rxjs';
+import { updateEmail } from "firebase/auth";
 import {
   Firestore,
   doc,
   setDoc,
-  docData
+  docData,
+  updateDoc
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -46,7 +48,7 @@ export class AuthService implements OnDestroy {
    * @param {Firestore} firestore - The Firestore database service provided by Firebase.
    */
   constructor(
-    private auth: Auth,
+    public auth: Auth,
     public router: Router,
     private firestore: Firestore) {
     this.user$ = user(this.auth);
@@ -65,15 +67,15 @@ export class AuthService implements OnDestroy {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       if (userCredential.user) {
-        await this.setUserData(userCredential.user);
-        await this.setUserOnlineStatus(userCredential.user, true);
+        await this.setUserOnlineStatus(userCredential.user.uid, true);
         this.router.navigate(['chat-history']);  // Maybe I have to change the route later.
       }
     } catch (error) {
       console.log('An unexpected error occurred. Please try again', error);
       throw error;
     }
-  }
+}
+
 
 
   /**
@@ -113,8 +115,8 @@ export class AuthService implements OnDestroy {
       const userCredential = await signInAnonymously(this.auth);
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: 'Guest' });
-        await this.setUserData(userCredential.user);
-        await this.setUserOnlineStatus(userCredential.user, true);
+        await this.setUserData(userCredential.user, true);
+        // await this.setUserOnlineStatus(userCredential.user, true);
         this.router.navigate(['chat-history']); // Maybe I have to change the route later
       }
     } catch (error) {
@@ -137,8 +139,8 @@ export class AuthService implements OnDestroy {
       const result = await signInWithPopup(this.auth, provider);
       const user = result.user;
       if (user) {
-        await this.setUserData(user);
-        await this.setUserOnlineStatus(result.user, true);
+        await this.setUserData(user, true);
+        // await this.setUserOnlineStatus(result.user, true);
         this.router.navigate(['chat-history']); // Maybe I have to change the route later.
       }
     } catch (error) {
@@ -171,12 +173,18 @@ export class AuthService implements OnDestroy {
    * @throws Will throw an error if the sign-out process fails.
    */
   async signOut() {
-    if (this.auth.currentUser) {
-      await this.setUserOnlineStatus(this.auth.currentUser, false);
+    const currentUser = this.auth.currentUser;
+    if (currentUser) {
+      try {
+        await this.setUserOnlineStatus(currentUser.uid, false);
+      } catch (error) {
+        console.error("Error setting user online status:", error);
+      }
     }
     await signOut(this.auth);
     this.router.navigate(['login']);
   }
+
 
 
   /**
@@ -185,17 +193,69 @@ export class AuthService implements OnDestroy {
    * @param {FirebaseUser} user - The user object from Firebase Authentication.
    * @returns {User} The data structure that was set in Firestore.
    */
-  async setUserData(user: FirebaseUser) {
+  async setUserData(user: FirebaseUser, isOnline?: boolean) {
     const userData: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       emailVerified: user.emailVerified,
     };
+
+    if (typeof isOnline !== 'undefined') {
+      userData.isOnline = isOnline;
+    }
+
     await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
     return userData;
   }
 
+
+  async updateUser(uid: string, data: Partial<User>) {
+    try {
+      await updateDoc(doc(this.firestore, `users/${uid}`), data);
+      console.log("User data updated successfully.");
+    } catch (error) {
+      console.error("Error updating user data: ", error);
+      throw error;
+    }
+  }
+
+
+  /**
+   * Fetches the online status of a user from Firestore based on their UID.
+   * @param {string} uid - The UID of the user.
+   * @returns {Observable<boolean>} Observable that emits the online status of the user.
+   */
+  getUserData(uid: string): Observable<User> {
+    const userDocRef = doc(this.firestore, `users/${uid}`);
+    return docData(userDocRef).pipe(
+      map((data: any): User => ({
+        uid: data.uid,
+        email: data.email,
+        displayName: data.displayName,
+        emailVerified: data.emailVerified,
+        isOnline: data.isOnline
+      }))
+    );
+  }
+
+
+  async updateUserEmail(newEmail: string) {
+    const user = this.auth.currentUser;  // Get current authenticated user
+  
+    if (user) {
+      try {
+        // Update email in Firebase Authentication
+        await updateEmail(user, newEmail);
+  
+        console.log("Email updated successfully in both Firebase Auth and Firestore.");
+      } catch (error) {
+        console.error("Error updating email: ", error);
+        throw error;
+      }
+    }
+  }
+  
 
 
   /**
@@ -225,37 +285,11 @@ export class AuthService implements OnDestroy {
    * @param {boolean} isOnline - The online status to be set for the user.
    * @returns {User} The data structure that was set in Firestore.
    */
-  async setUserOnlineStatus(user: FirebaseUser, isOnline: boolean) {
-    const userData: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      emailVerified: user.emailVerified,
-      isOnline: isOnline
-    };
-    await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
-    return userData;
+  async setUserOnlineStatus(uid: string, isOnline: boolean) {
+    const userRef = doc(this.firestore, `users/${uid}`);
+    await updateDoc(userRef, { isOnline: isOnline });
   }
 
-
-  /**
-   * Fetches the online status of a user from Firestore based on their UID.
-   * @param {string} uid - The UID of the user.
-   * @returns {Observable<boolean>} Observable that emits the online status of the user.
-   */
-  getUserData(uid: string): Observable<User> {
-    const userDocRef = doc(this.firestore, `users/${uid}`);
-    return docData(userDocRef).pipe(
-      map((data: any): User => ({
-        uid: data.uid,
-        email: data.email,
-        displayName: data.displayName,
-        emailVerified: data.emailVerified,
-        isOnline: data.isOnline
-      }))
-    );
-  }
-  
 
 
   /**

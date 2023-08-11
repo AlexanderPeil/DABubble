@@ -5,7 +5,6 @@ import { User } from 'src/app/shared/services/user';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogProfileComponent } from '../dialog-profile/dialog-profile.component';
 
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -15,6 +14,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: User | null = null;
   userSubscription!: Subscription;
   showMenu = false;
+  isOnline?: boolean;
 
   constructor(
     private authService: AuthService,
@@ -22,11 +22,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public dialog: MatDialog) { }
 
 
-  ngOnInit() {
-    this.userSubscription = this.authService.user$.subscribe(user => {
-      this.user = user;
-    });
-  }
+    ngOnInit() {
+      this.userSubscription = this.authService.user$.subscribe(firebaseUser => {
+        if (firebaseUser) {
+          this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
+            this.user = userData;
+            this.isOnline = userData.isOnline;
+          });
+        }
+      });
+    }
 
 
   openDialog(): void {

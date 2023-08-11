@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef  } from '@angular/material/dialog';
 import { DialogEditProfileComponent } from '../dialog-edit-profile/dialog-edit-profile.component';
 
 @Component({
@@ -17,7 +17,8 @@ export class DialogProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private dialogRef: MatDialogRef<DialogProfileComponent>) { }
 
   ngOnInit() {
     this.userSubscription = this.authService.user$.subscribe(firebaseUser => {
@@ -37,6 +38,7 @@ export class DialogProfileComponent implements OnInit, OnDestroy {
       height: '650px',
       panelClass: 'custom-dialog-container'
     });
+    this.dialogRef.close();
   }
   
 
