@@ -1,4 +1,5 @@
 <div class="head-of-sidenav padding">
+
   <img class="main-channel-img" src="./assets/img/codelearning.svg" alt="" />
   <div class="icon-div">
     <img src="./assets/img/icons/edit_square.svg" alt="" />
@@ -60,7 +61,7 @@
   <ul *ngFor="let user of users" id="directMessagesList" [ngStyle]="{ display: chatsVisible ? 'unset' : 'none' }">
     <li class="selectableUserChat">
       <img class="userImg" [src]="user?.photoURL" alt="{{ user?.displayName }}" />
-      <p>{{ user?.displayName }}</p>      
+      <p>{{ user?.displayName }}</p>
     </li>
 
     <!-- <li class="selectableUserChat">

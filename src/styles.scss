@@ -33,6 +33,11 @@ app-message {
   }
 }
 
+app-workspace-menu-btn {
+  position: relative;
+  z-index: 2;
+}
+
 .scrolleableContainer {
   height: 330px;
   overflow-x: hidden;
