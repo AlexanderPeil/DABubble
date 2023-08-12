@@ -6,8 +6,8 @@
   </div>
   <div class="headerProfileContent" (click)="toggleMenu(); $event.stopPropagation()">
     <div class="userName" *ngIf="user"> {{ user.displayName }} </div>
-    <img class="userImg" src="assets/img/avatar1.svg">
-    <!-- <img *ngIf="user?.photoURL" class="userImg" [src]="user?.photoURL"> -->
+    <!-- <img class="userImg" src="assets/img/avatar1.svg"> -->
+    <img *ngIf="user?.photoURL" class="userImg" [src]="user?.photoURL">
     <div class="arrowDown"></div>
     <div class="dropdownMenu" [style.display]="showMenu ? 'flex' : 'none'">
       <a (click)="openDialog()">Profile</a>

@@ -3,7 +3,15 @@
         <p>Edit your profile</p>
         <div mat-dialog-close></div>
     </div>
-    <img class="userImg" src="assets/img/avatar1.svg">
+    <!-- <img class="userImg" src="assets/img/avatar1.svg"> -->
+    <img *ngIf="user?.photoURL" class="userImg" [src]="user?.photoURL" [matMenuTriggerFor]="imageMenu">
+    <mat-menu #imageMenu="matMenu">
+        <div *ngFor="let imageUrl of user_images">
+            <button mat-menu-item (click)="changeImage(imageUrl)">
+                <img [src]="imageUrl" class="menu-image">
+            </button>
+        </div>
+    </mat-menu>
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
         <div class="inputHeadline">
             <img class="accountIcon" src="../../../assets/img/icons/account_circle.svg" alt="Account icon">

@@ -26,6 +26,27 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<DialogEditProfileComponent>) { }
 
 
+    user_images: string[] = [
+      '../assets/img/avatar1.svg',
+      '../assets/img/avatar2.svg',
+      '../assets/img/avatar3.svg',
+      '../assets/img/avatar4.svg',
+      '../assets/img/avatar5.svg',
+      '../assets/img/avatar6.svg',
+    ]
+
+
+    changeImage(selectedImageUrl: string) {
+      if (this.user) {
+          const updatedUserData = {
+              ...this.user,
+              photoURL: selectedImageUrl
+          };
+          this.authService.updateUser(this.user.uid, updatedUserData);
+      }
+  }
+
+
   ngOnInit() {
     this.initForm();
 

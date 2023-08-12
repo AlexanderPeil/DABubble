@@ -24,6 +24,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from './components/dialog-edit-channel/dialog-edit-channel.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { DialogProfileComponent } from './components/dialog-profile/dialog-profile.component';
 import { DialogEditProfileComponent } from './components/dialog-edit-profile/dialog-edit-profile.component';
 import { ImprintComponent } from './components/imprint/imprint.component';
@@ -32,6 +33,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { DialogCreateChannelComponent } from './components/dialog-create-channel/dialog-create-channel.component';
 import { DialogAddMembersInChannelComponent } from './components/dialog-add-members-in-channel/dialog-add-members-in-channel.component';
+import { MainComponent } from './components/main/main.component';
 
 
 @NgModule({
@@ -56,6 +58,7 @@ import { DialogAddMembersInChannelComponent } from './components/dialog-add-memb
     DataProtectionComponent,
     DialogEditChannelComponent,
     DialogAddMembersInChannelComponent,
+    MainComponent,
   ],
 
   imports: [
@@ -69,6 +72,7 @@ import { DialogAddMembersInChannelComponent } from './components/dialog-add-memb
     MatIconModule,
     MatCheckboxModule,
     FormsModule,
+    MatMenuModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

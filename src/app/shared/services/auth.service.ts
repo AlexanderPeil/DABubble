@@ -22,8 +22,7 @@ import {
   GoogleAuthProvider,
   sendEmailVerification,
   signOut,
-  user,
-  reload
+  user
 } from '@angular/fire/auth';
 
 @Injectable({
@@ -56,6 +55,22 @@ export class AuthService implements OnDestroy {
   }
 
 
+  user_images: string[] = [
+    '../assets/img/avatar1.svg',
+    '../assets/img/avatar2.svg',
+    '../assets/img/avatar3.svg',
+    '../assets/img/avatar4.svg',
+    '../assets/img/avatar5.svg',
+    '../assets/img/avatar6.svg',
+  ]
+
+
+  getRandomGuestImage(): string {
+    const randomIndex = Math.floor(Math.random() * this.user_images.length);
+    return this.user_images[randomIndex];
+  }
+
+
   /**
    * Sign in using email and password.
    * @async
@@ -69,13 +84,13 @@ export class AuthService implements OnDestroy {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       if (userCredential.user) {
         await this.setUserOnlineStatus(userCredential.user.uid, true);
-        this.router.navigate(['chat-history']);  // Maybe I have to change the route later.
+        this.router.navigate(['main']);
       }
     } catch (error) {
       console.log('An unexpected error occurred. Please try again', error);
       throw error;
     }
-}
+  }
 
 
 
@@ -92,8 +107,9 @@ export class AuthService implements OnDestroy {
   async signUp(displayName: string, email: string, password: string) {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      const randomImageURL = this.getRandomGuestImage();
       if (userCredential.user) {
-        await updateProfile(userCredential.user, { displayName });
+        await updateProfile(userCredential.user, { displayName, photoURL: randomImageURL });
         await this.setUserData(userCredential.user);
         this.router.navigate(['login']);
       }
@@ -115,15 +131,14 @@ export class AuthService implements OnDestroy {
     // debugger
     try {
       const userCredential = await signInAnonymously(this.auth);
+      const randomImageURL = this.getRandomGuestImage();
       if (userCredential.user) {
-        console.log(userCredential.user.uid);        
-        await updateProfile(userCredential.user, { displayName: 'Guest' });
-        console.log('Updated User:', userCredential.user);
+        await updateProfile(userCredential.user, { displayName: 'Guest', photoURL: randomImageURL });
         await this.setUserData(userCredential.user, true);
         setTimeout(() => {
-          this.router.navigate(['chat-history']);
+          this.router.navigate(['main']);
         }, 2000);
-        
+
       }
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -140,15 +155,13 @@ export class AuthService implements OnDestroy {
    * @returns {Promise<void>} Returns a promise that resolves when the Google sign-in process is complete.
    */
   async signInWithGoogle() {
-
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);
       const user = result.user;
       if (user) {
         await this.setUserData(user, true);
-        // await this.setUserOnlineStatus(result.user, true);
-        this.router.navigate(['chat-history']); // Maybe I have to change the route later.
+        this.router.navigate(['main']);
       }
     } catch (error) {
       console.error('Google Sign In failed:', error);
@@ -206,6 +219,7 @@ export class AuthService implements OnDestroy {
       email: user.email || null,
       displayName: user.displayName || null,
       emailVerified: user.emailVerified,
+      photoURL: user.photoURL
     };
 
     if (typeof isOnline !== 'undefined') {
@@ -220,7 +234,6 @@ export class AuthService implements OnDestroy {
   async updateUser(uid: string, data: Partial<User>) {
     try {
       await updateDoc(doc(this.firestore, `users/${uid}`), data);
-      console.log("User data updated successfully.");
     } catch (error) {
       console.error("Error updating user data: ", error);
       throw error;
@@ -236,25 +249,28 @@ export class AuthService implements OnDestroy {
   getUserData(uid: string): Observable<User> {
     const userDocRef = doc(this.firestore, `users/${uid}`);
     return docData(userDocRef).pipe(
-      map((data: any): User => ({
-        uid: data.uid,
-        email: data.email,
-        displayName: data.displayName,
-        emailVerified: data.emailVerified,
-        isOnline: data.isOnline
-      }))
+      map((data: any): User => {
+        console.log("Data retrieved from Firestore:", data); // Dies zeigt dir die Daten, die von Firestore abgerufen werden.
+        return {
+          uid: data.uid,
+          email: data.email,
+          displayName: data.displayName,
+          emailVerified: data.emailVerified,
+          isOnline: data.isOnline,
+          photoURL: data.photoURL
+        };
+      })
     );
   }
 
 
+
   async updateUserEmail(newEmail: string) {
     const user = this.auth.currentUser;  // Get current authenticated user
-  
+
     if (user) {
       try {
-        // Update email in Firebase Authentication
         await updateEmail(user, newEmail);
-  
         console.log("Email updated successfully in both Firebase Auth and Firestore.");
       } catch (error) {
         console.error("Error updating email: ", error);
@@ -262,7 +278,7 @@ export class AuthService implements OnDestroy {
       }
     }
   }
-  
+
 
 
   /**
@@ -274,7 +290,7 @@ export class AuthService implements OnDestroy {
     if (this.auth.currentUser) {
       try {
         await sendEmailVerification(this.auth.currentUser);
-        console.log("Verification Email Sent!");
+        // console.log("Verification Email Sent!");
       } catch (error) {
         console.error("Failed to send verification email:", error);
         throw error;

@@ -7,12 +7,15 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ImprintComponent } from './components/imprint/imprint.component';
 import { DataProtectionComponent } from './components/data-protection/data-protection.component';
+import { MainComponent } from './components/main/main.component';
 
 
 const routes: Routes = [
+  // { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '', component: ChatHistoryComponent },
-  { path: 'chat-history', component: ChatHistoryComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'main', component: MainComponent },
+  { path: 'chat-history', component: ChatHistoryComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
