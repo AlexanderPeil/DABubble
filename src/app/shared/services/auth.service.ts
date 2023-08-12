@@ -140,6 +140,7 @@ export class AuthService implements OnDestroy {
    * @returns {Promise<void>} Returns a promise that resolves when the Google sign-in process is complete.
    */
   async signInWithGoogle() {
+
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);
