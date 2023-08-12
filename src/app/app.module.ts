@@ -32,7 +32,7 @@ import { DataProtectionComponent } from './components/data-protection/data-prote
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { DialogCreateChannelComponent } from './components/dialog-create-channel/dialog-create-channel.component';
-import { DialogAddMembersInChannelComponent } from './components/dialog-add-members-in-channel/dialog-add-members-in-channel.component';
+import { DialogShowMembersInChannelComponent } from './components/dialog-show-members-in-channel/dialog-show-members-in-channel.component';
 import { MainComponent } from './components/main/main.component';
 
 
@@ -57,7 +57,7 @@ import { MainComponent } from './components/main/main.component';
     DialogCreateChannelComponent,
     DataProtectionComponent,
     DialogEditChannelComponent,
-    DialogAddMembersInChannelComponent,
+    DialogShowMembersInChannelComponent,
     MainComponent,
   ],
 
