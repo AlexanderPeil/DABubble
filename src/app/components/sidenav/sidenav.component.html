@@ -41,18 +41,6 @@
 
   <!---------------------- end of channels menu ------------------------------------------->
 
-  <!------------------- direct messages menu start here ----------------------------------->
-
-  <div class="headMenu">
-    <div class="headName" (click)="hideChats()">
-      <img class="firstImg" [ngStyle]="{
-          transform: arrowImageRotatedChat ? 'rotate(-90deg)' : 'rotate(0deg)'
-        }" src="./assets/img/icons/arrow_drop_down.svg" alt="" />
-      <img src="./assets/img/icons/account_circle.svg" alt="" />
-      <p>Direct messages</p>
-    </div>
-  </div>
-
   <!---------------- direct messages list start here ----------------->
   <ul *ngFor="let user of users" id="directMessagesList" [ngStyle]="{ display: chatsVisible ? 'unset' : 'none' }">
     <li class="selectableUserChat">
