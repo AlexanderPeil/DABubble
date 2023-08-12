@@ -22,16 +22,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public dialog: MatDialog) { }
 
 
-    ngOnInit() {
-      this.userSubscription = this.authService.user$.subscribe(firebaseUser => {
-        if (firebaseUser) {
-          this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
-            this.user = userData;
-            this.isOnline = userData.isOnline;
-          });
-        }
-      });
-    }
+  ngOnInit() {
+    this.userSubscription = this.authService.user$.subscribe(firebaseUser => {
+      if (firebaseUser) {
+        console.log(firebaseUser.uid);      
+        this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
+          this.user = userData;
+          this.isOnline = userData.isOnline;
+        });
+      }
+    });
+  }
 
 
   openDialog(): void {

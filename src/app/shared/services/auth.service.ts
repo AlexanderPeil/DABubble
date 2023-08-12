@@ -22,7 +22,8 @@ import {
   GoogleAuthProvider,
   sendEmailVerification,
   signOut,
-  user
+  user,
+  reload
 } from '@angular/fire/auth';
 
 @Injectable({
@@ -111,13 +112,18 @@ export class AuthService implements OnDestroy {
    * @returns {Promise<void>} Returns a promise that resolves when the anonymous sign-in process is complete.
    */
   async signInAnonymously() {
+    // debugger
     try {
       const userCredential = await signInAnonymously(this.auth);
       if (userCredential.user) {
+        console.log(userCredential.user.uid);        
         await updateProfile(userCredential.user, { displayName: 'Guest' });
+        console.log('Updated User:', userCredential.user);
         await this.setUserData(userCredential.user, true);
-        // await this.setUserOnlineStatus(userCredential.user, true);
-        this.router.navigate(['chat-history']); // Maybe I have to change the route later
+        setTimeout(() => {
+          this.router.navigate(['chat-history']);
+        }, 2000);
+        
       }
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -196,8 +202,8 @@ export class AuthService implements OnDestroy {
   async setUserData(user: FirebaseUser, isOnline?: boolean) {
     const userData: User = {
       uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
+      email: user.email || null,
+      displayName: user.displayName || null,
       emailVerified: user.emailVerified,
     };
 

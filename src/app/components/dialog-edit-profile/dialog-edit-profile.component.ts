@@ -51,39 +51,38 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
   async onSubmit() {
 
     if (this.userForm.valid && this.user) {
-      // Speichert, ob die E-Mail in Firebase Auth aktualisiert werden sollte.
+      // This block is for the update-email method. 
       //let shouldUpdateEmailInAuth = false;
       //if (this.user.email !== this.userForm.value.email) {
       //    shouldUpdateEmailInAuth = true;
       //}
-  
+
       const updatedUserData = {
-          displayName: this.userForm.value.displayName,
-          // Hier setzen wir nur den Display-Namen, lassen die E-Mail jedoch unverändert.
-          email: this.user.email
+        displayName: this.userForm.value.displayName,
+        email: this.user.email
       };
-  
+
       try {
-          await this.authService.updateUser(this.user.uid, updatedUserData);  
-          // Der folgende Block wird momentan nicht benötigt, da die E-Mail-Aktualisierung deaktiviert ist.
-          /*
-          if (shouldUpdateEmailInAuth) {
-              const user = this.authService.auth.currentUser;
-              if (user) {
-                  console.log("Attempting to update email");
-                  await updateEmail(user, this.userForm.value.email);
-                  console.log("Update email attempt complete");
-                  this.user.email = this.userForm.value.email;
-              }
-          }
-          */
+        await this.authService.updateUser(this.user.uid, updatedUserData);
+        // This block is for the update-email method. 
+        /*
+        if (shouldUpdateEmailInAuth) {
+            const user = this.authService.auth.currentUser;
+            if (user) {
+                console.log("Attempting to update email");
+                await updateEmail(user, this.userForm.value.email);
+                console.log("Update email attempt complete");
+                this.user.email = this.userForm.value.email;
+            }
+        }
+        */
       } catch (error) {
-          console.error("Error updating user data in component: ", error);
+        console.error("Error updating user data in component: ", error);
       }
     }
     this.dialogRef.close();
   }
-  
+
 
 
   ngOnDestroy() {
