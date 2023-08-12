@@ -206,3 +206,14 @@ ul {
 .userImg {
   height: 50px;
 }
+
+.userIconWrapper {
+  position: relative;
+}
+
+.statusIcon {
+  position: absolute;
+  bottom: 5px; 
+  right: 0;
+  height: 15px;
+}

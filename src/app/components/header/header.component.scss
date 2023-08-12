@@ -77,6 +77,17 @@
     margin: 15px;
 }
 
+.userIconWrapper {
+    position: relative;
+  }
+  
+  .statusIcon {
+    position: absolute;
+    bottom: 30px; 
+    right: 17px;
+    height: 17px;
+  }
+
 .dropdownMenu {
     @include flex_column_center;
     @include font(24px, 600, 32.74px);
