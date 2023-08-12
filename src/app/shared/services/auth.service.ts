@@ -10,7 +10,8 @@ import {
   docData,
   updateDoc,
   collection,
-  collectionData
+  collectionData,
+  deleteDoc
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -198,15 +199,19 @@ export class AuthService implements OnDestroy {
     const currentUser = this.auth.currentUser;
     if (currentUser) {
       try {
-        await this.setUserOnlineStatus(currentUser.uid, false);
+        if (currentUser.displayName === 'Guest') { // Oder welches Kriterium Sie auch immer verwenden, um Gastbenutzer zu identifizieren
+          await deleteDoc(doc(this.firestore, 'users', currentUser.uid));  // Löscht den Benutzer aus der Firestore-Datenbank
+          await currentUser.delete();
+        } else {
+          await this.setUserOnlineStatus(currentUser.uid, false);
+        }
       } catch (error) {
-        console.error("Error setting user online status:", error);
+        console.error("Error during sign-out:", error);
       }
     }
     await signOut(this.auth);
     this.router.navigate(['login']);
   }
-
 
 
   /**
@@ -249,9 +254,11 @@ export class AuthService implements OnDestroy {
    * @returns {Observable<boolean>} Observable that emits the online status of the user.
    */
   getUserData(uid: string): Observable<User> {
+    console.log('Fetched uid:', uid);
     const userDocRef = doc(this.firestore, `users/${uid}`);
     return docData(userDocRef).pipe(
       map((data: any): User => {
+        console.log('Fetched data from Firestore:', data);
         return {
           uid: data.uid,
           email: data.email,
@@ -276,10 +283,10 @@ export class AuthService implements OnDestroy {
         isOnline: data['isOnline'],
         photoURL: data['photoURL']
       }) as User))
-      
+
     );
   }
-  
+
 
 
 
@@ -296,7 +303,6 @@ export class AuthService implements OnDestroy {
       }
     }
   }
-
 
 
   /**
@@ -343,3 +349,7 @@ export class AuthService implements OnDestroy {
     }
   }
 }
+function deleteAccount(auth: Auth, currentUser: FirebaseUser) {
+  throw new Error('Function not implemented.');
+}
+
