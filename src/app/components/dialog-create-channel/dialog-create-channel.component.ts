@@ -16,31 +16,15 @@ import { ChannelService } from 'src/app/shared/services/channel.service';
 })
 export class DialogCreateChannelComponent {
   channel: Channel = new Channel();
-  // item$: Observable<any[]>;
-  firestore: Firestore = inject(Firestore);
 
   channelName!: string;
   channelDescription!: string;
 
-  constructor(private channelService: ChannelService) {
-    // const channelCollection = collection(this.firestore, 'channels');
-    // this.item$ = collectionData(channelCollection);
-  }
-
+  constructor(private channelService: ChannelService) {}
 
   addChannel() {
-    const channelCollection = collection(this.firestore, 'channels');
-  
-    addDoc(channelCollection, this.channel.toJSON()).then((result) => {
+    this.channelService.createChannel(this.channel).then((result) => {
       console.log('Channel added', result);
     });
   }
-
-  // addChannel() {
-  //   const channelCollection = collection(this.firestore, 'channels');
-
-  //   addDoc(channelCollection, this.channel.toJSON()).then((result) => {
-  //     console.log('Adding channel finished', result);
-  //   });
-  // }
 }
