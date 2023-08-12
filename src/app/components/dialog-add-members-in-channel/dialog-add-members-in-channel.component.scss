@@ -1,0 +1,93 @@
+@import '../../shared/variables.scss';
+
+
+.dialogMainContainer {
+    width: 450px;
+    padding: 25px;
+}
+
+.topContainerAddUser {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+        margin: 0;
+        font-weight: 700;
+        font-size: 24px;
+    }
+}
+
+.closeIconContainer {
+    display: flex;
+    padding: 8px;
+    border-radius: 20px;
+
+    &:hover {
+        @include button_hover;
+        background-color: #ECEEFE;
+    }
+
+    img {
+
+        &:hover {
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        }
+    }
+}
+
+.hashtagIconAndChannelNameContainer {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+
+    img {
+        width: 15px;
+        filter: brightness(0) saturate(100%) invert(55%) sepia(8%) saturate(3842%) hue-rotate(200deg) brightness(94%) contrast(103%);
+    }
+
+    p {
+        margin: 0;
+        font-weight: 400;
+        font-size: 18px;
+        color: #797EF3;
+    }
+}
+
+.inputContainer {
+    margin-top: 20px;
+
+    input {
+        padding: 15px 210px 15px 15px;
+        border-radius: 30px;
+        outline: none;
+        border: 1px solid #ADB0D9;
+        font-weight: 400;
+        font-size: 18px;
+        color: #686868;
+
+        &:hover {
+            @include hover_input_or_textarea;
+        }
+
+        &:focus {
+            @include focus_input_or_textarea;
+        }
+    }
+}
+
+.btnContainer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+        width: 140px;
+        padding: 10px;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 18px;
+        @include button_primary;
+    }
+}

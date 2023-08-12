@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DialogAddMembersInChannelComponent } from '../dialog-add-members-in-channel/dialog-add-members-in-channel.component';
 
 
 @Component({
@@ -10,4 +12,14 @@ import { Component } from '@angular/core';
 
 export class DialogShowMembersInChannelComponent {
 
+
+  constructor(public dialog: MatDialog, public dialogRef: MatDialogRef<DialogShowMembersInChannelComponent>) {
+
+  }
+
+
+  openDialogToAddMembersToChannel() {
+    this.dialog.open(DialogAddMembersInChannelComponent);
+    this.dialogRef.close();
+  }
 }

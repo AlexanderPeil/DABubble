@@ -7,14 +7,14 @@
         </div>
 
         <div class="containerUserInChatHistory">
-            <div (click)="openDialogToAddMembersToChannel()" class="childContainerUserInChatHistory">
+            <div (click)="openDialogToShowMembersInChannel()" class="childContainerUserInChatHistory">
                 <img class="user" src="assets/img/avatar1.svg">
                 <img class="user" src="assets/img/avatar2.svg">
                 <img class="user" src="assets/img/avatar3.svg">
                 <p class="amountOfUserInChannel">3</p>
             </div>
 
-            <div class="containerIconAddUser">
+            <div (click)="openDialogToAddMembersToChannel()" class="containerIconAddUser">
                 <img class="iconAddUser" src="assets/img/icons/addUser.svg">
             </div>
         </div>

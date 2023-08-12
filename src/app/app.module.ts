@@ -34,6 +34,7 @@ import { FormsModule } from '@angular/forms';
 import { DialogCreateChannelComponent } from './components/dialog-create-channel/dialog-create-channel.component';
 import { DialogShowMembersInChannelComponent } from './components/dialog-show-members-in-channel/dialog-show-members-in-channel.component';
 import { MainComponent } from './components/main/main.component';
+import { DialogAddMembersInChannelComponent } from './components/dialog-add-members-in-channel/dialog-add-members-in-channel.component';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { MainComponent } from './components/main/main.component';
     DialogEditChannelComponent,
     DialogShowMembersInChannelComponent,
     MainComponent,
+    DialogAddMembersInChannelComponent,
   ],
 
   imports: [
