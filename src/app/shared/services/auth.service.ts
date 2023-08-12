@@ -8,7 +8,9 @@ import {
   doc,
   setDoc,
   docData,
-  updateDoc
+  updateDoc,
+  collection,
+  collectionData
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -250,7 +252,6 @@ export class AuthService implements OnDestroy {
     const userDocRef = doc(this.firestore, `users/${uid}`);
     return docData(userDocRef).pipe(
       map((data: any): User => {
-        console.log("Data retrieved from Firestore:", data); // Dies zeigt dir die Daten, die von Firestore abgerufen werden.
         return {
           uid: data.uid,
           email: data.email,
@@ -262,6 +263,23 @@ export class AuthService implements OnDestroy {
       })
     );
   }
+
+
+  getUsers(): Observable<User[]> {
+    const userCollectionRef = collection(this.firestore, 'users');
+    return collectionData(userCollectionRef).pipe(
+      map(usersData => usersData.map(data => ({
+        uid: data['uid'],
+        email: data['email'],
+        displayName: data['displayName'],
+        emailVerified: data['emailVerified'],
+        isOnline: data['isOnline'],
+        photoURL: data['photoURL']
+      }) as User))
+      
+    );
+  }
+  
 
 
 

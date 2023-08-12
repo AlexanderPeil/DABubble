@@ -19,20 +19,14 @@ export class SidenavComponent {
   chatsVisible: boolean = true;
   arrowImageRotatedChannel: boolean = false;
   arrowImageRotatedChat: boolean = false;
-  user: User | null = null;
+  users: User[] = [];
   userSubscription!: Subscription;
   isOnline?: boolean;
 
 
   ngOnInit() {
-    this.userSubscription = this.authService.user$.subscribe(firebaseUser => {
-      if (firebaseUser) {
-        console.log(firebaseUser.uid);
-        this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
-          this.user = userData;
-          this.isOnline = userData.isOnline;
-        });
-      }
+    this.authService.getUsers().subscribe(users => {
+      this.users = users;
     });
   }
 

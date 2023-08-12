@@ -11,8 +11,8 @@ import { MainComponent } from './components/main/main.component';
 
 
 const routes: Routes = [
-  // { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '', component: ChatHistoryComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  // { path: '', component: ChatHistoryComponent },
   { path: 'login', component: LoginComponent },
   { path: 'main', component: MainComponent },
   { path: 'chat-history', component: ChatHistoryComponent },
