@@ -30,7 +30,7 @@ export class DialogCreateChannelComponent {
     const channelCollection = collection(this.firestore, 'channels');
 
     addDoc(channelCollection, this.channel.toJSON()).then((result) => {
-      console.log('Adding user finished', result);
+      console.log('Adding channel finished', result);
     });
   }
 }
