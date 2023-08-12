@@ -10,16 +10,10 @@
 <div class="scrolleableContainer">
   <div class="headMenu">
     <div class="headName" (click)="hideChannels()">
-      <img
-        class="firstImg"
-        [ngStyle]="{
+      <img class="firstImg" [ngStyle]="{
           transform: arrowImageRotatedChannel
             ? 'rotate(-90deg)'
-            : 'rotate(0deg)'
-        }"
-        src="./assets/img/icons/arrow_drop_down.svg"
-        alt=""
-      />
+            : 'rotate(0deg)'}" src="./assets/img/icons/arrow_drop_down.svg" alt="" />
       <img src="./assets/img/icons/workspaces.svg" alt="" />
       <p>Channels</p>
     </div>
@@ -30,10 +24,7 @@
 
   <!---------------- channels list start here ----------------->
 
-  <ul
-    id="allChannels"
-    [ngStyle]="{ display: channelsVisible ? 'unset' : 'none' }"
-  >
+  <ul id="allChannels" [ngStyle]="{ display: channelsVisible ? 'unset' : 'none' }">
     <li class="channel">
       <img src="./assets/img/icons/tag.svg" alt="" />
       <p>Developerteam</p>
@@ -45,12 +36,8 @@
   </ul>
 
   <!---------------- channels can be added here ----------------->
-  <div
-    id="addChannel"
-    [ngStyle]="{ display: channelsVisible ? 'flex' : 'none' }"
-    class="addChannel"
-    (click)="openDialogToCreateChannel()"
-  >
+  <div id="addChannel" [ngStyle]="{ display: channelsVisible ? 'flex' : 'none' }" class="addChannel"
+    (click)="openDialogToCreateChannel()">
     <img src="./assets/img/icons/add_circle.svg" alt="" />
     <p>Add new Channel</p>
   </div>
@@ -61,24 +48,16 @@
 
   <div class="headMenu">
     <div class="headName" (click)="hideChats()">
-      <img
-        class="firstImg"
-        [ngStyle]="{
+      <img class="firstImg" [ngStyle]="{
           transform: arrowImageRotatedChat ? 'rotate(-90deg)' : 'rotate(0deg)'
-        }"
-        src="./assets/img/icons/arrow_drop_down.svg"
-        alt=""
-      />
+        }" src="./assets/img/icons/arrow_drop_down.svg" alt="" />
       <img src="./assets/img/icons/account_circle.svg" alt="" />
       <p>Direct messages</p>
     </div>
   </div>
 
   <!---------------- direct messages list start here ----------------->
-  <ul
-    id="directMessagesList"
-    [ngStyle]="{ display: chatsVisible ? 'unset' : 'none' }"
-  >
+  <ul id="directMessagesList" [ngStyle]="{ display: chatsVisible ? 'unset' : 'none' }">
     <li class="selectableUserChat">
       <img class="userImg" src="./assets/img/avatar1.svg" alt="" />
       <p>Frederik Beck (Du)</p>
