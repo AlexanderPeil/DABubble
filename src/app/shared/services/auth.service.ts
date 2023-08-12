@@ -196,11 +196,13 @@ export class AuthService implements OnDestroy {
    * @throws Will throw an error if the sign-out process fails.
    */
   async signOut() {
+    // debugger
     const currentUser = this.auth.currentUser;
     if (currentUser) {
       try {
-        if (currentUser.displayName === 'Guest') { // Oder welches Kriterium Sie auch immer verwenden, um Gastbenutzer zu identifizieren
-          await deleteDoc(doc(this.firestore, 'users', currentUser.uid));  // Löscht den Benutzer aus der Firestore-Datenbank
+        if (currentUser.displayName === 'Guest') {
+          this.userSubscription?.unsubscribe();
+          await deleteDoc(doc(this.firestore, 'users', currentUser.uid));
           await currentUser.delete();
         } else {
           await this.setUserOnlineStatus(currentUser.uid, false);
@@ -253,12 +255,13 @@ export class AuthService implements OnDestroy {
    * @param {string} uid - The UID of the user.
    * @returns {Observable<boolean>} Observable that emits the online status of the user.
    */
-  getUserData(uid: string): Observable<User> {
-    console.log('Fetched uid:', uid);
+  getUserData(uid: string): Observable<User | null> {
+    // console.log('Fetched uid:', uid);
     const userDocRef = doc(this.firestore, `users/${uid}`);
     return docData(userDocRef).pipe(
-      map((data: any): User => {
-        console.log('Fetched data from Firestore:', data);
+      map((data: any): User | null => {
+        // console.log('Fetched data from Firestore:', data);
+        if (!data) return null;
         return {
           uid: data.uid,
           email: data.email,
@@ -270,6 +273,7 @@ export class AuthService implements OnDestroy {
       })
     );
   }
+
 
 
   getUsers(): Observable<User[]> {

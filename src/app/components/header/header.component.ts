@@ -24,14 +24,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userSubscription = this.authService.user$.subscribe(firebaseUser => {
-      if (firebaseUser) {   
+      if (firebaseUser && firebaseUser.uid) {
         this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
-          this.user = userData;
-          this.isOnline = userData.isOnline;
+          if (userData) {
+            this.user = userData;
+            this.isOnline = userData.isOnline;
+          } else {
+            this.user = null;
+            this.isOnline = undefined;
+          }
         });
+      } else {
+        this.user = null;
+        this.isOnline = undefined;
       }
     });
   }
+
 
 
   openDialog(): void {

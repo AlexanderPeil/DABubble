@@ -15,7 +15,7 @@ import { Auth } from 'firebase/auth';
   styleUrls: ['./dialog-edit-profile.component.scss']
 })
 export class DialogEditProfileComponent implements OnInit, OnDestroy {
-  user?: User;
+  user?: User | null;
   userForm!: FormGroup;
   private userSubscription?: Subscription;
 
@@ -26,24 +26,24 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<DialogEditProfileComponent>) { }
 
 
-    user_images: string[] = [
-      '../assets/img/avatar1.svg',
-      '../assets/img/avatar2.svg',
-      '../assets/img/avatar3.svg',
-      '../assets/img/avatar4.svg',
-      '../assets/img/avatar5.svg',
-      '../assets/img/avatar6.svg',
-    ]
+  user_images: string[] = [
+    '../assets/img/avatar1.svg',
+    '../assets/img/avatar2.svg',
+    '../assets/img/avatar3.svg',
+    '../assets/img/avatar4.svg',
+    '../assets/img/avatar5.svg',
+    '../assets/img/avatar6.svg',
+  ]
 
 
-    changeImage(selectedImageUrl: string) {
-      if (this.user) {
-          const updatedUserData = {
-              ...this.user,
-              photoURL: selectedImageUrl
-          };
-          this.authService.updateUser(this.user.uid, updatedUserData);
-      }
+  changeImage(selectedImageUrl: string) {
+    if (this.user) {
+      const updatedUserData = {
+        ...this.user,
+        photoURL: selectedImageUrl
+      };
+      this.authService.updateUser(this.user.uid, updatedUserData);
+    }
   }
 
 
@@ -53,8 +53,12 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.user$.subscribe(firebaseUser => {
       if (firebaseUser) {
         this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
-          this.user = userData;
-          this.userForm.patchValue(userData);
+          if (userData) {
+            this.user = userData;
+            this.userForm.patchValue(userData);
+          } else {
+            this.user = null;
+          }
         });
       }
     });

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { MatDialog, MatDialogRef  } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogEditProfileComponent } from '../dialog-edit-profile/dialog-edit-profile.component';
 
 @Component({
@@ -19,17 +19,24 @@ export class DialogProfileComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     public dialog: MatDialog,
     private dialogRef: MatDialogRef<DialogProfileComponent>) { }
+    
 
   ngOnInit() {
     this.userSubscription = this.authService.user$.subscribe(firebaseUser => {
       if (firebaseUser) {
         this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
-          this.user = userData;
-          this.isOnline = userData.isOnline;
+          if (userData) {
+            this.user = userData;
+            this.isOnline = userData.isOnline;
+          } else {
+            this.user = undefined;
+            this.isOnline = undefined;
+          }
         });
       }
     });
   }
+
 
 
   openDialog(): void {
@@ -40,7 +47,7 @@ export class DialogProfileComponent implements OnInit, OnDestroy {
     });
     this.dialogRef.close();
   }
-  
+
 
 
   ngOnDestroy() {

@@ -35,6 +35,7 @@ import { DialogCreateChannelComponent } from './components/dialog-create-channel
 import { DialogShowMembersInChannelComponent } from './components/dialog-show-members-in-channel/dialog-show-members-in-channel.component';
 import { MainComponent } from './components/main/main.component';
 import { DialogAddMembersInChannelComponent } from './components/dialog-add-members-in-channel/dialog-add-members-in-channel.component';
+import { WorkspaceMenuBtnComponent } from './components/workspace-menu-btn/workspace-menu-btn.component';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { DialogAddMembersInChannelComponent } from './components/dialog-add-memb
     DialogShowMembersInChannelComponent,
     MainComponent,
     DialogAddMembersInChannelComponent,
+    WorkspaceMenuBtnComponent,
   ],
 
   imports: [
