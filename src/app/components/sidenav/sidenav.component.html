@@ -1,5 +1,4 @@
 <div class="head-of-sidenav padding">
-
   <img class="main-channel-img" src="./assets/img/codelearning.svg" alt="" />
   <div class="icon-div">
     <img src="./assets/img/icons/edit_square.svg" alt="" />
@@ -14,7 +13,8 @@
       <img class="firstImg" [ngStyle]="{
           transform: arrowImageRotatedChannel
             ? 'rotate(-90deg)'
-            : 'rotate(0deg)'}" src="./assets/img/icons/arrow_drop_down.svg" alt="" />
+            : 'rotate(0deg)'
+        }" src="./assets/img/icons/arrow_drop_down.svg" alt="" />
       <img src="./assets/img/icons/workspaces.svg" alt="" />
       <p>Channels</p>
     </div>
@@ -26,13 +26,9 @@
   <!---------------- channels list start here ----------------->
 
   <ul id="allChannels" [ngStyle]="{ display: channelsVisible ? 'unset' : 'none' }">
-    <li class="channel">
+    <li *ngFor="let channel of channelData | async" class="channel">
       <img src="./assets/img/icons/tag.svg" alt="" />
-      <p>Developerteam</p>
-    </li>
-    <li class="channel">
-      <img src="./assets/img/icons/tag.svg" alt="" />
-      <p>Office-Team</p>
+      <p>{{ channel.channelName }}</p>
     </li>
   </ul>
 
