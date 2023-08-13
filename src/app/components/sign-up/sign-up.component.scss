@@ -1,35 +1,15 @@
 @import '../../shared/variables.scss';
+@import '../../shared/login_standard.scss';
 
 .signUpContent {
     @include login_standard_container;
     gap: 50px;
-}
-
-.mainLogo {
-    position: relative;
-    top: 0;
-    height: 50px;
+    overflow: hidden;
 }
 
 .signupContainer {
     @include flex_column_center;
     background-color: #eceefe;
-}
-
-form {
-    @include login_form;
-}
-
-.goBackIcon {
-    @include go_back_icon;
-}
-
-.formHeaderText {
-    @include font(20px, 400, 24px);
-}
-
-.inputContainer {
-    @include login_input;
 }
 
 label {
@@ -93,22 +73,6 @@ label {
     }
 }
 
-
-.userImg {
-    height: 15px;
-    top: 20px;
-}
-
-.mailImg {
-    height: 13px;
-    top: 21px;
-}
-
-.passwordImg {
-    height: 18px;
-    top: 16px;
-}
-
 h2 {
     @include font(46px, 700, 55.2px);
     color: #444df2;
@@ -144,17 +108,6 @@ button:disabled:hover {
     color: red;
 }
 
-.loginContainerLinks {
-    @include flex_center;
-    gap: 50px;
+@media(max-width:600px) {
 
-    a {
-        padding: 10px 20px;
-    }
-}
-
-.loginLinks {
-    @include login_link;
-    text-align: center;
-    line-height: 24.5px !important;
 }

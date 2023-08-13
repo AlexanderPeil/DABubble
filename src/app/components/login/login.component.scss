@@ -1,4 +1,9 @@
 @import '../../shared/variables.scss';
+@import '../../shared/login_standard.scss';
+
+.signUpContainerMobile {
+    display: none;
+}
 
 .loginContent {
     @include login_standard_container;
@@ -16,15 +21,14 @@
     top: 0;
 
     img {
-        height: 50px;
-        margin: 20px 0 0 75px;
+        margin-left: 75px
     }
 }
 
 .signUpContainer {
-    @include font(18px, 400, 21.6px);
+    @include font(18px, 400, 24.55px);
     @include flex_direction_column;
-    margin: 20px 75px 0 0;
+    margin-right: 75px;
 
     a {
         padding: 5px 10px;
@@ -35,33 +39,6 @@
     @include login_link;
     text-align: center;
     line-height: 24.5px !important;
-}
-
-form {
-    @include login_form;
-}
-
-.formHeaderText {
-    @include font(20px, 400, 24px);
-}
-
-.inputContainer {
-    @include login_input;    
-}
-
-.mailImg {
-    height: 13px;
-    top: 22px;
-}
-
-.passwordImg {
-    height: 18px;
-    top: 17px;
-}
-
-h2 {
-    @include font(46px, 700, 55.2px);
-    color: #444df2;
 }
 
 .forgotPasswordLink {
@@ -102,19 +79,19 @@ h2 {
     @include flex_center;
     background-color: #eceefe;
     color: #444df2;
-    padding: 26px 50px; 
-    text-align: left; 
+    padding: 26px 50px;
+    text-align: left;
     border: 1px solid white;
     border-radius: 100px;
     transition: text-shadow 225ms ease;
 
     &::before {
         @include width_height(30px, 30px);
-        content: ""; 
-        display: inline-block; 
-        margin-right: 10px; 
+        content: "";
+        display: inline-block;
+        margin-right: 10px;
         background-image: url('../../../assets/img/google_logo.svg');
-        background-size: cover; 
+        background-size: cover;
     }
 
     &:hover {
@@ -136,44 +113,92 @@ h2 {
 
 .loginBtn {
     @include button_primary;
-    padding: 15px 25px !important;
 }
 
 .guestLoginbtn {
     @include button_secondary;
-    padding: 15px 20px !important;
     border: 1px solid #444df2;
 }
 
-button:disabled {
-    background-color: grey;
-    cursor: not-allowed;
-  }
-
-  button:disabled:hover {
-    background-color: grey;
-    cursor: not-allowed;
-  }
-  
-  .notification {
-    @include font(20px, 400, 24px);
-  }
-  
-  .warning {
-    color: red;
-  }
-
-  .loginContainerLinks {
+.loginContainerLinks {
     @include flex_center;
     gap: 50px;
 
     a {
         padding: 10px 20px;
     }
-  }
+}
 
-  @media(max-width:600px) {
-    .signUpContainer {
-        display: none;
+@media(max-width:600px) {
+    .hideContentMobile {
+        display: none
     }
-  }
+
+    .loginContent {
+        gap: 15px;  
+    }
+
+    .loginContainer {
+        padding: unset;
+    }
+
+    .loginHeader {
+        justify-content: center;
+
+        img {
+            height: 56px;
+            margin: unset;
+        }
+    }
+
+    .forgotPasswordLink {
+        @include font(17px, 400, 20.4px);
+    }
+
+    .googleLoginBtn {
+        @include font(17px, 400, 20.4px);
+    }
+
+    .signUpContainerMobile {
+        @include font(18px, 400, 24.55px);
+        @include column_align_center;
+    
+        a {
+            padding: 5px 43px;
+            border: 1px solid #797EF3 !important;
+        }
+    }
+}
+
+@media(max-width:500px) {
+    .alternatively {
+
+        div {
+            width: 80px;
+        }
+    }
+}
+
+@media(max-width:360px) {
+    .loginContent {
+        padding: 20px 0;
+    }
+    
+    .loginHeader {
+
+        img {
+            height: 40px;
+        }
+    }
+
+    .alternatively {
+
+        div {
+            width: 45px;
+        }
+    }
+
+    .googleLoginBtn {
+        padding: unset;
+    }
+}

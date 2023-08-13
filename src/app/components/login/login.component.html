@@ -1,7 +1,7 @@
 <div class="loginContent">
     <div class="loginHeader">
         <img src="../../../assets/img/logo_animation.svg">
-        <div class="signUpContainer">
+        <div class="signUpContainer hideContentMobile">
             <p>New at DABubble?</p>
             <a class="loginLinks" routerLink="/sign-up">Sign Up</a>
         </div>
@@ -9,7 +9,7 @@
 
     <div class="loginContainer">
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <h2>Log in</h2>
+            <h1>Log in</h1>
             <span class="formHeaderText">We recommend you use the same email you use at work.</span>
             <div class="inputContainer">
                 <img class="mailImg" src="../../../assets/img/icons/mail_icon.svg" alt="Email icon">
@@ -30,14 +30,19 @@
                 Could noch login. Please check your data and try again.
             </div>
             <div class="loginBottomContainer">
-                <button class="loginBtn" type="submit" [disabled]="!loginForm.valid">Login</button>
-                <button class="guestLoginbtn" type="button" (click)="onGuestLogin()">Guest-Login</button>
+                <button class="loginBtn loginButtonsMobile" type="submit" [disabled]="!loginForm.valid">Login</button>
+                <button class="guestLoginbtn loginButtonsMobiles" type="button" (click)="onGuestLogin()">Guest-Login</button>
             </div>
         </form>
     </div>
 
-    <div class="loginContainerLinks">
+    <div class="loginContainerLinks hideContentMobile">
         <a class="loginLinks" routerLink="/imprint">Imprint</a>
         <a class="loginLinks" routerLink="/data-protection">Data protection</a>
+    </div>
+
+    <div class="signUpContainerMobile">
+        <p>New at DABubble?</p>
+        <a class="loginLinks" routerLink="/sign-up">Sign Up</a>
     </div>
 </div>

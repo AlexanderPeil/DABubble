@@ -58,7 +58,7 @@
 @mixin button {
     @include font(18px, 700, 24.5px);
     border-radius: 25px;
-    padding: 15px 0;
+    padding: 15px 25px;
 }
 
 @mixin button_primary {
@@ -112,23 +112,6 @@
     padding-right: $pr;
 }
 
-@mixin go_back_icon {
-    position: absolute;
-    left: 35px;
-    top: 50px;
-    background-repeat: no-repeat;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transition: all 125ms ease-in-out;
-    background: url('../../assets/img/icons/arrow_back.svg');
-
-    &:hover {
-        background: url('../../assets/img/icons/arrow_back_hover.svg');
-        background-repeat: no-repeat;
-    }
-}
-
 @mixin focus_input_or_textarea {
     &:focus {
         border: 1px solid #797EF3;
@@ -141,73 +124,6 @@
     }
 }
 
-/***** Style for the login, signup, forgot-password and reset-password components *****/
-@mixin login_link {
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 21.6px;
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
-    color: #797EF3;
-    text-decoration: none;
-    border-radius: 30px;
-    border: 1px solid #eceefe;
-    transition: text-shadow 225ms ease;
-
-    &:hover {
-        border: 1px solid #797EF3;
-        text-shadow: 0px 0px 1px black;
-    }
-}
-
-@mixin login_standard_container {
-    @include colum_justify_center;
-    height: 100vh
-}
-
-@mixin login_form {
-    @include column_align_center;
-    position: relative;
-    gap: 30px;
-    width: 435px;
-    background-color: white;
-    border-radius: 30px;
-    padding: 40px 50px;
-}
-
-@mixin login_input {
-    position: relative;
-    width: 100%;
-
-    img {
-        position: absolute;
-        left: 25px;
-    }
-
-    input {
-        @include width_height(100%, 14px);
-        border: 1px solid white;
-        background-color: #ECEEFE;
-        border-radius: 100px;
-        padding: 28px 0 28px 60px;
-        box-sizing: border-box;
-        transition: all 225ms ease-in-out;
-
-        &:focus {
-            outline: 1px solid #444df2;
-        }
-
-        &:hover {
-            border: 1px solid #686868;
-        }
-
-        ::placeholder {
-            @include font(18px, 500, 21.6px);
-        }
-    }
-}
-
-/***** Style for the login, signup, forgot-password and reset-password components *****/
 
 /*********************** Style for the dialog-profile-components **********************/
 @mixin profileContainer {

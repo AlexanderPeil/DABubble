@@ -1,5 +1,7 @@
 <div class="signUpContent">
-    <img class="mainLogo" src="../../../assets/img/logo_animation.svg">
+    <div class="mainLogoContainer">
+        <img class="mainLogo" src="../../../assets/img/logo_animation.svg">
+    </div>
     <div class="signupContainer">
         <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
             <div class="goBackIcon" routerLink="/login"></div>
@@ -31,9 +33,5 @@
             </div>
             <button class="nextBtn" type="submit" [disabled]="!signupForm.valid">Next</button>
         </form>
-    </div>
-    <div class="loginContainerLinks">
-        <a class="loginLinks" routerLink="/imprint">Imprint</a>
-        <a class="loginLinks" routerLink="/data-protection">Data protection</a>
     </div>
 </div>
