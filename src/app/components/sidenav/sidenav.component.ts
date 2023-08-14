@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Observable, Subscription } from 'rxjs';
+import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -16,7 +17,7 @@ export class SidenavComponent {
     public dialog: MatDialog,
     private authService: AuthService,
     private channelService: ChannelService
-  ) {}
+  ) { }
 
   channelsVisible: boolean = true;
   chatsVisible: boolean = true;

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 
 
 @Component({
@@ -9,10 +10,14 @@ import { Component } from '@angular/core';
 
 
 export class WorkspaceMenuBtnComponent {
-  worspaceMenuIsOpen: boolean = false;
 
 
-  openOrCloseWorkspaceMenu() {
-    this.worspaceMenuIsOpen = true;
+  constructor(public toggleWorspaceMenuService: ToggleWorkspaceMenuService) {
+
+  }
+
+
+  toggleWorkspaceMenu() {
+    this.toggleWorspaceMenuService.toggleWorkspaceMenuService();
   }
 }
