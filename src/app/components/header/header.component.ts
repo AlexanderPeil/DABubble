@@ -41,6 +41,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
+  // this.userSubscription = this.authService.user$
+  // .pipe(
+  //   filter(firebaseUser => !!firebaseUser && !!firebaseUser.uid),
+  //   switchMap(firebaseUser => this.authService.getUserData(firebaseUser.uid)),
+  // )
+  // .subscribe(userData => {
+  //   if (userData) {
+  //     this.user = userData;
+  //     this.isOnline = userData.isOnline;
+  //   } else {
+  //     this.user = null;
+  //     this.isOnline = undefined;
+  //   }
+  // });
+
+
 
 
   openDialog(): void {
