@@ -36,7 +36,8 @@ import { DialogShowMembersInChannelComponent } from './components/dialog-show-me
 import { MainComponent } from './components/main/main.component';
 import { DialogAddMembersInChannelComponent } from './components/dialog-add-members-in-channel/dialog-add-members-in-channel.component';
 import { WorkspaceMenuBtnComponent } from './components/workspace-menu-btn/workspace-menu-btn.component';
-
+import { DialogAddUserToChannelComponent } from './components/dialog-add-user-to-channel/dialog-add-user-to-channel.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { WorkspaceMenuBtnComponent } from './components/workspace-menu-btn/works
     MainComponent,
     DialogAddMembersInChannelComponent,
     WorkspaceMenuBtnComponent,
+    DialogAddUserToChannelComponent,
   ],
 
   imports: [
@@ -77,6 +79,7 @@ import { WorkspaceMenuBtnComponent } from './components/workspace-menu-btn/works
     MatCheckboxModule,
     FormsModule,
     MatMenuModule,
+    MatRadioModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
@@ -84,4 +87,4 @@ import { WorkspaceMenuBtnComponent } from './components/workspace-menu-btn/works
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

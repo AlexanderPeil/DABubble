@@ -39,7 +39,14 @@
     </div>
 
     <div class="btnContainer">
-      <button type="submit" mat-button mat-dialog-close>Create</button>
+      <button
+        type="submit"
+        (click)="openDialogToAddUser()"
+        mat-button
+        mat-dialog-close
+      >
+        Create
+      </button>
     </div>
   </div>
 </form>
