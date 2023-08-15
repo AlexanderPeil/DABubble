@@ -1,0 +1,53 @@
+<div class="chatHistoryMainContainer">
+    <div class="chatHistoryHeader">
+        <div class="channelName">
+            <div class="userIconWrapper">
+                <img class="userImg" [src]="selectedUser?.photoURL" alt="">
+                <img *ngIf="selectedUser?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_online.svg" alt="Online" />
+                <img *ngIf="!selectedUser?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_offline.svg"
+                  alt="Offline" />
+            </div>
+            <p>{{ selectedUser?.displayName }}</p>
+        </div>
+    </div>
+
+
+    <div class="scrolleableContainer">
+        <div class="date">
+            <hr>
+            <p>Thursday, 03 August</p>
+            <hr>
+        </div>
+
+        <div class="messageMainContainer">
+            <img class="profileImg" src="assets/img/avatar1.svg">
+        
+            <div class="messageChildContainer">
+                <div class="containerUserNameAndTime">
+                    <p class="userName">Tom</p>
+                    <p class="time">13:53 Uhr</p>
+                </div>
+        
+                <span class="messageText">Hallo this is a test</span>
+        
+                <div class="containerAmountOfAnswers">
+                    <p class="answers">2 Answers</p>
+                    <p class="lastAnswer">Last Answer 14:17</p>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="containerEmojis d-none">
+            <img class="completeEmoji" src="assets/img/icons/completeEmoji.svg">
+            <img class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg">
+            <div class="containerAddEmojiIcon">
+                <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg">
+            </div>
+            <div class="containerAnswerOnThreadIcon">
+                <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg">
+            </div>
+        </div>
+    </div>
+
+</div>

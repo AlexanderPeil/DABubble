@@ -9,6 +9,18 @@
 
 /////////////////////specific styles///////////////////////////
 
+.mat-drawer-container {
+  width: 100%;
+  height: 88vh;
+  background-color: #eceefe;
+}
+
+// .mat-drawer {
+//   width: 325px;
+//   margin: 15px;
+//   border-radius: 30px;
+// 
+
 .head-of-sidenav {
   display: flex;
   justify-content: center;
@@ -213,7 +225,7 @@ ul {
 
 .statusIcon {
   position: absolute;
-  bottom: 5px; 
+  bottom: 5px;
   right: 0;
   height: 15px;
 }

@@ -256,11 +256,9 @@ export class AuthService implements OnDestroy {
    * @returns {Observable<boolean>} Observable that emits the online status of the user.
    */
   getUserData(uid: string): Observable<User | null> {
-    // console.log('Fetched uid:', uid);
     const userDocRef = doc(this.firestore, `users/${uid}`);
     return docData(userDocRef).pipe(
       map((data: any): User | null => {
-        // console.log('Fetched data from Firestore:', data);
         if (!data) return null;
         return {
           uid: data.uid,

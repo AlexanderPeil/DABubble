@@ -1,0 +1,312 @@
+.messageMainContainer {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 20px 0px 20px 50px;
+    margin-top: 20px;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+
+        .messageText {
+            background-color: white;
+        }
+
+        .lastAnswer {
+            color: black;
+        }
+    }
+}
+
+.messageChildContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.userImg {
+    height: 50px;
+    border-radius: 100%;
+}
+
+.statusIcon {
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    height: 15px;
+}
+
+.userIconWrapper {
+    position: relative;
+}
+
+.containerUserNameAndTime {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.userName {
+    font-weight: 700;
+    font-size: 18px;
+    margin: 0;
+
+    &:hover {
+        transition: all 225ms ease-in-out;
+        color: #444DF2;
+        font-weight: bolder;
+    }
+}
+
+.time {
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0;
+    color: #686868;
+}
+
+.messageText {
+    font-weight: 400;
+    font-size: 18px;
+    padding: 15px;
+    margin: 0;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-top-right-radius: 30px;
+    background-color: #ECEEFE;
+}
+
+.containerAmountOfAnswers {
+    display: flex;
+    gap: 20px;
+}
+
+.answers {
+    font-weight: 400;
+    font-size: 18px;
+    margin: 0;
+    color: #535AF1;
+
+    &:hover {
+        transition: all 225ms ease-in-out;
+        color: #444DF2;
+        font-weight: bolder;
+    }
+}
+
+.lastAnswer {
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0;
+    color: #686868;
+}
+
+.containerEmojis {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    top: -22px;
+    right: 60px;
+    padding: 5px 20px 5px 20px;
+    border-bottom-left-radius: 25px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border: 1px solid #ADB0D9;
+    background-color: white;
+
+    &:hover {
+
+        .messageMainContainer {
+            background-color: #ECEEFE;
+        }
+    }
+}
+
+.completeEmoji {
+    padding: 8px;
+    border-radius: 50%;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+}
+
+.handsUpEmoji {
+    padding: 8px;
+    border-radius: 50%;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+}
+
+.containerAddEmojiIcon {
+    display: flex;
+    padding: 8px;
+    border-radius: 50%;
+
+    img {
+        &:hover {
+            cursor: pointer;
+            transition: all 225ms ease-in-out;
+            transform: scale(1.05);
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+}
+
+.containerAnswerOnThreadIcon {
+    display: flex;
+    padding: 8px;
+    border-radius: 50%;
+
+    img {
+        &:hover {
+            cursor: pointer;
+            transition: all 225ms ease-in-out;
+            transform: scale(1.05);
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+    }
+}
+
+.chatHistoryMainContainer {
+    width: 53vw;
+    height: 84vh;
+    border-radius: 30px;
+    margin: 0 15px 0px 15px;
+    background-color: #FFFFFF;
+    position: relative;
+}
+
+.chatHistoryHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    box-shadow: 0 2px 10px 0 #00000014;
+}
+
+.channelName {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 270px;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+        border-radius: 20px;
+
+        img,
+        p {
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        }
+    }
+
+    p {
+        font-weight: 700;
+        font-size: 24px;
+        margin: 0;
+    }
+}
+
+.containerUserInChatHistory {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.childContainerUserInChatHistory {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 50px;
+    padding-left: 30px;
+    padding-right: 10px;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #ECEEFE;
+        border-radius: 20px;
+
+        .amountOfUserInChannel {
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        }
+    }
+}
+
+.user {
+    border-radius: 50%;
+    margin-left: -18px;
+}
+
+.amountOfUserInChannel {
+    font-weight: 600;
+    font-size: 20px;
+    margin: 0;
+}
+
+.containerIconAddUser {
+    display: flex;
+    background-color: #ECEEFE;
+    padding: 8px;
+    border-radius: 20px;
+}
+
+.iconAddUser {
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        transform: scale(1.1);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+    }
+}
+
+.date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 80px 35px 0px 35px;
+
+    p {
+        font-weight: 400;
+        font-size: 18px;
+        border-radius: 30px;
+        padding: 10px;
+        margin: 0;
+        border: 1px solid #ADB0D9;
+        text-align: center;
+    }
+
+    hr {
+        width: 455px;
+        margin: 0;
+        transform: rotate(180deg);
+        border-color: #ADB0D9;
+    }
+}
