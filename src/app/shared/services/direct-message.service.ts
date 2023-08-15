@@ -8,21 +8,27 @@ import { DirectMessageContent } from 'src/app/models/direct-message';
 })
 export class DirectMessageService {
 
-  // private directMessageCollection = collection(this.firestore, 'directMessage');
-
   constructor(private firestore: Firestore) { }
 
-  async addMessage(userId1: string, userId2: string, message: DirectMessageContent) {
-    const chatId = [userId1, userId2].sort().join('_');
-    const messageCollection = collection(doc(this.firestore, `directMessage/${chatId}`), 'messages');
-    return await addDoc(messageCollection, message.toJSON());
+  private getMessageCollection(userId1: string, userId2: string) {
+    const chatId = this.generateChatId(userId1, userId2);
+    return collection(doc(this.firestore, `directMessage/${chatId}`), 'messages');
+  }
+
+  private generateChatId(userId1: string, userId2: string): string {
+    return [userId1, userId2].sort().join('_');
   }
 
 
-  getDirectMessages(userId1: string, userId2: string) {
-    const chatId = [userId1, userId2].sort().join('_');
-    const messageCollection = collection(doc(this.firestore, `directMessage/${chatId}`), 'messages');
-    return collectionData(messageCollection); 
+  async addMessage(userId1: string, userId2: string, message: DirectMessageContent): Promise<void> {
+    const messageCollection = this.getMessageCollection(userId1, userId2);
+    await addDoc(messageCollection, message.toJSON());
+  }
+
+
+  getDirectMessages(userId1: string, userId2: string): any {
+    const messageCollection = this.getMessageCollection(userId1, userId2);
+    return collectionData(messageCollection);
   }
 
 }

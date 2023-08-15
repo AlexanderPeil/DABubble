@@ -49,7 +49,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
       if (loggedInUser && selectedUser) {
         this.directMessageService.getDirectMessages(loggedInUser.uid, selectedUser.uid)
-          .subscribe(messages => {
+          .subscribe((messages: any[]) => {
             this.messages = messages
               .map(msg => new DirectMessageContent(msg))
               .sort((a, b) => b.timestamp - a.timestamp);
