@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
 import { DialogShowMembersInChannelComponent } from '../dialog-show-members-in-channel/dialog-show-members-in-channel.component';
 import { DialogAddMembersInChannelComponent } from '../dialog-add-members-in-channel/dialog-add-members-in-channel.component';
+import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { DialogAddMembersInChannelComponent } from '../dialog-add-members-in-cha
 export class ChatHistoryComponent {
 
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService) {
 
   }
 
