@@ -1,17 +1,15 @@
-.mat-drawer-container {
-  // display: flex;
-  width: 100%;
-  background-color: #eceefe;
-  // position: unset;
+.matDrawerMainContainer {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
 }
 
-.mat-drawer {
-  width: 325px;
-  margin: 0 0px 0px 15px;
+.matDrawerChildContainer {
+  background-color: white;
   border-radius: 30px;
-  // position: unset;
 }
 
 .router-container {
   display: flex;
+  gap: 15px;
 }

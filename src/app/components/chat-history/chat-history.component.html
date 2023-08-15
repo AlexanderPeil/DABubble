@@ -1,4 +1,5 @@
-<div class="chatHistoryMainContainer">
+<div [ngClass]="{'chatHistoryFullWidth': toggleWorspaceMenuService.workspaceMenuIsOpen}"
+    class="chatHistoryMainContainer">
     <div class="chatHistoryHeader">
         <div (click)="openDialogToEditChannel()" class="channelName">
             <img src="assets/img/icons/hashtag.svg">

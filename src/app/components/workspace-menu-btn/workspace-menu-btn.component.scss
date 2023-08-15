@@ -7,14 +7,14 @@
     gap: 10px;
     width: 260px;
     position: absolute;
-    top: 410px;
+    top: 395px;
     left: -130px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
     transform: rotate(-90deg);
     box-shadow: -4px 4px 7px 0px #00000033;
     background-color: white;
-    padding: 20px;
+    padding: 15px;
 
     &:hover {
         @include button_hover;

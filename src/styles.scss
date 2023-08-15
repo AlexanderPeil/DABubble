@@ -55,6 +55,19 @@ app-workspace-menu-btn {
 
 /************************************ Change Global Style from MatDialog ************************************/
 
+/************************************ Style for Short Animations ************************************/
+.translateX {
+  transition: all 125ms ease-in-out;
+  transform: translateX(-165px);
+}
+
+.translateXBack {
+  transition: all 125ms ease-in-out;
+  transform: translateX(0);
+}
+
+/************************************ Style for Short Animations ************************************/
+
 .d-none {
   display: none !important;
 }

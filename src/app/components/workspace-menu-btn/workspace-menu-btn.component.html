@@ -1,13 +1,15 @@
 <div (click)="toggleWorkspaceMenu()" class="containerWorkspaceMenuBtn">
     <p
         [ngClass]="{'d-none': !toggleWorspaceMenuService.workspaceMenuIsOpen, 'show': toggleWorspaceMenuService.workspaceMenuIsOpen}">
-        open Workspace Menu</p>
+        open Workspace Menu
+    </p>
     <img [ngClass]="{'d-none': !toggleWorspaceMenuService.workspaceMenuIsOpen , 'show': toggleWorspaceMenuService.workspaceMenuIsOpen}"
         src="assets/img/icons/openWorkspaceMenuIcon.svg">
 
     <p
         [ngClass]="{'show': !toggleWorspaceMenuService.workspaceMenuIsOpen, 'd-none': toggleWorspaceMenuService.workspaceMenuIsOpen}">
-        close Workspace Menu</p>
+        close Workspace Menu
+    </p>
     <img [ngClass]="{'show': !toggleWorspaceMenuService.workspaceMenuIsOpen, 'd-none': toggleWorspaceMenuService.workspaceMenuIsOpen}"
         src="assets/img/icons/closeWorkspaceMenuIcon.svg">
 </div>
