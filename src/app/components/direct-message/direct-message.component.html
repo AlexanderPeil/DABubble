@@ -3,41 +3,34 @@
         <div class="channelName">
             <div class="userIconWrapper">
                 <img class="userImg" [src]="selectedUser?.photoURL" alt="">
-                <img *ngIf="selectedUser?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_online.svg" alt="Online" />
+                <img *ngIf="selectedUser?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_online.svg"
+                    alt="Online" />
                 <img *ngIf="!selectedUser?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_offline.svg"
-                  alt="Offline" />
+                    alt="Offline" />
             </div>
             <p>{{ selectedUser?.displayName }}</p>
         </div>
     </div>
 
 
-    <div class="scrolleableContainer">
-        <div class="date">
-            <hr>
-            <p>Thursday, 03 August</p>
-            <hr>
-        </div>
+    <div *ngFor="let message of messages" class="scrolleableContainer">
+        <div  class="messageMainContainer">
+            <img class="userImg" [src]="selectedUser?.photoURL" alt="">
 
-        <div class="messageMainContainer">
-            <img class="profileImg" src="assets/img/avatar1.svg">
-        
             <div class="messageChildContainer">
                 <div class="containerUserNameAndTime">
-                    <p class="userName">Tom</p>
-                    <p class="time">13:53 Uhr</p>
+                    <div>
+                        <p>{{ selectedUser?.displayName }}</p>
+                        <p>{{ formatTime(message.timestamp) }}</p>
+                    </div>
+                    <div class="date">
+                        <p>{{ formatDate(message.timestamp) }}</p>
+                    </div>
                 </div>
-        
-                <span class="messageText">Hallo this is a test</span>
-        
-                <div class="containerAmountOfAnswers">
-                    <p class="answers">2 Answers</p>
-                    <p class="lastAnswer">Last Answer 14:17</p>
-                </div>
+                <p>{{ message.content }}</p>
             </div>
         </div>
-        
-        
+
         <div class="containerEmojis d-none">
             <img class="completeEmoji" src="assets/img/icons/completeEmoji.svg">
             <img class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg">
@@ -48,6 +41,28 @@
                 <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg">
             </div>
         </div>
+    </div>
+
+    <div class="containerTextarea">
+        <!-- <input contenteditable type="text" placeholder="Message at..."> -->
+
+        <textarea [(ngModel)]="messageContent" placeholder="Write a message..."></textarea>
+
+        <div class="containerAddIcon">
+            <img src="assets/img/icons/add.svg">
+        </div>
+
+        <hr>
+
+        <div class="containerSmileyIcon">
+            <img class="smileyIcon" src="assets/img/icons/smiley.svg">
+        </div>
+
+        <div class="containerAtIcon">
+            <img class="atIcon" src="assets/img/icons/@Icon.svg">
+        </div>
+        <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg">
+
     </div>
 
 </div>
