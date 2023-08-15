@@ -1,6 +1,6 @@
 <div class="chatHistoryMainContainer">
     <div class="chatHistoryHeader">
-        <div class="channelName">
+        <div class="userName">
             <div class="userIconWrapper">
                 <img class="userImg" [src]="selectedUser?.photoURL" alt="">
                 <img *ngIf="selectedUser?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_online.svg"
@@ -13,32 +13,35 @@
     </div>
 
 
-    <div *ngFor="let message of messages" class="scrolleableContainer">
-        <div  class="messageMainContainer">
-            <img class="userImg" [src]="selectedUser?.photoURL" alt="">
-
-            <div class="messageChildContainer">
-                <div class="containerUserNameAndTime">
-                    <div>
-                        <p>{{ selectedUser?.displayName }}</p>
-                        <p>{{ formatTime(message.timestamp) }}</p>
-                    </div>
+    <div class="messagesContainer">
+        <div *ngFor="let message of messages" class="scrolleableContainer">
+            <div class="messageMainContainer">
+                <div class="messageChildContainer">
                     <div class="date">
+                        <hr>
                         <p>{{ formatDate(message.timestamp) }}</p>
+                        <hr>
                     </div>
+                    <div class="containerUserNameAndTime">
+                        <img class="userImg" [src]="selectedUser?.photoURL" alt="">
+                        <div class="nameTimeContainer">
+                            <p>{{ selectedUser?.displayName }}</p>
+                            <p>{{ formatTime(message.timestamp) }}</p>
+                        </div>
+                    </div>
+                    <p class="message">{{ message.content }}</p>
                 </div>
-                <p>{{ message.content }}</p>
             </div>
-        </div>
 
-        <div class="containerEmojis d-none">
-            <img class="completeEmoji" src="assets/img/icons/completeEmoji.svg">
-            <img class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg">
-            <div class="containerAddEmojiIcon">
-                <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg">
-            </div>
-            <div class="containerAnswerOnThreadIcon">
-                <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg">
+            <div class="containerEmojis d-none">
+                <img class="completeEmoji" src="assets/img/icons/completeEmoji.svg">
+                <img class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg">
+                <div class="containerAddEmojiIcon">
+                    <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg">
+                </div>
+                <div class="containerAnswerOnThreadIcon">
+                    <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg">
+                </div>
             </div>
         </div>
     </div>

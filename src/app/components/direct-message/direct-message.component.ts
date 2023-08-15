@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { Observable, Subscription, combineLatest, filter, map, switchMap, tap } from 'rxjs';
+import { Subject, Subscription, combineLatest, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
 import { DirectMessageContent } from 'src/app/models/direct-message';
@@ -18,6 +18,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   loggedInUser: User | null = null;
   messageContent: string = '';
   messages: DirectMessageContent[] = [];
+  private ngUnsubscribe = new Subject<void>();
 
 
   constructor(
@@ -43,25 +44,26 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       filter(user => !!user)
     );
 
-    combineLatest([selectedUser$, loggedInUser$]).subscribe(([selectedUser, loggedInUser]) => {
-      this.selectedUser = selectedUser;
-      this.loggedInUser = loggedInUser;
+    combineLatest([selectedUser$, loggedInUser$])
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(([selectedUser, loggedInUser]) => {
+        this.selectedUser = selectedUser;
+        this.loggedInUser = loggedInUser;
 
-      if (loggedInUser && selectedUser) {
-        this.directMessageService.getDirectMessages(loggedInUser.uid, selectedUser.uid)
-          .subscribe((messages: any[]) => {
-            this.messages = messages
-              .map(msg => new DirectMessageContent(msg))
-              .sort((a, b) => b.timestamp - a.timestamp);
-          });
-
-        console.log(this.messages);
-
-      } else {
-        console.error("Either loggedInUser or selectedUser is null");
-      }
-    });
+        if (loggedInUser && selectedUser) {
+          this.directMessageService.getDirectMessages(loggedInUser.uid, selectedUser.uid)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((messages: any[]) => {
+              this.messages = messages
+                .map(msg => new DirectMessageContent(msg))
+                .sort((a, b) => b.timestamp - a.timestamp);
+            });
+        } else {
+          console.error("Either loggedInUser or selectedUser is null");
+        }
+      });
   }
+
 
 
 
@@ -97,8 +99,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

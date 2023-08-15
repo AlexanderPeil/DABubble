@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, addDoc, collection, doc, collectionData } from '@angular/fire/firestore';
+import { Observable, map } from 'rxjs';
 import { DirectMessageContent } from 'src/app/models/direct-message';
 
 
@@ -26,9 +27,10 @@ export class DirectMessageService {
   }
 
 
-  getDirectMessages(userId1: string, userId2: string): any {
+  getDirectMessages(userId1: string, userId2: string): Observable<DirectMessageContent[]> {
     const messageCollection = this.getMessageCollection(userId1, userId2);
-    return collectionData(messageCollection);
+    return collectionData(messageCollection).pipe(
+      map(docs => docs.map(doc => new DirectMessageContent(doc)))
+    );
   }
-
 }
