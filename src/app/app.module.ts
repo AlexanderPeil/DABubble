@@ -38,6 +38,7 @@ import { DialogAddMembersInChannelComponent } from './components/dialog-add-memb
 import { WorkspaceMenuBtnComponent } from './components/workspace-menu-btn/workspace-menu-btn.component';
 import { DialogAddUserToChannelComponent } from './components/dialog-add-user-to-channel/dialog-add-user-to-channel.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { DirectMessageComponent } from './components/direct-message/direct-message.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { MatRadioModule } from '@angular/material/radio';
     DialogAddMembersInChannelComponent,
     WorkspaceMenuBtnComponent,
     DialogAddUserToChannelComponent,
+    DirectMessageComponent,
   ],
 
   imports: [

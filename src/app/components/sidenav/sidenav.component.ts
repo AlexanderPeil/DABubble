@@ -6,6 +6,8 @@ import { User } from 'src/app/shared/services/user';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Observable, Subscription } from 'rxjs';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-sidenav',
@@ -16,7 +18,8 @@ export class SidenavComponent {
   constructor(
     public dialog: MatDialog,
     private authService: AuthService,
-    private channelService: ChannelService
+    private channelService: ChannelService,
+    private router: Router
   ) { }
 
   channelsVisible: boolean = true;
@@ -49,4 +52,10 @@ export class SidenavComponent {
   openDialogToCreateChannel() {
     this.dialog.open(DialogCreateChannelComponent);
   }
+
+
+  onUserClick(user: User) {
+    this.router.navigate(['main', 'direct-message', user.uid]);
+  }  
+  
 }
