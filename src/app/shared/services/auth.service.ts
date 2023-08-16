@@ -107,12 +107,11 @@ export class AuthService implements OnDestroy {
    * @throws Will throw an error if the sign-up process fails.
    * @returns {Promise<void>} Returns a promise that resolves when the sign-up process is complete.
    */
-  async signUp(displayName: string, email: string, password: string) {
+  async signUp(displayName: string, email: string, password: string, selectedAvatarURL: string) {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-      const randomImageURL = this.getRandomGuestImage();
       if (userCredential.user) {
-        await updateProfile(userCredential.user, { displayName, photoURL: randomImageURL });
+        await updateProfile(userCredential.user, { displayName, photoURL: selectedAvatarURL });
         await this.setUserData(userCredential.user);
         this.router.navigate(['login']);
       }
@@ -131,7 +130,6 @@ export class AuthService implements OnDestroy {
    * @returns {Promise<void>} Returns a promise that resolves when the anonymous sign-in process is complete.
    */
   async signInAnonymously() {
-    // debugger
     try {
       const userCredential = await signInAnonymously(this.auth);
       const randomImageURL = this.getRandomGuestImage();
@@ -141,7 +139,6 @@ export class AuthService implements OnDestroy {
         setTimeout(() => {
           this.router.navigate(['main']);
         }, 2000);
-
       }
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -196,7 +193,6 @@ export class AuthService implements OnDestroy {
    * @throws Will throw an error if the sign-out process fails.
    */
   async signOut() {
-    // debugger
     const currentUser = this.auth.currentUser;
     if (currentUser) {
       try {
@@ -238,7 +234,6 @@ export class AuthService implements OnDestroy {
     await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
     return userData;
   }
-
 
   async updateUser(uid: string, data: Partial<User>) {
     try {
@@ -285,7 +280,6 @@ export class AuthService implements OnDestroy {
         isOnline: data['isOnline'],
         photoURL: data['photoURL']
       }) as User))
-
     );
   }
 
@@ -351,7 +345,3 @@ export class AuthService implements OnDestroy {
     }
   }
 }
-function deleteAccount(auth: Auth, currentUser: FirebaseUser) {
-  throw new Error('Function not implemented.');
-}
-
