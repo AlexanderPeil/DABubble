@@ -9,7 +9,7 @@ export class Channel {
     this.createDate = object ? object.createDate : null;
   }
 
-  public toJSON() {
+  toJSON() {
     return {
       channelName: this.channelName,
       channelDescription: this.channelDescription,

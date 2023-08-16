@@ -18,22 +18,22 @@ import { ChannelService } from 'src/app/shared/services/channel.service';
 })
 export class DialogCreateChannelComponent {
   channel: Channel = new Channel();
-
-  channelName!: string;
-  channelDescription!: string;
+  // channelName: string = '';
+  // channelDescription: string = '';
 
   constructor(
     private channelService: ChannelService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
-  openDialogToAddUser() {
+  openDialogToAddAllOrSpecificUsers(channel: any) {
+    this.channelService.addChannelService(channel);
     this.dialog.open(DialogAddUserToChannelComponent);
   }
 
-  addChannel() {
-    this.channelService.createChannel(this.channel).then((result) => {
-      console.log('Channel added', result);
-    });
-  }
+  // addChannel() {
+  //   this.channelService.createChannel(this.channel).then((result) => {
+  //     console.log('Channel added', result);
+  //   });
+  // }
 }

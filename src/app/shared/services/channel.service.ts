@@ -13,19 +13,28 @@ import { Channel } from 'src/app/models/channel';
 })
 export class ChannelService {
   channelData!: Observable<any>;
+  channel: Channel = new Channel();
 
-  private channelCollection = collection(this.firestore, 'channels');
+  constructor(private firestore: Firestore) {
 
-  constructor(private firestore: Firestore) {}
-
-  createChannel(channel: Channel) {
-    return addDoc(this.channelCollection, channel.toJSON());
   }
 
-  getChannel() {
-    collectionData(this.channelCollection).subscribe((channels) => {
-      console.log(channels);
-    });
-    this.channelData = collectionData(this.channelCollection);
+  addChannelService(channel: any) {
+    const collectionInstance = collection(this.firestore, 'channels');
+    addDoc(collectionInstance, channel.toJSON());
+  }
+
+  getChannelService() {
+    const collectionInstance = collection(this.firestore, 'channels');
+    collectionData(collectionInstance, { idField: 'id' });
+    this.channelData = collectionData(collectionInstance, { idField: 'id' });
+  }
+
+  updateChannelService() {
+
+  }
+
+  deleteChannelService() {
+
   }
 }

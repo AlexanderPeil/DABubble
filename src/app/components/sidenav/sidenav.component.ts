@@ -5,8 +5,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Observable, Subscription } from 'rxjs';
-import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -15,11 +14,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidenav.component.scss'],
 })
 export class SidenavComponent {
+
   constructor(
     public dialog: MatDialog,
     private authService: AuthService,
     private channelService: ChannelService,
-    private router: Router
+    private router: Router,
+    public activatedRoute: ActivatedRoute,
   ) { }
 
   channelsVisible: boolean = true;
@@ -30,12 +31,17 @@ export class SidenavComponent {
   userSubscription!: Subscription;
   isOnline?: boolean;
   channelData!: Observable<any>;
+  channelId: any = '';
 
   ngOnInit() {
     this.authService.getUsers().subscribe((users) => {
       this.users = users;
     });
-    this.channelService.getChannel();
+    this.activatedRoute.paramMap.subscribe((params) => {
+      this.channelId = params.get('id');
+      // console.log(this.channelId);
+    });
+    this.channelService.getChannelService();
     this.channelData = this.channelService.channelData;
   }
 
@@ -56,6 +62,5 @@ export class SidenavComponent {
 
   onUserClick(user: User) {
     this.router.navigate(['main', 'direct-message', user.uid]);
-  }  
-  
+  }
 }

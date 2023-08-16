@@ -16,9 +16,10 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: 'main', component: MainComponent, children: [
-      { path: '', redirectTo: 'channel/Financeteam', pathMatch: 'full' },
-      { path: 'channel/Financeteam', component: ChatHistoryComponent },
+      { path: 'channel/:id', component: ChatHistoryComponent },
       { path: 'direct-message/:id', component: DirectMessageComponent },
+      // { path: '', redirectTo: 'channel/:id', pathMatch: 'full' },
+      // { path: 'channel/Financeteam', component: ChatHistoryComponent },
     ]
   },
   { path: 'sign-up', component: SignUpComponent },
