@@ -6,5 +6,3 @@ import { Component } from '@angular/core';
   styleUrls: ['./dialog-add-user-to-channel.component.scss'],
 })
 export class DialogAddUserToChannelComponent {}
-
-export class DialogAddUserToChannelComponent {}
