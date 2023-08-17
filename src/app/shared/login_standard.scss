@@ -33,6 +33,11 @@
     height: 100vh
 }
 
+h2 {
+    @include font(46px, 700, 55.2px);
+    color: #444df2;
+}
+
 form {
     @include column_align_center;
     position: relative;
@@ -135,6 +140,22 @@ button:disabled:hover {
     color: red;
 }
 
+.loginContainerLinks {
+    @include flex_center;
+    gap: 50px;
+
+    a {
+        padding: 10px 20px;
+    }
+}
+
+.loginLinks {
+    @include login_link;
+    text-align: center;
+    line-height: 24.5px !important;
+}
+
+
 @media(max-width:600px) {
     form {
         width: 390px
@@ -146,6 +167,10 @@ button:disabled:hover {
 
     .formHeaderText {
         @include font(17px, 400, 20.4px);
+    }
+
+    .hideContentMobile {
+        display: none
     }
 }
 

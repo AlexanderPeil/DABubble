@@ -9,6 +9,7 @@
 //////////////// specific classes ///////////////////////
 .dialogHead {
   @include space_between_center;
+
   p {
     margin: 0;
     font-weight: 700;
@@ -32,8 +33,7 @@
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.1);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -46,6 +46,7 @@
 
 .inputHeadAndContainer {
   padding-bottom: 20px;
+
   p {
     font-size: 18px;
     font-weight: 700;
@@ -98,6 +99,7 @@
 .btnContainer {
   display: flex;
   justify-content: flex-end;
+
   button {
     background-color: #444df2;
     color: white !important;
@@ -112,4 +114,8 @@
       background-color: #797ef3;
     }
   }
+}
+
+.btnDisabled {
+  @include button_primary_disabled;
 }

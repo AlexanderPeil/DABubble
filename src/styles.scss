@@ -42,6 +42,12 @@ app-workspace-menu-btn {
   height: 330px;
   overflow-x: hidden;
   overflow-y: auto;
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      display: flex;
+    }
+  }
 }
 
 /************************************ Change Global Style from MatDialog ************************************/
@@ -54,6 +60,36 @@ app-workspace-menu-btn {
 }
 
 /************************************ Change Global Style from MatDialog ************************************/
+
+/************************************ Style for Short Animations ************************************/
+.translateX {
+  transition: all 125ms ease-in-out;
+  transform: translateX(-165px);
+}
+
+.translateXBack {
+  transition: all 125ms ease-in-out;
+  transform: translateX(0);
+}
+
+/************************************ Style for Short Animations ************************************/
+
+/************************************ Styles for the Scrollbar ************************************/
+
+/* the scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* the draggable scrolling handle */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  display: none;
+}
+
+/************************************ Styles for the Scrollbar ************************************/
 
 .d-none {
   display: none !important;

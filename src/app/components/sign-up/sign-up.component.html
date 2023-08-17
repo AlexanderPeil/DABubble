@@ -2,8 +2,8 @@
     <div class="mainLogoContainer">
         <img class="mainLogo" src="../../../assets/img/logo_animation.svg">
     </div>
-    <div class="signupContainer">
-        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <div class="signupContainer" *ngIf="!chooseAvatar">
+        <form [formGroup]="signupForm">
             <div class="goBackIcon" routerLink="/login"></div>
             <h2>Create account</h2>
             <span class="formHeaderText">With your name and email address, you've created your new DABubble
@@ -20,18 +20,39 @@
                 <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
                 <input type="password" placeholder="Password" formControlName="password">
             </div>
-            <div *ngIf="userCreated" class="notification success">
-                Verification email sent. Please check your email inbox.
-            </div>
             <label class="checkboxContent">
                 <input type="checkbox" [formControl]="checked">
                 <span class="checkmark"></span>
                 I agree to the <a routerLink="/data-protection">data protection</a>.
-              </label>              
-            <div *ngIf="userExists" class="notification warning">
-                User already exists. Please try another email.
-            </div>
-            <button class="nextBtn" type="submit" [disabled]="!signupForm.valid">Next</button>
+            </label>
+            <button class="nextBtn" (click)="onNextClick()" [disabled]="!signupForm.valid">Next</button>
         </form>
+    </div>
+    <div class="avatarContainer" *ngIf="chooseAvatar">
+        <div class="goBackIcon" (click)="onbackClick()"></div>
+        <h2>Choose your avatar</h2>
+        <img class="selectedAvatar" [src]="selectedAvatarURL || defaultAvatar" alt="User Avatar">
+        <span class="userName">{{ signupForm.get('displayName')?.value }}</span>
+        <span class="chooseAvatarText">Choose your avatar...</span>
+        <div class="avatarSelectionContainer">
+            <div *ngFor="let avatarUrl of avatarUrls" class="avatarSelection">
+                <img [src]="avatarUrl" (click)="selectAvatar(avatarUrl)" alt="Avatar">
+            </div>
+        </div>
+        <div class="uploadFoto">
+            <span>Or you can</span>
+            <button>Upload foto</button>
+        </div>
+        <div *ngIf="userCreated" class="notification success">
+            Verification email sent. Please check your email inbox.
+        </div>
+        <div *ngIf="userExists" class="notification warning">
+            User already exists. Please try another email.
+        </div>
+        <button class="btnNext" (click)="onSubmit()" [disabled]="!selectedAvatarURL">Next</button>
+    </div>
+    <div class="loginContainerLinks hideContentMobile">
+        <a class="loginLinks" routerLink="/imprint">Imprint</a>
+        <a class="loginLinks" routerLink="/data-protection">Data protection</a>
     </div>
 </div>

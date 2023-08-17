@@ -26,7 +26,7 @@
   <!---------------- channels list start here ----------------->
 
   <ul id="allChannels" [ngStyle]="{ display: channelsVisible ? 'unset' : 'none' }">
-    <li *ngFor="let channel of channelData | async" class="channel">
+    <li [routerLink]="['/main/channel', channel.id]" *ngFor="let channel of channelData | async" class="channel">
       <img src="./assets/img/icons/tag.svg" alt="" />
       <p>{{ channel.channelName }}</p>
     </li>
@@ -64,22 +64,5 @@
       </div>
       <p>{{ user?.displayName }}</p>
     </li>
-
-    <!-- <li class="selectableUserChat">
-      <img class="userImg" src="./assets/img/avatar1.svg" alt="" />
-      <p>Frederik Beck (Du)</p>
-    </li>
-    <li class="selectableUserChat">
-      <img class="userImg" src="./assets/img/avatar2.svg" alt="" />
-      <p>Sofia Müller</p>
-    </li>
-    <li class="selectableUserChat">
-      <img class="userImg" src="./assets/img/avatar2.svg" alt="" />
-      <p>Noha Braun</p>
-    </li>
-    <li class="selectableUserChat">
-      <img class="userImg" src="./assets/img/avatar2.svg" alt="" />
-      <p>Elise Roth</p>
-    </li> -->
   </ul>
 </div>

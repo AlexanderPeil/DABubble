@@ -11,9 +11,14 @@ import { Router } from '@angular/router';
 })
 export class SignUpComponent implements OnInit {
   signupForm!: FormGroup;
+  displayName!: string;
   userCreated = false;
   userExists = false;
-  checked = new FormControl(false);
+  checked!: FormControl;  
+  chooseAvatar: boolean = false;
+  selectedAvatarURL!: string;
+  avatarUrls: string[] = [];
+  defaultAvatar: string = '../../assets/img/default_avatar.svg';
 
 
   constructor(
@@ -22,12 +27,22 @@ export class SignUpComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.checked = new FormControl(false, Validators.requiredTrue);
     this.signupForm = new FormGroup({
       displayName: new FormControl(null, [Validators.required, this.fullNameValidator]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, Validators.required),
-      checked: this.checked,
-    })
+      checked: this.checked 
+    });
+
+    const displayNameControl = this.signupForm.get('displayName');
+    if (displayNameControl) {
+      displayNameControl.valueChanges.subscribe(value => {
+        this.displayName = value;
+      });
+    }
+    
+    this.avatarUrls = this.authService.user_images;
   }
 
 
@@ -40,11 +55,11 @@ export class SignUpComponent implements OnInit {
   }
 
 
-    onSubmit() {
+  onSubmit() {
     const displayName = this.signupForm.value.displayName;
     const email = this.signupForm.value.email;
     const password = this.signupForm.value.password;
-    this.authService.signUp(displayName, email, password)
+    this.authService.signUp(displayName, email, password, this.selectedAvatarURL)
       .then(() => {
         this.userCreated = true;
         setTimeout(() => {
@@ -53,13 +68,29 @@ export class SignUpComponent implements OnInit {
       })
       .catch((error: { message: string; }) => {
         console.log(error); // Firebase error in the console.
-          this.userExists = true;
-          this.signupForm.controls['email'].reset();
-          setTimeout(() => {
-            this.userExists = false;
-          }, 3000);
+        this.userExists = true;
+        this.signupForm.controls['email'].reset();
+        setTimeout(() => {
+          this.userExists = false;
+        }, 3000);
       });
   }
+
+
+  onNextClick(): void {
+    this.chooseAvatar = true;
+  }
+
+
+  onbackClick() {
+    this.chooseAvatar = false;
+  }
+
+
+  selectAvatar(url: string) {
+    this.selectedAvatarURL = url;
+  }
+
 
 
   // This Code down here is for the verification mail function.

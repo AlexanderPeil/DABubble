@@ -15,12 +15,6 @@
   background-color: #eceefe;
 }
 
-// .mat-drawer {
-//   width: 325px;
-//   margin: 15px;
-//   border-radius: 30px;
-// 
-
 .head-of-sidenav {
   display: flex;
   justify-content: center;
@@ -133,6 +127,10 @@
     p {
       font-size: 18px;
       margin: 0;
+      width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     &:hover {

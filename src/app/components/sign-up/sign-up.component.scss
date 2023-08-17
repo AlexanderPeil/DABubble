@@ -3,6 +3,7 @@
 
 .signUpContent {
     @include login_standard_container;
+    align-items: center;
     gap: 50px;
     overflow: hidden;
 }
@@ -73,11 +74,6 @@ label {
     }
 }
 
-h2 {
-    @include font(46px, 700, 55.2px);
-    color: #444df2;
-}
-
 .nextBtn {
     @include button;
     @include button_primary;
@@ -106,6 +102,86 @@ button:disabled:hover {
 
 .warning {
     color: red;
+}
+
+
+
+
+/******** This content style is for the avatar-choice container *********/
+
+.avatarContainer {
+    @include flex_column_center;
+    background-color: #eceefe;
+    position: relative;
+    gap: 30px;
+    width: 435px;
+    background-color: white;
+    border-radius: 30px;
+    padding: 40px 70px;
+}
+
+.selectedAvatar {
+    height: 168px;
+    border-radius: 100%
+}
+
+.userName {
+    @include font(32px, 700, 43.65px);
+}
+
+.chooseAvatarText {
+    @include font(20px, 400, 27.28px);
+    margin-right: auto;
+}
+
+.avatarSelectionContainer {
+    display: flex;
+    gap: 5px;
+}
+
+.avatarSelection {
+    display: flex;
+
+    img {
+        height: 64px;
+        border-radius: 100%;
+        border: 5px solid white;
+        @include button_hover;
+
+        &:hover {
+            border: 5px solid #686868;
+        }
+    }
+}
+
+.uploadFoto {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: auto;
+
+    span {
+        @include font(20px, 400, 27.28px);
+    }
+
+    button {
+        @include button_secondary;
+        @include button;
+        @include button_hover;
+        border: 1px solid #797EF3 !important;
+
+        &:hover {
+            background-color: #444df2;
+            color: white;
+        }
+    }
+}
+
+.btnNext {
+    @include button_primary;
+    @include button;
+    @include button_hover;
+    margin-left: auto;
 }
 
 @media(max-width:600px) {

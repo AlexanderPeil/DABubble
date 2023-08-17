@@ -74,6 +74,13 @@
     }
 }
 
+@mixin button_primary_disabled {
+    color: white;
+    background-color: #686868 !important;
+    border: unset;
+    font-family: Nunito, sans-serif;
+}
+
 @mixin button_secondary {
     color: #444df2;
     background-color: white;

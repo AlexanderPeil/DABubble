@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, switchMap, tap } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,22 +23,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.userSubscription = this.authService.user$.subscribe(firebaseUser => {
-      if (firebaseUser && firebaseUser.uid) {
-        this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
-          if (userData) {
-            this.user = userData;
-            this.isOnline = userData.isOnline;
-          } else {
+    this.userSubscription = this.authService.user$
+      .pipe(
+        tap(firebaseUser => {
+          if (!firebaseUser?.uid) {
             this.user = null;
             this.isOnline = undefined;
           }
-        });
-      } else {
-        this.user = null;
-        this.isOnline = undefined;
-      }
-    });
+        }),
+        switchMap(firebaseUser =>
+          firebaseUser?.uid ? this.authService.getUserData(firebaseUser.uid) : []
+        )
+      )
+      .subscribe(userData => {
+        this.user = userData ?? null;
+        this.isOnline = userData?.isOnline ?? undefined;
+      });
   }
 
 

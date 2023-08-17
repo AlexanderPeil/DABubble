@@ -1,52 +1,38 @@
-<form (ngSubmit)="addChannel()">
-  <div class="padding">
-    <div class="dialogHead">
-      <p>Create new Channel</p>
-      <div class="closeIconContainer">
-        <img mat-dialog-close src="assets/img/icons/closeIcon.svg" />
-      </div>
-    </div>
-
-    <p class="textContainer">
-      Channels are used by your team to communicate. They should ideally be
-      themed #marketing for example
-    </p>
-
-    <div class="inputHeadAndContainer">
-      <p>Channel-Name</p>
-      <div class="inputContainer">
-        <img src="./assets/img/icons/hashtag.svg" alt="" />
-        <input
-          [(ngModel)]="channel.channelName"
-          name="channelName"
-          type="text"
-          placeholder="e.g. Marketing"
-          required
-        />
-      </div>
-    </div>
-
-    <div class="inputHeadAndContainer">
-      <p>Description (optional)</p>
-      <div class="inputContainer">
-        <input
-          [(ngModel)]="channel.channelDescription"
-          name="channelDescription"
-          type="text"
-          placeholder="Write your text here"
-        />
-      </div>
-    </div>
-
-    <div class="btnContainer">
-      <button
-        type="submit"
-        (click)="openDialogToAddUser()"
-        mat-button
-        mat-dialog-close
-      >
-        Create
-      </button>
+<!-- <form (ngSubmit)="addChannel()"> -->
+<div class="padding">
+  <div class="dialogHead">
+    <p>Create new Channel</p>
+    <div class="closeIconContainer">
+      <img mat-dialog-close src="assets/img/icons/closeIcon.svg" />
     </div>
   </div>
-</form>
+
+  <p class="textContainer">
+    Channels are used by your team to communicate. They should ideally be
+    themed #marketing for example
+  </p>
+
+  <div class="inputHeadAndContainer">
+    <p>Channel-Name</p>
+    <div class="inputContainer">
+      <img src="./assets/img/icons/hashtag.svg" alt="" />
+      <input [(ngModel)]="channel.channelName" type="text" placeholder="e.g. Marketing" />
+    </div>
+  </div>
+
+  <div class="inputHeadAndContainer">
+    <p>Description (optional)</p>
+    <div class="inputContainer">
+      <input [(ngModel)]="channel.channelDescription" name="channelDescription" type="text"
+        placeholder="Write your text here" />
+    </div>
+  </div>
+
+  <div class="btnContainer">
+    <button [ngClass]="{'btnDisabled': channel.channelName.length == 0}" [disabled]="channel.channelName.length == 0"
+      (click)="openDialogToAddAllOrSpecificUsers(channel)" mat-button mat-dialog-close>
+      Create
+    </button>
+  </div>
+</div>
+<!-- </form> -->

@@ -1,22 +1,18 @@
 <app-header></app-header>
 <app-workspace-menu-btn></app-workspace-menu-btn>
 
-<div>
-  <mat-drawer-container class="mat-drawer-container">
-    <mat-drawer
-      [ngClass]="{
-        show: !toggleWorspaceMenuService.workspaceMenuIsOpen,
-        'd-none': toggleWorspaceMenuService.workspaceMenuIsOpen
-      }"
-      #drawer
-      [opened]="true"
-      mode="side"
-    >
-      <app-sidenav></app-sidenav>
-    </mat-drawer>
-    <div class="router-container">
-      <router-outlet></router-outlet>
-      <app-thread></app-thread>
-    </div>
-  </mat-drawer-container>
+<div class="matDrawerMainContainer">
+  <div class="matDrawerChildContainer" [ngClass]="{
+    'translateXBack': !toggleWorspaceMenuService.workspaceMenuIsOpen,
+    'translateX': toggleWorspaceMenuService.workspaceMenuIsOpen
+  }">
+    <app-sidenav></app-sidenav>
+  </div>
+  <div
+    [ngClass]="{'translateX': toggleWorspaceMenuService.workspaceMenuIsOpen, 'translateXBack': !toggleWorspaceMenuService.workspaceMenuIsOpen}"
+    class="router-container">
+    <app-chat-history></app-chat-history>
+    <router-outlet></router-outlet>
+    <app-thread></app-thread>
+  </div>
 </div>

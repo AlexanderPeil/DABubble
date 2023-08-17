@@ -2,7 +2,6 @@
     width: 53vw;
     height: 84vh;
     border-radius: 30px;
-    margin: 0 15px 0px 15px;
     background-color: #FFFFFF;
     position: relative;
 }
@@ -118,4 +117,8 @@
         transform: rotate(180deg);
         border-color: #ADB0D9;
     }
+}
+
+.chatHistoryFullWidth {
+    width: 75vw;
 }
