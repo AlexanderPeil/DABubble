@@ -2,16 +2,23 @@
 <app-workspace-menu-btn></app-workspace-menu-btn>
 
 <div class="matDrawerMainContainer">
-  <div class="matDrawerChildContainer" [ngClass]="{
-    'translateXBack': !toggleWorspaceMenuService.workspaceMenuIsOpen,
-    'translateX': toggleWorspaceMenuService.workspaceMenuIsOpen
-  }">
+  <div
+    class="matDrawerChildContainer"
+    [ngClass]="{
+      translateXBack: !toggleWorspaceMenuService.workspaceMenuIsOpen,
+      translateX: toggleWorspaceMenuService.workspaceMenuIsOpen
+    }"
+  >
     <app-sidenav></app-sidenav>
   </div>
   <div
-    [ngClass]="{'translateX': toggleWorspaceMenuService.workspaceMenuIsOpen, 'translateXBack': !toggleWorspaceMenuService.workspaceMenuIsOpen}"
-    class="router-container">
-    <app-chat-history></app-chat-history>
+    [ngClass]="{
+      translateX: toggleWorspaceMenuService.workspaceMenuIsOpen,
+      translateXBack: !toggleWorspaceMenuService.workspaceMenuIsOpen
+    }"
+    class="router-container"
+  >
+    <!-- <app-chat-history></app-chat-history> -->
     <router-outlet></router-outlet>
     <app-thread></app-thread>
   </div>
