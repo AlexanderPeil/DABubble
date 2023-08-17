@@ -1,6 +1,6 @@
 <div class="chatHistoryMainContainer">
     <div class="chatHistoryHeader">
-        <div class="userName">
+        <div class="userName" (click)="openDialog()">
             <div class="userIconWrapper">
                 <img class="userImg" [src]="selectedUser?.photoURL" alt="">
                 <img *ngIf="selectedUser?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_online.svg"

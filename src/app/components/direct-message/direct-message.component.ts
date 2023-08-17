@@ -5,6 +5,9 @@ import { Subject, Subscription, combineLatest, filter, map, switchMap, takeUntil
 import { ActivatedRoute } from '@angular/router';
 import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
 import { DirectMessageContent } from 'src/app/models/direct-message';
+import { DialogDirectMessageProfileComponent } from '../dialog-direct-message-profile/dialog-direct-message-profile.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-direct-message',
@@ -24,7 +27,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
-    private directMessageService: DirectMessageService) { }
+    private directMessageService: DirectMessageService,
+    public dialog: MatDialog) { }
 
 
   ngOnInit() {
@@ -35,7 +39,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       switchMap(uid => this.authService.getUserData(uid as string)) // "switchMap": each UID that passes through the filter the authservice is invoked to fetch user data
     );
 
-    // Observable to get the id of the logged-in user who selects the an user from the sidenav to chat with
+    // Observable to get the id of the logged-in user who selects an user from the sidenav to chat with
     const loggedInUser$ = this.authService.user$.pipe(
       tap(firebaseUser => { // "tap": checks if firebaseUser has a uid and set this.loggedInUser to null if it doesn't
         if (!firebaseUser?.uid) {
@@ -45,7 +49,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       switchMap(firebaseUser => firebaseUser?.uid ? this.authService.getUserData(firebaseUser.uid) : []), // "switchMap": each UID that passes through the filter the authservice is invoked to fetch user data
       filter(user => !!user) // This ensures that only true (non-falsy) uid values are passed through.
     );
-      // Combines the two observables (logged-in user and selected user)
+    // Combines the two observables (logged-in user and selected user)
     combineLatest([selectedUser$, loggedInUser$])
       .pipe(takeUntil(this.ngUnsubscribe)) // "takeUntil": makes sure the observable completes when another obserable (ngUnsubscribe) emits a value. ngUnsubscribe is for the onDestroy
       .subscribe(([selectedUser, loggedInUser]) => {
@@ -65,8 +69,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-
 
 
   sendMessage() {
@@ -98,6 +100,15 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     return date.toLocaleTimeString('en-US', options);
   }
 
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogDirectMessageProfileComponent, {
+      width: '600px',
+      height: '700px',
+      panelClass: 'custom-dialog-container',
+      data: { selectedUser: this.selectedUser }
+    });
+  }
 
 
   ngOnDestroy() {
