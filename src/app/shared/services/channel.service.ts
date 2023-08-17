@@ -15,9 +15,7 @@ export class ChannelService {
   channelData!: Observable<any>;
   channel: Channel = new Channel();
 
-  constructor(private firestore: Firestore) {
-
-  }
+  constructor(private firestore: Firestore) {}
 
   addChannelService(channel: any) {
     const collectionInstance = collection(this.firestore, 'channels');
@@ -30,11 +28,7 @@ export class ChannelService {
     this.channelData = collectionData(collectionInstance, { idField: 'id' });
   }
 
-  updateChannelService() {
+  updateChannelService() {}
 
-  }
-
-  deleteChannelService() {
-
-  }
+  deleteChannelService() {}
 }
