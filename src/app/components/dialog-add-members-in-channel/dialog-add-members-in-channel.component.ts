@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChannelService } from 'src/app/shared/services/channel.service';
 
 
 @Component({
@@ -10,4 +11,8 @@ import { Component } from '@angular/core';
 
 export class DialogAddMembersInChannelComponent {
 
+
+  constructor(public channelService: ChannelService) {
+
+  }
 }

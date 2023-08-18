@@ -2,7 +2,7 @@
     <div class="dialogTopContainer">
         <div class="dialogTopChildContainer">
             <img src="assets/img/icons/hashtag.svg">
-            <p>Channel Name (Placeholder)</p>
+            <p>{{ channelService.channel.channelName }}</p>
         </div>
 
         <div class="closeIconContainer">
@@ -28,14 +28,14 @@
 
         <div [class.d-none]="showInputToEditChannelName" class="channelNameAndHashtagIconContainer">
             <img src="assets/img/icons/hashtag.svg">
-            <p>Channel Name (Placeholder)</p>
+            <p>{{ channelService.channel.channelName }}</p>
         </div>
 
 
         <!------------------------ Only displayed when editing the channel name ------------------------>
         <div [class.show]="showInputToEditChannelName" class="inputContainer d-none">
             <img src="assets/img/icons/hashtag.svg">
-            <input type="text" placeholder="Channel Name (Placeholder)">
+            <input type="text" [placeholder]="channelService.channel.channelName">
         </div>
         <!------------------------ Only displayed when editing the channel name ------------------------>
     </div>
@@ -44,7 +44,7 @@
     <div [class.removeBorder]="showInputToEditChannelDescription" class="dialogBottomContainer">
         <div [ngClass]="{'translateToTop': showInputToEditChannelDescription, 'translateToTBottom': !showInputToEditChannelDescription}"
             class="textChannelNameAndEditContainer">
-            <p class="textChannelName">Channel Name</p>
+            <p class="textChannelName">Description</p>
             <p [class.d-none]="showInputToEditChannelDescription" class="textEdit"
                 (click)="openInputToEditChannelDescription()">
                 Edit
@@ -57,17 +57,24 @@
             <!------------------------ Only displayed when editing the channel description ------------------------>
         </div>
 
-        <p [class.d-none]="showInputToEditChannelDescription">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni eius voluptate rerum unde, asperiores nobis
-            neque fuga veniam. Magnam rerum suscipit dolorem repudiandae ipsam tenetur nulla, exercitationem blanditiis
-            dolor hic?
+        <p *ngIf="channelService.channel.channelDescription" [class.d-none]="showInputToEditChannelDescription">
+            {{ channelService.channel.channelDescription }}
         </p>
+
+
+        <!------------------------ Only displayed when channel description is empty ------------------------>
+        <p *ngIf="channelService.channel.channelDescription == ''" [class.d-none]="showInputToEditChannelDescription">
+            Here stand the Channel Description
+        </p>
+        <!------------------------  Only displayed when channel description is empty ------------------------>
+
 
         <!------------------------ Only displayed when editing the channel description ------------------------>
         <div [class.show]="showInputToEditChannelDescription" class="inputContainer d-none">
             <input style="padding-left: 20px; padding-right: 30px;" type="text" placeholder="Your text here">
         </div>
         <!------------------------ Only displayed when editing the channel description ------------------------>
+
 
         <hr>
         <p class="textCreatedBy">Created by</p>

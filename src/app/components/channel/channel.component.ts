@@ -41,6 +41,8 @@ export class ChannelComponent implements OnInit {
 
   openDialogToEditChannel() {
     this.dialog.open(DialogEditChannelComponent);
+    this.getCurrentChannelIdInUrl();
+    this.channelService.getSingleChannelService(this.channelId);
   }
 
 
@@ -51,5 +53,7 @@ export class ChannelComponent implements OnInit {
 
   openDialogToAddMembersToChannel() {
     this.dialog.open(DialogAddMembersInChannelComponent);
+    this.getCurrentChannelIdInUrl();
+    this.channelService.getSingleChannelService(this.channelId);
   }
 }
