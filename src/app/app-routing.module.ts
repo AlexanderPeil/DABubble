@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
@@ -9,6 +8,7 @@ import { ImprintComponent } from './components/imprint/imprint.component';
 import { DataProtectionComponent } from './components/data-protection/data-protection.component';
 import { MainComponent } from './components/main/main.component';
 import { DirectMessageComponent } from './components/direct-message/direct-message.component';
+import { ChannelComponent } from './components/channel/channel.component';
 
 
 const routes: Routes = [
@@ -16,10 +16,10 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: 'main', component: MainComponent, children: [
-      { path: 'channel/:id', component: ChatHistoryComponent },
+      { path: 'channel/:id', component: ChannelComponent },
       { path: 'direct-message/:id', component: DirectMessageComponent },
       // { path: '', redirectTo: 'channel/:id', pathMatch: 'full' },
-      // { path: 'channel/Financeteam', component: ChatHistoryComponent },
+      // { path: 'channel/Financeteam', component: ChannelComponent },
     ]
   },
   { path: 'sign-up', component: SignUpComponent },

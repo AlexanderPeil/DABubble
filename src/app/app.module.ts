@@ -10,7 +10,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
 import { LoginComponent } from './components/login/login.component';
 import { MessageComponent } from './components/message/message.component';
 import { TextfieldInChathistoryComponent } from './components/textfield-in-chathistory/textfield-in-chathistory.component';
@@ -39,13 +38,13 @@ import { WorkspaceMenuBtnComponent } from './components/workspace-menu-btn/works
 import { DialogAddUserToChannelComponent } from './components/dialog-add-user-to-channel/dialog-add-user-to-channel.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { DirectMessageComponent } from './components/direct-message/direct-message.component';
+import { ChannelComponent } from './components/channel/channel.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SidenavComponent,
-    ChatHistoryComponent,
     LoginComponent,
     MessageComponent,
     TextfieldInChathistoryComponent,
@@ -67,6 +66,7 @@ import { DirectMessageComponent } from './components/direct-message/direct-messa
     WorkspaceMenuBtnComponent,
     DialogAddUserToChannelComponent,
     DirectMessageComponent,
+    ChannelComponent,
   ],
 
   imports: [
@@ -89,4 +89,4 @@ import { DirectMessageComponent } from './components/direct-message/direct-messa
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -34,12 +34,11 @@ export class SidenavComponent {
   channelId: any = '';
 
   ngOnInit() {
+    // this.activatedRoute.queryParams.subscribe((params) => {
+    //   console.log(params['id'] || 0);
+    // });
     this.authService.getUsers().subscribe((users) => {
       this.users = users;
-    });
-    this.activatedRoute.paramMap.subscribe((params) => {
-      this.channelId = params.get('id');
-      // console.log(this.channelId);
     });
     this.channelService.getChannelService();
     this.channelData = this.channelService.channelData;
@@ -59,8 +58,9 @@ export class SidenavComponent {
     this.dialog.open(DialogCreateChannelComponent);
   }
 
-
   onUserClick(user: User) {
     this.router.navigate(['main', 'direct-message', user.uid]);
   }
+
+
 }

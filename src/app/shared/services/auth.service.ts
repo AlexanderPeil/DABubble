@@ -137,7 +137,7 @@ export class AuthService implements OnDestroy {
         await updateProfile(userCredential.user, { displayName: 'Guest', photoURL: randomImageURL });
         await this.setUserData(userCredential.user, true);
         setTimeout(() => {
-          this.router.navigate(['main']);
+          this.router.navigate(['/main/channel/Financeteam']);
         }, 2000);
       }
     } catch (error) {

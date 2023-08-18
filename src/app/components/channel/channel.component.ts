@@ -7,13 +7,13 @@ import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-works
 
 
 @Component({
-  selector: 'app-chat-history',
-  templateUrl: './chat-history.component.html',
-  styleUrls: ['./chat-history.component.scss']
+  selector: 'app-channel',
+  templateUrl: './channel.component.html',
+  styleUrls: ['./channel.component.scss']
 })
 
 
-export class ChatHistoryComponent {
+export class ChannelComponent {
 
 
   constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService) {
