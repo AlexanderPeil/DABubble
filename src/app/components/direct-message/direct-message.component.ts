@@ -79,7 +79,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         senderId: this.loggedInUser.uid,
         content: this.messageContent,
         timestamp: Date.now(),
-        read: false 
+        read: false
       });
 
       this.directMessageService.addMessage(this.loggedInUser.uid, this.selectedUser.uid, chatMessage);

@@ -20,7 +20,6 @@ export class SidenavComponent {
     private authService: AuthService,
     private channelService: ChannelService,
     private router: Router,
-    public activatedRoute: ActivatedRoute,
   ) { }
 
   channelsVisible: boolean = true;
@@ -31,17 +30,10 @@ export class SidenavComponent {
   userSubscription!: Subscription;
   isOnline?: boolean;
   channelData!: Observable<any>;
-  channelId: any = '';
 
   ngOnInit() {
-    // this.activatedRoute.queryParams.subscribe((params) => {
-    //   console.log(params['id'] || 0);
-    // });
     this.authService.getUsers().subscribe((users) => {
       this.users = users;
-    });
-    this.activatedRoute.paramMap.subscribe((params) => {
-      this.channelId = params.get('id');
     });
     this.channelService.getChannelService();
     this.channelData = this.channelService.channelData;

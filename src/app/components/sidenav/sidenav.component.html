@@ -26,9 +26,10 @@
   <!---------------- channels list start here ----------------->
 
   <ul id="allChannels" [ngStyle]="{ display: channelsVisible ? 'unset' : 'none' }">
-    <li [routerLink]="['/main/channel', channel.id]" *ngFor="let channel of channelData | async" class="channel">
-      <img src="./assets/img/icons/tag.svg" alt="" />
-      <p>{{ channel.channelName }}</p>
+    <li [routerLinkActive]="'activeChannelLiElement'" [routerLink]="['/main/channel', channel.id]"
+      *ngFor="let channel of channelData | async" class="channel">
+      <img [routerLinkActive]="'activeChannelImgAndPElement'" src="./assets/img/icons/tag.svg" alt="" />
+      <p [routerLinkActive]="'activeChannelImgAndPElement'">{{ channel.channelName }}</p>
     </li>
   </ul>
 

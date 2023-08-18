@@ -4,6 +4,8 @@ import {
   collectionData,
   collection,
   addDoc,
+  doc,
+  getDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Channel } from 'src/app/models/channel';
@@ -13,14 +15,19 @@ import { Channel } from 'src/app/models/channel';
 })
 export class ChannelService {
   channelData!: Observable<any>;
-  channel: Channel = new Channel();
+  channel: any = new Channel();
 
-  constructor(private firestore: Firestore) {}
+
+  constructor(private firestore: Firestore) {
+
+  }
+
 
   addChannelService(channel: any) {
     const collectionInstance = collection(this.firestore, 'channels');
     addDoc(collectionInstance, channel.toJSON());
   }
+
 
   getChannelService() {
     const collectionInstance = collection(this.firestore, 'channels');
@@ -28,7 +35,22 @@ export class ChannelService {
     this.channelData = collectionData(collectionInstance, { idField: 'id' });
   }
 
-  updateChannelService() {}
 
-  deleteChannelService() {}
+  updateChannelService() {
+
+  }
+
+
+  deleteChannelService() {
+
+  }
+
+
+  getSingleChannelService(channelId: string) {
+    const collectionInstance = collection(this.firestore, 'channels');
+    const docRef = doc(collectionInstance, channelId);
+    getDoc(docRef).then((doc) => {
+      this.channel = doc.data();
+    });
+  }
 }
