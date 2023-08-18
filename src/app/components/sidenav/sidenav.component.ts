@@ -39,7 +39,6 @@ export class SidenavComponent {
     });
     this.activatedRoute.paramMap.subscribe((params) => {
       this.channelId = params.get('id');
-      // console.log(this.channelId);
     });
     this.channelService.getChannelService();
     this.channelData = this.channelService.channelData;

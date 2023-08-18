@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { Subject, Subscription, combineLatest, filter, map, switchMap, takeUntil, tap } from 'rxjs';
@@ -21,6 +21,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   loggedInUser: User | null = null;
   messageContent: string = '';
   messages: DirectMessageContent[] = [];
+  showEmojiPicker = false;
+  @ViewChild('emojiContainer') emojiContainer!: ElementRef;
   private ngUnsubscribe = new Subject<void>();
 
 
@@ -89,15 +91,30 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   formatDate(timestamp: number): string {
     const date = new Date(timestamp);
-    const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: '2-digit', month: 'long' };
-    return date.toLocaleDateString('en-US', options);
+    const today = new Date();
+    const yesterday = new Date(today);
+
+    yesterday.setDate(today.getDate() - 1);
+    // Set the time to null to have a better compare for the date
+    date.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    yesterday.setHours(0, 0, 0, 0);
+
+    if (date.getTime() === today.getTime()) {
+      return 'Today';
+    } else if (date.getTime() === yesterday.getTime()) {
+      return 'Yesterday';
+    } else {
+      const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: '2-digit', month: 'long' };
+      return date.toLocaleDateString('en-US', options);
+    }
   }
 
 
   formatTime(timestamp: number): string {
     const date = new Date(timestamp);
-    const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
-    return date.toLocaleTimeString('en-US', options);
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', hour: '2-digit', minute: '2-digit' };
+    return date.toLocaleTimeString('de-DE', options);
   }
 
 
@@ -108,6 +125,28 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       panelClass: 'custom-dialog-container',
       data: { selectedUser: this.selectedUser }
     });
+  }
+
+
+  toggleEmojiPicker(event: MouseEvent) {
+    event.stopPropagation();
+    this.showEmojiPicker = !this.showEmojiPicker;
+    console.log(this.showEmojiPicker);
+  }
+
+
+  addEmoji(event: { emoji: any; }) {
+    const { emoji } = event;
+    this.messageContent += emoji.native;
+    this.showEmojiPicker = false;
+  }
+
+
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (this.showEmojiPicker && !this.emojiContainer.nativeElement.contains(event.target)) {
+      this.showEmojiPicker = false;
+    }
   }
 
 

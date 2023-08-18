@@ -14,12 +14,12 @@
 
 
     <div class="messagesContainer">
-        <div *ngFor="let message of messages" class="scrolleableContainer">
+        <div *ngFor="let message of messages" class="directMesageContainer">
             <div class="messageMainContainer">
                 <div class="messageChildContainer">
                     <div class="date">
                         <hr>
-                        <p>{{ formatDate(message.timestamp) }}</p>
+                        <span>{{ formatDate(message.timestamp) }}</span>
                         <hr>
                     </div>
                     <div class="containerUserNameAndTime">
@@ -47,25 +47,14 @@
     </div>
 
     <div class="containerTextarea">
-        <!-- <input contenteditable type="text" placeholder="Message at..."> -->
-
         <textarea [(ngModel)]="messageContent" placeholder="Write a message..."></textarea>
-
-        <div class="containerAddIcon">
-            <img src="assets/img/icons/add.svg">
-        </div>
-
+        <img class="addIcon" src="assets/img/icons/add.svg">
         <hr>
-
-        <div class="containerSmileyIcon">
-            <img class="smileyIcon" src="assets/img/icons/smiley.svg">
+        <img class="smileyIcon smileyIconHover" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker($event)">
+        <div class="smileyIcon smileyContainer" *ngIf="showEmojiPicker" #emojiContainer>
+            <emoji-mart (emojiClick)="addEmoji($event)"></emoji-mart>
         </div>
-
-        <div class="containerAtIcon">
-            <img class="atIcon" src="assets/img/icons/@Icon.svg">
-        </div>
+        <img class="atIcon" src="assets/img/icons/@Icon.svg">
         <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg">
-
     </div>
-
 </div>

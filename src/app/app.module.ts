@@ -40,6 +40,7 @@ import { DialogAddUserToChannelComponent } from './components/dialog-add-user-to
 import { MatRadioModule } from '@angular/material/radio';
 import { DirectMessageComponent } from './components/direct-message/direct-message.component';
 import { DialogDirectMessageProfileComponent } from './components/dialog-direct-message-profile/dialog-direct-message-profile.component';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { DialogDirectMessageProfileComponent } from './components/dialog-direct-
     FormsModule,
     MatMenuModule,
     MatRadioModule,
+    PickerComponent,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
