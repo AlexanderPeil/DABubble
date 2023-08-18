@@ -78,7 +78,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       const chatMessage = new DirectMessageContent({
         senderId: this.loggedInUser.uid,
         content: this.messageContent,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        read: false 
       });
 
       this.directMessageService.addMessage(this.loggedInUser.uid, this.selectedUser.uid, chatMessage);
