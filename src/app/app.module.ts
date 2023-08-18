@@ -38,6 +38,8 @@ import { WorkspaceMenuBtnComponent } from './components/workspace-menu-btn/works
 import { DialogAddUserToChannelComponent } from './components/dialog-add-user-to-channel/dialog-add-user-to-channel.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { DirectMessageComponent } from './components/direct-message/direct-message.component';
+import { DialogDirectMessageProfileComponent } from './components/dialog-direct-message-profile/dialog-direct-message-profile.component';
+// import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { ChannelComponent } from './components/channel/channel.component';
 
 @NgModule({
@@ -66,6 +68,7 @@ import { ChannelComponent } from './components/channel/channel.component';
     WorkspaceMenuBtnComponent,
     DialogAddUserToChannelComponent,
     DirectMessageComponent,
+    DialogDirectMessageProfileComponent,
     ChannelComponent,
   ],
 
@@ -82,6 +85,7 @@ import { ChannelComponent } from './components/channel/channel.component';
     FormsModule,
     MatMenuModule,
     MatRadioModule,
+    // PickerComponent,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

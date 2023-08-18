@@ -40,6 +40,9 @@ export class SidenavComponent {
     this.authService.getUsers().subscribe((users) => {
       this.users = users;
     });
+    this.activatedRoute.paramMap.subscribe((params) => {
+      this.channelId = params.get('id');
+    });
     this.channelService.getChannelService();
     this.channelData = this.channelService.channelData;
   }

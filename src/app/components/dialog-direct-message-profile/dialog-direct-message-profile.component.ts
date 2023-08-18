@@ -1,24 +1,26 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import { Subscription, switchMap, tap } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DialogEditProfileComponent } from '../dialog-edit-profile/dialog-edit-profile.component';
+import { MatDialogRef, MAT_DIALOG_DATA  } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-dialog-profile',
-  templateUrl: './dialog-profile.component.html',
-  styleUrls: ['./dialog-profile.component.scss']
+  selector: 'app-dialog-direct-message-profile',
+  templateUrl: './dialog-direct-message-profile.component.html',
+  styleUrls: ['./dialog-direct-message-profile.component.scss']
 })
-export class DialogProfileComponent implements OnInit, OnDestroy {
+export class DialogDirectMessageProfileComponent implements OnInit, OnDestroy {
   user: User | null = null;
   isOnline?: boolean;
+  selectedUser: User | null = null;
   private userSubscription?: Subscription;
 
   constructor(
     private authService: AuthService,
-    public dialog: MatDialog,
-    private dialogRef: MatDialogRef<DialogProfileComponent>) { }
+    private dialogRef: MatDialogRef<DialogDirectMessageProfileComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { 
+      this.selectedUser = data.selectedUser;
+    }
 
 
   ngOnInit() {
@@ -39,18 +41,6 @@ export class DialogProfileComponent implements OnInit, OnDestroy {
         this.isOnline = userData?.isOnline ?? undefined;
       });
   }
-
-
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogEditProfileComponent, {
-      width: '600px',
-      height: '650px',
-      panelClass: 'custom-dialog-container'
-    });
-    this.dialogRef.close();
-  }
-
 
 
   ngOnDestroy() {

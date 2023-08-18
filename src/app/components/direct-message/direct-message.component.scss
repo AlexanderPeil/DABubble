@@ -12,7 +12,7 @@
         transition: all 225ms ease-in-out;
         background-color: #ECEEFE;
 
-        .messageText {
+        .message {
             background-color: white;
         }
 
@@ -184,7 +184,7 @@
     width: 100%;
     // margin: 80px 35px 0px 35px;
 
-    p {
+    span {
         font-weight: 400;
         font-size: 18px;
         border-radius: 30px;
@@ -192,6 +192,8 @@
         margin: 0;
         border: 1px solid #ADB0D9;
         text-align: center;
+        display: inline-block;
+        white-space: nowrap;
     }
 
     hr {
@@ -203,12 +205,18 @@
 }
 
 .containerTextarea {
+    position: absolute;
+    z-index: 11;
+    bottom: 0;
+    width: 100%;
+    height: 143px;
+    background: white;
 
     textarea {
         resize: none;
         position: absolute;
-        left: 13px;
-        bottom: 5px;
+        left: 18px;
+        bottom: 32px;
         width: 93%;
         border: 1px solid #ADB0D9;
         outline: unset;
@@ -231,27 +239,30 @@
         margin: 0;
         height: 30px;
         position: absolute;
-        left: 70px;
-        bottom: 32px;
+        left: 80px;
+        bottom: 52px;
         border: 1px solid #ADB0D9;
     }
 }
 
-.containerAddIcon {
-    padding: 8px;
-    border-radius: 50%;
-    display: flex;
+.addIcon {
     position: absolute;
-    left: 35px;
-    bottom: 35px;
+    bottom: 61px;
+    left: 42px;
 
     &:hover {
-        cursor: pointer;
         transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
+        transform: scale(1.05);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
+}
 
-    img {
+.smileyIcon {
+    position: absolute;
+    bottom: 55px;
+    left: 100px;
+
+    .smileyIconHover {
 
         &:hover {
             transition: all 225ms ease-in-out;
@@ -261,62 +272,34 @@
     }
 }
 
-.containerSmileyIcon {
-    padding: 8px;
-    border-radius: 50%;
-    display: flex;
-    position: absolute;
-    left: 75px;
-    bottom: 30px;
-
-    &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
-    }
-
-    img {
-
-        &:hover {
-            transition: all 225ms ease-in-out;
-            transform: scale(1.05);
-            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-        }
-    }
+.smileyContainer {
+    position: relative;
+    z-index: 99;
+    bottom: 317px;
+    width: 348px;
 }
 
-.containerAtIcon {
-    padding: 8px;
-    border-radius: 50%;
-    display: flex;
+.atIcon {
     position: absolute;
-    left: 115px;
-    bottom: 30px;
+    bottom: 55px;
+    left: 150px;
 
     &:hover {
-        cursor: pointer;
+        transform: scale(1.05);
         transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
-    }
-
-    img {
-
-        &:hover {
-            transform: scale(1.05);
-            transition: all 225ms ease-in-out;
-            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-        }
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
 }
 
 .sendBtn {
     position: absolute;
     right: 50px;
-    bottom: 35px;
+    bottom: 50px;
 }
 
 .messagesContainer {
-    max-height: calc(100vh - 150px);
+    // max-height: calc(100vh - 150px);
+    height: 70vh;
     overflow-y: auto;
 }
 
@@ -337,4 +320,18 @@
     border-bottom-right-radius: 30px;
     border-bottom-left-radius: 30px;
     padding: 15px;
+}
+
+.directMesageContainer {
+    min-height: 300px;
+  
+    &:hover {
+      &::-webkit-scrollbar-thumb {
+        display: flex;
+      }
+    }
+  }
+
+  .directMesageContainer:last-child {
+    margin-bottom: 130px;
 }

@@ -11,7 +11,10 @@ import {
   updateDoc,
   collection,
   collectionData,
-  deleteDoc
+  deleteDoc,
+  getDocs,
+  query,
+  where
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -268,10 +271,17 @@ export class AuthService implements OnDestroy {
   }
 
 
-
-  getUsers(): Observable<User[]> {
-    const userCollectionRef = collection(this.firestore, 'users');
-    return collectionData(userCollectionRef).pipe(
+  getUsers(searchTerm?: string): Observable<User[]> {
+    let userQuery;  
+    if (searchTerm) {
+      userQuery = query(
+        collection(this.firestore, 'users'), 
+        where('displayName', '==', searchTerm)
+      );
+    } else {
+      userQuery = collection(this.firestore, 'users');
+    }  
+    return collectionData(userQuery).pipe(
       map(usersData => usersData.map(data => ({
         uid: data['uid'],
         email: data['email'],
@@ -282,7 +292,6 @@ export class AuthService implements OnDestroy {
       }) as User))
     );
   }
-
 
 
 
