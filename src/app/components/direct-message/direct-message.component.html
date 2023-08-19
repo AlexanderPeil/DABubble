@@ -23,9 +23,12 @@
                         <hr>
                     </div>
                     <div class="containerUserNameAndTime">
-                        <img class="userImg" [src]="selectedUser?.photoURL" alt="">
+                        <img class="userImg"
+                            [src]="message.senderId === loggedInUser?.uid ? loggedInUser?.photoURL : selectedUser?.photoURL"
+                            alt="">
                         <div class="nameTimeContainer">
-                            <p>{{ selectedUser?.displayName }}</p>
+                            <p>{{ message.senderId === loggedInUser?.uid ? loggedInUser?.displayName :
+                                selectedUser?.displayName }}</p>
                             <p>{{ formatTime(message.timestamp) }}</p>
                         </div>
                     </div>
