@@ -14,25 +14,25 @@
 
 
     <div class="messagesContainer">
-        <div *ngFor="let message of messages" class="directMesageContainer">
-            <div class="messageMainContainer">
+        <div *ngFor="let group of groupMessagesByDate(messages)" class="directMesageContainer">
+            <div class="date">
+                <hr>
+                <span>{{ group.date }}</span>
+                <hr>
+            </div>
+            <div *ngFor="let message of group.messages" class="messageMainContainer">
+                <img class="userImg"
+                    [src]="message.senderId === loggedInUser?.uid ? loggedInUser?.photoURL : selectedUser?.photoURL"
+                    alt="">
                 <div class="messageChildContainer">
-                    <div class="date">
-                        <hr>
-                        <span>{{ formatDate(message.timestamp) }}</span>
-                        <hr>
-                    </div>
                     <div class="containerUserNameAndTime">
-                        <img class="userImg"
-                            [src]="message.senderId === loggedInUser?.uid ? loggedInUser?.photoURL : selectedUser?.photoURL"
-                            alt="">
                         <div class="nameTimeContainer">
                             <p>{{ message.senderId === loggedInUser?.uid ? loggedInUser?.displayName :
                                 selectedUser?.displayName }}</p>
                             <p>{{ formatTime(message.timestamp) }}</p>
                         </div>
+                        <span class="message">{{ message.content }}</span>
                     </div>
-                    <p class="message">{{ message.content }}</p>
                 </div>
             </div>
 

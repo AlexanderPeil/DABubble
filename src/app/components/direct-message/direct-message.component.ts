@@ -119,6 +119,20 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
+  groupMessagesByDate(messages: DirectMessageContent[]): { date: string, messages: DirectMessageContent[] }[] {
+    return messages.reduce<{ date: string, messages: DirectMessageContent[] }[]>((grouped, message) => {
+      const dateStr = this.formatDate(message.timestamp);
+      const foundGroup = grouped.find(group => group.date === dateStr);
+      if (foundGroup) {
+        foundGroup.messages.push(message);
+      } else {
+        grouped.push({ date: dateStr, messages: [message] });
+      }
+      return grouped;
+    }, []);
+  }
+
+
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogDirectMessageProfileComponent, {
       width: '600px',
