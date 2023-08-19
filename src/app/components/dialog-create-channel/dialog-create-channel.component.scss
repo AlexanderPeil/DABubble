@@ -54,7 +54,7 @@
   }
 }
 
-.inputContainer {
+.FirstInputContainer {
   position: relative;
   width: 100%;
   height: 70px;
@@ -141,28 +141,6 @@
   @include flex_direction_column;
   margin-top: 20px;
   margin-bottom: 10px;
-}
-
-.closeIconContainer {
-  display: flex;
-  padding: 8px;
-  border-radius: 50%;
-
-  &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
-    background-color: #eceefe;
-  }
-
-  img {
-    &:hover {
-      cursor: pointer;
-      transition: all 225ms ease-in-out;
-      transform: scale(1.1);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-    }
-  }
 }
 
 .btnContainer {
