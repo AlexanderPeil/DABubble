@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Observable, Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
 })
-export class SidenavComponent {
+export class SidenavComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialog: MatDialog,
@@ -21,6 +21,7 @@ export class SidenavComponent {
     private channelService: ChannelService,
     private router: Router,
   ) { }
+  
 
   channelsVisible: boolean = true;
   chatsVisible: boolean = true;
@@ -31,6 +32,7 @@ export class SidenavComponent {
   isOnline?: boolean;
   channelData!: Observable<any>;
 
+
   ngOnInit() {
     this.authService.getUsers().subscribe((users) => {
       this.users = users;
@@ -39,23 +41,33 @@ export class SidenavComponent {
     this.channelData = this.channelService.channelData;
   }
 
+
   hideChannels() {
     this.channelsVisible = !this.channelsVisible;
     this.arrowImageRotatedChannel = !this.arrowImageRotatedChannel;
   }
+
 
   hideChats() {
     this.chatsVisible = !this.chatsVisible;
     this.arrowImageRotatedChat = !this.arrowImageRotatedChat;
   }
 
+
   openDialogToCreateChannel() {
     this.dialog.open(DialogCreateChannelComponent);
   }
+
 
   onUserClick(user: User) {
     this.router.navigate(['main', 'direct-message', user.uid]);
   }
 
+
+  ngOnDestroy() {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
 
 }
