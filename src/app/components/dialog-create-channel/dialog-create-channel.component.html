@@ -61,7 +61,7 @@
       aria-label="Select an option"
       (change)="onRadioChange($event)"
     >
-      <mat-radio-button color="primary" value="1"
+      <mat-radio-button color="primary" value="1" (click)="addAllMembers()"
         >Alle Mitglieder hinzufügen</mat-radio-button
       >
       <mat-radio-button color="primary" value="2"
@@ -79,7 +79,7 @@
         mat-dialog-close
         [ngClass]="{ btnDisabled: !radioSelected }"
         [disabled]="!radioSelected"
-        (click)="onSubmit(channel)"
+        (click)="onSubmitWithMembers(channel)"
       >
         Create
       </button>
