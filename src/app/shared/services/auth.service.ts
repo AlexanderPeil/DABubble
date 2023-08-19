@@ -139,9 +139,7 @@ export class AuthService implements OnDestroy {
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: 'Guest', photoURL: randomImageURL });
         await this.setUserData(userCredential.user, true);
-        setTimeout(() => {
-          this.router.navigate(['/main/channel/Financeteam']);
-        }, 2000);
+          this.router.navigate(['main']);
       }
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -269,6 +267,22 @@ export class AuthService implements OnDestroy {
       })
     );
   }
+
+
+  // getUsers(): Observable<User[]> {
+  //   const userCollectionRef = collection(this.firestore, 'users');
+  //   return collectionData(userCollectionRef).pipe(
+  //     map(usersData => usersData.map(data => ({
+  //       uid: data['uid'],
+  //       email: data['email'],
+  //       displayName: data['displayName'],
+  //       emailVerified: data['emailVerified'],
+  //       isOnline: data['isOnline'],
+  //       photoURL: data['photoURL']
+  //     }) as User))
+  //   );
+  // }
+
 
 
   getUsers(searchTerm?: string): Observable<User[]> {
