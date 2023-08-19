@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { Subject, Subscription, combineLatest, filter, map, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, Subscription, combineLatest, filter, map, startWith, switchMap, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
 import { DirectMessageContent } from 'src/app/models/direct-message';
@@ -21,9 +22,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   loggedInUser: User | null = null;
   messageContent: string = '';
   messages: DirectMessageContent[] = [];
+  showUserDropdown: boolean = false;
+  foundUsers: User[] = [];
   showEmojiPicker = false;
-  @ViewChild('emojiContainer') emojiContainer!: ElementRef;
   private ngUnsubscribe = new Subject<void>();
+  @ViewChild('emojiContainer') emojiContainer!: ElementRef;
 
 
   constructor(
@@ -70,6 +73,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
           console.error("Either loggedInUser or selectedUser is null");
         }
       });
+      this.filterUsers();
   }
 
 
@@ -163,6 +167,39 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       this.showEmojiPicker = false;
     }
   }
+
+
+  checkForAtSymbol(event: any): void {
+    const value = event.target.value;
+    if (value.includes('@')) {
+      const query = value.slice(value.lastIndexOf('@') + 1);
+      this.showUserDropdown = true;
+      this.filterUsers(query);
+    } else {
+      this.showUserDropdown = false;
+      this.filterUsers(); 
+    }
+  }
+
+
+  filterUsers(query?: string): void {
+    this.authService.getUsers(query).subscribe((users) => {
+      this.foundUsers = users;
+    });
+  }
+
+
+  selectUser(user: User): void {
+    this.messageContent = this.messageContent.replace(/@[^@]*$/, '@' + user.displayName + ' ');
+    this.showUserDropdown = false;
+  }
+
+
+  triggerAtSymbol(): void {
+    this.messageContent += '@';
+    this.showUserDropdown = true;
+    this.filterUsers();
+  }  
 
 
   ngOnDestroy() {

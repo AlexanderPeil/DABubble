@@ -324,14 +324,14 @@
 
 .directMesageContainer {
     min-height: 300px;
-  
-    &:hover {
-      &::-webkit-scrollbar-thumb {
-        display: flex;
-      }
-    }
-  }
 
-  .directMesageContainer:last-child {
+    &:hover {
+        &::-webkit-scrollbar-thumb {
+            display: flex;
+        }
+    }
+}
+
+.directMesageContainer:last-child {
     margin-bottom: 130px;
 }

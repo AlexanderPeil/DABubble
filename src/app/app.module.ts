@@ -40,6 +40,8 @@ import { DirectMessageComponent } from './components/direct-message/direct-messa
 import { DialogDirectMessageProfileComponent } from './components/dialog-direct-message-profile/dialog-direct-message-profile.component';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { ChannelComponent } from './components/channel/channel.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 
 @NgModule({
   declarations: [
@@ -84,6 +86,7 @@ import { ChannelComponent } from './components/channel/channel.component';
     MatMenuModule,
     MatRadioModule,
     PickerComponent,
+    MatAutocompleteModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
@@ -91,4 +94,4 @@ import { ChannelComponent } from './components/channel/channel.component';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

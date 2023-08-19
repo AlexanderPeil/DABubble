@@ -224,6 +224,7 @@ export class AuthService implements OnDestroy {
       uid: user.uid,
       email: user.email || null,
       displayName: user.displayName || null,
+      displayNameLower: user.displayName?.toLowerCase() || null, 
       emailVerified: user.emailVerified,
       photoURL: user.photoURL
     };
@@ -288,9 +289,11 @@ export class AuthService implements OnDestroy {
   getUsers(searchTerm?: string): Observable<User[]> {
     let userQuery;  
     if (searchTerm) {
+      const lowerCaseTerm = searchTerm.toLowerCase(); 
       userQuery = query(
         collection(this.firestore, 'users'), 
-        where('displayName', '==', searchTerm)
+        where('displayNameLower', '>=', lowerCaseTerm),
+        where('displayNameLower', '<=', lowerCaseTerm + '\uf8ff') 
       );
     } else {
       userQuery = collection(this.firestore, 'users');
@@ -300,12 +303,14 @@ export class AuthService implements OnDestroy {
         uid: data['uid'],
         email: data['email'],
         displayName: data['displayName'],
+        displayNameLower: data['displayNameLower'],
         emailVerified: data['emailVerified'],
         isOnline: data['isOnline'],
         photoURL: data['photoURL']
       }) as User))
     );
-  }
+}
+
 
 
 
