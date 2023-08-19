@@ -68,7 +68,7 @@
         >Bestimmte Leute hinzufügen</mat-radio-button
       >
     </mat-radio-group>
-    <div class="inputContainer">
+    <div class="inputContainer" [class.hiddenInputContainer]="!isInputVisible">
       <input name="addMember" type="text" placeholder="Write Name" />
     </div>
 

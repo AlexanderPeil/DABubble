@@ -162,6 +162,12 @@
   }
 }
 
+.hiddenInputContainer {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+}
+
 .inputContainer {
   position: relative;
   width: 100%;

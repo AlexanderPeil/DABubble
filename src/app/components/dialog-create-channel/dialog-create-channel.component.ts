@@ -20,6 +20,7 @@ export class DialogCreateChannelComponent {
   channel: Channel = new Channel();
   showForm = true;
   radioSelected = false;
+  isInputVisible = false;
 
   constructor(
     private channelService: ChannelService,
@@ -32,6 +33,11 @@ export class DialogCreateChannelComponent {
 
   onRadioChange(event: MatRadioChange) {
     this.radioSelected = true;
+    if (event.value === '2') {
+      this.isInputVisible = true;
+    } else {
+      this.isInputVisible = false;
+    }
   }
 
   onSubmit(channel: any) {
