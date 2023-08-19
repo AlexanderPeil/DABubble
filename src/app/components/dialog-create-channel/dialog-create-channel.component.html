@@ -56,7 +56,11 @@
       </div>
     </div>
 
-    <mat-radio-group class="flex-column" aria-label="Select an option">
+    <mat-radio-group
+      class="flex-column"
+      aria-label="Select an option"
+      (change)="onRadioChange($event)"
+    >
       <mat-radio-button color="primary" value="1"
         >Alle Mitglieder hinzufügen</mat-radio-button
       >
@@ -73,6 +77,8 @@
         type="submit"
         mat-button
         mat-dialog-close
+        [ngClass]="{ btnDisabled: !radioSelected }"
+        [disabled]="!radioSelected"
         (click)="onSubmit(channel)"
       >
         Create
