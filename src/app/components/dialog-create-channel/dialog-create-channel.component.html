@@ -1,4 +1,4 @@
-<div class="padding">
+<div class="padding" *ngIf="showForm">
   <div class="dialogHead">
     <p>Create new Channel</p>
     <div class="closeIconContainer">
@@ -7,30 +7,76 @@
   </div>
 
   <p class="textContainer">
-    Channels are used by your team to communicate. They should ideally be
-    themed #marketing for example
+    Channels are used by your team to communicate. They should ideally be themed
+    #marketing for example
   </p>
 
   <div class="inputHeadAndContainer">
     <p>Channel-Name</p>
     <div class="inputContainer">
       <img src="./assets/img/icons/hashtag.svg" alt="" />
-      <input [(ngModel)]="channel.channelName" type="text" placeholder="e.g. Marketing" />
+      <input
+        [(ngModel)]="channel.channelName"
+        type="text"
+        placeholder="e.g. Marketing"
+      />
     </div>
   </div>
 
   <div class="inputHeadAndContainer">
     <p>Description (optional)</p>
     <div class="inputContainer">
-      <input [(ngModel)]="channel.channelDescription" name="channelDescription" type="text"
-        placeholder="Write your text here" />
+      <input
+        [(ngModel)]="channel.channelDescription"
+        name="channelDescription"
+        type="text"
+        placeholder="Write your text here"
+      />
     </div>
   </div>
 
   <div class="btnContainer">
-    <button [ngClass]="{'btnDisabled': channel.channelName.length == 0}" [disabled]="channel.channelName.length == 0"
-      (click)="openDialogToAddAllOrSpecificUsers(channel)" mat-button mat-dialog-close>
+    <button
+      [ngClass]="{ btnDisabled: channel.channelName.length == 0 }"
+      [disabled]="channel.channelName.length == 0"
+      (click)="toggleForms()"
+      mat-button
+    >
       Create
     </button>
   </div>
 </div>
+
+<form *ngIf="!showForm" type="submit">
+  <div class="dialogContainer">
+    <div class="dialogHead">
+      <p>Add Members</p>
+      <div class="closeIconContainer">
+        <img mat-dialog-close src="assets/img/icons/closeIcon.svg" />
+      </div>
+    </div>
+
+    <mat-radio-group class="flex-column" aria-label="Select an option">
+      <mat-radio-button color="primary" value="1"
+        >Alle Mitglieder hinzufügen</mat-radio-button
+      >
+      <mat-radio-button color="primary" value="2"
+        >Bestimmte Leute hinzufügen</mat-radio-button
+      >
+    </mat-radio-group>
+    <div class="inputContainer">
+      <input name="addMember" type="text" placeholder="Write Name" />
+    </div>
+
+    <div class="btnContainer">
+      <button
+        type="submit"
+        mat-button
+        mat-dialog-close
+        (click)="onSubmit(channel)"
+      >
+        Create
+      </button>
+    </div>
+  </div>
+</form>

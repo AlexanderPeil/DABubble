@@ -8,7 +8,6 @@ import {
 import { Observable } from 'rxjs';
 import { Channel } from 'src/app/models/channel';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogAddUserToChannelComponent } from '../dialog-add-user-to-channel/dialog-add-user-to-channel.component';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 
 @Component({
@@ -18,14 +17,18 @@ import { ChannelService } from 'src/app/shared/services/channel.service';
 })
 export class DialogCreateChannelComponent {
   channel: Channel = new Channel();
+  showForm = true;
 
   constructor(
     private channelService: ChannelService,
     public dialog: MatDialog
-  ) { }
+  ) {}
 
-  openDialogToAddAllOrSpecificUsers(channel: any) {
+  toggleForms() {
+    this.showForm = !this.showForm;
+  }
+
+  onSubmit(channel: any) {
     this.channelService.addChannelService(channel);
-    this.dialog.open(DialogAddUserToChannelComponent);
   }
 }

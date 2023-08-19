@@ -35,13 +35,11 @@ import { DialogShowMembersInChannelComponent } from './components/dialog-show-me
 import { MainComponent } from './components/main/main.component';
 import { DialogAddMembersInChannelComponent } from './components/dialog-add-members-in-channel/dialog-add-members-in-channel.component';
 import { WorkspaceMenuBtnComponent } from './components/workspace-menu-btn/workspace-menu-btn.component';
-import { DialogAddUserToChannelComponent } from './components/dialog-add-user-to-channel/dialog-add-user-to-channel.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { DirectMessageComponent } from './components/direct-message/direct-message.component';
 import { DialogDirectMessageProfileComponent } from './components/dialog-direct-message-profile/dialog-direct-message-profile.component';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { ChannelComponent } from './components/channel/channel.component';
-
 
 @NgModule({
   declarations: [
@@ -67,7 +65,6 @@ import { ChannelComponent } from './components/channel/channel.component';
     MainComponent,
     DialogAddMembersInChannelComponent,
     WorkspaceMenuBtnComponent,
-    DialogAddUserToChannelComponent,
     DirectMessageComponent,
     DialogDirectMessageProfileComponent,
     ChannelComponent,
@@ -94,4 +91,4 @@ import { ChannelComponent } from './components/channel/channel.component';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
