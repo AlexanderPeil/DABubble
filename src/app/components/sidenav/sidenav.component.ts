@@ -18,10 +18,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private authService: AuthService,
-    private channelService: ChannelService,
+    public channelService: ChannelService,
     private router: Router,
   ) { }
-  
+
 
   channelsVisible: boolean = true;
   chatsVisible: boolean = true;
@@ -30,7 +30,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
   users: User[] = [];
   userSubscription!: Subscription;
   isOnline?: boolean;
-  channelData!: Observable<any>;
 
 
   ngOnInit() {
@@ -38,7 +37,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
       this.users = users;
     });
     this.channelService.getChannelService();
-    this.channelData = this.channelService.channelData;
   }
 
 

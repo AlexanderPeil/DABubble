@@ -139,7 +139,7 @@ export class AuthService implements OnDestroy {
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: 'Guest', photoURL: randomImageURL });
         await this.setUserData(userCredential.user, true);
-          this.router.navigate(['main']);
+        this.router.navigate(['main/channel/0wonVaqt8y6l3tohATQB']);
       }
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -224,7 +224,7 @@ export class AuthService implements OnDestroy {
       uid: user.uid,
       email: user.email || null,
       displayName: user.displayName || null,
-      displayNameLower: user.displayName?.toLowerCase() || null, 
+      displayNameLower: user.displayName?.toLowerCase() || null,
       emailVerified: user.emailVerified,
       photoURL: user.photoURL
     };
@@ -287,17 +287,17 @@ export class AuthService implements OnDestroy {
 
 
   getUsers(searchTerm?: string): Observable<User[]> {
-    let userQuery;  
+    let userQuery;
     if (searchTerm) {
-      const lowerCaseTerm = searchTerm.toLowerCase(); 
+      const lowerCaseTerm = searchTerm.toLowerCase();
       userQuery = query(
-        collection(this.firestore, 'users'), 
+        collection(this.firestore, 'users'),
         where('displayNameLower', '>=', lowerCaseTerm),
-        where('displayNameLower', '<=', lowerCaseTerm + '\uf8ff') 
+        where('displayNameLower', '<=', lowerCaseTerm + '\uf8ff')
       );
     } else {
       userQuery = collection(this.firestore, 'users');
-    }  
+    }
     return collectionData(userQuery).pipe(
       map(usersData => usersData.map(data => ({
         uid: data['uid'],
@@ -309,7 +309,7 @@ export class AuthService implements OnDestroy {
         photoURL: data['photoURL']
       }) as User))
     );
-}
+  }
 
 
 

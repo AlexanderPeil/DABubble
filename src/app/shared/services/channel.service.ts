@@ -6,6 +6,8 @@ import {
   addDoc,
   doc,
   getDoc,
+  orderBy,
+  query,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Channel } from 'src/app/models/channel';
@@ -16,7 +18,6 @@ import { Channel } from 'src/app/models/channel';
 export class ChannelService {
   channelData!: Observable<any>;
   channel: any = new Channel();
-
 
   constructor(private firestore: Firestore) {
 
@@ -30,8 +31,7 @@ export class ChannelService {
 
 
   getChannelService() {
-    const collectionInstance = collection(this.firestore, 'channels');
-    collectionData(collectionInstance, { idField: 'id' });
+    const collectionInstance = query(collection(this.firestore, 'channels'), orderBy('channelName'));
     this.channelData = collectionData(collectionInstance, { idField: 'id' });
   }
 

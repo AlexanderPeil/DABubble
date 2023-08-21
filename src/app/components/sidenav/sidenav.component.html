@@ -27,7 +27,7 @@
 
   <ul id="allChannels" [ngStyle]="{ display: channelsVisible ? 'unset' : 'none' }">
     <li [routerLinkActive]="'activeChannelLiElement'" [routerLink]="['/main/channel', channel.id]"
-      *ngFor="let channel of channelData | async" class="channel">
+      *ngFor="let channel of channelService.channelData | async" class="channel">
       <img [routerLinkActive]="'activeChannelImgAndPElement'" src="./assets/img/icons/tag.svg" alt="" />
       <p [routerLinkActive]="'activeChannelImgAndPElement'">{{ channel.channelName }}</p>
     </li>
