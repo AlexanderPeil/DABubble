@@ -1,7 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { Channel } from 'src/app/models/channel';
 import { ChannelService } from 'src/app/shared/services/channel.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,10 +20,8 @@ export class DialogEditChannelComponent {
   changedChannelDescription: string = '';
 
 
-  constructor(public channelService: ChannelService, public dialogRef: MatDialogRef<DialogEditChannelComponent>, @Inject(MAT_DIALOG_DATA) public data: {
-    channelName: string,
-    channelId: string,
-    channelDescription: string
+  constructor(public router: Router, public channelService: ChannelService, @Inject(MAT_DIALOG_DATA) public data: {
+    channelName: string, channelId: string, channelDescription: string
   }) {
 
   }
@@ -34,7 +33,7 @@ export class DialogEditChannelComponent {
 
 
   getValueForNewChannelName($event: any) {
-    this.changedChannelName = $event;
+    this.changedChannelName = $event.toLowerCase();
   }
 
 
