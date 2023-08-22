@@ -53,7 +53,7 @@
         <textarea [(ngModel)]="messageContent" placeholder="Write a message..."
             (input)="checkForAtSymbol($event)"></textarea>
 
-        <div *ngIf="showUserDropdown" class="user-dropdown">
+        <div *ngIf="showUserDropdown" class="user-dropdown" #userMenu>
             <div *ngFor="let user of foundUsers" (click)="selectUser(user)">
                 {{ user.displayName }}
             </div>
@@ -65,7 +65,7 @@
         <div class="smileyIcon smileyContainer" *ngIf="showEmojiPicker" #emojiContainer>
             <emoji-mart (emojiClick)="addEmoji($event)"></emoji-mart>
         </div>
-        <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol()">
+        <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol($event)">
         <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg">
     </div>
 

@@ -249,6 +249,7 @@
     position: absolute;
     bottom: 61px;
     left: 42px;
+    cursor: pointer;
 
     &:hover {
         transition: all 225ms ease-in-out;
@@ -261,14 +262,15 @@
     position: absolute;
     bottom: 55px;
     left: 100px;
+}
 
-    .smileyIconHover {
+.smileyIconHover {
+    cursor: pointer;
 
-        &:hover {
-            transition: all 225ms ease-in-out;
-            transform: scale(1.05);
-            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-        }
+    &:hover {
+        transition: all 225ms ease-in-out;
+        transform: scale(1.05);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
 }
 
@@ -283,6 +285,7 @@
     position: absolute;
     bottom: 55px;
     left: 150px;
+    cursor: pointer;
 
     &:hover {
         transform: scale(1.05);
@@ -334,4 +337,23 @@
 
 .directMesageContainer:last-child {
     margin-bottom: 130px;
+}
+
+.user-dropdown {
+    position: relative;
+    background: white;
+    z-index: 999;
+    width: 300px;
+    overflow-y: auto;
+    left: 18px;
+    bottom: 120px;
+    cursor: pointer;
+
+    div {
+
+        &:hover {
+            transition: all 225ms ease-in-out;
+            color: #797EF3;
+        }
+    }
 }

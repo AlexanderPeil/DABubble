@@ -24,9 +24,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   messages: DirectMessageContent[] = [];
   showUserDropdown: boolean = false;
   foundUsers: User[] = [];
-  showEmojiPicker = false;
   private ngUnsubscribe = new Subject<void>();
+  showEmojiPicker = false;
   @ViewChild('emojiContainer') emojiContainer!: ElementRef;
+  @ViewChild('userMenu') userMenu!: ElementRef;
+
 
 
   constructor(
@@ -73,7 +75,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
           console.error("Either loggedInUser or selectedUser is null");
         }
       });
-      this.filterUsers();
+    this.filterUsers();
   }
 
 
@@ -150,7 +152,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   toggleEmojiPicker(event: MouseEvent) {
     event.stopPropagation();
     this.showEmojiPicker = !this.showEmojiPicker;
-    console.log(this.showEmojiPicker);
   }
 
 
@@ -163,8 +164,15 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: Event) {
-    if (this.showEmojiPicker && !this.emojiContainer.nativeElement.contains(event.target)) {
+    const clickedInsideEmojiPicker = this.emojiContainer && this.emojiContainer.nativeElement.contains(event.target);
+    const clickedInsideUserMenu = this.userMenu && this.userMenu.nativeElement.contains(event.target);
+
+    if (this.showEmojiPicker && !clickedInsideEmojiPicker) {
       this.showEmojiPicker = false;
+    }
+
+    if (this.showUserDropdown && !clickedInsideUserMenu) {
+      this.showUserDropdown = false;
     }
   }
 
@@ -177,8 +185,16 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       this.filterUsers(query);
     } else {
       this.showUserDropdown = false;
-      this.filterUsers(); 
+      this.filterUsers();
     }
+  }
+
+
+  triggerAtSymbol(event: MouseEvent): void {
+    event.stopPropagation();
+    this.messageContent += '@';
+    this.showUserDropdown = true;
+    this.filterUsers();
   }
 
 
@@ -193,13 +209,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     this.messageContent = this.messageContent.replace(/@[^@]*$/, '@' + user.displayName + ' ');
     this.showUserDropdown = false;
   }
-
-
-  triggerAtSymbol(): void {
-    this.messageContent += '@';
-    this.showUserDropdown = true;
-    this.filterUsers();
-  }  
 
 
   ngOnDestroy() {
