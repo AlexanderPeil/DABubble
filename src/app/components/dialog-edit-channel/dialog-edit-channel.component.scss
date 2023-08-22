@@ -93,6 +93,8 @@
 }
 
 .textEdit {
+    background-color: white;
+    border: unset;
     color: #535AF1;
     font-weight: 600;
     font-size: 18px;
@@ -177,4 +179,15 @@
 .translateToTBottom {
     transition: all 125ms ease-in-out;
     transform: translate(0, 0);
+}
+
+.disableSaveBtn {
+    color: gray;
+
+    &:hover {
+        cursor: unset;
+        pointer-events: none;
+        color: gray;
+        transform: unset;
+    }
 }

@@ -139,7 +139,7 @@ export class AuthService implements OnDestroy {
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: 'Guest', photoURL: randomImageURL });
         await this.setUserData(userCredential.user, true);
-        this.router.navigate(['main/channel/0wonVaqt8y6l3tohATQB']);
+        this.router.navigate(['main/channel/O19IWwcZ9CnTRdPe6YEa']);
       }
     } catch (error) {
       console.error('Sign in failed:', error);

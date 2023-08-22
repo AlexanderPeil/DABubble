@@ -18,7 +18,7 @@ const routes: Routes = [
     path: 'main', component: MainComponent, children: [
       { path: 'channel/:id', component: ChannelComponent },
       { path: 'direct-message/:id', component: DirectMessageComponent },
-      { path: 'channel/0wonVaqt8y6l3tohATQB', component: ChannelComponent },
+      { path: 'channel/O19IWwcZ9CnTRdPe6YEa', component: ChannelComponent },
       // { path: '', redirectTo: 'channel/:id', pathMatch: 'full' },
     ]
   },

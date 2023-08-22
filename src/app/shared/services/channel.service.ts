@@ -6,6 +6,8 @@ import {
   addDoc,
   doc,
   getDoc,
+  updateDoc,
+  onSnapshot,
   orderBy,
   query,
 } from '@angular/fire/firestore';
@@ -18,6 +20,7 @@ import { Channel } from 'src/app/models/channel';
 export class ChannelService {
   channelData!: Observable<any>;
   channel: any = new Channel();
+
 
   constructor(private firestore: Firestore) {
 
@@ -36,8 +39,21 @@ export class ChannelService {
   }
 
 
-  updateChannelService() {
+  updateChannelNameService(changedChannelName: string, channelId: string,) {
+    const docInstance = doc(this.firestore, 'channels', channelId);
+    const updateData = {
+      channelName: changedChannelName,
+    }
+    updateDoc(docInstance, updateData);
+  }
 
+
+  updateChannelDescriptionService(changedChannelDescription: string, channelId: string,) {
+    const docInstance = doc(this.firestore, 'channels', channelId);
+    const updateData = {
+      channelDescription: changedChannelDescription,
+    }
+    updateDoc(docInstance, updateData);
   }
 
 

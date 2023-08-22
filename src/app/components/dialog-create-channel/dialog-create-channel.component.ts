@@ -28,7 +28,7 @@ export class DialogCreateChannelComponent {
     private channelService: ChannelService,
     private authService: AuthService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   toggleForms() {
     this.showForm = !this.showForm;
@@ -54,14 +54,14 @@ export class DialogCreateChannelComponent {
         map((allUsersData) =>
           allUsersData.map(
             (data) =>
-              ({
-                uid: data['uid'],
-                email: data['email'],
-                displayName: data['displayName'],
-                emailVerified: data['emailVerified'],
-                isOnline: data['isOnline'],
-                photoURL: data['photoURL'],
-              } as User)
+            ({
+              uid: data['uid'],
+              email: data['email'],
+              displayName: data['displayName'],
+              emailVerified: data['emailVerified'],
+              isOnline: data['isOnline'],
+              photoURL: data['photoURL'],
+            } as User)
           )
         )
       )
@@ -78,10 +78,17 @@ export class DialogCreateChannelComponent {
       await this.addAllMembers(); // Call addAllMembers only if radioSelected and user IDs are not defined
 
       // Call the addChannelService method to create the channel
+      this.getValueForChannelNameAndConvertToLowerCase(channel.channelName);
       this.channelService.addChannelService(this.channel);
     } else {
       // Call the addChannelService method to create the channel without adding all members
+      this.getValueForChannelNameAndConvertToLowerCase(channel.channelName);
       this.channelService.addChannelService(this.channel);
     }
+  }
+
+  // Used to convert channel names to lowercase to preserve alphabetical order.
+  getValueForChannelNameAndConvertToLowerCase(channelName: string) {
+    this.channel.channelName = channelName.toLowerCase();
   }
 }

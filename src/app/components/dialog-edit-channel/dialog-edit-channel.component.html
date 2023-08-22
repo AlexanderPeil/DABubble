@@ -2,7 +2,7 @@
     <div class="dialogTopContainer">
         <div class="dialogTopChildContainer">
             <img src="assets/img/icons/hashtag.svg">
-            <p>{{ channelService.channel.channelName }}</p>
+            <p>{{ data.channelName }}</p>
         </div>
 
         <div class="closeIconContainer">
@@ -15,27 +15,31 @@
         <div [ngClass]="{'translateToTop': showInputToEditChannelName, 'translateToTBottom': !showInputToEditChannelName}"
             class="textChannelNameAndEditContainer">
             <p class="textChannelName">Channel Name</p>
-            <p [class.d-none]="showInputToEditChannelName" (click)="openInputToEditChannelName()" class="textEdit">Edit
+            <p [class.d-none]="showInputToEditChannelName" (click)="openInputToEditChannelName()" class="textEdit">
+                Edit
             </p>
+
             <!------------------------ Only displayed when editing the channel name ------------------------>
-            <p [class.show]="showInputToEditChannelName" (click)="closeInputToEditChannelName()"
+            <button [disabled]="data.channelName == ''" [class.disableSaveBtn]="data.channelName == ''"
+                [class.show]=" showInputToEditChannelName" (click)="closeInputToEditChannelNameAndSafeChanges()"
                 class="textEdit d-none">
                 Save
-            </p>
+            </button>
             <!------------------------ Only displayed when editing the channel name ------------------------>
         </div>
 
 
         <div [class.d-none]="showInputToEditChannelName" class="channelNameAndHashtagIconContainer">
             <img src="assets/img/icons/hashtag.svg">
-            <p>{{ channelService.channel.channelName }}</p>
+            <p>{{ data.channelName }}</p>
         </div>
 
 
         <!------------------------ Only displayed when editing the channel name ------------------------>
         <div [class.show]="showInputToEditChannelName" class="inputContainer d-none">
             <img src="assets/img/icons/hashtag.svg">
-            <input type="text" [placeholder]="channelService.channel.channelName">
+            <input (ngModelChange)="getValueForNewChannelName($event)" [(ngModel)]="data.channelName" type="text"
+                [placeholder]="data.channelName">
         </div>
         <!------------------------ Only displayed when editing the channel name ------------------------>
     </div>
@@ -50,28 +54,22 @@
                 Edit
             </p>
             <!------------------------ Only displayed when editing the channel description ------------------------>
-            <p [class.show]="showInputToEditChannelDescription" (click)="closeInputToEditChannelDescription()"
-                class="textEdit d-none">
+            <p (click)="closeInputToEditChannelDescriptionAndSafeChanges()"
+                [class.show]="showInputToEditChannelDescription" class="textEdit d-none">
                 Save
             </p>
             <!------------------------ Only displayed when editing the channel description ------------------------>
         </div>
 
-        <p *ngIf="channelService.channel.channelDescription" [class.d-none]="showInputToEditChannelDescription">
-            {{ channelService.channel.channelDescription }}
+        <p [class.d-none]="showInputToEditChannelDescription">
+            {{ data.channelDescription ? data.channelDescription : 'Here stand the Channel Description'}}
         </p>
-
-
-        <!------------------------ Only displayed when channel description is empty ------------------------>
-        <p *ngIf="channelService.channel.channelDescription == ''" [class.d-none]="showInputToEditChannelDescription">
-            Here stand the Channel Description
-        </p>
-        <!------------------------  Only displayed when channel description is empty ------------------------>
 
 
         <!------------------------ Only displayed when editing the channel description ------------------------>
         <div [class.show]="showInputToEditChannelDescription" class="inputContainer d-none">
-            <input style="padding-left: 20px; padding-right: 30px;" type="text" placeholder="Your text here">
+            <input (ngModelChange)="getValueForNewChannelDescription($event)" [(ngModel)]="data.channelDescription"
+                style="padding-left: 20px; padding-right: 30px;" type="text" placeholder="Your text here">
         </div>
         <!------------------------ Only displayed when editing the channel description ------------------------>
 

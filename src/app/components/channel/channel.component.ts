@@ -40,7 +40,13 @@ export class ChannelComponent implements OnInit {
 
 
   openDialogToEditChannel() {
-    this.dialog.open(DialogEditChannelComponent);
+    this.dialog.open(DialogEditChannelComponent, {
+      data: {
+        channelId: this.channelId,
+        channelName: this.channelService.channel.channelName,
+        channelDescription: this.channelService.channel.channelDescription,
+      }
+    });
     this.getCurrentChannelIdInUrl();
     this.channelService.getSingleChannelService(this.channelId);
   }

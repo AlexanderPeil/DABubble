@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { Channel } from 'src/app/models/channel';
 import { ChannelService } from 'src/app/shared/services/channel.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
@@ -12,9 +14,16 @@ import { ChannelService } from 'src/app/shared/services/channel.service';
 export class DialogEditChannelComponent {
   showInputToEditChannelName: boolean = false;
   showInputToEditChannelDescription: boolean = false;
+  channel: any = new Channel();
+  changedChannelName: string = '';
+  changedChannelDescription: string = '';
 
 
-  constructor(public channelService: ChannelService) {
+  constructor(public channelService: ChannelService, public dialogRef: MatDialogRef<DialogEditChannelComponent>, @Inject(MAT_DIALOG_DATA) public data: {
+    channelName: string,
+    channelId: string,
+    channelDescription: string
+  }) {
 
   }
 
@@ -24,8 +33,16 @@ export class DialogEditChannelComponent {
   }
 
 
-  closeInputToEditChannelName() {
+  getValueForNewChannelName($event: any) {
+    this.changedChannelName = $event;
+  }
+
+
+  closeInputToEditChannelNameAndSafeChanges() {
     this.showInputToEditChannelName = false;
+    if (!this.showInputToEditChannelName) {
+      this.channelService.updateChannelNameService(this.changedChannelName, this.data.channelId); // Get the ChannelId from @Inject in the Constructor.
+    }
   }
 
 
@@ -34,7 +51,15 @@ export class DialogEditChannelComponent {
   }
 
 
-  closeInputToEditChannelDescription() {
+  getValueForNewChannelDescription($event: any) {
+    this.changedChannelDescription = $event;
+  }
+
+
+  closeInputToEditChannelDescriptionAndSafeChanges() {
     this.showInputToEditChannelDescription = false;
+    if (!this.showInputToEditChannelDescription) {
+      this.channelService.updateChannelDescriptionService(this.changedChannelDescription, this.data.channelId); // Get the ChannelId from @Inject in the Constructor.
+    }
   }
 }
