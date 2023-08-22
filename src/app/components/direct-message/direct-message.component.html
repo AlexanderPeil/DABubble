@@ -13,7 +13,7 @@
     </div>
 
 
-    <div class="messagesContainer">
+    <div class="messagesContainer scrolleableContainer">
         <div *ngFor="let group of groupMessagesByDate(messages)" class="directMesageContainer">
             <div class="date">
                 <hr>
@@ -53,9 +53,10 @@
         <textarea [(ngModel)]="messageContent" placeholder="Write a message..."
             (input)="checkForAtSymbol($event)"></textarea>
 
-        <div *ngIf="showUserDropdown" class="user-dropdown" #userMenu>
+        <div *ngIf="showUserDropdown" class="user-dropdown scrolleableContainer" #userMenu>
             <div *ngFor="let user of foundUsers" (click)="selectUser(user)">
-                {{ user.displayName }}
+                <img [src]="user.photoURL">
+                <span>{{ user.displayName }}</span> 
             </div>
         </div>
 
