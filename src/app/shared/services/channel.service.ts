@@ -45,15 +45,17 @@ export class ChannelService {
       channelName: changedChannelName,
     }
     updateDoc(docInstance, updateData);
+    window.location.reload();
   }
 
 
-  updateChannelDescriptionService(changedChannelDescription: string, channelId: string,) {
+  updateChannelDescriptionService(changedChannelDescription: string, channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
     const updateData = {
       channelDescription: changedChannelDescription,
     }
     updateDoc(docInstance, updateData);
+    window.location.reload();
   }
 
 

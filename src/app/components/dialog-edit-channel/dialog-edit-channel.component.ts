@@ -18,6 +18,7 @@ export class DialogEditChannelComponent {
   channel: any = new Channel();
   changedChannelName: string = '';
   changedChannelDescription: string = '';
+  channelNameHasChanged: boolean = false;
 
 
   constructor(public router: Router, public channelService: ChannelService, @Inject(MAT_DIALOG_DATA) public data: {
@@ -33,6 +34,7 @@ export class DialogEditChannelComponent {
 
 
   getValueForNewChannelName($event: any) {
+    this.channelNameHasChanged = true;
     this.changedChannelName = $event.toLowerCase();
   }
 

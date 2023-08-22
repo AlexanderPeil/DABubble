@@ -20,7 +20,8 @@
             </p>
 
             <!------------------------ Only displayed when editing the channel name ------------------------>
-            <button [disabled]="data.channelName == ''" [class.disableSaveBtn]="data.channelName == ''"
+            <button [disabled]="data.channelName == '' || !channelNameHasChanged"
+                [class.disableSaveBtn]="data.channelName == '' || !channelNameHasChanged"
                 [class.show]=" showInputToEditChannelName" (click)="closeInputToEditChannelNameAndSafeChanges()"
                 class="textEdit d-none">
                 Save
@@ -62,8 +63,9 @@
         </div>
 
         <p [class.d-none]="showInputToEditChannelDescription">
-            {{ data.channelDescription ? data.channelDescription : 'Here stand the Channel Description'}}
+            {{ data.channelDescription ? data.channelDescription : 'Here stand the Channel Description' }}
         </p>
+
 
 
         <!------------------------ Only displayed when editing the channel description ------------------------>
