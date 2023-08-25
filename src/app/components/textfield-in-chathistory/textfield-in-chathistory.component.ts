@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StorageService } from 'src/app/shared/services/storage.service';
 
 
 @Component({
@@ -9,5 +10,18 @@ import { Component } from '@angular/core';
 
 
 export class TextfieldInChathistoryComponent {
+
+
+
+  constructor(public storageService: StorageService) {
+
+  }
+
+
+  chooseFile($event: any) {
+    this.storageService.chooseFileSevice($event);
+  }
+
+
 
 }

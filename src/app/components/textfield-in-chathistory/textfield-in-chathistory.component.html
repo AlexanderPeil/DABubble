@@ -3,9 +3,10 @@
 
     <textarea placeholder="Message at..."></textarea>
 
-    <div class="containerAddIcon">
+    <label for="input" class="containerAddIcon">
         <img src="assets/img/icons/add.svg">
-    </div>
+        <input (change)="chooseFile($event)" id="input" type="file" hidden>
+    </label>
 
     <hr>
 
