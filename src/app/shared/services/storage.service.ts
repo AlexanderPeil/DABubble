@@ -9,6 +9,9 @@ import { Storage, getDownloadURL, ref, uploadBytesResumable } from "@angular/fir
 
 export class StorageService {
   file: any = {};
+  path: string = '';
+  donwnloadUrlToDisplayUploadedData: string = '';
+  downloadUrlExist: boolean = false;
 
 
   constructor(public storage: Storage) {
@@ -18,15 +21,27 @@ export class StorageService {
 
   chooseFileSevice($event: any) {
     this.file = $event.target.files[0];
-    console.log(this.file);
+    this.getDownloadUrlToDisplayDataInTextfieldService();
     this.uploadDataService();
+  }
+
+
+  getDownloadUrlToDisplayDataInTextfieldService() {
+    if (this.dataSizeIsRightService() && this.dataFormatIsRightService()) {
+      const storageRef = ref(this.storage, `images/${this.file.name}`);
+      getDownloadURL(storageRef)
+        .then((downloadURL) => {
+          this.downloadUrlExist = true;
+          this.donwnloadUrlToDisplayUploadedData = downloadURL;
+        });
+    }
   }
 
 
   uploadDataService() {
     const storageRef = ref(this.storage, `images/${this.file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, this.file);
-    if (this.dataSizeIsRightService() && this.dataExtensionIsRightService()) {
+    if (this.dataSizeIsRightService() && this.dataFormatIsRightService()) {
       this.dataUploadIsInProgressService(uploadTask);
     } else {
       uploadTask.cancel();
@@ -40,7 +55,7 @@ export class StorageService {
   }
 
 
-  dataExtensionIsRightService() {
+  dataFormatIsRightService() {
     return this.file.type == 'image/jpeg' || this.file.type == 'image/png' || this.file.type == 'application/pdf';
   }
 

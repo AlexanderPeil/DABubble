@@ -22,6 +22,4 @@ export class TextfieldInChathistoryComponent {
     this.storageService.chooseFileSevice($event);
   }
 
-
-
 }

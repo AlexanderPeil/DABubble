@@ -1,5 +1,6 @@
 <div class="containerTextarea">
-    <!-- <input contenteditable type="text" placeholder="Message at..."> -->
+    <img class="uploadedImage" *ngIf="storageService.downloadUrlExist"
+        [src]="storageService.donwnloadUrlToDisplayUploadedData">
 
     <textarea placeholder="Message at..."></textarea>
 
