@@ -18,6 +18,7 @@ export class StorageService {
 
   chooseFileSevice($event: any) {
     this.file = $event.target.files[0];
+    console.log(this.file);
     this.uploadDataService();
   }
 
@@ -25,21 +26,26 @@ export class StorageService {
   uploadDataService() {
     const storageRef = ref(this.storage, `images/${this.file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, this.file);
-    if (this.fielIsTooBig()) {
-      uploadTask.cancel();
-      console.error('File is too big');
+    if (this.dataSizeIsRightService() && this.dataExtensionIsRightService()) {
+      this.dataUploadIsInProgressService(uploadTask);
     } else {
-      this.dataUploadIsInProgress(uploadTask);
+      uploadTask.cancel();
+      console.error('File is too big or Wrong');
     }
   }
 
 
-  fielIsTooBig() {
-    return this.file.size > 500000;
+  dataSizeIsRightService() {
+    return this.file.size <= 500000;
   }
 
 
-  dataUploadIsInProgress(uploadTask: any) {
+  dataExtensionIsRightService() {
+    return this.file.type == 'image/jpeg' || this.file.type == 'image/png' || this.file.type == 'application/pdf';
+  }
+
+
+  dataUploadIsInProgressService(uploadTask: any) {
     uploadTask.on('state_changed', (data: any) => {
       const progress = (data.bytesTransferred / data.totalBytes) * 100;
       console.log('Upload is ' + progress + '% done');
