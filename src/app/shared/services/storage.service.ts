@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage, getDownloadURL, ref, uploadBytesResumable } from "@angular/fire/storage";
+import { MatDialog } from '@angular/material/dialog';
+import { DialogUploadedDataErrorComponent } from 'src/app/components/dialog-uploaded-data-error/dialog-uploaded-data-error.component';
 
 
 @Injectable({
@@ -10,32 +12,31 @@ import { Storage, getDownloadURL, ref, uploadBytesResumable } from "@angular/fir
 export class StorageService {
   file: any = {};
   path: string = '';
-  donwnloadUrlToDisplayUploadedData: string = '';
-  downloadUrlExist: boolean = false;
+  // donwnloadUrlToDisplayUploadedData: any = [];
+  // downloadUrlExist: boolean = false;
 
 
-  constructor(public storage: Storage) {
+  constructor(public storage: Storage, public dialog: MatDialog) {
 
   }
 
 
   chooseFileSevice($event: any) {
     this.file = $event.target.files[0];
-    this.getDownloadUrlToDisplayDataInTextfieldService();
+    // this.getDownloadUrlToDisplayDataInTextfieldService();
     this.uploadDataService();
   }
 
 
-  getDownloadUrlToDisplayDataInTextfieldService() {
-    if (this.dataSizeIsRightService() && this.dataFormatIsRightService()) {
-      const storageRef = ref(this.storage, `images/${this.file.name}`);
-      getDownloadURL(storageRef)
-        .then((downloadURL) => {
-          this.downloadUrlExist = true;
-          this.donwnloadUrlToDisplayUploadedData = downloadURL;
-        });
-    }
-  }
+  // getDownloadUrlToDisplayDataInTextfieldService() {
+  //   if (this.dataSizeIsRightService() && this.dataFormatIsRightService()) {
+  //     const storageRef = ref(this.storage, `images/${this.file.name}`);
+  //     getDownloadURL(storageRef)
+  //       .then((downloadURL) => {
+
+  //       });
+  //   }
+  // }
 
 
   uploadDataService() {
@@ -45,7 +46,8 @@ export class StorageService {
       this.dataUploadIsInProgressService(uploadTask);
     } else {
       uploadTask.cancel();
-      console.error('File is too big or Wrong');
+      this.dialog.open(DialogUploadedDataErrorComponent);
+      // console.error('File is too big or Wrong');
     }
   }
 
@@ -71,6 +73,8 @@ export class StorageService {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log('File available at', downloadURL);
+          // this.donwnloadUrlToDisplayUploadedData.push(downloadURL);
+          // console.log(this.donwnloadUrlToDisplayUploadedData);
         });
       }
     );

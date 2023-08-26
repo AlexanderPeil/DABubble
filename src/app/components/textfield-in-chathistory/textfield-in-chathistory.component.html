@@ -1,6 +1,9 @@
 <div class="containerTextarea">
-    <img class="uploadedImage" *ngIf="storageService.downloadUrlExist"
-        [src]="storageService.donwnloadUrlToDisplayUploadedData">
+
+    <!-- <div class="containerUploadedDatas">
+        <img *ngFor="let donwnloadUrlToDisplayUploadedDatas of storageService.donwnloadUrlToDisplayUploadedData"
+            class="uploadedImage" src="{{donwnloadUrlToDisplayUploadedDatas}}">
+    </div> -->
 
     <textarea placeholder="Message at..."></textarea>
 

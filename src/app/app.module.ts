@@ -42,6 +42,7 @@ import { DialogDirectMessageProfileComponent } from './components/dialog-direct-
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { ChannelComponent } from './components/channel/channel.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DialogUploadedDataErrorComponent } from './components/dialog-uploaded-data-error/dialog-uploaded-data-error.component';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     DirectMessageComponent,
     DialogDirectMessageProfileComponent,
     ChannelComponent,
+    DialogUploadedDataErrorComponent,
   ],
 
   imports: [

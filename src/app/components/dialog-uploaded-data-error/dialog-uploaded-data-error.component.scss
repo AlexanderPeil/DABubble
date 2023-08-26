@@ -1,0 +1,36 @@
+@import '../../shared/variables.scss';
+
+.dialogMainContainer {
+    padding: 25px;
+}
+
+.topContainerErrorMessage {
+    margin: 0;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.middleContainerErrorMessage {
+    margin-top: 50px;
+
+    p {
+        margin-bottom: 15px;
+        font-weight: 400;
+        font-size: 18px;
+    }
+}
+
+.btnContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+
+    button {
+        width: 150px;
+        height: 60px;
+        font-size: 18px;
+        font-weight: 700;
+        border-radius: 25px;
+        @include button_primary;
+    }
+}

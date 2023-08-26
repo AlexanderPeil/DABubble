@@ -35,14 +35,20 @@
     }
 }
 
-.uploadedImage {
-    width: 70px;
-    height: 70px;
-    z-index: 1;
-    border-radius: 10px;
-    position: absolute;
-    left: 170px;
-}
+// .containerUploadedDatas {
+//     display: flex;
+//     gap: 20px;
+//     position: absolute;
+//     left: 170px;
+
+//     img {
+//         width: 60px;
+//         height: 60px;
+//         z-index: 1;
+//         border-radius: 10px;
+
+//     }
+// }
 
 .containerAddIcon {
     padding: 8px;
