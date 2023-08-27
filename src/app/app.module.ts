@@ -43,6 +43,8 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { ChannelComponent } from './components/channel/channel.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DialogUploadedDataErrorComponent } from './components/dialog-uploaded-data-error/dialog-uploaded-data-error.component';
+import { QuillModule } from 'ngx-quill';
+import { QuillConfigModule } from 'ngx-quill/config';
 
 
 @NgModule({
@@ -90,6 +92,10 @@ import { DialogUploadedDataErrorComponent } from './components/dialog-uploaded-d
     MatRadioModule,
     PickerComponent,
     MatAutocompleteModule,
+    QuillModule,
+    QuillConfigModule.forRoot({
+
+    }),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

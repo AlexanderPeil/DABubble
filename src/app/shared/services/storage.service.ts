@@ -47,7 +47,6 @@ export class StorageService {
     } else {
       uploadTask.cancel();
       this.dialog.open(DialogUploadedDataErrorComponent);
-      // console.error('File is too big or Wrong');
     }
   }
 
