@@ -7,6 +7,7 @@ import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-works
 import { ActivatedRoute } from '@angular/router';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Channel } from 'src/app/models/channel';
+import { StorageService } from 'src/app/shared/services/storage.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class ChannelComponent implements OnInit {
   channel: Channel = new Channel();
 
 
-  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService) {
+  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService) {
 
   }
 
@@ -61,5 +62,10 @@ export class ChannelComponent implements OnInit {
     this.dialog.open(DialogAddMembersInChannelComponent);
     this.getCurrentChannelIdInUrl();
     this.channelService.getSingleChannelService(this.channelId);
+  }
+
+
+  chooseFile($event: any) {
+    this.storageService.chooseFileSevice($event);
   }
 }

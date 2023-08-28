@@ -13,7 +13,6 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { LoginComponent } from './components/login/login.component';
 import { MessageComponent } from './components/message/message.component';
-import { TextfieldInChathistoryComponent } from './components/textfield-in-chathistory/textfield-in-chathistory.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
@@ -54,7 +53,6 @@ import { QuillConfigModule } from 'ngx-quill/config';
     SidenavComponent,
     LoginComponent,
     MessageComponent,
-    TextfieldInChathistoryComponent,
     SignUpComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
@@ -97,10 +95,6 @@ import { QuillConfigModule } from 'ngx-quill/config';
       modules: {
         toolbar: [],
       },
-      // customOptions: [{
-      //   import: 'formats/font',
-      //   whitelist: ['Nunito', 'roboto'],
-      // }]
     }),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
