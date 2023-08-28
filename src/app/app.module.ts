@@ -94,7 +94,13 @@ import { QuillConfigModule } from 'ngx-quill/config';
     MatAutocompleteModule,
     QuillModule,
     QuillConfigModule.forRoot({
-
+      modules: {
+        toolbar: [],
+      },
+      // customOptions: [{
+      //   import: 'formats/font',
+      //   whitelist: ['Nunito', 'roboto'],
+      // }]
     }),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),

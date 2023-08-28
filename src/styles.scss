@@ -95,6 +95,40 @@ app-workspace-menu-btn {
 
 /************************************ Styles for the Scrollbar ************************************/
 
+/************************************ Change Global Style from quill-editor ************************************/
+.ql-editor.ql-blank::before {
+  font-family: Nunito, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #686868;
+}
+
+.ql-editor p,
+.ql-editor ol,
+.ql-editor ul,
+.ql-editor pre,
+.ql-editor blockquote,
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3,
+.ql-editor h4,
+.ql-editor h5,
+.ql-editor h6 {
+  font-size: 18px;
+  font-family: Nunito, sans-serif;
+}
+
+.ql-toolbar.ql-snow {
+  border: unset;
+}
+
+.ql-toolbar.ql-snow+.ql-container.ql-snow {
+  border: 1px solid #ADB0D9;
+  border-radius: 20px;
+}
+
+/************************************ Change Global Style from quill-editor ************************************/
+
 .d-none {
   display: none !important;
 }

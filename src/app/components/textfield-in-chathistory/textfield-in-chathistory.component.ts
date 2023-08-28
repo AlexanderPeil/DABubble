@@ -12,7 +12,6 @@ import { StorageService } from 'src/app/shared/services/storage.service';
 export class TextfieldInChathistoryComponent {
 
 
-
   constructor(public storageService: StorageService) {
 
   }
