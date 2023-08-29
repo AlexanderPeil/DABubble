@@ -218,8 +218,7 @@
   overflow-y: auto;
   left: 15px;
   bottom: 30px;
-  cursor: pointer;
-  border: 1px solid #686868;
+  border: 1px solid #adb0d9;
   border-radius: 0px 20px 20px 20px;
   padding: 10px;
 
@@ -227,11 +226,13 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 5px;
+    cursor: pointer;
 
     &:hover {
       transition: all 225ms ease-in-out;
-      background-color: #444df2;
-      color: white;
+      background-color: #eceefe;
+      border-radius: 20px;
     }
   }
 
