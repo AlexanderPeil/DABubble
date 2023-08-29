@@ -65,7 +65,47 @@ export class ChannelComponent implements OnInit {
   }
 
 
-  chooseFile($event: any) {
+  chooseFiletoUpload($event: any) {
     this.storageService.chooseFileSevice($event);
   }
+
+
+  // selectionChanged($event: any) {
+  //   if ($event.oldRange == null) {
+  //     this.onfocus($event);
+  //   }
+  //   if ($event.range == null) {
+  //     this.onBlur($event);
+  //   }
+  // }
+
+
+  // onfocus($event: any) {
+  //   $event.editor.root.style.border = '1px solid #797EF3';
+  //   $event.editor.root.style.borderTopRightRadius = '20px';
+  //   $event.editor.root.style.borderTopLeftRadius = '20px';
+  //   $event.editor.root.style.borderBottom = 'unset';
+  //   $event.editor.theme.modules.toolbar.container.style.border = '1px solid #797EF3';
+  //   $event.editor.theme.modules.toolbar.container.style.borderTop = 'unset';
+  // }
+
+
+  // onBlur($event: any) {
+  //   $event.editor.root.style.border = '1px solid #ADB0D9';
+  //   $event.editor.root.style.borderBottom = 'unset';
+  //   $event.editor.theme.modules.toolbar.container.style.border = '1px solid #ADB0D9';
+  //   $event.editor.theme.modules.toolbar.container.style.borderTop = 'unset';
+  // }
+
+
+  // setFocusOnEditor($event: any) {
+  //   $event.focus();
+  // }
+
+
+  // getEditorInstance($event: any) {
+  //   let toolbar = $event.getModule('toolbar');
+  //   console.log(toolbar);
+  //   toolbar.addHandler('image', this.storageService.donwnloadUrlToDisplayUploadedData);
+  // }
 }

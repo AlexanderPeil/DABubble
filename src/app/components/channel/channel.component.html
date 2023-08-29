@@ -34,13 +34,19 @@
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
   <quill-editor placeholder="Message to #{{ channelService.channel.channelName }}">
-    <div quill-editor-toolbar>
 
+
+    <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
+      <div class="containerDownloadedImages">
+        <img *ngFor="let donwloadedImage of storageService.downloadedImages"
+          [src]="donwloadedImage? donwloadedImage : null">
+      </div>
+
       <div class="containerIcons">
         <label for="input" class="containerAddIcon">
           <img src="assets/img/icons/add.svg">
-          <input (change)="chooseFile($event)" id="input" type="file" hidden>
+          <input (change)="chooseFiletoUpload($event)" id="input" type="file" hidden>
         </label>
 
         <hr class="verticalLine">
@@ -52,9 +58,8 @@
         <div class="containerAtIcon">
           <img class="atIcon" src="assets/img/icons/@Icon.svg">
         </div>
+        <img class="sendBtn" src="assets/img/icons/sendBtn.svg">
       </div>
-
-      <img class="sendBtn" src="assets/img/icons/sendBtn.svg">
       <!--------------------------------------- Custom created Container --------------------------------------->
 
     </div>

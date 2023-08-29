@@ -115,13 +115,15 @@ app-workspace-menu-btn {
 .ql-editor h5,
 .ql-editor h6 {
   font-size: 18px;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
   font-family: Nunito, sans-serif;
 }
 
 .ql-toolbar.ql-snow {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  // align-items: center;
   border: unset;
   position: absolute;
   bottom: 0;
@@ -136,7 +138,7 @@ app-workspace-menu-btn {
 .ql-toolbar.ql-snow+.ql-container.ql-snow {
   border: unset;
   max-height: 300px;
-  padding-bottom: 60px;
+  padding-bottom: 55px;
   overflow-x: hidden;
   overflow-y: auto;
 }

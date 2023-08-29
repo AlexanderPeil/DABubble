@@ -131,6 +131,23 @@
 }
 
 /************************************ Styles for the texfield ************************************/
+.containerDownloadedImages {
+  display: flex;
+  gap: 20px;
+  padding-bottom: 8px;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+
+    &:hover {
+      @include button_hover;
+      opacity: 0.9;
+    }
+  }
+}
+
 .containerIcons {
   display: flex;
   align-items: center;
@@ -150,12 +167,6 @@ quill-editor {
   &:hover {
     border-radius: 20px;
     border: 1px solid #797EF3;
-
-    .ql-toolbar.ql-snow {
-      border-bottom-left-radius: 20px;
-      border-bottom-right-radius: 20px;
-      border-top: unset !important;
-    }
   }
 }
 

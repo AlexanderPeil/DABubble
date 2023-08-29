@@ -11,9 +11,7 @@ import { DialogUploadedDataErrorComponent } from 'src/app/components/dialog-uplo
 
 export class StorageService {
   file: any = {};
-  path: string = '';
-  // donwnloadUrlToDisplayUploadedData: any = [];
-  // downloadUrlExist: boolean = false;
+  downloadedImages: any = [];
 
 
   constructor(public storage: Storage, public dialog: MatDialog) {
@@ -23,20 +21,8 @@ export class StorageService {
 
   chooseFileSevice($event: any) {
     this.file = $event.target.files[0];
-    // this.getDownloadUrlToDisplayDataInTextfieldService();
     this.uploadDataService();
   }
-
-
-  // getDownloadUrlToDisplayDataInTextfieldService() {
-  //   if (this.dataSizeIsRightService() && this.dataFormatIsRightService()) {
-  //     const storageRef = ref(this.storage, `images/${this.file.name}`);
-  //     getDownloadURL(storageRef)
-  //       .then((downloadURL) => {
-
-  //       });
-  //   }
-  // }
 
 
   uploadDataService() {
@@ -72,8 +58,8 @@ export class StorageService {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log('File available at', downloadURL);
-          // this.donwnloadUrlToDisplayUploadedData.push(downloadURL);
           // console.log(this.donwnloadUrlToDisplayUploadedData);
+          this.downloadedImages.push(downloadURL);
         });
       }
     );
