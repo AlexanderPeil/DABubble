@@ -115,22 +115,30 @@ app-workspace-menu-btn {
 .ql-editor h5,
 .ql-editor h6 {
   font-size: 18px;
+  padding-bottom: 20px;
   font-family: Nunito, sans-serif;
 }
 
 .ql-toolbar.ql-snow {
+  display: flex;
+  align-items: center;
   border: unset;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background-color: white;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .ql-toolbar.ql-snow+.ql-container.ql-snow {
-  border: 1px solid #ADB0D9;
-  border-radius: 20px;
-  height: 130px;
+  border: unset;
+  max-height: 300px;
   padding-bottom: 60px;
-
-  &:hover {
-    border: 1px solid #797EF3;
-  }
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /************************************ Change Global Style from quill-editor ************************************/

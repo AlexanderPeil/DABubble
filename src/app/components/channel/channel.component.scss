@@ -130,17 +130,15 @@
   overflow-y: auto;
 }
 
-/************************************ Styles the for texfield begin here ************************************/
+/************************************ Styles for the texfield ************************************/
 .containerIcons {
-  position: relative;
-  z-index: 1;
   display: flex;
   align-items: center;
-  margin-top: 45px;
-  margin-left: 30px;
 }
 
 quill-editor {
+  border: 1px solid #ADB0D9;
+  border-radius: 20px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -148,6 +146,17 @@ quill-editor {
   left: 20px;
   right: 20px;
   bottom: 15px;
+
+  &:hover {
+    border-radius: 20px;
+    border: 1px solid #797EF3;
+
+    .ql-toolbar.ql-snow {
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      border-top: unset !important;
+    }
+  }
 }
 
 .verticalLine {
@@ -223,7 +232,7 @@ quill-editor {
 
 .sendBtn {
   position: absolute;
-  right: 40px;
+  right: 20px;
 }
 
-/************************************ Styles the for texfield begin here ************************************/
+/************************************ Styles for the texfield ************************************/
