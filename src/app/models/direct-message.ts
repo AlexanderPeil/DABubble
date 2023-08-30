@@ -3,6 +3,7 @@ export class DirectMessageContent {
   content: string;
   timestamp: number;
   senderId: string;
+  receiverId: string;
   read: boolean;
 
   constructor(object?: any) {
@@ -10,6 +11,7 @@ export class DirectMessageContent {
     this.content = object ? object.content : '';
     this.timestamp = object ? object.timestamp : Date.now();
     this.senderId = object ? object.senderId : '';
+    this.receiverId = object ? object.receiverId : '';
     this.read = object ? object.read : '';
   }
 
@@ -18,6 +20,7 @@ export class DirectMessageContent {
       content: this.content,
       timestamp: this.timestamp,
       senderId: this.senderId,
+      receiverId: this.receiverId,
       read: this.read
     };
   }

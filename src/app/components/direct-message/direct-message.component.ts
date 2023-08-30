@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } fro
 import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { Observable, Subject, Subscription, combineLatest, filter, map, startWith, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, Subscription, combineLatest, filter, forkJoin, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
 import { DirectMessageContent } from 'src/app/models/direct-message';
@@ -28,7 +28,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   showEmojiPicker = false;
   @ViewChild('emojiContainer') emojiContainer!: ElementRef;
   @ViewChild('userMenu') userMenu!: ElementRef;
-
 
 
   constructor(
@@ -83,6 +82,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     if (this.messageContent && this.selectedUser && this.loggedInUser) {
       const chatMessage = new DirectMessageContent({
         senderId: this.loggedInUser.uid,
+        receiverId: this.selectedUser.uid,
         content: this.messageContent,
         timestamp: Date.now(),
         read: false
@@ -91,7 +91,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       this.directMessageService.addMessage(this.loggedInUser.uid, this.selectedUser.uid, chatMessage);
       this.messageContent = '';
     } else {
-      console.error("Ein erforderliches Feld fehlt!");
+      console.error("Please try again.");
     }
   }
 

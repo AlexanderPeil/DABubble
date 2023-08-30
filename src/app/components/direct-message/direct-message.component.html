@@ -56,7 +56,7 @@
         <div *ngIf="showUserDropdown" class="user-dropdown scrolleableContainer" #userMenu>
             <div *ngFor="let user of foundUsers" (click)="selectUser(user)">
                 <img [src]="user.photoURL">
-                <span>{{ user.displayName }}</span> 
+                <span>{{ user.displayName }}</span>
             </div>
         </div>
 

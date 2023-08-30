@@ -6,6 +6,7 @@ import { User } from 'src/app/shared/services/user';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     public channelService: ChannelService,
     private router: Router,
+    private directMessageService: DirectMessageService,
   ) { }
 
 
@@ -27,17 +29,30 @@ export class SidenavComponent implements OnInit, OnDestroy {
   chatsVisible: boolean = true;
   arrowImageRotatedChannel: boolean = false;
   arrowImageRotatedChat: boolean = false;
-  users: User[] = [];
+  users: { user: User, unreadCount?: number }[] = [];
   userSubscription!: Subscription;
   isOnline?: boolean;
+  unreadMessagesCount$!: Observable<number>;
+  loggedInUser: User | null = null;
+
 
 
   ngOnInit() {
-    this.authService.getUsers().subscribe((users) => {
-      this.users = users;
+    this.authService.getUsers().subscribe((usersData) => {
+      this.users = usersData.map(user => ({ user, unreadCount: 0 }));
+      this.users.forEach((userWithCount, index) => {
+        const loggedInUid = this.authService.currentUserValue?.uid;
+        if (loggedInUid) {
+          this.directMessageService.getUnreadMessagesCount(loggedInUid, userWithCount.user.uid)
+            .subscribe(unreadCount => {
+              this.users[index].unreadCount = unreadCount;
+            });
+        }
+      });
     });
     this.channelService.getChannelService();
   }
+
 
 
   hideChannels() {
@@ -57,9 +72,15 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }
 
 
-  onUserClick(user: User) {
-    this.router.navigate(['main', 'direct-message', user.uid]);
-  }
+  onUserClick(userWithCount: { user: User, unreadCount?: number }) {
+    const loggedInUid = this.authService.currentUser.value?.uid; 
+    if (loggedInUid && userWithCount.unreadCount && userWithCount.unreadCount > 0) {
+      this.directMessageService.markAllMessagesAsRead(loggedInUid, userWithCount.user.uid).then(() => {
+        userWithCount.unreadCount = 0; // Setzen Sie den Zähler zurück
+      });
+    }
+    this.router.navigate(['main', 'direct-message', userWithCount.user.uid]);
+  } 
 
 
   ngOnDestroy() {

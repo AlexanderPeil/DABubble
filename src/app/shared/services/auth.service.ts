@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
-import { Observable, Subscription, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, map, of, switchMap } from 'rxjs';
 import { updateEmail } from "firebase/auth";
 import {
   Firestore,
@@ -45,6 +45,8 @@ import {
 export class AuthService implements OnDestroy {
   public user$: Observable<User | null>;
   private userSubscription?: Subscription;
+  currentUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+
 
 
   /**
@@ -58,6 +60,7 @@ export class AuthService implements OnDestroy {
     public router: Router,
     private firestore: Firestore) {
     this.user$ = user(this.auth);
+    this.initCurrentUser();
   }
 
 
@@ -74,6 +77,21 @@ export class AuthService implements OnDestroy {
   getRandomGuestImage(): string {
     const randomIndex = Math.floor(Math.random() * this.user_images.length);
     return this.user_images[randomIndex];
+  }
+
+
+  private initCurrentUser(): void {
+    this.user$.pipe(
+      switchMap(firebaseUser => firebaseUser?.uid ? this.getUserData(firebaseUser.uid) : of(null))
+    ).subscribe(user => {
+      this.currentUser.next(user);
+    });
+  }
+
+
+
+  get currentUserValue(): User | null {
+    return this.currentUser.value;
   }
 
 

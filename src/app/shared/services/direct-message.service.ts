@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, addDoc, collection, doc, collectionData, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, collectionData, updateDoc, where, getDocs, writeBatch, query } from '@angular/fire/firestore';
 import { Observable, map } from 'rxjs';
 import { DirectMessageContent } from 'src/app/models/direct-message';
 
@@ -35,17 +35,31 @@ export class DirectMessageService {
   }
 
 
+  // async markMessageAsRead(userId1: string, userId2: string, messageId: string): Promise<void> {
+  //   const messageCollection = this.getMessageCollection(userId1, userId2);
+  //   const messageDoc = doc(this.firestore, `directMessage/${this.generateChatId(userId1, userId2)}/messages/${messageId}`);
+  //   await updateDoc(messageDoc, { read: true });
+  // }
+
+
   getUnreadMessagesCount(userId1: string, userId2: string): Observable<number> {
     return this.getDirectMessages(userId1, userId2).pipe(
-      map(messages => messages.filter(message => !message.read).length)
+      map(messages => messages.filter(message => !message.read && message.receiverId === userId1).length)
     );
   }
 
 
-  async markMessageAsRead(userId1: string, userId2: string, messageId: string): Promise<void> {
+  async markAllMessagesAsRead(userId1: string, userId2: string): Promise<void> {
     const messageCollection = this.getMessageCollection(userId1, userId2);
-    const messageDoc = doc(this.firestore, `directMessage/${this.generateChatId(userId1, userId2)}/messages/${messageId}`);
-    await updateDoc(messageDoc, { read: true });
+    const unreadQuery = query(messageCollection, where("read", "==", false), where("receiverId", "==", userId1));
+    const querySnapshot = await getDocs(unreadQuery);
+    const batch = writeBatch(this.firestore);
+
+    querySnapshot.forEach(queryDoc => {
+      const messageDoc = doc(this.firestore, `directMessage/${this.generateChatId(userId1, userId2)}/messages/${queryDoc.id}`);
+      batch.update(messageDoc, { read: true });
+    });
+    await batch.commit();
   }
 
 }
