@@ -1,20 +1,22 @@
 <div class="dialogMainContainer">
-    <div class="topContainerShowUser">
-        <p>Members</p>
+  <div class="topContainerShowUser">
+    <p>Members</p>
 
-        <div class="closeIconContainer">
-            <img mat-dialog-close src="assets/img/icons/closeIcon.svg">
-        </div>
+    <div class="closeIconContainer">
+      <img mat-dialog-close src="assets/img/icons/closeIcon.svg" />
+    </div>
+  </div>
+
+  <div class="bottomContainerShowUser">
+    <div
+      *ngFor="let user of channelService.channel.users"
+      class="unserContainer"
+    >
+      <img class="user" src="assets/img/avatar1.svg" />
+      <p>Tom</p>
     </div>
 
-
-    <div class="bottomContainerShowUser">
-        <div class="unserContainer">
-            <img class="user" src="assets/img/avatar1.svg">
-            <p>Tom</p>
-        </div>
-
-        <div class="unserContainer">
+    <!-- <div class="unserContainer">
             <img class="user" src="assets/img/avatar2.svg">
             <p>Alex</p>
         </div>
@@ -22,14 +24,17 @@
         <div class="unserContainer">
             <img class="user" src="assets/img/avatar3.svg">
             <p>Jorgo</p>
-        </div>
+        </div> -->
 
-        <div class="addUserIconMainContainer" (click)="openDialogToAddMembersToChannel()">
-            <div class="addUserIconContainer">
-                <img class="addUserIcon" src="assets/img/icons/addUser.svg">
-            </div>
+    <div
+      class="addUserIconMainContainer"
+      (click)="openDialogToAddMembersToChannel()"
+    >
+      <div class="addUserIconContainer">
+        <img class="addUserIcon" src="assets/img/icons/addUser.svg" />
+      </div>
 
-            <p>Add Members</p>
-        </div>
+      <p>Add Members</p>
     </div>
+  </div>
 </div>

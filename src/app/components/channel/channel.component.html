@@ -1,6 +1,9 @@
-<div [ngClass]="{
+<div
+  [ngClass]="{
     chatHistoryFullWidth: toggleWorspaceMenuService.workspaceMenuIsOpen
-  }" class="chatHistoryMainContainer">
+  }"
+  class="chatHistoryMainContainer"
+>
   <div class="chatHistoryHeader">
     <div (click)="openDialogToEditChannel()" class="channelName">
       <img src="assets/img/icons/hashtag.svg" />
@@ -9,14 +12,25 @@
     </div>
 
     <div class="containerUserInChatHistory">
-      <div (click)="openDialogToShowMembersInChannel()" class="childContainerUserInChatHistory">
-        <img class="user" src="assets/img/avatar1.svg" />
-        <img class="user" src="assets/img/avatar2.svg" />
-        <img class="user" src="assets/img/avatar3.svg" />
-        <p class="amountOfUserInChannel">3</p>
+      <div
+        (click)="openDialogToShowMembersInChannel()"
+        class="childContainerUserInChatHistory"
+      >
+        <img
+          *ngFor="let user of channelService.channel.users"
+          class="user"
+          src="assets/img/avatar1.svg"
+        />
+
+        <p class="amountOfUserInChannel">
+          {{ channelService.channel.users.length }}
+        </p>
       </div>
 
-      <div (click)="openDialogToAddMembersToChannel()" class="containerIconAddUser">
+      <div
+        (click)="openDialogToAddMembersToChannel()"
+        class="containerIconAddUser"
+      >
         <img class="iconAddUser" src="assets/img/icons/addUser.svg" />
       </div>
     </div>
@@ -33,35 +47,41 @@
   </div>
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor placeholder="Message to #{{ channelService.channel.channelName }}">
-
-
+  <quill-editor
+    placeholder="Message to #{{ channelService.channel.channelName }}"
+  >
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="containerDownloadedImages">
-        <img *ngFor="let donwloadedImage of storageService.downloadedImages"
-          [src]="donwloadedImage? donwloadedImage : null">
+        <img
+          *ngFor="let donwloadedImage of storageService.downloadedImages"
+          [src]="donwloadedImage ? donwloadedImage : null"
+        />
       </div>
 
       <div class="containerIcons">
         <label for="input" class="containerAddIcon">
-          <img src="assets/img/icons/add.svg">
-          <input (change)="chooseFiletoUpload($event)" id="input" type="file" hidden>
+          <img src="assets/img/icons/add.svg" />
+          <input
+            (change)="chooseFiletoUpload($event)"
+            id="input"
+            type="file"
+            hidden
+          />
         </label>
 
-        <hr class="verticalLine">
+        <hr class="verticalLine" />
 
         <div class="containerSmileyIcon">
-          <img class="smileyIcon" src="assets/img/icons/smiley.svg">
+          <img class="smileyIcon" src="assets/img/icons/smiley.svg" />
         </div>
 
         <div class="containerAtIcon">
-          <img class="atIcon" src="assets/img/icons/@Icon.svg">
+          <img class="atIcon" src="assets/img/icons/@Icon.svg" />
         </div>
-        <img class="sendBtn" src="assets/img/icons/sendBtn.svg">
+        <img class="sendBtn" src="assets/img/icons/sendBtn.svg" />
       </div>
       <!--------------------------------------- Custom created Container --------------------------------------->
-
     </div>
   </quill-editor>
 </div>
