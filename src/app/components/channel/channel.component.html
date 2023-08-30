@@ -33,14 +33,17 @@
   </div>
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor placeholder="Message to #{{ channelService.channel.channelName }}">
+  <quill-editor autofocus (onEditorCreated)="setFocus($event)"
+    placeholder="Message to #{{ channelService.channel.channelName }}">
 
 
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
-      <div class="containerDownloadedImages">
-        <img *ngFor="let donwloadedImage of storageService.downloadedImages"
-          [src]="donwloadedImage? donwloadedImage : null">
+      <div class="mainContainerUploadedDatas">
+        <div *ngFor="let uploadedData of storageService.uploadedDatas" class="childContainerUploadedDatas">
+          <img class="uploadedData" [src]="uploadedData? uploadedData : null">
+          <img class="closeIcon" src="assets/img/icons/closeIcon.svg">
+        </div>
       </div>
 
       <div class="containerIcons">
