@@ -44,6 +44,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DialogUploadedDataErrorComponent } from './components/dialog-uploaded-data-error/dialog-uploaded-data-error.component';
 import { QuillModule } from 'ngx-quill';
 import { QuillConfigModule } from 'ngx-quill/config';
+import { DialogDataUploadSuccessfulComponent } from './components/dialog-data-upload-successful/dialog-data-upload-successful.component';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { QuillConfigModule } from 'ngx-quill/config';
     DialogDirectMessageProfileComponent,
     ChannelComponent,
     DialogUploadedDataErrorComponent,
+    DialogDataUploadSuccessfulComponent,
   ],
 
   imports: [

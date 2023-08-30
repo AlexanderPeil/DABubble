@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage, getDownloadURL, ref, uploadBytesResumable } from "@angular/fire/storage";
 import { MatDialog } from '@angular/material/dialog';
+import { DialogDataUploadSuccessfulComponent } from 'src/app/components/dialog-data-upload-successful/dialog-data-upload-successful.component';
 import { DialogUploadedDataErrorComponent } from 'src/app/components/dialog-uploaded-data-error/dialog-uploaded-data-error.component';
 
 
@@ -11,7 +12,7 @@ import { DialogUploadedDataErrorComponent } from 'src/app/components/dialog-uplo
 
 export class StorageService {
   file: any = {};
-  downloadedImages: any = [];
+  uploadedDatas: any = [];
 
 
   constructor(public storage: Storage, public dialog: MatDialog) {
@@ -58,8 +59,8 @@ export class StorageService {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log('File available at', downloadURL);
-          // console.log(this.donwnloadUrlToDisplayUploadedData);
-          this.downloadedImages.push(downloadURL);
+          this.uploadedDatas.push(downloadURL);
+          this.dialog.open(DialogDataUploadSuccessfulComponent);
         });
       }
     );

@@ -1,0 +1,32 @@
+@import '../../shared/variables.scss';
+
+.dialogMainContainer {
+    padding: 25px;
+    width: 450px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    p {
+        margin: 0;
+        font-weight: 700;
+        font-size: 24px;
+    }
+}
+
+.btnContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+
+    button {
+        width: 150px;
+        height: 60px;
+        font-size: 18px;
+        font-weight: 700;
+        border-radius: 25px;
+        @include button_primary;
+    }
+}
