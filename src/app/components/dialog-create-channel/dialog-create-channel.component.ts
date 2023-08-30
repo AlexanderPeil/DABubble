@@ -80,6 +80,9 @@ export class DialogCreateChannelComponent implements OnInit {
     if (value) {
       this.showUserDropdown = true;
       this.filterUsers(value);
+    } else if (value == 0) {
+      this.showUserDropdown = true;
+      this.filterUsers();
     } else {
       this.showUserDropdown = false;
       this.filterUsers();
