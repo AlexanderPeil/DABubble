@@ -56,7 +56,7 @@
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="containerDownloadedImages">
         <img
-          *ngFor="let donwloadedImage of storageService.downloadedImages"
+          *ngFor="let donwloadedImage of storageService.uploadedDatas"
           [src]="donwloadedImage ? donwloadedImage : null"
         />
       </div>
