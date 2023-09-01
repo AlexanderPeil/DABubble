@@ -148,13 +148,13 @@
   height: 40px;
   border-radius: 8px;
 
+  &:hover+.closeIcon {
+    display: flex;
+  }
+
   &:hover {
     @include button_hover;
     opacity: 0.8;
-
-    .closeIcon {
-      background-color: #797EF3;
-    }
   }
 }
 
@@ -164,12 +164,14 @@
   bottom: 28px;
   left: 28px;
   z-index: 1;
-  background-color: white;
   border-radius: 50%;
+  display: none;
+  background-color: white;
   border: 1px solid lightgray;
 
   &:hover {
     @include button_hover;
+    display: flex;
   }
 }
 
