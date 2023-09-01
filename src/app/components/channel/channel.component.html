@@ -38,10 +38,20 @@
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
-        <div *ngFor="let donwloadedImage of storageService.uploadedDatas" class="childContainerUploadedDatas">
-          <img class="uploadedData" [src]="donwloadedImage ? donwloadedImage : null" />
+        <!--------------------------------------- Displays uploaded Images --------------------------------------->
+        <div *ngFor="let uploadedImage of storageService.uploadedImages" class="containerUploadedImages">
+          <img class="uploadedImage" [src]="uploadedImage ? uploadedImage : null">
           <img class="closeIcon" src="assets/img/icons/closeIcon.svg">
         </div>
+        <!--------------------------------------- Displays uploaded Images --------------------------------------->
+
+
+        <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
+        <div *ngFor="let uploadedData of storageService.uploadedDatas" class="containerUploadedDatas">
+          <iframe class="uploadedData" [src]="uploadedData ? uploadedData : null"></iframe>
+          <img class="closeIcon" src="assets/img/icons/closeIcon.svg">
+        </div>
+        <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
       </div>
 
       <div class="containerIcons">

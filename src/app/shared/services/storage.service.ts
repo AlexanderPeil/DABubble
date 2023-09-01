@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage, getDownloadURL, ref, uploadBytesResumable } from "@angular/fire/storage";
 import { MatDialog } from '@angular/material/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
 import { DialogDataUploadSuccessfulComponent } from 'src/app/components/dialog-data-upload-successful/dialog-data-upload-successful.component';
 import { DialogUploadedDataErrorComponent } from 'src/app/components/dialog-uploaded-data-error/dialog-uploaded-data-error.component';
 
@@ -12,10 +13,12 @@ import { DialogUploadedDataErrorComponent } from 'src/app/components/dialog-uplo
 
 export class StorageService {
   file: any = {};
-  uploadedDatas: any = [];
+  uploadedImages: any[] = [];
+  uploadedDatas: any[] = [];
+  safeUrl: string = '';
 
 
-  constructor(public storage: Storage, public dialog: MatDialog) {
+  constructor(public storage: Storage, public dialog: MatDialog, public sanitizer: DomSanitizer) {
 
   }
 
@@ -57,13 +60,23 @@ export class StorageService {
         console.log(error.message);
       },
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-          this.uploadedDatas.push(downloadURL);
-          this.dialog.open(DialogDataUploadSuccessfulComponent);
-        });
+        this.getTheDownloadUrlService(uploadTask);
       }
     );
+  }
+
+
+  getTheDownloadUrlService(uploadTask: any) {
+    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+      console.log('File available at', downloadURL);
+      this.safeUrl = downloadURL;     // The safeUrl is is to use for the bypassSecurityTrustResourceUrl() function, to mark as safe Url.
+      if (this.file.type == 'image/jpeg' || this.file.type == 'image/png') {
+        this.uploadedImages.push(downloadURL);
+      } else {
+        this.uploadedDatas.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.safeUrl));  // Allow to upload Data like pdf and displays in HTML (Comes from Angular security). 
+      }
+      this.dialog.open(DialogDataUploadSuccessfulComponent);
+    });
   }
 }
 

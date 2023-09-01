@@ -133,17 +133,17 @@
 /************************************ Styles for the texfield ************************************/
 .mainContainerUploadedDatas {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   padding-bottom: 8px;
 }
 
-.childContainerUploadedDatas {
+.containerUploadedImages {
   display: flex;
   align-items: center;
   position: relative;
 }
 
-.uploadedData {
+.uploadedImage {
   width: 40px;
   height: 40px;
   border-radius: 8px;
@@ -158,11 +158,27 @@
   }
 }
 
+.containerUploadedDatas {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  iframe {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+
+    &:hover+.closeIcon {
+      display: flex;
+    }
+  }
+}
+
 .closeIcon {
   width: 20px;
   position: absolute;
-  bottom: 28px;
-  left: 28px;
+  bottom: 30px;
+  left: 30px;
   z-index: 1;
   border-radius: 50%;
   display: none;
