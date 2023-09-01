@@ -28,7 +28,9 @@ import {
   GoogleAuthProvider,
   sendEmailVerification,
   signOut,
-  user
+  user,
+  browserSessionPersistence,
+  setPersistence
 } from '@angular/fire/auth';
 
 @Injectable({
@@ -104,7 +106,9 @@ export class AuthService implements OnDestroy {
    * @returns {Promise<void>} Returns a promise that resolves when the sign-in process is complete.
    */
   async signIn(email: string, password: string) {
+    // debugger
     try {
+      await setPersistence(this.auth, browserSessionPersistence);
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       if (userCredential.user) {
         await this.setUserOnlineStatus(userCredential.user.uid, true);
@@ -115,7 +119,6 @@ export class AuthService implements OnDestroy {
       throw error;
     }
   }
-
 
 
   /**
@@ -157,7 +160,7 @@ export class AuthService implements OnDestroy {
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: 'Guest', photoURL: randomImageURL });
         await this.setUserData(userCredential.user, true);
-        this.router.navigate(['main/channel/O19IWwcZ9CnTRdPe6YEa']);
+        this.router.navigate(['main']);
       }
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -180,7 +183,9 @@ export class AuthService implements OnDestroy {
       const user = result.user;
       if (user) {
         await this.setUserData(user, true);
-        this.router.navigate(['main']);
+        setTimeout(() => {
+          this.router.navigate(['main']);
+        }, 2000);
       }
     } catch (error) {
       console.error('Google Sign In failed:', error);
@@ -391,3 +396,15 @@ export class AuthService implements OnDestroy {
     }
   }
 }
+
+
+
+// onAuthStateChanged(this.auth, (user) => {
+//   if (user) {
+//     const uid = user.uid;
+//     return true;
+//   } else {
+//     this.auth.signOut();
+//     return false;
+//   }
+// });

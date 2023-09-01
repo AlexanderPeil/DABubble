@@ -11,6 +11,20 @@ export class DirectMessageService {
 
   constructor(private firestore: Firestore) { }
 
+
+  async createAndAddMessage(senderId: string, receiverId: string, content: string): Promise<void> {
+    const message = new DirectMessageContent({
+      senderId: senderId,
+      receiverId: receiverId,
+      content: content,
+      timestamp: Date.now(),
+      read: false
+    });
+    const messageCollection = this.getMessageCollection(senderId, receiverId);
+    await addDoc(messageCollection, message.toJSON());
+  }
+
+
   private getMessageCollection(userId1: string, userId2: string) {
     const chatId = this.generateChatId(userId1, userId2);
     return collection(doc(this.firestore, `directMessage/${chatId}`), 'messages');

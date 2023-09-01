@@ -13,6 +13,7 @@
     </div>
 
 
+    <!-- Message container -->
     <div class="messagesContainer scrolleableContainer">
         <div *ngFor="let group of groupMessagesByDate(messages)" class="directMesageContainer">
             <div class="date">
@@ -36,6 +37,7 @@
                 </div>
             </div>
 
+            <!-- Emoji container -->
             <div class="containerEmojis d-none">
                 <img class="completeEmoji" src="assets/img/icons/completeEmoji.svg">
                 <img class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg">
@@ -48,7 +50,10 @@
             </div>
         </div>
     </div>
+    <!-- Message container -->
 
+
+    <!-- Message textarea -->
     <div class="containerTextarea">
         <textarea [(ngModel)]="messageContent" placeholder="Write a message..."
             (input)="checkForAtSymbol($event)"></textarea>
@@ -59,7 +64,6 @@
                 <span>{{ user.displayName }}</span>
             </div>
         </div>
-
         <img class="addIcon" src="assets/img/icons/add.svg">
         <hr>
         <img class="smileyIcon smileyIconHover" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker($event)">
@@ -69,5 +73,7 @@
         <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol($event)">
         <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg">
     </div>
+    <!-- Message textarea -->
+
 
 </div>

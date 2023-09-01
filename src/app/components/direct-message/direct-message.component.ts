@@ -80,20 +80,20 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   sendMessage() {
     if (this.messageContent && this.selectedUser && this.loggedInUser) {
-      const chatMessage = new DirectMessageContent({
-        senderId: this.loggedInUser.uid,
-        receiverId: this.selectedUser.uid,
-        content: this.messageContent,
-        timestamp: Date.now(),
-        read: false
-      });
-
-      this.directMessageService.addMessage(this.loggedInUser.uid, this.selectedUser.uid, chatMessage);
-      this.messageContent = '';
+        this.directMessageService.createAndAddMessage(
+            this.loggedInUser.uid,
+            this.selectedUser.uid,
+            this.messageContent
+        ).then(() => {
+            this.messageContent = '';
+          }).catch((error: any) => {
+            console.error("Fehler beim Senden der Nachricht:", error);
+        });
     } else {
-      console.error("Please try again.");
+        console.error("Bitte versuchen Sie es erneut.");
     }
-  }
+}
+
 
 
   formatDate(timestamp: number): string {
