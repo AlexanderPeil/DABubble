@@ -13,6 +13,7 @@ import { DialogUploadedDataErrorComponent } from 'src/app/components/dialog-uplo
 export class StorageService {
   file: any = {};
   uploadedDatas: any = [];
+  uploadedURL: any;
 
 
   constructor(public storage: Storage, public dialog: MatDialog) {
@@ -35,6 +36,39 @@ export class StorageService {
       uploadTask.cancel();
       this.dialog.open(DialogUploadedDataErrorComponent);
     }
+  }
+
+
+  uploadAvatarService($event: any): Promise<string> {
+    this.file = this.getFileFromEvent($event);
+    if (!this.dataSizeIsRightService() || !this.dataFormatIsRightService()) {
+      this.dialog.open(DialogUploadedDataErrorComponent);
+      return Promise.reject(new Error('File validation failed'));
+    }
+    return this.performFileUpload(this.file);
+  }
+
+
+  getFileFromEvent($event: any): File {
+    return $event.target.files[0];
+  }
+
+
+  performFileUpload(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const storageRef = ref(this.storage, `avatars/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on('state_changed', null,
+        (error) => {
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
   }
 
 

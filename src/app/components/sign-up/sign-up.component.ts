@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router } from '@angular/router';
+import { StorageService } from 'src/app/shared/services/storage.service';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class SignUpComponent implements OnInit {
   displayName!: string;
   userCreated = false;
   userExists = false;
-  checked!: FormControl;  
+  checked!: FormControl;
   chooseAvatar: boolean = false;
   selectedAvatarURL!: string;
   avatarUrls: string[] = [];
@@ -23,7 +24,8 @@ export class SignUpComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router) { }
+    private router: Router,
+    public storageService: StorageService) { }
 
 
   ngOnInit(): void {
@@ -32,7 +34,7 @@ export class SignUpComponent implements OnInit {
       displayName: new FormControl(null, [Validators.required, this.fullNameValidator]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, Validators.required),
-      checked: this.checked 
+      checked: this.checked
     });
 
     const displayNameControl = this.signupForm.get('displayName');
@@ -41,7 +43,7 @@ export class SignUpComponent implements OnInit {
         this.displayName = value;
       });
     }
-    
+
     this.avatarUrls = this.authService.user_images;
   }
 
@@ -91,6 +93,14 @@ export class SignUpComponent implements OnInit {
     this.selectedAvatarURL = url;
   }
 
+
+  chooseFiletoUpload($event: any) {
+    this.storageService.uploadAvatarService($event).then((url: string) => {
+      this.selectedAvatarURL = url;
+    }).catch((error: any) => {
+      console.error("Error uploading file: ", error);
+    });
+  }   
 
 
   // This Code down here is for the verification mail function.
