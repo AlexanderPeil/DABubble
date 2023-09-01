@@ -25,7 +25,7 @@
                 <span class="checkmark"></span>
                 I agree to the <a routerLink="/data-protection">data protection</a>.
             </label>
-            <button class="nextBtn" (click)="onNextClick()" [disabled]="!signupForm.valid">Next</button>
+            <button type="button" class="nextBtn" (click)="onNextClick()" [disabled]="!signupForm.valid">Next</button>
         </form>
     </div>
     <div class="avatarContainer" *ngIf="chooseAvatar">
@@ -40,8 +40,11 @@
             </div>
         </div>
         <div class="uploadFoto">
-            <span>Or you can</span>
-            <button>Upload foto</button>
+            <span>Use your own image</span>
+            <label class="uploadButton" for="input">Upload foto
+                <!-- <button type="button">Upload foto</button> -->
+                <input (change)="chooseFiletoUpload($event)" id="input" type="file" hidden />
+            </label>
         </div>
         <div *ngIf="userCreated" class="notification success">
             Verification email sent. Please check your email inbox.

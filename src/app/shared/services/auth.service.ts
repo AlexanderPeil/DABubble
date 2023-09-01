@@ -106,9 +106,8 @@ export class AuthService implements OnDestroy {
    * @returns {Promise<void>} Returns a promise that resolves when the sign-in process is complete.
    */
   async signIn(email: string, password: string) {
-    // debugger
     try {
-      await setPersistence(this.auth, browserSessionPersistence);
+      // await setPersistence(this.auth, browserSessionPersistence);
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       if (userCredential.user) {
         await this.setUserOnlineStatus(userCredential.user.uid, true);
