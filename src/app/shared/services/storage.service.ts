@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Storage, getDownloadURL, ref, uploadBytesResumable } from "@angular/fire/storage";
+import { Storage, getDownloadURL, ref, uploadBytesResumable, deleteObject } from "@angular/fire/storage";
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DialogDataUploadSuccessfulComponent } from 'src/app/components/dialog-data-upload-successful/dialog-data-upload-successful.component';
@@ -13,9 +13,8 @@ import { DialogUploadedDataErrorComponent } from 'src/app/components/dialog-uplo
 
 export class StorageService {
   file: any = {};
-  uploadedImages: any[] = [];
-  uploadedDatas: any[] = [];
-  safeUrl: string = '';
+  uploadedImages: any = [];
+  uploadedDatas: any = [];
 
 
   constructor(public storage: Storage, public dialog: MatDialog, public sanitizer: DomSanitizer) {
@@ -102,14 +101,30 @@ export class StorageService {
   getTheDownloadUrlService(uploadTask: any) {
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
       console.log('File available at', downloadURL);
-      this.safeUrl = downloadURL;     // The safeUrl is is to use for the bypassSecurityTrustResourceUrl() function, to mark as safe Url.
       if (this.file.type == 'image/jpeg' || this.file.type == 'image/png') {
         this.uploadedImages.push(downloadURL);
       } else {
-        this.uploadedDatas.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.safeUrl));  // Allow to upload Data like pdf and displays in HTML (Comes from Angular security). 
+        this.uploadedDatas.push(this.sanitizer.bypassSecurityTrustResourceUrl(downloadURL));  // Allow to upload Data like pdf and displays in HTML (Comes from Angular security). 
       }
       this.dialog.open(DialogDataUploadSuccessfulComponent);
     });
+  }
+
+
+  // In Work
+  deleteUploadedDataService(uploadedDataUrl: string, index: number) {
+    // console.log(uploadedDataUrl);
+    // let t = JSON.stringify(uploadedDataUrl).substring(41);
+    // let a = t.replace('}', '');
+    const storageRef = ref(this.storage, uploadedDataUrl);
+    deleteObject(storageRef)
+      .then(() => {
+        if (this.file.type == 'image/jpeg' || this.file.type == 'image/png') {
+          this.uploadedImages.splice(index, 1);
+        } else {
+          this.uploadedDatas.splice(index, 1);
+        }
+      });
   }
 }
 
