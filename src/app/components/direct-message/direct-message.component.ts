@@ -80,19 +80,19 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   sendMessage() {
     if (this.messageContent && this.selectedUser && this.loggedInUser) {
-        this.directMessageService.createAndAddMessage(
-            this.loggedInUser.uid,
-            this.selectedUser.uid,
-            this.messageContent
-        ).then(() => {
-            this.messageContent = '';
-          }).catch((error: any) => {
-            console.error("Fehler beim Senden der Nachricht:", error);
-        });
+      this.directMessageService.createAndAddMessage(
+        this.loggedInUser.uid,
+        this.selectedUser.uid,
+        this.messageContent
+      ).then(() => {
+        this.messageContent = '';
+      }).catch((error: any) => {
+        console.error("Fehler beim Senden der Nachricht:", error);
+      });
     } else {
-        console.error("Bitte versuchen Sie es erneut.");
+      console.error("Bitte versuchen Sie es erneut.");
     }
-}
+  }
 
 
 
@@ -214,5 +214,9 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  setFocus($event: any) {
+    $event.focus();
   }
 }
