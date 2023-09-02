@@ -15,6 +15,9 @@ export class StorageService {
   file: any = {};
   uploadedImages: any = [];
   uploadedDatas: any = [];
+  pattern: RegExp = /.pdf/;
+  urlContainsPdfEnding: boolean = false;
+  filteredUrlToString: string = '';
 
 
   constructor(public storage: Storage, public dialog: MatDialog, public sanitizer: DomSanitizer) {
@@ -111,20 +114,33 @@ export class StorageService {
   }
 
 
-  // In Work
   deleteUploadedDataService(uploadedDataUrl: string, index: number) {
-    // console.log(uploadedDataUrl);
-    // let t = JSON.stringify(uploadedDataUrl).substring(41);
-    // let a = t.replace('}', '');
+    this.urlContainsPdfEnding = this.pattern.test(JSON.stringify(uploadedDataUrl))
+    if (this.urlContainsPdfEnding) {
+      this.deletePdfDataService(uploadedDataUrl, index);
+    } else {
+      this.deleteImagesService(uploadedDataUrl, index);
+    }
+  }
+
+
+  deletePdfDataService(uploadedDataUrl: string, index: number) {
+    this.filteredUrlToString = JSON.stringify(uploadedDataUrl).substring(42).replace('"}', '');
+    const storageRef = ref(this.storage, this.filteredUrlToString);
+    deleteObject(storageRef)
+      .then(() => {
+        this.uploadedDatas.splice(index, 1);
+      });
+  }
+
+
+  deleteImagesService(uploadedDataUrl: string, index: number) {
     const storageRef = ref(this.storage, uploadedDataUrl);
     deleteObject(storageRef)
       .then(() => {
-        if (this.file.type == 'image/jpeg' || this.file.type == 'image/png') {
-          this.uploadedImages.splice(index, 1);
-        } else {
-          this.uploadedDatas.splice(index, 1);
-        }
+        this.uploadedImages.splice(index, 1);
       });
   }
+
 }
 

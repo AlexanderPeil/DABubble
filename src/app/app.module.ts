@@ -45,6 +45,7 @@ import { DialogUploadedDataErrorComponent } from './components/dialog-uploaded-d
 import { QuillModule } from 'ngx-quill';
 import { QuillConfigModule } from 'ngx-quill/config';
 import { DialogDataUploadSuccessfulComponent } from './components/dialog-data-upload-successful/dialog-data-upload-successful.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -92,6 +93,7 @@ import { DialogDataUploadSuccessfulComponent } from './components/dialog-data-up
     MatRadioModule,
     PickerComponent,
     MatAutocompleteModule,
+    MatTooltipModule,
     QuillModule,
     QuillConfigModule.forRoot({
       modules: {
