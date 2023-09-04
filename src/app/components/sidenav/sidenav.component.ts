@@ -73,14 +73,14 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
 
   onUserClick(userWithCount: { user: User, unreadCount?: number }) {
-    const loggedInUid = this.authService.currentUser.value?.uid; 
+    const loggedInUid = this.authService.currentUser.value?.uid;
     if (loggedInUid && userWithCount.unreadCount && userWithCount.unreadCount > 0) {
       this.directMessageService.markAllMessagesAsRead(loggedInUid, userWithCount.user.uid).then(() => {
         userWithCount.unreadCount = 0; // Setzen Sie den Zähler zurück
       });
     }
     this.router.navigate(['main', 'direct-message', userWithCount.user.uid]);
-  } 
+  }
 
 
   ngOnDestroy() {
@@ -88,5 +88,4 @@ export class SidenavComponent implements OnInit, OnDestroy {
       this.userSubscription.unsubscribe();
     }
   }
-
 }

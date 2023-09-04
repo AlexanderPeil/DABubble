@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   Firestore,
   collectionData,
@@ -7,10 +7,10 @@ import {
   doc,
   getDoc,
   updateDoc,
-  onSnapshot,
   orderBy,
   query,
   deleteDoc,
+  onSnapshot,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Channel } from 'src/app/models/channel';
@@ -22,7 +22,11 @@ export class ChannelService {
   channelData!: Observable<any>;
   channel: any = new Channel();
 
-  constructor(private firestore: Firestore) {}
+
+  constructor(private firestore: Firestore) {
+
+  }
+
 
   addChannelService(channel: any) {
     const collectionInstance = collection(this.firestore, 'channels');
@@ -37,25 +41,30 @@ export class ChannelService {
     this.channelData = collectionData(collectionInstance, { idField: 'id' });
   }
 
-  updateChannelNameService(changedChannelName: string, channelId: string) {
+  updateChannelNameService(changedChannelName: any, channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
     const updateData = {
       channelName: changedChannelName,
     };
     updateDoc(docInstance, updateData);
-    window.location.reload();
+    onSnapshot(docInstance, (doc) => {
+      if (doc.exists()) {
+        this.channel = doc.data();
+      }
+    });
   }
 
-  updateChannelDescriptionService(
-    changedChannelDescription: string,
-    channelId: string
-  ) {
+  updateChannelDescriptionService(changedChannelDescription: string, channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
     const updateData = {
       channelDescription: changedChannelDescription,
     };
     updateDoc(docInstance, updateData);
-    window.location.reload();
+    onSnapshot(docInstance, (doc) => {
+      if (doc.exists()) {
+        this.channel = doc.data();
+      }
+    });
   }
 
   deleteChannelService(channelId: string) {

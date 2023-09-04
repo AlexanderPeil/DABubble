@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Channel } from 'src/app/models/channel';
 import { ChannelService } from 'src/app/shared/services/channel.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,6 +18,7 @@ export class DialogEditChannelComponent {
   channelNameHasChanged: boolean = false;
 
   constructor(
+    public dialog: MatDialog,
     public router: Router,
     public channelService: ChannelService,
     @Inject(MAT_DIALOG_DATA)
@@ -26,7 +27,7 @@ export class DialogEditChannelComponent {
       channelId: string;
       channelDescription: string;
     }
-  ) {}
+  ) { }
 
   openInputToEditChannelName() {
     this.showInputToEditChannelName = true;

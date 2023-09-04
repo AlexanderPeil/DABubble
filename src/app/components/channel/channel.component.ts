@@ -48,8 +48,6 @@ export class ChannelComponent implements OnInit {
         channelDescription: this.channelService.channel.channelDescription,
       }
     });
-    this.getCurrentChannelIdInUrl();
-    this.channelService.getSingleChannelService(this.channelId);
   }
 
 
@@ -62,11 +60,6 @@ export class ChannelComponent implements OnInit {
     this.dialog.open(DialogAddMembersInChannelComponent);
     this.getCurrentChannelIdInUrl();
     this.channelService.getSingleChannelService(this.channelId);
-  }
-
-
-  chooseFiletoUpload($event: any) {
-    this.storageService.chooseFileSevice($event);
   }
 
 
