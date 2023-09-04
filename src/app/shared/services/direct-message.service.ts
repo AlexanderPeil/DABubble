@@ -76,4 +76,18 @@ export class DirectMessageService {
     await batch.commit();
   }
 
+
+  removePTags(htmlContent: string) {
+    const div = document.createElement('div');
+    div.innerHTML = htmlContent;
+
+    div.querySelectorAll('p').forEach(p => {
+      const text = p.innerText;
+      const textNode = document.createTextNode(text);
+      p.replaceWith(textNode);
+    });
+
+    return div.innerHTML;
+  }
+
 }

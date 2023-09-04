@@ -204,101 +204,101 @@
     }
 }
 
-.containerTextarea {
-    position: absolute;
-    z-index: 11;
-    bottom: 0;
-    width: 100%;
-    height: 168px;
-    background: white;
+// .containerTextarea {
+//     position: absolute;
+//     z-index: 11;
+//     bottom: 0;
+//     width: 100%;
+//     height: 168px;
+//     background: white;
 
-    textarea {
-        resize: none;
-        position: absolute;
-        left: 18px;
-        bottom: 32px;
-        width: 93%;
-        border: 1px solid #ADB0D9;
-        outline: unset;
-        border-radius: 20px;
-        font-weight: 400;
-        font-size: 18px;
-        padding: 15px 15px 70px 15px;
-        font-family: Nunito, sans-serif;
+//     textarea {
+//         resize: none;
+//         position: absolute;
+//         left: 18px;
+//         bottom: 32px;
+//         width: 93%;
+//         border: 1px solid #ADB0D9;
+//         outline: unset;
+//         border-radius: 20px;
+//         font-weight: 400;
+//         font-size: 18px;
+//         padding: 15px 15px 70px 15px;
+//         font-family: Nunito, sans-serif;
 
-        &::placeholder {
-            color: #686868;
-            font-family: Nunito, sans-serif;
-        }
+//         &::placeholder {
+//             color: #686868;
+//             font-family: Nunito, sans-serif;
+//         }
 
-        @include hover_input_or_textarea;
-        @include focus_input_or_textarea;
-    }
+//         @include hover_input_or_textarea;
+//         @include focus_input_or_textarea;
+//     }
 
-    hr {
-        margin: 0;
-        height: 30px;
-        position: absolute;
-        left: 80px;
-        bottom: 52px;
-        border: 1px solid #ADB0D9;
-    }
-}
+//     hr {
+//         margin: 0;
+//         height: 30px;
+//         position: absolute;
+//         left: 80px;
+//         bottom: 52px;
+//         border: 1px solid #ADB0D9;
+//     }
+// }
 
-.addIcon {
-    position: absolute;
-    bottom: 61px;
-    left: 42px;
-    cursor: pointer;
+// .addIcon {
+//     position: absolute;
+//     bottom: 61px;
+//     left: 42px;
+//     cursor: pointer;
 
-    &:hover {
-        transition: all 225ms ease-in-out;
-        transform: scale(1.05);
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-    }
-}
+//     &:hover {
+//         transition: all 225ms ease-in-out;
+//         transform: scale(1.05);
+//         filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+//     }
+// }
 
-.smileyIcon {
-    position: absolute;
-    bottom: 55px;
-    left: 100px;
-}
+// .smileyIcon {
+//     position: absolute;
+//     bottom: 55px;
+//     left: 100px;
+// }
 
-.smileyIconHover {
-    cursor: pointer;
+// .smileyIconHover {
+//     cursor: pointer;
 
-    &:hover {
-        transition: all 225ms ease-in-out;
-        transform: scale(1.05);
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-    }
-}
+//     &:hover {
+//         transition: all 225ms ease-in-out;
+//         transform: scale(1.05);
+//         filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+//     }
+// }
 
 .smileyContainer {
     position: relative;
     z-index: 99;
-    bottom: 317px;
+    // bottom: 317px;
     width: 348px;
 }
 
-.atIcon {
-    position: absolute;
-    bottom: 55px;
-    left: 150px;
-    cursor: pointer;
+// .atIcon {
+//     position: absolute;
+//     bottom: 55px;
+//     left: 150px;
+//     cursor: pointer;
 
-    &:hover {
-        transform: scale(1.05);
-        transition: all 225ms ease-in-out;
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-    }
-}
+//     &:hover {
+//         transform: scale(1.05);
+//         transition: all 225ms ease-in-out;
+//         filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+//     }
+// }
 
-.sendBtn {
-    position: absolute;
-    right: 50px;
-    bottom: 50px;
-}
+// .sendBtn {
+//     position: absolute;
+//     right: 50px;
+//     bottom: 50px;
+// }
 
 .messagesContainer {
     height: 70vh !important;
@@ -396,3 +396,166 @@ quill-editor {
 }
 
 /* quill-editor Styles */
+
+
+/************************************ Styles for the texfield ************************************/
+.mainContainerUploadedDatas {
+    display: flex;
+    gap: 15px;
+    padding-bottom: 8px;
+  }
+  
+  .containerUploadedImages {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .uploadedImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+  
+    &:hover+.closeIcon {
+      display: flex;
+    }
+  
+    &:hover {
+      @include button_hover;
+      opacity: 0.8;
+    }
+  }
+  
+  .containerUploadedDatas {
+    display: flex;
+    align-items: center;
+    position: relative;
+  
+    iframe {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: unset;
+  
+      &:hover+.closeIcon {
+        display: flex;
+      }
+    }
+  }
+  
+  .closeIcon {
+    width: 20px;
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    z-index: 1;
+    border-radius: 50%;
+    display: none;
+    background-color: white;
+    border: 1px solid lightgray;
+  
+    &:hover {
+      @include button_hover;
+      display: flex;
+    }
+  }
+  
+  .containerIcons {
+    display: flex;
+    align-items: center;
+  }
+  
+  quill-editor {
+    border: 1px solid #ADB0D9;
+    border-radius: 20px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 15px;
+  
+    &:hover {
+      border-radius: 20px;
+      border: 1px solid #797EF3;
+    }
+  }
+  
+  .verticalLine {
+    height: 25px;
+    margin: 0px 5px 0px 5px;
+    border: 1px solid #ADB0D9;
+  }
+  
+  .containerAddIcon {
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    left: 35px;
+    bottom: 35px;
+  
+    &:hover {
+      cursor: pointer;
+      transition: all 225ms ease-in-out;
+      background-color: #ECEEFE;
+    }
+  
+    img {
+  
+      &:hover {
+        transition: all 225ms ease-in-out;
+        transform: scale(1.05);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      }
+    }
+  }
+  
+  .containerSmileyIcon {
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+  
+    &:hover {
+      cursor: pointer;
+      transition: all 225ms ease-in-out;
+      background-color: #ECEEFE;
+    }
+  
+    img {
+  
+      &:hover {
+        transition: all 225ms ease-in-out;
+        transform: scale(1.05);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      }
+    }
+  }
+  
+  .containerAtIcon {
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+  
+    &:hover {
+      cursor: pointer;
+      transition: all 225ms ease-in-out;
+      background-color: #ECEEFE;
+    }
+  
+    img {
+  
+      &:hover {
+        transform: scale(1.05);
+        transition: all 225ms ease-in-out;
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      }
+    }
+  }
+  
+  .sendBtn {
+    position: absolute;
+    right: 20px;
+  }
+  
+  /************************************ Styles for the texfield ************************************/

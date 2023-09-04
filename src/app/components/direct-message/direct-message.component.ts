@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { Observable, Subject, Subscription, combineLatest, filter, forkJoin, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs';
+import { Subject, Subscription, combineLatest, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
 import { DirectMessageContent } from 'src/app/models/direct-message';
 import { DialogDirectMessageProfileComponent } from '../dialog-direct-message-profile/dialog-direct-message-profile.component';
 import { MatDialog } from '@angular/material/dialog';
+import { StorageService } from 'src/app/shared/services/storage.service';
 
 
 @Component({
@@ -30,11 +30,13 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   @ViewChild('userMenu') userMenu!: ElementRef;
 
 
+
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
     private directMessageService: DirectMessageService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    public storageService: StorageService) { }
 
 
   ngOnInit() {
@@ -80,10 +82,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   sendMessage() {
     if (this.messageContent && this.selectedUser && this.loggedInUser) {
+      const cleanedContent = this.directMessageService.removePTags(this.messageContent);
       this.directMessageService.createAndAddMessage(
         this.loggedInUser.uid,
         this.selectedUser.uid,
-        this.messageContent
+        cleanedContent
       ).then(() => {
         this.messageContent = '';
       }).catch((error: any) => {
@@ -177,8 +180,9 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  checkForAtSymbol(event: any): void {
-    const value = event.target.value;
+  onTextChange(event: any) {
+    const value = event.text;
+
     if (value.includes('@')) {
       const query = value.slice(value.lastIndexOf('@') + 1);
       this.showUserDropdown = true;
@@ -188,6 +192,20 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       this.filterUsers();
     }
   }
+
+
+
+  // checkForAtSymbol(event: any): void {
+  //   const value = event.target.value;
+  //   if (value.includes('@')) {
+  //     const query = value.slice(value.lastIndexOf('@') + 1);
+  //     this.showUserDropdown = true;
+  //     this.filterUsers(query);
+  //   } else {
+  //     this.showUserDropdown = false;
+  //     this.filterUsers();
+  //   }
+  // }
 
 
   triggerAtSymbol(event: MouseEvent): void {
@@ -211,12 +229,19 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
+  chooseFiletoUpload($event: any) {
+    this.storageService.chooseFileSevice($event);
+  }
+
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 
+
   setFocus($event: any) {
     $event.focus();
   }
+
 }
