@@ -18,7 +18,6 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ThreadComponent } from './components/thread/thread.component';
-import { TextfieldInThreadComponent } from './components/textfield-in-thread/textfield-in-thread.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from './components/dialog-edit-channel/dialog-edit-channel.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -60,7 +59,6 @@ import { DialogDetailViewUploadedDatasComponent } from './components/dialog-deta
     ForgotPasswordComponent,
     ResetPasswordComponent,
     ThreadComponent,
-    TextfieldInThreadComponent,
     DialogProfileComponent,
     DialogEditProfileComponent,
     ImprintComponent,

@@ -11,7 +11,10 @@ import {
   query,
   deleteDoc,
   onSnapshot,
+  limit,
+  getDocs,
 } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Channel } from 'src/app/models/channel';
 
@@ -23,7 +26,7 @@ export class ChannelService {
   channel: any = new Channel();
 
 
-  constructor(private firestore: Firestore) {
+  constructor(private firestore: Firestore, public route: Router) {
 
   }
 
@@ -68,7 +71,21 @@ export class ChannelService {
     deleteDoc(docInstance).then(() => {
       console.log('Document deleted');
     });
+    this.navigateToOthersChannelAsSoonAsDeleteService();
   }
+
+
+  navigateToOthersChannelAsSoonAsDeleteService() {
+    const querie = query(collection(this.firestore, 'channels'), orderBy('channelName'), limit(1));
+    getDocs(querie).then((querySnapshot) => {
+      if (querySnapshot.empty) {
+        this.route.navigate(['/main']);
+      } else {
+        this.route.navigate(['/main/channel/', querySnapshot.docs[0].id]);
+      }
+    });
+  }
+
 
   getSingleChannelService(channelId: string) {
     const collectionInstance = collection(this.firestore, 'channels');

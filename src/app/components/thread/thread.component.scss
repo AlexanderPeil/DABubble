@@ -1,3 +1,6 @@
+@import'../../shared/variables.scss';
+
+
 .threadMainContainer {
   width: 21vw;
   height: 84vh;
@@ -22,8 +25,7 @@
 
   img {
     width: 15px;
-    filter: brightness(0) saturate(100%) invert(52%) sepia(87%) saturate(2210%)
-      hue-rotate(211deg) brightness(97%) contrast(97%);
+    filter: brightness(0) saturate(100%) invert(52%) sepia(87%) saturate(2210%) hue-rotate(211deg) brightness(97%) contrast(97%);
   }
 }
 
@@ -57,8 +59,7 @@
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -158,3 +159,165 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+/************************************ Styles for the texfield ************************************/
+.mainContainerUploadedDatas {
+  display: flex;
+  gap: 15px;
+  padding-bottom: 8px;
+}
+
+.containerUploadedImages {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.uploadedImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+
+  &:hover+.closeIcon {
+    display: flex;
+  }
+
+  &:hover {
+    @include button_hover;
+    opacity: 0.8;
+  }
+}
+
+.containerUploadedDatas {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  iframe {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: unset;
+
+    &:hover+.closeIcon {
+      display: flex;
+    }
+  }
+}
+
+.closeIcon {
+  width: 20px;
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  z-index: 1;
+  border-radius: 50%;
+  display: none;
+  background-color: white;
+  border: 1px solid lightgray;
+
+  &:hover {
+    @include button_hover;
+    display: flex;
+  }
+}
+
+.containerIcons {
+  display: flex;
+  align-items: center;
+}
+
+quill-editor {
+  border: 1px solid #ADB0D9;
+  border-radius: 20px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 15px;
+
+  &:hover {
+    border-radius: 20px;
+    border: 1px solid #797EF3;
+  }
+}
+
+.verticalLine {
+  height: 25px;
+  margin: 0px 5px 0px 5px;
+  border: 1px solid #ADB0D9;
+}
+
+.containerAddIcon {
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  left: 35px;
+  bottom: 35px;
+
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
+  }
+
+  img {
+
+    &:hover {
+      transition: all 225ms ease-in-out;
+      transform: scale(1.05);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+    }
+  }
+}
+
+.containerSmileyIcon {
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
+  }
+
+  img {
+
+    &:hover {
+      transition: all 225ms ease-in-out;
+      transform: scale(1.05);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+    }
+  }
+}
+
+.containerAtIcon {
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
+  }
+
+  img {
+
+    &:hover {
+      transform: scale(1.05);
+      transition: all 225ms ease-in-out;
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+    }
+  }
+}
+
+.sendBtn {
+  position: absolute;
+  right: 20px;
+}
+
+/************************************ Styles for the texfield ************************************/

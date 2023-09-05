@@ -65,8 +65,4 @@ export class DialogEditChannelComponent {
       ); // Get the ChannelId from @Inject in the Constructor.
     }
   }
-
-  leaveChannel() {
-    this.channelService.deleteChannelService(this.data.channelId);
-  }
 }
