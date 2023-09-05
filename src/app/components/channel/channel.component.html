@@ -39,7 +39,8 @@
       <div class="mainContainerUploadedDatas">
         <!--------------------------------------- Displays uploaded Images --------------------------------------->
         <div *ngFor="let uploadedImage of storageService.uploadedImages; let i = index" class="containerUploadedImages">
-          <img class="uploadedImage" [src]="uploadedImage ? uploadedImage : null">
+          <img (click)="openDetailViewFromUploadedImage(uploadedImage)" class="uploadedImage"
+            [src]="uploadedImage ? uploadedImage : null">
           <img matTooltipPosition="above" matTooltip="Delete Data"
             (click)="this.storageService.deleteUploadedDataService(uploadedImage, i)" class="closeIcon"
             src="assets/img/icons/closeIcon.svg">

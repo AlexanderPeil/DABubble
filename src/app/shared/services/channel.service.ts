@@ -48,9 +48,7 @@ export class ChannelService {
     };
     updateDoc(docInstance, updateData);
     onSnapshot(docInstance, (doc) => {
-      if (doc.exists()) {
-        this.channel = doc.data();
-      }
+      this.channel = doc.data();
     });
   }
 
@@ -61,9 +59,7 @@ export class ChannelService {
     };
     updateDoc(docInstance, updateData);
     onSnapshot(docInstance, (doc) => {
-      if (doc.exists()) {
-        this.channel = doc.data();
-      }
+      this.channel = doc.data();
     });
   }
 
