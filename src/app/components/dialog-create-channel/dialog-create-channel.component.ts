@@ -68,7 +68,7 @@ export class DialogCreateChannelComponent implements OnInit {
         )
       )
       .subscribe((allUsers) => {
-        const users = allUsers.map((user) => user.uid);
+        const users = allUsers.map((user) => user);
 
         // Add the user IDs to the channel object
         this.channel.users = users;
@@ -101,7 +101,7 @@ export class DialogCreateChannelComponent implements OnInit {
     if (!this.channel.users) {
       this.channel.users = []; // Initialisieren Sie das Array, wenn es noch nicht existiert
     }
-    this.channel.users.push(user.uid);
+    this.channel.users.push(user);
   }
 
   async onSubmitWithMembers(channel: any) {
