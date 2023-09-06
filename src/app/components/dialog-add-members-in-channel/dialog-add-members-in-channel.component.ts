@@ -36,7 +36,7 @@ export class DialogAddMembersInChannelComponent implements OnInit {
     if (!this.channel.users) {
       this.channel.users = []; // Initialisieren Sie das Array, wenn es noch nicht existiert
     }
-    this.channel.users.push(user.uid);
+    this.channel.users.push(user);
   }
 
   checkForDropdown(event: any): void {
