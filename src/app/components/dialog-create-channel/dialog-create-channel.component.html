@@ -80,6 +80,12 @@
         (click)="checkForDropdown($event)"
         (input)="checkForDropdown($event)"
       />
+      <div *ngIf="selectedUsers.length > 0" class="selected-users">
+        <div *ngFor="let user of selectedUsers" class="selected-user">
+          <img [src]="user.photoURL" />
+          <span>{{ user.displayName }}</span>
+        </div>
+      </div>
     </div>
     <div *ngIf="showUserDropdown" class="user-dropdown">
       <div *ngFor="let user of foundUsers" (click)="selectUser(user)">

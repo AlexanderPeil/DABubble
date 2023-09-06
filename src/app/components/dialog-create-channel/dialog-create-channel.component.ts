@@ -25,6 +25,7 @@ export class DialogCreateChannelComponent implements OnInit {
   isInputVisible: boolean = false;
   showUserDropdown: boolean = false;
   foundUsers: User[] = [];
+  selectedUsers: any[] = [];
 
   constructor(
     private channelService: ChannelService,
@@ -102,6 +103,7 @@ export class DialogCreateChannelComponent implements OnInit {
       this.channel.users = []; // Initialisieren Sie das Array, wenn es noch nicht existiert
     }
     this.channel.users.push(user);
+    this.selectedUsers.push(user);
   }
 
   async onSubmitWithMembers(channel: any) {
