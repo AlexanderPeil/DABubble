@@ -7,24 +7,16 @@
     </div>
   </div>
 
-  <div class="bottomContainerShowUser">
-    <div
-      *ngFor="let user of channelService.channel.users"
-      class="unserContainer"
-    >
-      <img class="user" [src]="user.photoURL" />
-      <p>{{ user.displayName }}</p>
+  <div>
+    <div class="scrollableContainerForUsers">
+      <div
+        *ngFor="let user of channelService.channel.users"
+        class="unserContainer"
+      >
+        <img class="user" [src]="user.photoURL" />
+        <p>{{ user.displayName }}</p>
+      </div>
     </div>
-
-    <!-- <div class="unserContainer">
-            <img class="user" src="assets/img/avatar2.svg">
-            <p>Alex</p>
-        </div>
-
-        <div class="unserContainer">
-            <img class="user" src="assets/img/avatar3.svg">
-            <p>Jorgo</p>
-        </div> -->
 
     <div
       class="addUserIconMainContainer"

@@ -35,11 +35,21 @@
   }
 }
 
-.bottomContainerShowUser {
-  margin-top: 25px;
-  gap: 20px;
+.scrollableContainerForUsers {
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  gap: 10px;
   display: flex;
   flex-direction: column;
+  margin-top: 25px;
+  margin-bottom: 25px;
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      display: flex;
+    }
+  }
 }
 
 .unserContainer {
