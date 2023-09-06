@@ -1,208 +1,213 @@
 @import'../../shared/variables.scss';
 
 .messageMainContainer {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 20px 0px 20px 20px;
-    margin-top: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px 0px 20px 20px;
+  margin-top: 20px;
 
-    &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
 
-        .message {
-            background-color: white;
-        }
-
-        .lastAnswer {
-            color: black;
-        }
+    .message {
+      background-color: white;
     }
+
+    .lastAnswer {
+      color: black;
+    }
+  }
 }
 
 .messageChildContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 
 .userImg {
-    height: 50px;
-    width: 50px;
-    border-radius: 100%;
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
 }
 
 .statusIcon {
-    position: absolute;
-    bottom: 5px;
-    right: 0;
-    height: 15px;
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+  height: 15px;
 }
 
 .userIconWrapper {
-    position: relative;
+  position: relative;
 }
 
 .containerUserNameAndTime {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .containerEmojis {
-    display: flex;
-    gap: 10px;
-    position: absolute;
-    top: -22px;
-    right: 60px;
-    padding: 5px 20px 5px 20px;
-    border-bottom-left-radius: 25px;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-    border: 1px solid #ADB0D9;
-    background-color: white;
+  display: flex;
+  gap: 10px;
+  position: absolute;
+  top: -22px;
+  right: 60px;
+  padding: 5px 20px 5px 20px;
+  border-bottom-left-radius: 25px;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  border: 1px solid #ADB0D9;
+  background-color: white;
 
-    &:hover {
+  &:hover {
 
-        .messageMainContainer {
-            background-color: #ECEEFE;
-        }
+    .messageMainContainer {
+      background-color: #ECEEFE;
     }
+  }
 }
 
 .completeEmoji {
-    padding: 8px;
-    border-radius: 50%;
+  padding: 8px;
+  border-radius: 50%;
 
-    &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
-    }
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
+  }
 }
 
 .handsUpEmoji {
-    padding: 8px;
-    border-radius: 50%;
+  padding: 8px;
+  border-radius: 50%;
 
-    &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
-    }
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
+  }
 }
 
 .containerAddEmojiIcon {
-    display: flex;
-    padding: 8px;
-    border-radius: 50%;
+  display: flex;
+  padding: 8px;
+  border-radius: 50%;
 
-    img {
-        &:hover {
-            cursor: pointer;
-            transition: all 225ms ease-in-out;
-            transform: scale(1.05);
-            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-        }
-    }
-
+  img {
     &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
+      cursor: pointer;
+      transition: all 225ms ease-in-out;
+      transform: scale(1.05);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
+  }
+
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
+  }
 }
 
 .containerAnswerOnThreadIcon {
-    display: flex;
-    padding: 8px;
-    border-radius: 50%;
+  display: flex;
+  padding: 8px;
+  border-radius: 50%;
 
-    img {
-        &:hover {
-            cursor: pointer;
-            transition: all 225ms ease-in-out;
-            transform: scale(1.05);
-            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-        }
-    }
-
+  img {
     &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
+      cursor: pointer;
+      transition: all 225ms ease-in-out;
+      transform: scale(1.05);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
+  }
+
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
+  }
 }
 
 .chatHistoryMainContainer {
-    overflow: auto;
-    width: 53vw;
-    height: 84vh;
-    border-radius: 30px;
-    margin: 0 15px 0px 15px;
-    background-color: #FFFFFF;
-    position: relative;
+  overflow: auto;
+  width: 53vw;
+  height: 84vh;
+  border-radius: 30px;
+  margin: 0 15px 0px 15px;
+  background-color: #FFFFFF;
+  position: relative;
 }
 
 .chatHistoryHeader {
-    display: flex;
-    justify-content: space-between;
-    padding: 25px;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    box-shadow: 0 2px 10px 0 #00000014;
+  display: flex;
+  justify-content: space-between;
+  padding: 25px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  box-shadow: 0 2px 10px 0 #00000014;
 }
 
 .userName {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 5px;
 
-    &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
-        border-radius: 20px;
-    }
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
+    border-radius: 20px;
+  }
 
-    p {
-        font-weight: 700;
-        font-size: 24px;
-        margin: 0;
-    }
+  p {
+    font-weight: 700;
+    font-size: 24px;
+    margin: 0;
+  }
 }
 
 .date {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  // margin: 80px 35px 0px 35px;
+
+  span {
+    font-weight: 400;
+    font-size: 18px;
+    border-radius: 30px;
+    padding: 10px;
+    margin: 0;
+    border: 1px solid #ADB0D9;
+    text-align: center;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  hr {
     width: 100%;
-    // margin: 80px 35px 0px 35px;
-
-    span {
-        font-weight: 400;
-        font-size: 18px;
-        border-radius: 30px;
-        padding: 10px;
-        margin: 0;
-        border: 1px solid #ADB0D9;
-        text-align: center;
-        display: inline-block;
-        white-space: nowrap;
-    }
-
-    hr {
-        width: 100%;
-        margin: 0;
-        transform: rotate(180deg);
-        border-color: #ADB0D9;
-    }
+    margin: 0;
+    transform: rotate(180deg);
+    border-color: #ADB0D9;
+  }
 }
+
+.chatHistoryFullWidth {
+  width: 75vw;
+}
+
 
 // .containerTextarea {
 //     position: absolute;
@@ -275,10 +280,10 @@
 // }
 
 .smileyContainer {
-    position: relative;
-    z-index: 99;
-    // bottom: 317px;
-    width: 348px;
+  position: relative;
+  z-index: 99;
+  // bottom: 317px;
+  width: 348px;
 }
 
 // .atIcon {
@@ -301,98 +306,98 @@
 // }
 
 .messagesContainer {
-    height: 70vh !important;
+  height: 70vh !important;
 }
 
 .nameTimeContainer {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 
-    p:first-child {
-        @include font(18px, 700, 24.55px);
-    }
+  p:first-child {
+    @include font(18px, 700, 24.55px);
+  }
 }
 
 .message {
-    @include font(18px, 400, 24.55px);
-    background-color: #eceefe;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    border-bottom-left-radius: 30px;
-    padding: 15px;
+  @include font(18px, 400, 24.55px);
+  background-color: #eceefe;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  padding: 15px;
 }
 
 .directMesageContainer {
-    min-height: 300px;
+  min-height: 300px;
 
-    &:hover {
-        &::-webkit-scrollbar-thumb {
-            display: flex;
-        }
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      display: flex;
     }
+  }
 }
 
 .directMesageContainer:last-child {
-    margin-bottom: 130px;
+  margin-bottom: 130px;
 }
 
 .user-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  background: white;
+  z-index: 999;
+  width: 300px;
+  max-height: 160px;
+  overflow-y: auto;
+  left: 18px;
+  bottom: 120px;
+  cursor: pointer;
+  border: 1px solid #686868;
+  border-radius: 10px;
+  padding: 10px;
+
+  div {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 10px;
-    position: relative;
-    background: white;
-    z-index: 999;
-    width: 300px;
-    max-height: 160px;
-    overflow-y: auto;
-    left: 18px;
-    bottom: 120px;
-    cursor: pointer;
-    border: 1px solid #686868;
-    border-radius: 10px;
-    padding: 10px;
 
-    div {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        &:hover {
-            transition: all 225ms ease-in-out;
-            background-color: #444df2;
-            color: white;
-        }
+    &:hover {
+      transition: all 225ms ease-in-out;
+      background-color: #444df2;
+      color: white;
     }
+  }
 
-    img {
-        height: 35px;
-        width: 35px;
-        border-radius: 100%;
-    }
+  img {
+    height: 35px;
+    width: 35px;
+    border-radius: 100%;
+  }
 
-    span {
-        @include font(18px, 400, 20px);
-    }
+  span {
+    @include font(18px, 400, 20px);
+  }
 }
 
 /* quill-editor Styles */
 quill-editor {
-    border: 1px solid #ADB0D9;
-    border-radius: 20px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    bottom: 15px;
+  border: 1px solid #ADB0D9;
+  border-radius: 20px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 15px;
 
-    &:hover {
-        border-radius: 20px;
-        border: 1px solid #797EF3;
-    }
+  &:hover {
+    border-radius: 20px;
+    border: 1px solid #797EF3;
+  }
 }
 
 /* quill-editor Styles */
@@ -400,162 +405,162 @@ quill-editor {
 
 /************************************ Styles for the texfield ************************************/
 .mainContainerUploadedDatas {
+  display: flex;
+  gap: 15px;
+  padding-bottom: 8px;
+}
+
+.containerUploadedImages {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.uploadedImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+
+  &:hover+.closeIcon {
     display: flex;
-    gap: 15px;
-    padding-bottom: 8px;
   }
-  
-  .containerUploadedImages {
-    display: flex;
-    align-items: center;
-    position: relative;
+
+  &:hover {
+    @include button_hover;
+    opacity: 0.8;
   }
-  
-  .uploadedImage {
+}
+
+.containerUploadedDatas {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  iframe {
     width: 40px;
     height: 40px;
     border-radius: 8px;
-  
+    border: unset;
+
     &:hover+.closeIcon {
       display: flex;
     }
-  
-    &:hover {
-      @include button_hover;
-      opacity: 0.8;
-    }
   }
-  
-  .containerUploadedDatas {
+}
+
+.closeIcon {
+  width: 20px;
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  z-index: 1;
+  border-radius: 50%;
+  display: none;
+  background-color: white;
+  border: 1px solid lightgray;
+
+  &:hover {
+    @include button_hover;
     display: flex;
-    align-items: center;
-    position: relative;
-  
-    iframe {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      border: unset;
-  
-      &:hover+.closeIcon {
-        display: flex;
-      }
-    }
   }
-  
-  .closeIcon {
-    width: 20px;
-    position: absolute;
-    bottom: 30px;
-    left: 30px;
-    z-index: 1;
-    border-radius: 50%;
-    display: none;
-    background-color: white;
-    border: 1px solid lightgray;
-  
-    &:hover {
-      @include button_hover;
-      display: flex;
-    }
-  }
-  
-  .containerIcons {
-    display: flex;
-    align-items: center;
-  }
-  
-  quill-editor {
-    border: 1px solid #ADB0D9;
+}
+
+.containerIcons {
+  display: flex;
+  align-items: center;
+}
+
+quill-editor {
+  border: 1px solid #ADB0D9;
+  border-radius: 20px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 15px;
+
+  &:hover {
     border-radius: 20px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    bottom: 15px;
-  
-    &:hover {
-      border-radius: 20px;
-      border: 1px solid #797EF3;
-    }
+    border: 1px solid #797EF3;
   }
-  
-  .verticalLine {
-    height: 25px;
-    margin: 0px 5px 0px 5px;
-    border: 1px solid #ADB0D9;
+}
+
+.verticalLine {
+  height: 25px;
+  margin: 0px 5px 0px 5px;
+  border: 1px solid #ADB0D9;
+}
+
+.containerAddIcon {
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  left: 35px;
+  bottom: 35px;
+
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
   }
-  
-  .containerAddIcon {
-    padding: 8px;
-    border-radius: 50%;
-    display: flex;
-    left: 35px;
-    bottom: 35px;
-  
+
+  img {
+
     &:hover {
-      cursor: pointer;
       transition: all 225ms ease-in-out;
-      background-color: #ECEEFE;
-    }
-  
-    img {
-  
-      &:hover {
-        transition: all 225ms ease-in-out;
-        transform: scale(1.05);
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-      }
+      transform: scale(1.05);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
-  
-  .containerSmileyIcon {
-    padding: 8px;
-    border-radius: 50%;
-    display: flex;
-  
+}
+
+.containerSmileyIcon {
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
+  }
+
+  img {
+
     &:hover {
-      cursor: pointer;
       transition: all 225ms ease-in-out;
-      background-color: #ECEEFE;
-    }
-  
-    img {
-  
-      &:hover {
-        transition: all 225ms ease-in-out;
-        transform: scale(1.05);
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-      }
+      transform: scale(1.05);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
-  
-  .containerAtIcon {
-    padding: 8px;
-    border-radius: 50%;
-    display: flex;
-  
+}
+
+.containerAtIcon {
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+
+  &:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background-color: #ECEEFE;
+  }
+
+  img {
+
     &:hover {
-      cursor: pointer;
+      transform: scale(1.05);
       transition: all 225ms ease-in-out;
-      background-color: #ECEEFE;
-    }
-  
-    img {
-  
-      &:hover {
-        transform: scale(1.05);
-        transition: all 225ms ease-in-out;
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-      }
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
-  
-  .sendBtn {
-    position: absolute;
-    right: 20px;
-  }
-  
-  /************************************ Styles for the texfield ************************************/
+}
+
+.sendBtn {
+  position: absolute;
+  right: 20px;
+}
+
+/************************************ Styles for the texfield ************************************/

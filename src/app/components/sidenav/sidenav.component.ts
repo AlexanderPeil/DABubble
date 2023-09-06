@@ -36,7 +36,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
   loggedInUser: User | null = null;
 
 
-
   ngOnInit() {
     this.authService.getUsers().subscribe((usersData) => {
       this.users = usersData.map(user => ({ user, unreadCount: 0 }));
@@ -52,7 +51,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
     });
     this.channelService.getChannelService();
   }
-
 
 
   hideChannels() {

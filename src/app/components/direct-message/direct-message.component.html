@@ -1,4 +1,5 @@
-<div class="chatHistoryMainContainer">
+<div [ngClass]="{ chatHistoryFullWidth: toggleWorspaceMenuService.workspaceMenuIsOpen }"
+    class="chatHistoryMainContainer">
     <div class="chatHistoryHeader">
         <div class="userName" (click)="openDialog()">
             <div class="userIconWrapper">
@@ -78,7 +79,8 @@
 
     <!-- [formControl]="messageFormControl"   (contentChanged)="onTextChange($event)"  (onFocus)="onEditorFocus($event)"  -->
     <!-- Message textarea -->
-    <quill-editor [(ngModel)]="messageContent" placeholder="Write a message"  (onEditorCreated)="setFocus($event)" (onContentChanged)="onTextChange($event)"> 
+    <quill-editor [(ngModel)]="messageContent" placeholder="Write a message" (onEditorCreated)="setFocus($event)"
+        (onContentChanged)="onTextChange($event)">
         <div quill-editor-toolbar>
             <div *ngIf="showUserDropdown" class="user-dropdown scrolleableContainer" #userMenu>
                 <div *ngFor="let user of foundUsers" (click)="selectUser(user)">
@@ -88,50 +90,52 @@
             </div>
 
             <!--------------------------------------- Custom created Container --------------------------------------->
-      <div class="mainContainerUploadedDatas">
-        <!--------------------------------------- Displays uploaded Images --------------------------------------->
-        <div *ngFor="let uploadedImage of storageService.uploadedImages; let i = index" class="containerUploadedImages">
-          <img class="uploadedImage" [src]="uploadedImage ? uploadedImage : null">
-          <img matTooltipPosition="above" matTooltip="Delete Data"
-            (click)="this.storageService.deleteUploadedDataService(uploadedImage, i)" class="closeIcon"
-            src="assets/img/icons/closeIcon.svg">
-        </div>
-        <!--------------------------------------- Displays uploaded Images --------------------------------------->
+            <div class="mainContainerUploadedDatas">
+                <!--------------------------------------- Displays uploaded Images --------------------------------------->
+                <div *ngFor="let uploadedImage of storageService.uploadedImages; let i = index"
+                    class="containerUploadedImages">
+                    <img class="uploadedImage" [src]="uploadedImage ? uploadedImage : null">
+                    <img matTooltipPosition="above" matTooltip="Delete Data"
+                        (click)="this.storageService.deleteUploadedDataService(uploadedImage, i)" class="closeIcon"
+                        src="assets/img/icons/closeIcon.svg">
+                </div>
+                <!--------------------------------------- Displays uploaded Images --------------------------------------->
 
 
-        <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
-        <div *ngFor="let uploadedData of storageService.uploadedDatas; let i = index" class="containerUploadedDatas">
-          <iframe class="uploadedData" [src]="uploadedData ? uploadedData : null"></iframe>
-          <img matTooltipPosition="above" matTooltip="Delete Data"
-            (click)="this.storageService.deleteUploadedDataService(uploadedData, i)" class="closeIcon"
-            src="assets/img/icons/closeIcon.svg">
-        </div>
-        <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
-      </div>
+                <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
+                <div *ngFor="let uploadedData of storageService.uploadedDatas; let i = index"
+                    class="containerUploadedDatas">
+                    <iframe class="uploadedData" [src]="uploadedData ? uploadedData : null"></iframe>
+                    <img matTooltipPosition="above" matTooltip="Delete Data"
+                        (click)="this.storageService.deleteUploadedDataService(uploadedData, i)" class="closeIcon"
+                        src="assets/img/icons/closeIcon.svg">
+                </div>
+                <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
+            </div>
 
-      <div class="smileyIcon smileyContainer" *ngIf="showEmojiPicker" #emojiContainer>
-        <emoji-mart (emojiClick)="addEmoji($event)"></emoji-mart>
-    </div>
+            <div class="smileyIcon smileyContainer" *ngIf="showEmojiPicker" #emojiContainer>
+                <emoji-mart (emojiClick)="addEmoji($event)"></emoji-mart>
+            </div>
 
-      <div class="containerIcons">
-        <label for="input" class="containerAddIcon">
-          <img src="assets/img/icons/add.svg" />
-          <input (change)="chooseFiletoUpload($event)" id="input" type="file" hidden />
-        </label>
+            <div class="containerIcons">
+                <label for="input" class="containerAddIcon">
+                    <img src="assets/img/icons/add.svg" />
+                    <input (change)="chooseFiletoUpload($event)" id="input" type="file" hidden />
+                </label>
 
-        <hr class="verticalLine" />
+                <hr class="verticalLine" />
 
-        <div class="containerSmileyIcon">
-          <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker($event)" />
-        </div>
+                <div class="containerSmileyIcon">
+                    <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker($event)" />
+                </div>
 
 
-        <div class="containerAtIcon">
-          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol($event)" />
-        </div>
-        <img (click)="sendMessage()"  class="sendBtn" src="assets/img/icons/sendBtn.svg" />
-      </div>
-      <!--------------------------------------- Custom created Container --------------------------------------->
+                <div class="containerAtIcon">
+                    <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol($event)" />
+                </div>
+                <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg" />
+            </div>
+            <!--------------------------------------- Custom created Container --------------------------------------->
 
             <!-- <img class="addIcon" src="assets/img/icons/add.svg">
             <hr>

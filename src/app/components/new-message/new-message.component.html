@@ -1,0 +1,63 @@
+<div [ngClass]="{chatHistoryFullWidth: toggleWorspaceMenuService.workspaceMenuIsOpen}" class="chatHistoryMainContainer">
+    <div class="chatHistoryHeader">
+        <p>New Message</p>
+        <input placeholder="At: #channel, or @someone or Mail address " type="text">
+    </div>
+
+    <div class="scrolleableContainer">
+
+    </div>
+
+    <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
+    <quill-editor (onEditorCreated)="setFocus($event)" placeholder="Start a new Message">
+        <div quill-editor-toolbar>
+            <!--------------------------------------- Custom created Container --------------------------------------->
+            <div class="mainContainerUploadedDatas">
+                <!--------------------------------------- Displays uploaded Images --------------------------------------->
+                <div *ngFor="
+            let uploadedImage of storageService.uploadedImages;
+            let i = index
+          " class="containerUploadedImages">
+                    <img (click)="openDetailViewFromUploadedImage(uploadedImage)" class="uploadedImage"
+                        [src]="uploadedImage ? uploadedImage : null" />
+                    <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
+              this.storageService.deleteUploadedDataService(uploadedImage, i)
+            " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
+                </div>
+                <!--------------------------------------- Displays uploaded Images --------------------------------------->
+
+                <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
+                <div *ngFor="
+            let uploadedData of storageService.uploadedDatas;
+            let i = index
+          " class="containerUploadedDatas">
+                    <iframe class="uploadedData" [src]="uploadedData ? uploadedData : null"></iframe>
+                    <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
+              this.storageService.deleteUploadedDataService(uploadedData, i)
+            " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
+                </div>
+                <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
+            </div>
+
+            <div class="containerIcons">
+                <label for="input" class="containerAddIcon">
+                    <img src="assets/img/icons/add.svg" />
+                    <input (change)="storageService.chooseFileSevice($event)" id="input" type="file" hidden />
+                </label>
+
+                <hr class="verticalLine" />
+
+                <div class="containerSmileyIcon">
+                    <img class="smileyIcon" src="assets/img/icons/smiley.svg" />
+                </div>
+
+                <div class="containerAtIcon">
+                    <img class="atIcon" src="assets/img/icons/@Icon.svg" />
+                </div>
+                <img class="sendBtn" src="assets/img/icons/sendBtn.svg" />
+            </div>
+            <!--------------------------------------- Custom created Container --------------------------------------->
+        </div>
+    </quill-editor>
+</div>
+<!-------------------------------------------------- Textfield begins here  -------------------------------------------------->

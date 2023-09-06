@@ -9,6 +9,7 @@ import { DataProtectionComponent } from './components/data-protection/data-prote
 import { MainComponent } from './components/main/main.component';
 import { DirectMessageComponent } from './components/direct-message/direct-message.component';
 import { ChannelComponent } from './components/channel/channel.component';
+import { NewMessageComponent } from './components/new-message/new-message.component';
 
 
 const routes: Routes = [
@@ -18,8 +19,7 @@ const routes: Routes = [
     path: 'main', component: MainComponent, children: [
       { path: 'channel/:id', component: ChannelComponent },
       { path: 'direct-message/:id', component: DirectMessageComponent },
-      { path: 'channel/O19IWwcZ9CnTRdPe6YEa', component: ChannelComponent },
-      // { path: '', redirectTo: 'channel/:id', pathMatch: 'full' },
+      { path: 'new-message', component: NewMessageComponent },
     ]
   },
   { path: 'sign-up', component: SignUpComponent },

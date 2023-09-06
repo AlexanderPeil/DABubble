@@ -8,6 +8,7 @@ import { DirectMessageContent } from 'src/app/models/direct-message';
 import { DialogDirectMessageProfileComponent } from '../dialog-direct-message-profile/dialog-direct-message-profile.component';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
+import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private directMessageService: DirectMessageService,
     public dialog: MatDialog,
-    public storageService: StorageService) { }
+    public storageService: StorageService,
+    public toggleWorspaceMenuService: ToggleWorkspaceMenuService) { }
 
 
   ngOnInit() {
