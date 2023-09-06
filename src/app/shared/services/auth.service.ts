@@ -12,9 +12,9 @@ import {
   collection,
   collectionData,
   deleteDoc,
-  getDocs,
   query,
-  where
+  where,
+  Timestamp
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -28,9 +28,7 @@ import {
   GoogleAuthProvider,
   sendEmailVerification,
   signOut,
-  user,
-  browserSessionPersistence,
-  setPersistence
+  user
 } from '@angular/fire/auth';
 
 @Injectable({
@@ -49,6 +47,9 @@ export class AuthService implements OnDestroy {
   private userSubscription?: Subscription;
   currentUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
+  get currentUserValue(): User | null {
+    return this.currentUser.value;
+  }
 
 
   /**
@@ -82,18 +83,12 @@ export class AuthService implements OnDestroy {
   }
 
 
-  private initCurrentUser(): void {
+  initCurrentUser(): void {
     this.user$.pipe(
       switchMap(firebaseUser => firebaseUser?.uid ? this.getUserData(firebaseUser.uid) : of(null))
     ).subscribe(user => {
       this.currentUser.next(user);
     });
-  }
-
-
-
-  get currentUserValue(): User | null {
-    return this.currentUser.value;
   }
 
 
@@ -107,7 +102,6 @@ export class AuthService implements OnDestroy {
    */
   async signIn(email: string, password: string) {
     try {
-      // await setPersistence(this.auth, browserSessionPersistence);
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       if (userCredential.user) {
         await this.setUserOnlineStatus(userCredential.user.uid, true);
@@ -215,7 +209,7 @@ export class AuthService implements OnDestroy {
    * @async
    * @throws Will throw an error if the sign-out process fails.
    */
-  async signOut() {
+  async signOut(uid?: string) {
     const currentUser = this.auth.currentUser;
     if (currentUser) {
       try {
@@ -248,7 +242,8 @@ export class AuthService implements OnDestroy {
       displayName: user.displayName || null,
       displayNameLower: user.displayName?.toLowerCase() || null,
       emailVerified: user.emailVerified,
-      photoURL: user.photoURL
+      photoURL: user.photoURL,
+      lastActive: Timestamp.now()
     };
 
     if (typeof isOnline !== 'undefined') {
@@ -292,22 +287,6 @@ export class AuthService implements OnDestroy {
   }
 
 
-  // getUsers(): Observable<User[]> {
-  //   const userCollectionRef = collection(this.firestore, 'users');
-  //   return collectionData(userCollectionRef).pipe(
-  //     map(usersData => usersData.map(data => ({
-  //       uid: data['uid'],
-  //       email: data['email'],
-  //       displayName: data['displayName'],
-  //       emailVerified: data['emailVerified'],
-  //       isOnline: data['isOnline'],
-  //       photoURL: data['photoURL']
-  //     }) as User))
-  //   );
-  // }
-
-
-
   getUsers(searchTerm?: string): Observable<User[]> {
     let userQuery;
     if (searchTerm) {
@@ -328,7 +307,8 @@ export class AuthService implements OnDestroy {
         displayNameLower: data['displayNameLower'],
         emailVerified: data['emailVerified'],
         isOnline: data['isOnline'],
-        photoURL: data['photoURL']
+        photoURL: data['photoURL'],
+        lastActive: data['lastActive']
       }) as User))
     );
   }
@@ -380,9 +360,16 @@ export class AuthService implements OnDestroy {
    */
   async setUserOnlineStatus(uid: string, isOnline: boolean) {
     const userRef = doc(this.firestore, `users/${uid}`);
-    await updateDoc(userRef, { isOnline: isOnline });
+    await updateDoc(userRef, { isOnline: isOnline, lastActive: Timestamp.now() });
   }
 
+
+  updateLastActive(uid: string) {
+    const userRef = doc(this.firestore, `users/${uid}`);
+    updateDoc(userRef, {
+      lastActive: Timestamp.now()
+    });
+  }
 
 
   /**
@@ -395,15 +382,3 @@ export class AuthService implements OnDestroy {
     }
   }
 }
-
-
-
-// onAuthStateChanged(this.auth, (user) => {
-//   if (user) {
-//     const uid = user.uid;
-//     return true;
-//   } else {
-//     this.auth.signOut();
-//     return false;
-//   }
-// });

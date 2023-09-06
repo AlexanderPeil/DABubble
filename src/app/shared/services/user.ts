@@ -1,3 +1,5 @@
+import { Timestamp } from "@angular/fire/firestore";
+
 export interface User {
     uid: string;
     email: string | null;
@@ -6,4 +8,5 @@ export interface User {
     emailVerified: boolean;
     isOnline?: boolean; 
     photoURL: string | null | undefined;
+    lastActive?: Timestamp;
 }
