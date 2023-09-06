@@ -17,12 +17,12 @@
         class="childContainerUserInChatHistory"
       >
         <img
-          *ngFor="let user of channelService.channel.users"
+          *ngFor="let user of channelService.channel.users.slice(0, 3)"
           class="user"
           [src]="user.photoURL"
         />
         <p class="amountOfUserInChannel">
-          <!-- {{ channelService.channel.users.length }} -->
+          {{ channelService.channel.users.length }}
         </p>
       </div>
 
