@@ -1,6 +1,6 @@
-@import '@ctrl/ngx-emoji-mart/picker';
-@import '~quill/dist/quill.bubble.css';
-@import '~quill/dist/quill.snow.css';
+@import "@ctrl/ngx-emoji-mart/picker";
+@import "~quill/dist/quill.bubble.css";
+@import "~quill/dist/quill.snow.css";
 
 /* nunito-regular - latin */
 @font-face {
@@ -61,6 +61,10 @@ app-workspace-menu-btn {
   border-bottom-right-radius: 30px !important;
   border-bottom-left-radius: 30px !important;
   box-shadow: 0 6px 10px 0 #00000033 !important;
+}
+
+.mdc-dialog__surface {
+  overflow-y: visible !important;
 }
 
 /************************************ Change Global Style from MatDialog ************************************/
@@ -134,7 +138,7 @@ app-workspace-menu-btn {
   border-bottom-right-radius: 20px;
 }
 
-.ql-toolbar.ql-snow+.ql-container.ql-snow {
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
   border: unset;
   max-height: 300px;
   padding-bottom: 55px;
