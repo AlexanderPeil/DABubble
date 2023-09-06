@@ -1,4 +1,4 @@
-@import'../../shared/variables.scss';
+@import "../../shared/variables.scss";
 
 .chatHistoryMainContainer {
   width: 53vw;
@@ -32,7 +32,8 @@
 
     img,
     p {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 
@@ -64,7 +65,8 @@
     border-radius: 20px;
 
     .amountOfUserInChannel {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -72,6 +74,7 @@
 .user {
   border-radius: 50%;
   margin-left: -18px;
+  width: 40px;
 }
 
 .amountOfUserInChannel {
@@ -92,7 +95,8 @@
     cursor: pointer;
     transition: all 225ms ease-in-out;
     transform: scale(1.1);
-    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%)
+      hue-rotate(230deg) brightness(99%) contrast(91%);
   }
 }
 
@@ -148,7 +152,7 @@
   height: 40px;
   border-radius: 8px;
 
-  &:hover+.closeIcon {
+  &:hover + .closeIcon {
     display: flex;
   }
 
@@ -169,7 +173,7 @@
     border-radius: 8px;
     border: unset;
 
-    &:hover+.closeIcon {
+    &:hover + .closeIcon {
       display: flex;
     }
   }
@@ -198,7 +202,7 @@
 }
 
 quill-editor {
-  border: 1px solid #ADB0D9;
+  border: 1px solid #adb0d9;
   border-radius: 20px;
   background-color: white;
   display: flex;
@@ -210,14 +214,14 @@ quill-editor {
 
   &:hover {
     border-radius: 20px;
-    border: 1px solid #797EF3;
+    border: 1px solid #797ef3;
   }
 }
 
 .verticalLine {
   height: 25px;
   margin: 0px 5px 0px 5px;
-  border: 1px solid #ADB0D9;
+  border: 1px solid #adb0d9;
 }
 
 .containerAddIcon {
@@ -230,15 +234,15 @@ quill-editor {
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
   }
 
   img {
-
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -251,15 +255,15 @@ quill-editor {
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
   }
 
   img {
-
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -272,15 +276,15 @@ quill-editor {
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
   }
 
   img {
-
     &:hover {
       transform: scale(1.05);
       transition: all 225ms ease-in-out;
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }

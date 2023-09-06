@@ -1,102 +1,104 @@
-@import '../../shared/variables.scss';
-
+@import "../../shared/variables.scss";
 
 .dialogMainContainer {
-    width: 350px;
-    padding: 25px;
+  width: 350px;
+  padding: 25px;
 }
 
 .topContainerShowUser {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    p {
-        margin: 0;
-        font-weight: 700;
-        font-size: 24px;
-    }
+  p {
+    margin: 0;
+    font-weight: 700;
+    font-size: 24px;
+  }
 }
 
 .closeIconContainer {
-    display: flex;
-    padding: 8px;
-    border-radius: 20px;
+  display: flex;
+  padding: 8px;
+  border-radius: 20px;
 
+  &:hover {
+    @include button_hover;
+    background-color: #eceefe;
+  }
+
+  img {
     &:hover {
-        @include button_hover;
-        background-color: #ECEEFE;
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
-
-    img {
-
-        &:hover {
-            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-        }
-    }
+  }
 }
 
 .bottomContainerShowUser {
-    margin-top: 25px;
-    gap: 20px;
-    display: flex;
-    flex-direction: column;
+  margin-top: 25px;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .unserContainer {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    border-radius: 20px;
-    padding: 5px 100px 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 20px;
+  padding: 5px 100px 5px 10px;
 
-    &:hover {
-        @include button_hover;
-        background-color: #ECEEFE;
-    }
+  &:hover {
+    @include button_hover;
+    background-color: #eceefe;
+  }
 
-    p {
-        margin: 0;
-        font-weight: 400;
-        font-size: 18px;
-    }
+  p {
+    margin: 0;
+    font-weight: 400;
+    font-size: 18px;
+  }
 }
 
 .user {
-    border-radius: 50%;
+  border-radius: 50%;
+  width: 40px;
 }
 
 .addUserIconMainContainer {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    border-radius: 20px;
-    padding: 5px 100px 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 20px;
+  padding: 5px 100px 5px 10px;
 
-    &:hover {
-        @include button_hover;
-        background-color: #ECEEFE;
-
-        p {
-            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-        }
-
-        .addUserIcon {
-            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-            transform: scale(1.1);
-        }
-    }
+  &:hover {
+    @include button_hover;
+    background-color: #eceefe;
 
     p {
-        margin: 0;
-        font-weight: 400;
-        font-size: 18px;
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
+
+    .addUserIcon {
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      transform: scale(1.1);
+    }
+  }
+
+  p {
+    margin: 0;
+    font-weight: 400;
+    font-size: 18px;
+  }
 }
 
 .addUserIconContainer {
-    display: flex;
-    background-color: #ECEEFE;
-    padding: 8px;
-    border-radius: 50%;
+  display: flex;
+  background-color: #eceefe;
+  padding: 8px;
+  border-radius: 50%;
 }
