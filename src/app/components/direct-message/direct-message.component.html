@@ -1,4 +1,4 @@
-<div [ngClass]="{ chatHistoryFullWidth: toggleWorspaceMenuService.workspaceMenuIsOpen }"
+<div [ngClass]="{ 'chatHistoryFullWidth': toggleWorspaceMenuService.workspaceMenuIsOpen || threadService.threadAreClosed }"
     class="chatHistoryMainContainer">
     <div class="chatHistoryHeader">
         <div class="userName" (click)="openDialog()">
@@ -23,10 +23,10 @@
                 <hr>
             </div>
             <div *ngFor="let message of group.messages" class="messageMainContainer">
-                <img class="userImg"
-                    [src]="message.senderId === loggedInUser?.uid ? loggedInUser?.photoURL : selectedUser?.photoURL"
-                    alt="">
                 <div class="messageChildContainer">
+                    <img class="userImg"
+                        [src]="message.senderId === loggedInUser?.uid ? loggedInUser?.photoURL : selectedUser?.photoURL">
+
                     <div class="containerUserNameAndTime">
                         <div class="nameTimeContainer">
                             <p>{{ message.senderId === loggedInUser?.uid ? loggedInUser?.displayName :
@@ -36,19 +36,22 @@
                         <span class="message">{{ message.content }}</span>
                     </div>
                 </div>
+
+                <!-- Emoji container -->
+                <div class="containerEmojis d-none">
+                    <img class="completeEmoji" src="assets/img/icons/completeEmoji.svg">
+                    <img class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg">
+                    <div class="containerAddEmojiIcon">
+                        <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg">
+                    </div>
+                    <div class="containerAnswerOnThreadIcon">
+                        <img (click)="threadService.openThreadService()" class="answerOnThreadIcon"
+                            src="assets/img/icons/answerOnThreadIcon.svg">
+                    </div>
+                </div>
             </div>
 
-            <!-- Emoji container -->
-            <div class="containerEmojis d-none">
-                <img class="completeEmoji" src="assets/img/icons/completeEmoji.svg">
-                <img class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg">
-                <div class="containerAddEmojiIcon">
-                    <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg">
-                </div>
-                <div class="containerAnswerOnThreadIcon">
-                    <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg">
-                </div>
-            </div>
+
         </div>
     </div>
     <!-- Message container -->

@@ -9,6 +9,7 @@ import { DialogDirectMessageProfileComponent } from '../dialog-direct-message-pr
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
+import { ThreadService } from 'src/app/shared/services/thread.service';
 
 
 @Component({
@@ -38,7 +39,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     private directMessageService: DirectMessageService,
     public dialog: MatDialog,
     public storageService: StorageService,
-    public toggleWorspaceMenuService: ToggleWorkspaceMenuService) { }
+    public toggleWorspaceMenuService: ToggleWorkspaceMenuService,
+    public threadService: ThreadService) { }
 
 
   ngOnInit() {
@@ -246,4 +248,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     $event.focus();
   }
 
+
+  openThread() {
+
+  }
 }

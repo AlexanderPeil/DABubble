@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
+import { ThreadService } from 'src/app/shared/services/thread.service';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 export class ThreadComponent {
 
 
-  constructor(public storageService: StorageService, public dialog: MatDialog) {
+  constructor(public storageService: StorageService, public dialog: MatDialog, public threadService: ThreadService) {
 
   }
 

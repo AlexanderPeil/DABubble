@@ -320,4 +320,14 @@ quill-editor {
   right: 20px;
 }
 
+.translateXThread {
+  transition: all 225ms ease-in-out;
+  transform: translateX(320px);
+}
+
+.translateXThreadBack {
+  transition: all 225ms ease-in-out;
+  transform: translateX(0);
+}
+
 /************************************ Styles for the texfield ************************************/
