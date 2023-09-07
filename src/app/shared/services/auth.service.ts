@@ -14,7 +14,9 @@ import {
   deleteDoc,
   query,
   where,
-  Timestamp
+  Timestamp,
+  Query,
+  DocumentData
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -209,24 +211,27 @@ export class AuthService implements OnDestroy {
    * @async
    * @throws Will throw an error if the sign-out process fails.
    */
-  async signOut(uid?: string) {
+  async signOut() {
     const currentUser = this.auth.currentUser;
     if (currentUser) {
-      try {
         if (currentUser.displayName === 'Guest') {
-          this.userSubscription?.unsubscribe();
-          await deleteDoc(doc(this.firestore, 'users', currentUser.uid));
-          await currentUser.delete();
+            await this.deleteGuestUser(currentUser.uid);
         } else {
-          await this.setUserOnlineStatus(currentUser.uid, false);
+            await this.setUserOnlineStatus(currentUser.uid, false);
         }
-      } catch (error) {
-        console.error("Error during sign-out:", error);
-      }
     }
     await signOut(this.auth);
     this.router.navigate(['login']);
-  }
+}
+
+async deleteGuestUser(uid: string) {
+    try {
+        this.userSubscription?.unsubscribe();
+        await deleteDoc(doc(this.firestore, 'users', uid));
+    } catch (error) {
+        console.error("Error during deleting guest user:", error);
+    }
+}
 
 
   /**
@@ -287,18 +292,7 @@ export class AuthService implements OnDestroy {
   }
 
 
-  getUsers(searchTerm?: string): Observable<User[]> {
-    let userQuery;
-    if (searchTerm) {
-      const lowerCaseTerm = searchTerm.toLowerCase();
-      userQuery = query(
-        collection(this.firestore, 'users'),
-        where('displayNameLower', '>=', lowerCaseTerm),
-        where('displayNameLower', '<=', lowerCaseTerm + '\uf8ff')
-      );
-    } else {
-      userQuery = collection(this.firestore, 'users');
-    }
+  mapFirestoreDataToUsers(userQuery: Query<DocumentData>): Observable<User[]> {
     return collectionData(userQuery).pipe(
       map(usersData => usersData.map(data => ({
         uid: data['uid'],
@@ -314,10 +308,37 @@ export class AuthService implements OnDestroy {
   }
 
 
+  getUsers(searchTerm?: string): Observable<User[]> {
+    let userQuery;
+    if (searchTerm) {
+      const lowerCaseTerm = searchTerm.toLowerCase();
+      userQuery = query(
+        collection(this.firestore, 'users'),
+        where('displayNameLower', '>=', lowerCaseTerm),
+        where('displayNameLower', '<=', lowerCaseTerm + '\uf8ff')
+      );
+    } else {
+      userQuery = collection(this.firestore, 'users');
+    }
+    return this.mapFirestoreDataToUsers(userQuery);
+  }
+
+
+  getInactiveGuestUsers(lastActiveBefore: number): Observable<User[]> {
+    const dateOneHourAgo = new Date(Date.now() - (60 * 60 * 1000));
+    const firestoreTimestampOneHourAgo = Timestamp.fromDate(dateOneHourAgo);
+    const userQuery = query(
+      collection(this.firestore, 'users'),
+      where('displayName', '==', 'Guest'),
+      where('lastActive', '<=', firestoreTimestampOneHourAgo)
+    );
+
+    return this.mapFirestoreDataToUsers(userQuery);
+  }
 
 
   async updateUserEmail(newEmail: string) {
-    const user = this.auth.currentUser;  // Get current authenticated user
+    const user = this.auth.currentUser;
 
     if (user) {
       try {

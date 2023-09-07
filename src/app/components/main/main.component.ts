@@ -2,6 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
+import { User } from 'src/app/shared/services/user';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-works
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent {
+export class MainComponent implements OnDestroy, OnInit {
   checkUserActivityInterval: any;
   logoutInterval!: number;
   userSubscription!: Subscription;
@@ -24,12 +25,19 @@ export class MainComponent {
   }
 
 
+  ngOnInit() {
+    this.checkUserActivityInterval = setInterval(() => {
+      this.autoLogoutInactiveGuestUsers();
+    }, 3600  * 1000);  
+  }
+  
+
+
   @HostListener('document:click', ['$event'])
   @HostListener('document:keyup', ['$event'])
   userActivity(event: Event) {
     this.debouncedUpdateUserActivity();
   }
-
 
 
   debouncedUpdateUserActivity() {
@@ -54,31 +62,25 @@ export class MainComponent {
   }
 
 
-  logoutInactiveUsers(): void {
-    const currentTime = Date.now();
-    const ONE_HOUR_IN_MILLISECONDS = 3600000;
-
-    this.userSubscription = this.authService.getUsers().subscribe(users => {
-      users.forEach(user => {
-        if (user.lastActive) {
-          const timeDifference = currentTime - user.lastActive.toMillis();
-          if (timeDifference > ONE_HOUR_IN_MILLISECONDS && user.uid === this.authService.currentUser.value?.uid) {
-            console.log(`Logging out current user with UID ${user.uid} due to inactivity.`);
-            this.authService.signOut();
-          }
-        } else {
-          console.warn(`User with UID ${user.uid} has no lastActive timestamp. Setting it now.`);
-          this.authService.updateLastActive(user.uid);
+  autoLogoutInactiveGuestUsers() {
+    const oneHourAgo = Date.now() - (60 * 60 * 1000);
+    
+    this.authService.getInactiveGuestUsers(oneHourAgo).subscribe((users: User[]) => {
+      console.log(users);  
+      users.forEach((user: User) => {
+        if (user.lastActive && Date.now() - user.lastActive.toMillis() > 60 * 60 * 1000) {
+          this.authService.deleteGuestUser(user.uid);
         }
       });
     });
   }
-
+   
+  
+  
 
   ngOnDestroy() {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
+    clearInterval(this.checkUserActivityInterval);
+    this.userSubscription?.unsubscribe();
   }
 
 }
