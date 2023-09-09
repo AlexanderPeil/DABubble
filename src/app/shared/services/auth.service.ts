@@ -229,16 +229,11 @@ export class AuthService implements OnDestroy {
 
   async deleteGuestUser(uid: string) {
     try {
-<<<<<<< HEAD
-      this.userSubscription?.unsubscribe();
-      await deleteDoc(doc(this.firestore, 'users', uid));
-=======
       if (this.auth.currentUser && this.auth.currentUser.uid === uid) {
         await deleteUser(this.auth.currentUser);
       }
       await deleteDoc(doc(this.firestore, 'users', uid));
       this.userSubscription?.unsubscribe();
->>>>>>> 0071d2363786e8145eb179b7a68a93581200a877
     } catch (error) {
       console.error("Error during deleting guest user:", error);
     }
