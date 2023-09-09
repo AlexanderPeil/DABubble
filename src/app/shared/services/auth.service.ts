@@ -155,7 +155,7 @@ export class AuthService implements OnDestroy {
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: 'Guest', photoURL: randomImageURL });
         await this.setUserData(userCredential.user, true);
-        this.router.navigate(['main']);
+        this.router.navigate(['/main/channel/tcgLB0MdDpTD27cGTU95']);
       }
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -214,24 +214,24 @@ export class AuthService implements OnDestroy {
   async signOut() {
     const currentUser = this.auth.currentUser;
     if (currentUser) {
-        if (currentUser.displayName === 'Guest') {
-            await this.deleteGuestUser(currentUser.uid);
-        } else {
-            await this.setUserOnlineStatus(currentUser.uid, false);
-        }
+      if (currentUser.displayName === 'Guest') {
+        await this.deleteGuestUser(currentUser.uid);
+      } else {
+        await this.setUserOnlineStatus(currentUser.uid, false);
+      }
     }
     await signOut(this.auth);
     this.router.navigate(['login']);
-}
+  }
 
-async deleteGuestUser(uid: string) {
+  async deleteGuestUser(uid: string) {
     try {
-        this.userSubscription?.unsubscribe();
-        await deleteDoc(doc(this.firestore, 'users', uid));
+      this.userSubscription?.unsubscribe();
+      await deleteDoc(doc(this.firestore, 'users', uid));
     } catch (error) {
-        console.error("Error during deleting guest user:", error);
+      console.error("Error during deleting guest user:", error);
     }
-}
+  }
 
 
   /**

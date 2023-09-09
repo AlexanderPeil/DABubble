@@ -26,12 +26,14 @@ export class DialogCreateChannelComponent implements OnInit {
   showUserDropdown: boolean = false;
   foundUsers: User[] = [];
   selectedUsers: any[] = [];
+  inputValue: string = '';
+
 
   constructor(
     private channelService: ChannelService,
     private authService: AuthService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.filterUsers();
@@ -57,14 +59,14 @@ export class DialogCreateChannelComponent implements OnInit {
         map((allUsersData) =>
           allUsersData.map(
             (data) =>
-              ({
-                uid: data['uid'],
-                email: data['email'],
-                displayName: data['displayName'],
-                emailVerified: data['emailVerified'],
-                isOnline: data['isOnline'],
-                photoURL: data['photoURL'],
-              } as User)
+            ({
+              uid: data['uid'],
+              email: data['email'],
+              displayName: data['displayName'],
+              emailVerified: data['emailVerified'],
+              isOnline: data['isOnline'],
+              photoURL: data['photoURL'],
+            } as User)
           )
         )
       )
@@ -123,5 +125,9 @@ export class DialogCreateChannelComponent implements OnInit {
   // Used to convert channel names to lowercase to preserve alphabetical order.
   getValueForChannelNameAndConvertToLowerCase(channelName: string) {
     this.channel.channelName = channelName.toLowerCase();
+  }
+
+  getValueFromInput($event: any) {
+    this.inputValue = $event;
   }
 }

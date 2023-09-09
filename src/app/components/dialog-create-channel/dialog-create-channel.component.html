@@ -15,36 +15,27 @@
     <p>Channel-Name</p>
     <div class="FirstInputContainer">
       <img src="./assets/img/icons/hashtag.svg" alt="" />
-      <input
-        (ngModelChange)="
+      <input (ngModelChange)="
           getValueForChannelNameAndConvertToLowerCase(channel.channelName)
-        "
-        [(ngModel)]="channel.channelName"
-        type="text"
-        placeholder="e.g. Marketing"
-      />
+        " (ngModelChange)="getValueFromInput($event)" [(ngModel)]="channel.channelName" type="text"
+        placeholder="e.g. Marketing" />
     </div>
   </div>
 
   <div class="inputHeadAndContainer">
     <p>Description (optional)</p>
     <div class="FirstInputContainer">
-      <input
-        [(ngModel)]="channel.channelDescription"
-        name="channelDescription"
-        type="text"
-        placeholder="Write your text here"
-      />
+      <input [(ngModel)]="channel.channelDescription" name="channelDescription" type="text"
+        placeholder="Write your text here" />
     </div>
   </div>
 
   <div class="btnContainer">
-    <button
-      [ngClass]="{ btnDisabled: channel.channelName.length == 0 }"
-      [disabled]="channel.channelName.length == 0"
-      (click)="toggleForms()"
-      mat-button
-    >
+    <button [ngClass]="{ 
+        'btnDisabled': channel.channelName.length == 0 ||  inputValue == 'html/css' || inputValue == 'javascript' || inputValue == 'angular' 
+        || inputValue == 'HTML/CSS' || inputValue == 'JAVASCRIPT' || inputValue == 'ANGULAR' }" (click)="toggleForms()"
+      mat-button [disabled]="channel.channelName.length == 0 || inputValue == 'html/css' || inputValue == 'javascript' || inputValue == 'angular' 
+      || inputValue == 'HTML/CSS' || inputValue == 'JAVASCRIPT' || inputValue == 'ANGULAR'">
       Create
     </button>
   </div>
@@ -59,27 +50,14 @@
       </div>
     </div>
 
-    <mat-radio-group
-      class="flex-column"
-      aria-label="Select an option"
-      (change)="onRadioChange($event)"
-    >
-      <mat-radio-button color="primary" value="1" (click)="addAllMembers()"
-        >Alle Mitglieder hinzufügen</mat-radio-button
-      >
-      <mat-radio-button color="primary" value="2"
-        >Bestimmte Leute hinzufügen</mat-radio-button
-      >
+    <mat-radio-group class="flex-column" aria-label="Select an option" (change)="onRadioChange($event)">
+      <mat-radio-button color="primary" value="1" (click)="addAllMembers()">Alle Mitglieder
+        hinzufügen</mat-radio-button>
+      <mat-radio-button color="primary" value="2">Bestimmte Leute hinzufügen</mat-radio-button>
     </mat-radio-group>
     <div class="inputContainer" [class.hiddenInputContainer]="!isInputVisible">
-      <input
-        name="addMember"
-        type="text"
-        placeholder="Write Name"
-        autocomplete="off"
-        (click)="checkForDropdown($event)"
-        (input)="checkForDropdown($event)"
-      />
+      <input name="addMember" type="text" placeholder="Write Name" autocomplete="off" (click)="checkForDropdown($event)"
+        (input)="checkForDropdown($event)" />
       <div *ngIf="selectedUsers.length > 0" class="selected-users">
         <div *ngFor="let user of selectedUsers" class="selected-user">
           <img [src]="user.photoURL" />
@@ -95,14 +73,8 @@
     </div>
 
     <div class="btnContainer">
-      <button
-        type="submit"
-        mat-button
-        mat-dialog-close
-        [ngClass]="{ btnDisabled: !radioSelected }"
-        [disabled]="!radioSelected"
-        (click)="onSubmitWithMembers(channel)"
-      >
+      <button type="submit" mat-button mat-dialog-close [ngClass]="{ btnDisabled: !radioSelected }"
+        [disabled]="!radioSelected" (click)="onSubmitWithMembers(channel)">
         Create
       </button>
     </div>

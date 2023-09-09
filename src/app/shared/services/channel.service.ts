@@ -76,7 +76,7 @@ export class ChannelService {
 
 
   navigateToOthersChannelAsSoonAsDeleteService() {
-    const querie = query(collection(this.firestore, 'channels'), orderBy('channelName'), limit(1));
+    const querie = query(collection(this.firestore, 'channels'), orderBy('channelName'));
     getDocs(querie).then((querySnapshot) => {
       if (querySnapshot.empty) {
         this.route.navigate(['/main']);

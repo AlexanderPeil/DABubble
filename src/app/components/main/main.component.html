@@ -3,14 +3,12 @@
 
 <div class="matDrawerMainContainer">
   <div class="matDrawerChildContainer" [ngClass]="{
-      'translateXBack': !toggleWorspaceMenuService.workspaceMenuIsOpen,
-      'translateX': toggleWorspaceMenuService.workspaceMenuIsOpen
+      'translateXBack': !toggleWorspaceMenuService.workspaceMenuAreClosed,
+      'translateX': toggleWorspaceMenuService.workspaceMenuAreClosed
     }">
     <app-sidenav></app-sidenav>
   </div>
-  <div
-    [ngClass]="{'translateX': toggleWorspaceMenuService.workspaceMenuIsOpen, 'translateXBack': !toggleWorspaceMenuService.workspaceMenuIsOpen}"
-    class="router-container">
+  <div class="router-container">
     <!-- <app-channel></app-channel> -->
     <router-outlet></router-outlet>
     <app-thread></app-thread>

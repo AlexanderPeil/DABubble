@@ -6,6 +6,7 @@
   border-radius: 30px;
   background-color: #ffffff;
   position: relative;
+  transition: all 225ms ease-in-out;
 }
 
 .chatHistoryHeader {
@@ -32,8 +33,7 @@
 
     img,
     p {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 
@@ -65,8 +65,7 @@
     border-radius: 20px;
 
     .amountOfUserInChannel {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -96,8 +95,7 @@
     cursor: pointer;
     transition: all 225ms ease-in-out;
     transform: scale(1.1);
-    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%)
-      hue-rotate(230deg) brightness(99%) contrast(91%);
+    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
   }
 }
 
@@ -125,9 +123,10 @@
   }
 }
 
-.chatHistoryFullWidth {
-  width: 75vw;
-}
+// .chatHistoryFullWidth {
+//   transition: all 225ms ease-in-out;
+//   width: 75vw;
+// }
 
 .scrolleableContainer {
   height: 55vh;
@@ -153,7 +152,7 @@
   height: 40px;
   border-radius: 8px;
 
-  &:hover + .closeIcon {
+  &:hover+.closeIcon {
     display: flex;
   }
 
@@ -174,7 +173,7 @@
     border-radius: 8px;
     border: unset;
 
-    &:hover + .closeIcon {
+    &:hover+.closeIcon {
       display: flex;
     }
   }
@@ -242,8 +241,7 @@ quill-editor {
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -263,8 +261,7 @@ quill-editor {
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -284,8 +281,7 @@ quill-editor {
     &:hover {
       transform: scale(1.05);
       transition: all 225ms ease-in-out;
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }

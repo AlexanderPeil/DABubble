@@ -27,6 +27,16 @@
   }
 }
 
+// .chatHistoryScaleToLeft {
+//   transition: all 225ms ease-in-out;
+//   width: 75vw;
+// }
+
+// .chatHistoryScaleToRight {
+//   transition: all 225ms ease-in-out;
+//   width: 50vw !important;
+// }
+
 .messageChildContainer {
   display: flex;
   gap: 10px;
@@ -138,13 +148,13 @@
 }
 
 .chatHistoryMainContainer {
-  overflow: auto;
   width: 53vw;
   height: 84vh;
   border-radius: 30px;
   margin: 0 15px 0px 15px;
   background-color: #FFFFFF;
   position: relative;
+  transition: all 225ms ease-in-out;
 }
 
 .chatHistoryHeader {
@@ -202,11 +212,6 @@
     border-color: #ADB0D9;
   }
 }
-
-// .chatHistoryFullWidth {
-//   width: 75vw;
-// }
-
 
 // .containerTextarea {
 //     position: absolute;

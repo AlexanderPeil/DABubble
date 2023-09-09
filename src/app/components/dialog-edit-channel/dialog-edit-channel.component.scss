@@ -53,14 +53,15 @@
     font-family: Nunito, sans-serif !important;
 }
 
-.inputContainer {
+.textareaContainer {
     position: relative;
 
-    input {
+    textarea {
         width: 500px;
-        padding: 15px 0 15px 50px;
+        padding: 20px 60px 20px 20px;
         font-weight: 400;
         font-size: 18px;
+        resize: none;
         color: #686868;
         border: 1px solid #ADB0D9;
         border-radius: 40px;
@@ -183,6 +184,17 @@
 
 .disableSaveBtn {
     color: gray;
+
+    &:hover {
+        cursor: unset;
+        pointer-events: none;
+        color: gray;
+        transform: unset;
+    }
+}
+
+.disableLeaveChannelBtn {
+    background-color: gray !important;
 
     &:hover {
         cursor: unset;

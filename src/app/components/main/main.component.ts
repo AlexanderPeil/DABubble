@@ -1,6 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { ThreadService } from 'src/app/shared/services/thread.service';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { User } from 'src/app/shared/services/user';
 
@@ -20,7 +21,8 @@ export class MainComponent implements OnDestroy, OnInit {
 
   constructor(
     public toggleWorspaceMenuService: ToggleWorkspaceMenuService,
-    private authService: AuthService) {
+    private authService: AuthService,
+    public threadService: ThreadService) {
 
   }
 
@@ -28,9 +30,9 @@ export class MainComponent implements OnDestroy, OnInit {
   ngOnInit() {
     this.checkUserActivityInterval = setInterval(() => {
       this.autoLogoutInactiveGuestUsers();
-    }, 3600  * 1000);  
+    }, 3600 * 1000);
   }
-  
+
 
 
   @HostListener('document:click', ['$event'])
@@ -64,9 +66,9 @@ export class MainComponent implements OnDestroy, OnInit {
 
   autoLogoutInactiveGuestUsers() {
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    
+
     this.authService.getInactiveGuestUsers(oneHourAgo).subscribe((users: User[]) => {
-      console.log(users);  
+      console.log(users);
       users.forEach((user: User) => {
         if (user.lastActive && Date.now() - user.lastActive.toMillis() > 60 * 60 * 1000) {
           this.authService.deleteGuestUser(user.uid);
@@ -74,9 +76,9 @@ export class MainComponent implements OnDestroy, OnInit {
       });
     });
   }
-   
-  
-  
+
+
+
 
   ngOnDestroy() {
     clearInterval(this.checkUserActivityInterval);
