@@ -15,16 +15,6 @@ import { DirectMessageService } from 'src/app/shared/services/direct-message.ser
   styleUrls: ['./sidenav.component.scss'],
 })
 export class SidenavComponent implements OnInit, OnDestroy {
-
-  constructor(
-    public dialog: MatDialog,
-    private authService: AuthService,
-    public channelService: ChannelService,
-    private router: Router,
-    private directMessageService: DirectMessageService,
-  ) { }
-
-
   channelsVisible: boolean = true;
   chatsVisible: boolean = true;
   arrowImageRotatedChannel: boolean = false;
@@ -34,6 +24,16 @@ export class SidenavComponent implements OnInit, OnDestroy {
   isOnline?: boolean;
   unreadMessagesCount$!: Observable<number>;
   loggedInUser: User | null = null;
+  user_images = '../assets/img/avatar1.svg';
+
+
+  constructor(
+    public dialog: MatDialog,
+    private authService: AuthService,
+    public channelService: ChannelService,
+    private router: Router,
+    private directMessageService: DirectMessageService,
+  ) { }
 
 
   ngOnInit() {
@@ -51,6 +51,14 @@ export class SidenavComponent implements OnInit, OnDestroy {
     });
     this.channelService.getChannelService();
   }
+
+
+  retryLoadImage(user: User) {
+    if (user) {
+      user.photoURL = this.user_images;
+    }
+}
+
 
 
   hideChannels() {

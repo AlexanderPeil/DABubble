@@ -14,6 +14,7 @@ export class DialogProfileComponent implements OnInit, OnDestroy {
   user: User | null = null;
   isOnline?: boolean;
   private userSubscription?: Subscription;
+  user_images = '../assets/img/avatar1.svg';
 
   constructor(
     private authService: AuthService,
@@ -40,6 +41,12 @@ export class DialogProfileComponent implements OnInit, OnDestroy {
       });
   }
 
+
+  retryLoadImage() {
+    if (this.user) {
+      this.user.photoURL = this.user_images;
+    }
+  }
 
 
   openDialog(): void {

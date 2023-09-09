@@ -3,6 +3,7 @@ import { User } from '../services/user';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, map, of, switchMap } from 'rxjs';
 import { updateEmail } from "firebase/auth";
+import { StorageService } from 'src/app/shared/services/storage.service';
 import {
   Firestore,
   doc,
@@ -30,7 +31,8 @@ import {
   GoogleAuthProvider,
   sendEmailVerification,
   signOut,
-  user
+  user,
+  deleteUser
 } from '@angular/fire/auth';
 
 @Injectable({
@@ -63,6 +65,7 @@ export class AuthService implements OnDestroy {
   constructor(
     public auth: Auth,
     public router: Router,
+    public storageService: StorageService,
     private firestore: Firestore) {
     this.user$ = user(this.auth);
     this.initCurrentUser();
@@ -214,24 +217,27 @@ export class AuthService implements OnDestroy {
   async signOut() {
     const currentUser = this.auth.currentUser;
     if (currentUser) {
-        if (currentUser.displayName === 'Guest') {
-            await this.deleteGuestUser(currentUser.uid);
-        } else {
-            await this.setUserOnlineStatus(currentUser.uid, false);
-        }
+      if (currentUser.displayName === 'Guest') {
+        await this.deleteGuestUser(currentUser.uid);
+      } else {
+        await this.setUserOnlineStatus(currentUser.uid, false);
+      }
     }
     await signOut(this.auth);
     this.router.navigate(['login']);
-}
+  }
 
-async deleteGuestUser(uid: string) {
+  async deleteGuestUser(uid: string) {
     try {
-        this.userSubscription?.unsubscribe();
-        await deleteDoc(doc(this.firestore, 'users', uid));
+      if (this.auth.currentUser && this.auth.currentUser.uid === uid) {
+        await deleteUser(this.auth.currentUser);
+      }
+      await deleteDoc(doc(this.firestore, 'users', uid));
+      this.userSubscription?.unsubscribe();
     } catch (error) {
-        console.error("Error during deleting guest user:", error);
+      console.error("Error during deleting guest user:", error);
     }
-}
+  }
 
 
   /**
@@ -241,6 +247,16 @@ async deleteGuestUser(uid: string) {
    * @returns {User} The data structure that was set in Firestore.
    */
   async setUserData(user: FirebaseUser, isOnline?: boolean) {
+    let photoURL = user.photoURL;
+
+    // if (photoURL?.startsWith('https://lh3.googleusercontent.com/')) {
+    //   try {
+    //     photoURL = await this.storageService.uploadGooglePhotoToFirebaseStorage(photoURL, user.uid);
+    //   } catch (error) {
+    //     console.error('Can*t upload image.');
+    //   }
+    // }
+
     const userData: User = {
       uid: user.uid,
       email: user.email || null,
@@ -258,6 +274,7 @@ async deleteGuestUser(uid: string) {
     await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
     return userData;
   }
+
 
   async updateUser(uid: string, data: Partial<User>) {
     try {
@@ -324,7 +341,7 @@ async deleteGuestUser(uid: string) {
   }
 
 
-  getInactiveGuestUsers(lastActiveBefore: number): Observable<User[]> {
+  getInactiveGuestUsers(): Observable<User[]> {
     const dateOneHourAgo = new Date(Date.now() - (60 * 60 * 1000));
     const firestoreTimestampOneHourAgo = Timestamp.fromDate(dateOneHourAgo);
     const userQuery = query(

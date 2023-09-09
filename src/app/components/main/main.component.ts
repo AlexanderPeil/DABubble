@@ -25,12 +25,11 @@ export class MainComponent implements OnDestroy, OnInit {
   }
 
 
-  ngOnInit() {
+  ngOnInit() {    
     this.checkUserActivityInterval = setInterval(() => {
       this.autoLogoutInactiveGuestUsers();
-    }, 3600  * 1000);  
+    }, 60  * 1000);  
   }
-  
 
 
   @HostListener('document:click', ['$event'])
@@ -63,9 +62,7 @@ export class MainComponent implements OnDestroy, OnInit {
 
 
   autoLogoutInactiveGuestUsers() {
-    const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    
-    this.authService.getInactiveGuestUsers(oneHourAgo).subscribe((users: User[]) => {
+    this.authService.getInactiveGuestUsers().subscribe((users: User[]) => {
       console.log(users);  
       users.forEach((user: User) => {
         if (user.lastActive && Date.now() - user.lastActive.toMillis() > 60 * 60 * 1000) {
@@ -73,9 +70,7 @@ export class MainComponent implements OnDestroy, OnInit {
         }
       });
     });
-  }
-   
-  
+  }  
   
 
   ngOnDestroy() {

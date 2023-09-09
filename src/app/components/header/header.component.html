@@ -7,7 +7,7 @@
   <div class="headerProfileContent" (click)="toggleMenu(); $event.stopPropagation()">
     <div class="userName" *ngIf="user"> {{ user.displayName }} </div>
     <div class="userIconWrapper">
-      <img class="userImg" [src]="user?.photoURL" alt="{{ user?.displayName }}" />
+      <img class="userImg" [src]="user?.photoURL" (error)="retryLoadImage()" />
       <img *ngIf="user?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_online.svg" alt="Online" />
       <img *ngIf="!user?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_offline.svg"
         alt="Offline" />
