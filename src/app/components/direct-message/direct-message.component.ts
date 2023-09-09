@@ -102,7 +102,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-
   formatDate(timestamp: number): string {
     const date = new Date(timestamp);
     const today = new Date();

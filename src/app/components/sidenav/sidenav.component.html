@@ -60,7 +60,7 @@
       [ngStyle]="{ display: chatsVisible ? 'unset' : 'none' }">
       <li class="selectableUserChat" (click)="onUserClick(userWithCount)">
         <div class="userIconWrapper">
-          <img class="userImg" [src]="userWithCount.user.photoURL" alt="">
+          <img class="userImg" [src]="userWithCount.user.photoURL" (error)="retryLoadImage(userWithCount.user)">
           <img *ngIf="userWithCount.user?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_online.svg"
             alt="Online" />
           <img *ngIf="!userWithCount.user?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_offline.svg"

@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   showMenu = false;
   isOnline?: boolean;
+  user_images = '../assets/img/avatar1.svg';
 
   constructor(
     private authService: AuthService,
@@ -39,6 +40,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.user = userData ?? null;
         this.isOnline = userData?.isOnline ?? undefined;
       });
+  }
+
+
+  retryLoadImage() {
+    if (this.user) {
+      this.user.photoURL = this.user_images;
+    }
   }
 
 

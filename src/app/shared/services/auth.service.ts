@@ -3,6 +3,7 @@ import { User } from '../services/user';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, map, of, switchMap } from 'rxjs';
 import { updateEmail } from "firebase/auth";
+import { StorageService } from 'src/app/shared/services/storage.service';
 import {
   Firestore,
   doc,
@@ -30,7 +31,8 @@ import {
   GoogleAuthProvider,
   sendEmailVerification,
   signOut,
-  user
+  user,
+  deleteUser
 } from '@angular/fire/auth';
 
 @Injectable({
@@ -63,6 +65,7 @@ export class AuthService implements OnDestroy {
   constructor(
     public auth: Auth,
     public router: Router,
+    public storageService: StorageService,
     private firestore: Firestore) {
     this.user$ = user(this.auth);
     this.initCurrentUser();
@@ -226,8 +229,16 @@ export class AuthService implements OnDestroy {
 
   async deleteGuestUser(uid: string) {
     try {
+<<<<<<< HEAD
       this.userSubscription?.unsubscribe();
       await deleteDoc(doc(this.firestore, 'users', uid));
+=======
+      if (this.auth.currentUser && this.auth.currentUser.uid === uid) {
+        await deleteUser(this.auth.currentUser);
+      }
+      await deleteDoc(doc(this.firestore, 'users', uid));
+      this.userSubscription?.unsubscribe();
+>>>>>>> 0071d2363786e8145eb179b7a68a93581200a877
     } catch (error) {
       console.error("Error during deleting guest user:", error);
     }
@@ -241,6 +252,16 @@ export class AuthService implements OnDestroy {
    * @returns {User} The data structure that was set in Firestore.
    */
   async setUserData(user: FirebaseUser, isOnline?: boolean) {
+    let photoURL = user.photoURL;
+
+    // if (photoURL?.startsWith('https://lh3.googleusercontent.com/')) {
+    //   try {
+    //     photoURL = await this.storageService.uploadGooglePhotoToFirebaseStorage(photoURL, user.uid);
+    //   } catch (error) {
+    //     console.error('Can*t upload image.');
+    //   }
+    // }
+
     const userData: User = {
       uid: user.uid,
       email: user.email || null,
@@ -258,6 +279,7 @@ export class AuthService implements OnDestroy {
     await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
     return userData;
   }
+
 
   async updateUser(uid: string, data: Partial<User>) {
     try {
@@ -324,7 +346,7 @@ export class AuthService implements OnDestroy {
   }
 
 
-  getInactiveGuestUsers(lastActiveBefore: number): Observable<User[]> {
+  getInactiveGuestUsers(): Observable<User[]> {
     const dateOneHourAgo = new Date(Date.now() - (60 * 60 * 1000));
     const firestoreTimestampOneHourAgo = Timestamp.fromDate(dateOneHourAgo);
     const userQuery = query(
