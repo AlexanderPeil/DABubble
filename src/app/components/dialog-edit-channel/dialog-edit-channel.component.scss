@@ -79,6 +79,31 @@
     }
 }
 
+.inputContainer {
+    position: relative;
+
+    input {
+        width: 500px;
+        padding: 13px 50px 13px 50px;
+        font-weight: 400;
+        font-size: 18px;
+        color: #686868;
+        border: 1px solid #ADB0D9;
+        border-radius: 40px;
+        outline: unset;
+        font-family: Nunito, sans-serif !important;
+        @include focus_input_or_textarea;
+        @include hover_input_or_textarea;
+    }
+
+    img {
+        width: 18px;
+        position: absolute;
+        top: 18px;
+        left: 22px;
+    }
+}
+
 .textChannelNameAndEditContainer {
     display: flex;
     align-items: center;
