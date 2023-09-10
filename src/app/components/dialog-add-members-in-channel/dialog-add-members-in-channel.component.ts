@@ -19,7 +19,7 @@ export class DialogAddMembersInChannelComponent implements OnInit {
   showUserDropdown: boolean = false;
   foundUsers: User[] = [];
   channel: Channel = new Channel();
-  @ViewChild('dialogContainer') dialogContainer!: ElementRef;
+  @ViewChild('input') input!: ElementRef;
 
   constructor(
     public channelService: ChannelService,
@@ -63,7 +63,7 @@ export class DialogAddMembersInChannelComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
-    if (!this.dialogContainer.nativeElement.contains(event.target)) {
+    if (!this.input.nativeElement.contains(event.target)) {
       this.showUserDropdown = false;
     }
     console.log(this.showUserDropdown);

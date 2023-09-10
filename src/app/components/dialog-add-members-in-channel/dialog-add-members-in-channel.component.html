@@ -1,4 +1,4 @@
-<div class="dialogContainer" #dialogContainer>
+<div class="dialogContainer">
   <div class="dialogMainContainer">
     <div class="topContainerAddUser">
       <p>Add People</p>
@@ -15,6 +15,7 @@
 
     <div class="inputContainer">
       <input
+        #input
         type="text"
         placeholder="enter Name"
         (click)="checkForDropdown($event)"
