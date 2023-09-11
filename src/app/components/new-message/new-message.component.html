@@ -2,7 +2,26 @@
     class="chatHistoryMainContainer">
     <div class="chatHistoryHeader">
         <p>New Message</p>
-        <input placeholder="At: #channel, or @someone or Mail address " type="text">
+        <input (ngModelChange)="getValueFromInput($event)" [(ngModel)]="inputValue"
+            placeholder="At: #channel, or @someone or Mail address " type="text">
+
+        <div class="dropDownMenuChannels" [ngStyle]="{'display': dropDownMenuChannelsIsOpen ? 'flex' : 'none'}">
+            <p *ngFor="let channel of channelService.channelData | async">{{ channel.channelName }}</p>
+        </div>
+
+        <div class="dropDownMenuUsers" [ngStyle]="{'display': dropDownMenuUserIsOpen ? 'flex' : 'none'}">
+            <div class="containerUser" *ngFor="let userWithCount of users">
+                <img [src]="userWithCount.user.photoURL">
+
+                <img *ngIf="userWithCount.user?.isOnline" class="statusIcon"
+                    src="../../../assets/img/icons/user_online.svg" />
+
+                <img *ngIf="!userWithCount.user?.isOnline" class="statusIcon"
+                    src="../../../assets/img/icons/user_offline.svg" />
+
+                <p>{{ userWithCount.user.displayName }}</p>
+            </div>
+        </div>
     </div>
 
     <div class="scrolleableContainer">

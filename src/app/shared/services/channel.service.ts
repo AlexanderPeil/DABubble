@@ -36,6 +36,7 @@ export class ChannelService {
     addDoc(collectionInstance, channel.toJSON());
   }
 
+
   getChannelService() {
     const collectionInstance = query(
       collection(this.firestore, 'channels'),
@@ -43,6 +44,7 @@ export class ChannelService {
     );
     this.channelData = collectionData(collectionInstance, { idField: 'id' });
   }
+
 
   updateChannelNameService(changedChannelName: any, channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
@@ -55,6 +57,7 @@ export class ChannelService {
     });
   }
 
+
   updateChannelDescriptionService(changedChannelDescription: string, channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
     const updateData = {
@@ -65,6 +68,7 @@ export class ChannelService {
       this.channel = doc.data();
     });
   }
+
 
   deleteChannelService(channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
