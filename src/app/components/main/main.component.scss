@@ -13,3 +13,27 @@
   display: flex;
   gap: 15px;
 }
+
+.translateX {
+  transition: all 225ms ease-in-out;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.translateXBack {
+  transition: all 225ms ease-in-out;
+  transform: scale(1);
+  transform-origin: left;
+}
+
+.translateXThread {
+  transition: all 225ms ease-in-out;
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.translateXThreadBack {
+  transition: all 225ms ease-in-out;
+  transform: scaleX(1);
+  transform-origin: right;
+}

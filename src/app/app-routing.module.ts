@@ -15,6 +15,7 @@ import { NewMessageComponent } from './components/new-message/new-message.compon
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+
   {
     path: 'main', component: MainComponent, children: [
       { path: 'channel/:id', component: ChannelComponent },

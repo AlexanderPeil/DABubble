@@ -1,15 +1,15 @@
 <div (click)="toggleWorkspaceMenu()" class="containerWorkspaceMenuBtn">
     <p
-        [ngClass]="{'d-none': !toggleWorspaceMenuService.workspaceMenuIsOpen, 'show': toggleWorspaceMenuService.workspaceMenuIsOpen}">
+        [ngClass]="{'d-none': !toggleWorspaceMenuService.workspaceMenuAreClosed, 'show': toggleWorspaceMenuService.workspaceMenuAreClosed}">
         open Workspace Menu
     </p>
-    <img [ngClass]="{'d-none': !toggleWorspaceMenuService.workspaceMenuIsOpen , 'show': toggleWorspaceMenuService.workspaceMenuIsOpen}"
+    <img [ngClass]="{'d-none': !toggleWorspaceMenuService.workspaceMenuAreClosed , 'show': toggleWorspaceMenuService.workspaceMenuAreClosed}"
         src="assets/img/icons/openWorkspaceMenuIcon.svg">
 
     <p
-        [ngClass]="{'show': !toggleWorspaceMenuService.workspaceMenuIsOpen, 'd-none': toggleWorspaceMenuService.workspaceMenuIsOpen}">
+        [ngClass]="{'show': !toggleWorspaceMenuService.workspaceMenuAreClosed, 'd-none': toggleWorspaceMenuService.workspaceMenuAreClosed}">
         close Workspace Menu
     </p>
-    <img [ngClass]="{'show': !toggleWorspaceMenuService.workspaceMenuIsOpen, 'd-none': toggleWorspaceMenuService.workspaceMenuIsOpen}"
+    <img [ngClass]="{'show': !toggleWorspaceMenuService.workspaceMenuAreClosed, 'd-none': toggleWorspaceMenuService.workspaceMenuAreClosed}"
         src="assets/img/icons/closeWorkspaceMenuIcon.svg">
 </div>

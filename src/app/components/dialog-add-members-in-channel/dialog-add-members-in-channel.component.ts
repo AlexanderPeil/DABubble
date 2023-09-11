@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  HostListener,
+  ViewChild,
+} from '@angular/core';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
@@ -13,6 +19,7 @@ export class DialogAddMembersInChannelComponent implements OnInit {
   showUserDropdown: boolean = false;
   foundUsers: User[] = [];
   channel: Channel = new Channel();
+  @ViewChild('input') input!: ElementRef;
 
   constructor(
     public channelService: ChannelService,
@@ -22,6 +29,7 @@ export class DialogAddMembersInChannelComponent implements OnInit {
   ngOnInit(): void {
     this.filterUsers();
     this.channel = this.channelService.channel;
+    document.addEventListener('click', this.onDocumentClick.bind(this));
   }
 
   filterUsers(query?: string): void {
@@ -51,5 +59,13 @@ export class DialogAddMembersInChannelComponent implements OnInit {
       this.showUserDropdown = false;
       this.filterUsers();
     }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    if (!this.input.nativeElement.contains(event.target)) {
+      this.showUserDropdown = false;
+    }
+    console.log(this.showUserDropdown);
   }
 }

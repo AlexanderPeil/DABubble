@@ -33,8 +33,7 @@
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.1);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -121,7 +120,7 @@
   @include button_primary_disabled;
 }
 
-/////////////////////style for adding user to channel div////////////////////////
+///////////////////// style for adding user to channel div ////////////////////////
 
 .dialogContainer {
   padding: 30px;
@@ -130,6 +129,7 @@
 
 .dialogHead {
   @include space_between_center;
+
   p {
     margin: 0;
     font-weight: 700;
@@ -146,6 +146,7 @@
 .btnContainer {
   display: flex;
   justify-content: flex-end;
+
   button {
     background-color: #444df2;
     color: white !important;

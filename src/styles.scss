@@ -69,19 +69,6 @@ app-workspace-menu-btn {
 
 /************************************ Change Global Style from MatDialog ************************************/
 
-/************************************ Style for Short Animations ************************************/
-.translateX {
-  transition: all 125ms ease-in-out;
-  transform: translateX(-165px);
-}
-
-.translateXBack {
-  transition: all 125ms ease-in-out;
-  transform: translateX(0);
-}
-
-/************************************ Style for Short Animations ************************************/
-
 /************************************ Styles for the Scrollbar ************************************/
 
 /* the scrollbar */
@@ -138,7 +125,7 @@ app-workspace-menu-btn {
   border-bottom-right-radius: 20px;
 }
 
-.ql-toolbar.ql-snow + .ql-container.ql-snow {
+.ql-toolbar.ql-snow+.ql-container.ql-snow {
   border: unset;
   max-height: 300px;
   padding-bottom: 55px;

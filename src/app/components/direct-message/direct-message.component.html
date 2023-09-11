@@ -1,5 +1,4 @@
-<div [ngClass]="{ 'chatHistoryFullWidth': toggleWorspaceMenuService.workspaceMenuIsOpen || threadService.threadAreClosed }"
-    class="chatHistoryMainContainer">
+<div class="chatHistoryMainContainer">
     <div class="chatHistoryHeader">
         <div class="userName" (click)="openDialog()">
             <div class="userIconWrapper">
@@ -44,9 +43,8 @@
                     <div class="containerAddEmojiIcon">
                         <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg">
                     </div>
-                    <div class="containerAnswerOnThreadIcon">
-                        <img (click)="threadService.openThreadService()" class="answerOnThreadIcon"
-                            src="assets/img/icons/answerOnThreadIcon.svg">
+                    <div (click)="threadService.openThreadService()" class="containerAnswerOnThreadIcon">
+                        <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg">
                     </div>
                 </div>
             </div>

@@ -16,9 +16,12 @@
         translateToTBottom: !showInputToEditChannelName
       }" class="textChannelNameAndEditContainer">
       <p class="textChannelName">Channel Name</p>
-      <p [class.d-none]="showInputToEditChannelName" (click)="openInputToEditChannelName()" class="textEdit">
+      <button
+        [disabled]="data.channelName == 'html/css' ||  data.channelName == 'javascript' ||  data.channelName == 'angular'"
+        [class.disableSaveBtn]="data.channelName == 'html/css' ||  data.channelName == 'javascript' ||  data.channelName == 'angular'"
+        [class.d-none]="showInputToEditChannelName" (click)="openInputToEditChannelName()" class="textEdit">
         Edit
-      </p>
+      </button>
 
       <!------------------------ Only displayed when editing the channel name ------------------------>
       <button [disabled]="data.channelName == '' || !channelNameHasChanged" [class.disableSaveBtn]="
@@ -50,15 +53,19 @@
         translateToTBottom: !showInputToEditChannelDescription
       }" class="textChannelNameAndEditContainer">
       <p class="textChannelName">Description</p>
-      <p [class.d-none]="showInputToEditChannelDescription" class="textEdit"
+      <button
+        [disabled]="data.channelName == 'html/css' ||  data.channelName == 'javascript' ||  data.channelName == 'angular'"
+        [class.disableSaveBtn]="data.channelName == 'html/css' ||  data.channelName == 'javascript' ||  data.channelName == 'angular'"
+        [class.d-none]="showInputToEditChannelDescription" class="textEdit"
         (click)="openInputToEditChannelDescription()">
         Edit
-      </p>
+      </button>
+
       <!------------------------ Only displayed when editing the channel description ------------------------>
-      <p (click)="closeInputToEditChannelDescriptionAndSafeChanges()" [class.show]="showInputToEditChannelDescription"
-        class="textEdit d-none">
+      <button (click)="closeInputToEditChannelDescriptionAndSafeChanges()"
+        [class.show]="showInputToEditChannelDescription" class="textEdit d-none">
         Save
-      </p>
+      </button>
       <!------------------------ Only displayed when editing the channel description ------------------------>
     </div>
 
@@ -71,9 +78,9 @@
     </p>
 
     <!------------------------ Only displayed when editing the channel description ------------------------>
-    <div [class.show]="showInputToEditChannelDescription" class="inputContainer d-none">
-      <input (ngModelChange)="getValueForNewChannelDescription($event)" [(ngModel)]="data.channelDescription"
-        style="padding-left: 20px; padding-right: 30px" type="text" placeholder="Your text here" />
+    <div [class.show]="showInputToEditChannelDescription" class="textareaContainer d-none">
+      <textarea (ngModelChange)="getValueForNewChannelDescription($event)" [(ngModel)]="data.channelDescription"
+        type="text" placeholder="Your text here"></textarea>
     </div>
     <!------------------------ Only displayed when editing the channel description ------------------------>
 
@@ -83,7 +90,10 @@
   </div>
 
   <div class="btnContainer">
-    <button (click)="channelService.deleteChannelService(data.channelId)" mat-button mat-dialog-close color="primary">
+    <button
+      [disabled]="data.channelName == 'html/css' ||  data.channelName == 'javascript' ||  data.channelName == 'angular'"
+      [class.disableLeaveChannelBtn]="data.channelName == 'html/css' ||  data.channelName == 'javascript' ||  data.channelName == 'angular'"
+      (click)="channelService.deleteChannelService(data.channelId)" mat-button mat-dialog-close color="primary">
       Leave Channel
     </button>
   </div>

@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 
 
 export class ThreadService {
-  threadAreClosed: boolean = false;
+  threadAreClosed: boolean = true;
 
 
   constructor() {

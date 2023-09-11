@@ -320,14 +320,16 @@ quill-editor {
   right: 20px;
 }
 
-.translateXThread {
-  transition: all 225ms ease-in-out;
-  transform: translateX(320px);
-}
+// .translateXThread {
+//   transition: all 225ms ease-in-out;
+//   transform: scaleX(0);
+//   transform-origin: right;
+// }
 
-.translateXThreadBack {
-  transition: all 225ms ease-in-out;
-  transform: translateX(0);
-}
+// .translateXThreadBack {
+//   transition: all 225ms ease-in-out;
+//   transform: scaleX(1);
+//   transform-origin: right;
+// }
 
 /************************************ Styles for the texfield ************************************/

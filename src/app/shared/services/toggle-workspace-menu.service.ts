@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 
 
 export class ToggleWorkspaceMenuService {
-  workspaceMenuIsOpen: boolean = false;
+  workspaceMenuAreClosed: boolean = false;
 
 
   constructor() {
@@ -16,10 +16,6 @@ export class ToggleWorkspaceMenuService {
 
 
   toggleWorkspaceMenuService() {
-    if (!this.workspaceMenuIsOpen) {
-      this.workspaceMenuIsOpen = true;
-    } else {
-      this.workspaceMenuIsOpen = false;
-    }
+    this.workspaceMenuAreClosed = !this.workspaceMenuAreClosed;
   }
 }
