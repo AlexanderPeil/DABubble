@@ -62,8 +62,9 @@
       </button>
 
       <!------------------------ Only displayed when editing the channel description ------------------------>
-      <button (click)="closeInputToEditChannelDescriptionAndSafeChanges()"
-        [class.show]="showInputToEditChannelDescription" class="textEdit d-none">
+      <button [disabled]="!channelDescriptionHasChanged" [class.disableSaveBtn]="!channelDescriptionHasChanged"
+        (click)="closeInputToEditChannelDescriptionAndSafeChanges()" [class.show]="showInputToEditChannelDescription"
+        class="textEdit d-none">
         Save
       </button>
       <!------------------------ Only displayed when editing the channel description ------------------------>
@@ -78,9 +79,9 @@
     </p>
 
     <!------------------------ Only displayed when editing the channel description ------------------------>
-    <div [class.show]="showInputToEditChannelDescription" class="textareaContainer d-none">
-      <textarea (ngModelChange)="getValueForNewChannelDescription($event)" [(ngModel)]="data.channelDescription"
-        type="text" placeholder="Your text here"></textarea>
+    <div [class.show]="showInputToEditChannelDescription" class="inputContainer d-none">
+      <input (ngModelChange)="getValueForNewChannelDescription($event)" [(ngModel)]="data.channelDescription"
+        type="text" placeholder="Your text here">
     </div>
     <!------------------------ Only displayed when editing the channel description ------------------------>
 

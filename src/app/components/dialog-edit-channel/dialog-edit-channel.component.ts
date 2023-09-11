@@ -16,6 +16,8 @@ export class DialogEditChannelComponent {
   changedChannelName: string = '';
   changedChannelDescription: string = '';
   channelNameHasChanged: boolean = false;
+  channelDescriptionHasChanged: boolean = false;
+
 
   constructor(
     public dialog: MatDialog,
@@ -53,6 +55,7 @@ export class DialogEditChannelComponent {
   }
 
   getValueForNewChannelDescription($event: any) {
+    this.channelDescriptionHasChanged = true;
     this.changedChannelDescription = $event;
   }
 
