@@ -41,16 +41,19 @@ export class SidenavComponent implements OnInit, OnDestroy {
       this.users = usersData.map(user => ({ user, unreadCount: 0 }));
       this.users.forEach((userWithCount, index) => {
         const loggedInUid = this.authService.currentUserValue?.uid;
-        if (loggedInUid) {
+        if (userWithCount.user && loggedInUid) {
           this.directMessageService.getUnreadMessagesCount(loggedInUid, userWithCount.user.uid)
             .subscribe(unreadCount => {
-              this.users[index].unreadCount = unreadCount;
+              if (this.users[index]) {
+                this.users[index].unreadCount = unreadCount;
+              }
             });
         }
       });
     });
     this.channelService.getChannelService();
   }
+  
 
 
   retryLoadImage(user: User) {

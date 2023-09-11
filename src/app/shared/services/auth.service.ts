@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, map, of, switchMap } from 'rxjs';
 import { updateEmail } from "firebase/auth";
 import { StorageService } from 'src/app/shared/services/storage.service';
+import { DirectMessageService } from './direct-message.service';
 import {
   Firestore,
   doc,
@@ -66,6 +67,7 @@ export class AuthService implements OnDestroy {
     public auth: Auth,
     public router: Router,
     public storageService: StorageService,
+    public directMessageService: DirectMessageService,
     private firestore: Firestore) {
     this.user$ = user(this.auth);
     this.initCurrentUser();
@@ -227,8 +229,11 @@ export class AuthService implements OnDestroy {
     this.router.navigate(['login']);
   }
 
+
   async deleteGuestUser(uid: string) {
     try {
+      console.log('Attempting to delete messages for guest:', uid);
+      // await this.directMessageService.deleteGuestMessages(uid);
       if (this.auth.currentUser && this.auth.currentUser.uid === uid) {
         await deleteUser(this.auth.currentUser);
       }
@@ -238,6 +243,7 @@ export class AuthService implements OnDestroy {
       console.error("Error during deleting guest user:", error);
     }
   }
+
 
 
   /**

@@ -30,6 +30,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   showEmojiPicker = false;
   @ViewChild('emojiContainer') emojiContainer!: ElementRef;
   @ViewChild('userMenu') userMenu!: ElementRef;
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
 
 
 
@@ -74,7 +75,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
             .subscribe((messages: any[]) => {
               this.messages = messages
                 .map(msg => new DirectMessageContent(msg)) // This ensures that all the messages in this.messages are instances of DirectMessageContent
-                .sort((a, b) => b.timestamp - a.timestamp); // Sorts the messages by date
+                .sort((a, b) => a.timestamp - b.timestamp); // Sorts the messages by date
             });
         } else {
           console.error("Either loggedInUser or selectedUser is null");
@@ -245,6 +246,16 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   setFocus($event: any) {
     $event.focus();
+  }
+
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+
+  private scrollToBottom(): void {
+    this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
   }
 
 
