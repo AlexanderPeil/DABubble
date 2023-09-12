@@ -33,6 +33,7 @@ export class DialogCreateChannelComponent implements OnInit {
   foundUsers: User[] = [];
   selectedUsers: any[] = [];
   inputValue: string = '';
+  selectedRadioButtonValue!: string;
   @ViewChild('input') input!: ElementRef;
 
   constructor(
@@ -51,6 +52,7 @@ export class DialogCreateChannelComponent implements OnInit {
 
   onRadioChange(event: MatRadioChange) {
     this.radioSelected = true;
+    this.selectedRadioButtonValue = event.value;
     if (event.value === '2') {
       this.isInputVisible = true;
     } else {
@@ -123,7 +125,7 @@ export class DialogCreateChannelComponent implements OnInit {
   }
 
   async onSubmitWithMembers(channel: any) {
-    if (this.radioSelected && this.channel.users === undefined) {
+    if (this.selectedRadioButtonValue == '1') {
       await this.addAllMembers(); // Call addAllMembers only if radioSelected and user IDs are not defined
 
       // Call the addChannelService method to create the channel
