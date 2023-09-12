@@ -1,10 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, filter, map, of, switchMap, tap } from 'rxjs';
 import { updateEmail } from "firebase/auth";
 import { StorageService } from 'src/app/shared/services/storage.service';
-import { DirectMessageService } from './direct-message.service';
 import {
   Firestore,
   doc,
@@ -52,6 +51,7 @@ export class AuthService implements OnDestroy {
   private userSubscription?: Subscription;
   currentUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
+
   get currentUserValue(): User | null {
     return this.currentUser.value;
   }
@@ -67,7 +67,6 @@ export class AuthService implements OnDestroy {
     public auth: Auth,
     public router: Router,
     public storageService: StorageService,
-    public directMessageService: DirectMessageService,
     private firestore: Firestore) {
     this.user$ = user(this.auth);
     this.initCurrentUser();
@@ -232,8 +231,6 @@ export class AuthService implements OnDestroy {
 
   async deleteGuestUser(uid: string) {
     try {
-      console.log('Attempting to delete messages for guest:', uid);
-      // await this.directMessageService.deleteGuestMessages(uid);
       if (this.auth.currentUser && this.auth.currentUser.uid === uid) {
         await deleteUser(this.auth.currentUser);
       }
@@ -360,19 +357,19 @@ export class AuthService implements OnDestroy {
   }
 
 
-  async updateUserEmail(newEmail: string) {
-    const user = this.auth.currentUser;
+  // async updateUserEmail(newEmail: string) {
+  //   const user = this.auth.currentUser;
 
-    if (user) {
-      try {
-        await updateEmail(user, newEmail);
-        console.log("Email updated successfully in both Firebase Auth and Firestore.");
-      } catch (error) {
-        console.error("Error updating email: ", error);
-        throw error;
-      }
-    }
-  }
+  //   if (user) {
+  //     try {
+  //       await updateEmail(user, newEmail);
+  //       console.log("Email updated successfully in both Firebase Auth and Firestore.");
+  //     } catch (error) {
+  //       console.error("Error updating email: ", error);
+  //       throw error;
+  //     }
+  //   }
+  // }
 
 
   /**
@@ -380,19 +377,19 @@ export class AuthService implements OnDestroy {
    * @async
    * @throws Will throw an error if sending the email fails.
    */
-  async sendVerificationMail() {
-    if (this.auth.currentUser) {
-      try {
-        await sendEmailVerification(this.auth.currentUser);
-        // console.log("Verification Email Sent!");
-      } catch (error) {
-        console.error("Failed to send verification email:", error);
-        throw error;
-      }
-    } else {
-      console.log("No user signed in");
-    }
-  }
+  // async sendVerificationMail() {
+  //   if (this.auth.currentUser) {
+  //     try {
+  //       await sendEmailVerification(this.auth.currentUser);
+  //       // console.log("Verification Email Sent!");
+  //     } catch (error) {
+  //       console.error("Failed to send verification email:", error);
+  //       throw error;
+  //     }
+  //   } else {
+  //     console.log("No user signed in");
+  //   }
+  // }
 
 
   /**

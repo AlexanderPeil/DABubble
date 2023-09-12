@@ -8,11 +8,12 @@ import {
   where,
   getDocs,
   writeBatch,
-  query,
-  getDoc
+  query
 } from '@angular/fire/firestore';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, combineLatest, map, of } from 'rxjs';
 import { DirectMessageContent } from 'src/app/models/direct-message';
+import { AuthService } from './auth.service';
+import { User } from 'src/app/shared/services/user';
 
 
 @Injectable({
@@ -20,17 +21,31 @@ import { DirectMessageContent } from 'src/app/models/direct-message';
 })
 export class DirectMessageService {
 
-  constructor(private firestore: Firestore) { }
+  constructor(
+    private firestore: Firestore,
+    private authService: AuthService) { }
+
+
+  getChatParticipants(loggedInUserId: string, selectedUserId: string): Observable<[User | null, User | null]> {
+    const selectedUser$ = this.authService.getUserData(selectedUserId);
+    const loggedInUser$ = this.authService.getUserData(loggedInUserId);
+
+    return combineLatest([selectedUser$, loggedInUser$]);
+  }
 
 
   async createAndAddMessage(senderId: string, receiverId: string, content: string): Promise<void> {
+    const loggedInUser = this.authService.currentUserValue;
+
     const message = new DirectMessageContent({
       senderId: senderId,
       receiverId: receiverId,
       content: content,
       timestamp: Date.now(),
-      read: false
+      read: false,
+      senderImage: loggedInUser?.photoURL ?? ''
     });
+
     const messageCollection = this.getMessageCollection(senderId, receiverId);
     await addDoc(messageCollection, message.toJSON());
   }
@@ -78,7 +93,6 @@ export class DirectMessageService {
   }
 
 
-
   async markAllMessagesAsRead(userId1: string, userId2: string): Promise<void> {
     const messageCollection = this.getMessageCollection(userId1, userId2);
     const unreadQuery = query(messageCollection, where("read", "==", false), where("receiverId", "==", userId1));
@@ -104,33 +118,6 @@ export class DirectMessageService {
     });
 
     return div.innerHTML;
-  }
-
-
-  async deleteGuestMessages(uid: string) {
-    console.log('Entering the deleteGuestMessages function with UID:', uid);
-
-    const directMessagesCollection = collection(this.firestore, 'directMessage');
-    const allDocsSnapshot = await getDocs(directMessagesCollection);
-    const allDocs = allDocsSnapshot.docs;
-    const relevantDocs = allDocs.filter(doc => doc.id.includes(uid));
-    console.log('Relevant chats:', relevantDocs.map(doc => doc.id));
-
-    const batch = writeBatch(this.firestore);
-
-    for (let chatDoc of relevantDocs) {
-      const messageSubCollection = collection(chatDoc.ref, 'messages');
-      const messagesSnapshot = await getDocs(messageSubCollection);
-      messagesSnapshot.forEach(messageDocSnapshot => {
-        console.log("Attempting to delete message with ID:", messageDocSnapshot.id, "with data:", messageDocSnapshot.data());
-        batch.delete(messageDocSnapshot.ref);
-      });
-
-      batch.delete(chatDoc.ref);
-    }
-
-    await batch.commit();
-    console.log('Finished attempting to delete messages and chats for guest');
   }
 
 }

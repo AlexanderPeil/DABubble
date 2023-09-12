@@ -53,14 +53,14 @@ export class SidenavComponent implements OnInit, OnDestroy {
     });
     this.channelService.getChannelService();
   }
-  
+
 
 
   retryLoadImage(user: User) {
     if (user) {
       user.photoURL = this.user_images;
     }
-}
+  }
 
 
 
@@ -85,7 +85,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     const loggedInUid = this.authService.currentUser.value?.uid;
     if (loggedInUid && userWithCount.unreadCount && userWithCount.unreadCount > 0) {
       this.directMessageService.markAllMessagesAsRead(loggedInUid, userWithCount.user.uid).then(() => {
-        userWithCount.unreadCount = 0; // Setzen Sie den Zähler zurück
+        userWithCount.unreadCount = 0; 
       });
     }
     this.router.navigate(['main', 'direct-message', userWithCount.user.uid]);

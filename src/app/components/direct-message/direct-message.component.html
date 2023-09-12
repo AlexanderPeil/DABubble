@@ -24,7 +24,7 @@
             <div *ngFor="let message of group.messages" class="messageMainContainer">
                 <div class="messageChildContainer">
                     <img class="userImg"
-                        [src]="message.senderId === loggedInUser?.uid ? loggedInUser?.photoURL : selectedUser?.photoURL">
+                        [src]="message.senderImage">
 
                     <div class="containerUserNameAndTime">
                         <div class="nameTimeContainer">
@@ -137,16 +137,6 @@
                 <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg" />
             </div>
             <!--------------------------------------- Custom created Container --------------------------------------->
-
-            <!-- <img class="addIcon" src="assets/img/icons/add.svg">
-            <hr>
-            <img class="smileyIcon smileyIconHover" src="assets/img/icons/smiley.svg"
-                (click)="toggleEmojiPicker($event)">
-            <div class="smileyIcon smileyContainer" *ngIf="showEmojiPicker" #emojiContainer>
-                <emoji-mart (emojiClick)="addEmoji($event)"></emoji-mart>
-            </div>
-            <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol($event)">
-            <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg"> -->
 
         </div>
     </quill-editor>

@@ -31,7 +31,9 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   @ViewChild('emojiContainer') emojiContainer!: ElementRef;
   @ViewChild('userMenu') userMenu!: ElementRef;
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
-
+  user_images = '../assets/img/avatar1.svg';
+  senderImage: string = '';
+  receiverImage: string = '';
 
 
   constructor(
@@ -45,44 +47,32 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    // Observable to get the id of the selected user (selected in the sidenav).  
-    const selectedUser$ = this.route.paramMap.pipe(
-      map(params => params.get('id')), // "map": extracts the id from the route parameters.
-      filter(uid => !!uid), // "filter": ensures that only true (non-falsy) uid values are passed through.
-      switchMap(uid => this.authService.getUserData(uid as string)) // "switchMap": each UID that passes through the filter the authservice is invoked to fetch user data
-    );
-
-    // Observable to get the id of the logged-in user who selects an user from the sidenav to chat with
-    const loggedInUser$ = this.authService.user$.pipe(
-      tap(firebaseUser => { // "tap": checks if firebaseUser has a uid and set this.loggedInUser to null if it doesn't
-        if (!firebaseUser?.uid) {
-          this.loggedInUser = null;
-        }
+    this.route.paramMap.pipe(
+      map(params => params.get('id')),
+      filter(uid => !!uid),
+      switchMap(uid => {
+        const loggedInUserId = this.authService.currentUserValue?.uid;
+        return this.directMessageService.getChatParticipants(loggedInUserId as string, uid as string);
       }),
-      switchMap(firebaseUser => firebaseUser?.uid ? this.authService.getUserData(firebaseUser.uid) : []), // "switchMap": each UID that passes through the filter the authservice is invoked to fetch user data
-      filter(user => !!user) // This ensures that only true (non-falsy) uid values are passed through.
-    );
-    // Combines the two observables (logged-in user and selected user)
-    combineLatest([selectedUser$, loggedInUser$])
-      .pipe(takeUntil(this.ngUnsubscribe)) // "takeUntil": makes sure the observable completes when another obserable (ngUnsubscribe) emits a value. ngUnsubscribe is for the onDestroy
-      .subscribe(([selectedUser, loggedInUser]) => {
-        this.selectedUser = selectedUser;
-        this.loggedInUser = loggedInUser;
-        // If both users have valid values then fetches the direct messages with "this.directMessageService.getDirectMessages"
-        if (loggedInUser && selectedUser) {
-          this.directMessageService.getDirectMessages(loggedInUser.uid, selectedUser.uid)
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((messages: any[]) => {
-              this.messages = messages
-                .map(msg => new DirectMessageContent(msg)) // This ensures that all the messages in this.messages are instances of DirectMessageContent
-                .sort((a, b) => a.timestamp - b.timestamp); // Sorts the messages by date
-            });
-        } else {
-          console.error("Either loggedInUser or selectedUser is null");
-        }
-      });
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(([selectedUser, loggedInUser]) => {
+      this.selectedUser = selectedUser;
+      this.loggedInUser = loggedInUser;
+
+      if (loggedInUser && selectedUser) {
+        this.directMessageService.getDirectMessages(loggedInUser.uid, selectedUser.uid)
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(messages => {
+            messages.sort((a, b) => a.timestamp - b.timestamp);
+            this.messages = messages;
+          });
+      } else {
+        console.error("Either loggedInUser or selectedUser is null");
+      }
+    });
     this.filterUsers();
   }
+
 
 
   sendMessage() {
@@ -213,10 +203,13 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
 
   triggerAtSymbol(event: MouseEvent): void {
+    debugger
+    console.log('Found this users:', this.foundUsers);
     event.stopPropagation();
     this.messageContent += '@';
     this.showUserDropdown = true;
     this.filterUsers();
+    console.log('Found this users:', this.foundUsers);
   }
 
 
@@ -262,4 +255,5 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   openThread() {
 
   }
+
 }
