@@ -35,6 +35,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   user_images = '../assets/img/avatar1.svg';
   senderImage: string = '';
   receiverImage: string = '';
+  public quill: any;
+
 
   public quillModules = {
     toolbar: [
@@ -61,7 +63,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         return div;
       },
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
-        console.log(item);
         insertItem(item);
       }
     }
@@ -213,7 +214,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         id: user.uid,
         value: user.displayName,
         denotationChar: mentionChar,
-        photoURL: user.photoURL,  
+        photoURL: user.photoURL,
         displayName: user.displayName
       }));
       renderList(values, searchTerm);
@@ -221,14 +222,14 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  // triggerAtSymbol(event: MouseEvent): void {
-  //   console.log('Found this users:', this.foundUsers);
-  //   event.stopPropagation();
-  //   this.messageContent += '@';
-  //   this.showUserDropdown = true;
-  //   this.filterUsers();
-  //   console.log('Found this users:', this.foundUsers);
-  // }
+  triggerAtSymbol() {
+    this.quill.focus();
+    setTimeout(() => {
+      const currentPosition = this.quill.getSelection()?.index || 0;
+      this.quill.insertText(currentPosition, '@');
+      this.quill.setSelection(currentPosition + 1);
+    });
+  }
 
 
   filterUsers(query?: string): void {
@@ -255,9 +256,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  setFocus($event: any) {
-    $event.focus();
+  setFocus(editor: any): void {
+    this.quill = editor;
+    editor.focus();
   }
+
 
 
   ngAfterViewChecked() {

@@ -123,10 +123,14 @@
                     <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker($event)" />
                 </div> -->
 
+                <span class="ql-formats">
+                    <button (click)="triggerAtSymbol()">@</button>
+                </span>
+                
 
-                <div class="containerAtIcon">
+                <!-- <div class="containerAtIcon">
                     <img class="atIcon" src="assets/img/icons/@Icon.svg"/>
-                </div>
+                </div> -->
                 <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg" />
             </div>
             <!--------------------------------------- Custom created Container --------------------------------------->
