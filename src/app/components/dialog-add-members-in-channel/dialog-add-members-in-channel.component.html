@@ -34,4 +34,9 @@
       <span>{{ user.displayName }}</span>
     </div>
   </div>
+
+  <div *ngIf="userAlreadyExists" class="overlay"></div>
+  <div *ngIf="userAlreadyExists" class="popUp">
+    This User is already in the channel
+  </div>
 </div>

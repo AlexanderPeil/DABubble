@@ -35,6 +35,7 @@ export class DialogCreateChannelComponent implements OnInit {
   inputValue: string = '';
   selectedRadioButtonValue!: string;
   @ViewChild('input') input!: ElementRef;
+  userAlreadyExists: boolean = false;
 
   constructor(
     private channelService: ChannelService,
@@ -105,7 +106,6 @@ export class DialogCreateChannelComponent implements OnInit {
     if (!this.input.nativeElement.contains(event.target)) {
       this.showUserDropdown = false;
     }
-    console.log(this.showUserDropdown);
   }
 
   filterUsers(query?: string): void {
@@ -120,12 +120,26 @@ export class DialogCreateChannelComponent implements OnInit {
     if (!this.channel.users) {
       this.channel.users = []; // Initialisieren Sie das Array, wenn es noch nicht existiert
     }
-    this.channel.users.push(user);
-    this.selectedUsers.push(user);
+
+    const userExists = this.channel.users.some(
+      (existingUser: { uid: string }) => existingUser.uid === user.uid
+    );
+
+    if (!userExists) {
+      this.channel.users.push(user);
+      this.selectedUsers.push(user);
+    } else {
+      // Der Benutzer existiert bereits, setzen Sie die Variable userAlreadyExists auf true
+      this.userAlreadyExists = true;
+      setTimeout(() => {
+        this.userAlreadyExists = false; // Popup ausblenden
+      }, 1500);
+    }
   }
 
   async onSubmitWithMembers(channel: any) {
     if (this.selectedRadioButtonValue == '1') {
+      debugger;
       await this.addAllMembers(); // Call addAllMembers only if radioSelected and user IDs are not defined
 
       // Call the addChannelService method to create the channel

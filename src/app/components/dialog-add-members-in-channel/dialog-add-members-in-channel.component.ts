@@ -20,6 +20,8 @@ export class DialogAddMembersInChannelComponent implements OnInit {
   foundUsers: User[] = [];
   channel: Channel = new Channel();
   @ViewChild('input') input!: ElementRef;
+  userAlreadyExists: boolean = false;
+  selectedUsers: any;
 
   constructor(
     public channelService: ChannelService,
@@ -44,7 +46,21 @@ export class DialogAddMembersInChannelComponent implements OnInit {
     if (!this.channel.users) {
       this.channel.users = []; // Initialisieren Sie das Array, wenn es noch nicht existiert
     }
-    this.channel.users.push(user);
+
+    const userExists = this.channel.users.some(
+      (existingUser: { uid: string }) => existingUser.uid === user.uid
+    );
+
+    if (!userExists) {
+      this.channel.users.push(user);
+      this.selectedUsers.push(user);
+    } else {
+      // Der Benutzer existiert bereits, setzen Sie die Variable userAlreadyExists auf true
+      this.userAlreadyExists = true;
+      setTimeout(() => {
+        this.userAlreadyExists = false; // Popup ausblenden
+      }, 1500);
+    }
   }
 
   checkForDropdown(event: any): void {
