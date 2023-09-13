@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { ThreadService } from 'src/app/shared/services/thread.service';
+import "quill-mention";
 
 
 @Component({
@@ -34,6 +35,38 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   user_images = '../assets/img/avatar1.svg';
   senderImage: string = '';
   receiverImage: string = '';
+
+  public quillModules = {
+    toolbar: [
+      ['mention'],
+      ['clean']
+    ],
+    mention: {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@"],
+      source: this.searchUsers.bind(this),
+      renderItem(item: any) {
+
+        const div = document.createElement('div');
+        const img = document.createElement('img');
+        const span = document.createElement('span');
+
+        img.src = item.photoURL;
+        img.classList.add('user-dropdown-image');
+        span.textContent = item.displayName;
+
+        div.appendChild(img);
+        div.appendChild(span);
+
+        return div;
+      },
+      onSelect: (item: any, insertItem: (arg0: any) => void) => {
+        console.log(item);
+        insertItem(item);
+      }
+    }
+  };
+
 
 
   constructor(
@@ -146,17 +179,17 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  toggleEmojiPicker(event: MouseEvent) {
-    event.stopPropagation();
-    this.showEmojiPicker = !this.showEmojiPicker;
-  }
+  // toggleEmojiPicker(event: MouseEvent) {
+  //   event.stopPropagation();
+  //   this.showEmojiPicker = !this.showEmojiPicker;
+  // }
 
 
-  addEmoji(event: { emoji: any; }) {
-    const { emoji } = event;
-    this.messageContent += emoji.native;
-    this.showEmojiPicker = false;
-  }
+  // addEmoji(event: { emoji: any; }) {
+  //   const { emoji } = event;
+  //   this.messageContent += emoji.native;
+  //   this.showEmojiPicker = false;
+  // }
 
 
   @HostListener('document:click', ['$event'])
@@ -174,43 +207,28 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  onTextChange(event: any) {
-    const value = event.text;
-
-    if (value.includes('@')) {
-      const query = value.slice(value.lastIndexOf('@') + 1);
-      this.showUserDropdown = true;
-      this.filterUsers(query);
-    } else {
-      this.showUserDropdown = false;
-      this.filterUsers();
-    }
+  searchUsers(searchTerm: string, renderList: Function, mentionChar: string) {
+    this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
+      const values = users.map(user => ({
+        id: user.uid,
+        value: user.displayName,
+        denotationChar: mentionChar,
+        photoURL: user.photoURL,  
+        displayName: user.displayName
+      }));
+      renderList(values, searchTerm);
+    });
   }
 
 
-
-  // checkForAtSymbol(event: any): void {
-  //   const value = event.target.value;
-  //   if (value.includes('@')) {
-  //     const query = value.slice(value.lastIndexOf('@') + 1);
-  //     this.showUserDropdown = true;
-  //     this.filterUsers(query);
-  //   } else {
-  //     this.showUserDropdown = false;
-  //     this.filterUsers();
-  //   }
+  // triggerAtSymbol(event: MouseEvent): void {
+  //   console.log('Found this users:', this.foundUsers);
+  //   event.stopPropagation();
+  //   this.messageContent += '@';
+  //   this.showUserDropdown = true;
+  //   this.filterUsers();
+  //   console.log('Found this users:', this.foundUsers);
   // }
-
-
-  triggerAtSymbol(event: MouseEvent): void {
-    debugger
-    console.log('Found this users:', this.foundUsers);
-    event.stopPropagation();
-    this.messageContent += '@';
-    this.showUserDropdown = true;
-    this.filterUsers();
-    console.log('Found this users:', this.foundUsers);
-  }
 
 
   filterUsers(query?: string): void {

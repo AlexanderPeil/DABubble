@@ -1,6 +1,7 @@
-@import "@ctrl/ngx-emoji-mart/picker";
+// @import "@ctrl/ngx-emoji-mart/picker";
 @import "~quill/dist/quill.bubble.css";
 @import "~quill/dist/quill.snow.css";
+@import '~quill-mention/dist/quill.mention.min.css';
 
 /* nunito-regular - latin */
 @font-face {
@@ -132,6 +133,16 @@ app-workspace-menu-btn {
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+/******** global Style from Direct-Message quill-editor   *********/
+
+.user-dropdown-image {
+  height: 35px;
+  width: 35px;
+  border-radius: 100%;
+}
+
+/******** global Style from Direct-Message quill-editor   *********/
 
 /************************************ Change Global Style from quill-editor ************************************/
 
