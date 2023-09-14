@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { Subject, Subscription, combineLatest, filter, map, switchMap, takeUntil, tap } from 'rxjs';
+import { Subject, filter, map, switchMap, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
 import { DirectMessageContent } from 'src/app/models/direct-message';
@@ -28,6 +28,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   loggedInUser: User | null = null;
   messageContent: string = '';
   messages: DirectMessageContent[] = [];
+  groupedMessages: { date: string, messages: DirectMessageContent[] }[] = [];
   foundUsers: User[] = [];
   private ngUnsubscribe = new Subject<void>();
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
@@ -99,6 +100,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
           .subscribe(messages => {
             messages.sort((a, b) => a.timestamp - b.timestamp);
             this.messages = messages;
+            this.groupedMessages = this.groupMessagesByDate(this.messages);
           });
       } else {
         console.error("Either loggedInUser or selectedUser is null");
