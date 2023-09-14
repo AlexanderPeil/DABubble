@@ -23,22 +23,15 @@ Quill.register('modules/emoji', Emoji);
   styleUrls: ['./direct-message.component.scss']
 })
 export class DirectMessageComponent implements OnInit, OnDestroy {
-  // userSubscription!: Subscription;
   isOnline?: boolean;
   selectedUser: User | null = null;
   loggedInUser: User | null = null;
   messageContent: string = '';
   messages: DirectMessageContent[] = [];
-  showUserDropdown: boolean = false;
   foundUsers: User[] = [];
   private ngUnsubscribe = new Subject<void>();
-  showEmojiPicker = false;
-  @ViewChild('emojiContainer') emojiContainer!: ElementRef;
-  @ViewChild('userMenu') userMenu!: ElementRef;
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   user_images = '../assets/img/avatar1.svg';
-  senderImage: string = '';
-  receiverImage: string = '';
   quill: any;
 
 
@@ -126,10 +119,10 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       ).then(() => {
         this.messageContent = '';
       }).catch((error: any) => {
-        console.error("Fehler beim Senden der Nachricht:", error);
+        console.error("Couldn't send a message:", error);
       });
     } else {
-      console.error("Bitte versuchen Sie es erneut.");
+      console.error("Please try again.");
     }
   }
 
@@ -187,21 +180,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  @HostListener('document:click', ['$event'])
-  clickOutside(event: Event) {
-    const clickedInsideEmojiPicker = this.emojiContainer && this.emojiContainer.nativeElement.contains(event.target);
-    const clickedInsideUserMenu = this.userMenu && this.userMenu.nativeElement.contains(event.target);
-
-    if (this.showEmojiPicker && !clickedInsideEmojiPicker) {
-      this.showEmojiPicker = false;
-    }
-
-    if (this.showUserDropdown && !clickedInsideUserMenu) {
-      this.showUserDropdown = false;
-    }
-  }
-
-
   searchUsers(searchTerm: string, renderList: Function, mentionChar: string) {
     this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
       const values = users.map(user => ({
@@ -220,9 +198,9 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     this.quill.focus();
     setTimeout(() => {
       const currentPosition = this.quill.getSelection()?.index || 0;
-      this.quill.insertText(currentPosition, '@');
+      this.quill.insertText(currentPosition, '@ ');
       this.quill.setSelection(currentPosition + 1);
-    });
+    }, 0);
   }
 
 
@@ -244,18 +222,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   selectUser(user: User): void {
     this.messageContent = this.messageContent.replace(/@[^@]*$/, '@' + user.displayName + ' ');
-    this.showUserDropdown = false;
   }
 
 
   chooseFiletoUpload($event: any) {
     this.storageService.chooseFileSevice($event);
-  }
-
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
 
@@ -273,6 +244,12 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   private scrollToBottom(): void {
     this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+  }
+
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 
