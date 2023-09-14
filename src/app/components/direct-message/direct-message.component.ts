@@ -11,6 +11,10 @@ import { StorageService } from 'src/app/shared/services/storage.service';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { ThreadService } from 'src/app/shared/services/thread.service';
 import "quill-mention";
+import * as Emoji from 'quill-emoji';
+import Quill from 'quill';
+Quill.register('modules/emoji', Emoji);
+
 
 
 @Component({
@@ -19,7 +23,7 @@ import "quill-mention";
   styleUrls: ['./direct-message.component.scss']
 })
 export class DirectMessageComponent implements OnInit, OnDestroy {
-  userSubscription!: Subscription;
+  // userSubscription!: Subscription;
   isOnline?: boolean;
   selectedUser: User | null = null;
   loggedInUser: User | null = null;
@@ -35,10 +39,13 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   user_images = '../assets/img/avatar1.svg';
   senderImage: string = '';
   receiverImage: string = '';
-  public quill: any;
+  quill: any;
 
 
   public quillModules = {
+    'emoji-toolbar': true,
+    'emoji-textarea': true,
+    'emoji-shortname': true,
     toolbar: [
       ['mention'],
       ['clean']
@@ -180,19 +187,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  // toggleEmojiPicker(event: MouseEvent) {
-  //   event.stopPropagation();
-  //   this.showEmojiPicker = !this.showEmojiPicker;
-  // }
-
-
-  // addEmoji(event: { emoji: any; }) {
-  //   const { emoji } = event;
-  //   this.messageContent += emoji.native;
-  //   this.showEmojiPicker = false;
-  // }
-
-
   @HostListener('document:click', ['$event'])
   clickOutside(event: Event) {
     const clickedInsideEmojiPicker = this.emojiContainer && this.emojiContainer.nativeElement.contains(event.target);
@@ -230,6 +224,15 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       this.quill.setSelection(currentPosition + 1);
     });
   }
+
+
+  toggleEmojiPicker() {
+    const realEmojiButton = document.querySelector('.textarea-emoji-control') as HTMLElement;
+    if (realEmojiButton) {
+      realEmojiButton.click();
+    }
+  }
+
 
 
   filterUsers(query?: string): void {

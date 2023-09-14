@@ -54,32 +54,6 @@
     </div>
     <!-- Message container -->
 
-
-    <!-- Message textarea -->
-    <!-- <div class="containerTextarea"> -->
-    <!-- <textarea [(ngModel)]="messageContent" placeholder="Write a message..."
-            (input)="checkForAtSymbol($event)"></textarea>
-
-        <div *ngIf="showUserDropdown" class="user-dropdown scrolleableContainer" #userMenu>
-            <div *ngFor="let user of foundUsers" (click)="selectUser(user)">
-                <img [src]="user.photoURL">
-                <span>{{ user.displayName }}</span>
-            </div>
-        </div>
-        <img class="addIcon" src="assets/img/icons/add.svg">
-        <hr>
-        <img class="smileyIcon smileyIconHover" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker($event)">
-        <div class="smileyIcon smileyContainer" *ngIf="showEmojiPicker" #emojiContainer>
-            <emoji-mart (emojiClick)="addEmoji($event)"></emoji-mart>
-        </div>
-        <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol($event)">
-        <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg"> -->
-    <!-- </div> -->
-    <!-- Message textarea -->
-
-
-    <!-- [formControl]="messageFormControl"   (contentChanged)="onTextChange($event)"  (onFocus)="onEditorFocus($event)"  -->
-    <!-- Message textarea -->
     <quill-editor [(ngModel)]="messageContent" placeholder="Write a message" (onEditorCreated)="setFocus($event)" [modules]="quillModules">
         <div quill-editor-toolbar>
 
@@ -107,10 +81,6 @@
                 <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
             </div>
 
-            <!-- <div class="smileyIcon smileyContainer" *ngIf="showEmojiPicker" #emojiContainer>
-                <emoji-mart (emojiClick)="addEmoji($event)"></emoji-mart>
-            </div> -->
-
             <div class="containerIcons">
                 <label for="input" class="containerAddIcon">
                     <img src="assets/img/icons/add.svg" />
@@ -119,18 +89,13 @@
 
                 <hr class="verticalLine" />
 
-                <!-- <div class="containerSmileyIcon">
-                    <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker($event)" />
-                </div> -->
+                <div class="containerSmileyIcon">
+                    <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker()" />
+                </div>                
 
-                <span class="ql-formats">
-                    <button (click)="triggerAtSymbol()">@</button>
-                </span>
-                
-
-                <!-- <div class="containerAtIcon">
-                    <img class="atIcon" src="assets/img/icons/@Icon.svg"/>
-                </div> -->
+                <div class="containerAtIcon">
+                    <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol()"/>
+                </div>
                 <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg" />
             </div>
             <!--------------------------------------- Custom created Container --------------------------------------->
