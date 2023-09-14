@@ -62,29 +62,9 @@ export class DialogCreateChannelComponent implements OnInit {
   }
 
   async addAllMembers() {
-    this.authService
-      .getUsers()
-      .pipe(
-        map((allUsersData) =>
-          allUsersData.map(
-            (data) =>
-              ({
-                uid: data['uid'],
-                email: data['email'],
-                displayName: data['displayName'],
-                emailVerified: data['emailVerified'],
-                isOnline: data['isOnline'],
-                photoURL: data['photoURL'],
-              } as User)
-          )
-        )
-      )
-      .subscribe((allUsers) => {
-        const users = allUsers.map((user) => user);
-
-        // Add the user IDs to the channel object
-        this.channel.users = users;
-      });
+    this.authService.getUsers().subscribe((allUsers) => {
+      this.channel.users = allUsers;
+    });
   }
 
   checkForDropdown(event: any): void {
@@ -139,7 +119,6 @@ export class DialogCreateChannelComponent implements OnInit {
 
   async onSubmitWithMembers(channel: any) {
     if (this.selectedRadioButtonValue == '1') {
-      debugger;
       await this.addAllMembers(); // Call addAllMembers only if radioSelected and user IDs are not defined
 
       // Call the addChannelService method to create the channel
