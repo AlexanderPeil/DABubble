@@ -1,6 +1,8 @@
-@import "@ctrl/ngx-emoji-mart/picker";
+// @import "@ctrl/ngx-emoji-mart/picker";
 @import "~quill/dist/quill.bubble.css";
 @import "~quill/dist/quill.snow.css";
+@import "~quill-mention/dist/quill.mention.min.css";
+@import "quill-emoji/dist/quill-emoji.css";
 
 /* nunito-regular - latin */
 @font-face {
@@ -125,13 +127,35 @@ app-workspace-menu-btn {
   border-bottom-right-radius: 20px;
 }
 
-.ql-toolbar.ql-snow+.ql-container.ql-snow {
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
   border: unset;
   max-height: 300px;
   padding-bottom: 55px;
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+/******** global Style from Direct-Message quill-editor   *********/
+
+.user-dropdown-image {
+  height: 35px;
+  width: 35px;
+  border-radius: 100%;
+}
+
+.textarea-emoji-control {
+  display: none;
+}
+
+#textarea-emoji {
+  right: unset;
+}
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  overflow: unset;
+}
+
+/******** global Style from Direct-Message quill-editor   *********/
 
 /************************************ Change Global Style from quill-editor ************************************/
 

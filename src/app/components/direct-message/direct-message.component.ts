@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { Subject, Subscription, combineLatest, filter, map, switchMap, takeUntil, tap } from 'rxjs';
+import { Subject, filter, map, switchMap, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
 import { DirectMessageContent } from 'src/app/models/direct-message';
@@ -10,6 +10,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { ThreadService } from 'src/app/shared/services/thread.service';
+import "quill-mention";
+import * as Emoji from 'quill-emoji';
+import Quill from 'quill';
+Quill.register('modules/emoji', Emoji);
+
 
 
 @Component({
@@ -18,22 +23,52 @@ import { ThreadService } from 'src/app/shared/services/thread.service';
   styleUrls: ['./direct-message.component.scss']
 })
 export class DirectMessageComponent implements OnInit, OnDestroy {
-  userSubscription!: Subscription;
   isOnline?: boolean;
   selectedUser: User | null = null;
   loggedInUser: User | null = null;
   messageContent: string = '';
   messages: DirectMessageContent[] = [];
-  showUserDropdown: boolean = false;
-  foundUsers: User[] = [];
+  groupedMessages: { date: string, messages: DirectMessageContent[] }[] = [];
+  // foundUsers: User[] = [];
   private ngUnsubscribe = new Subject<void>();
-  showEmojiPicker = false;
-  @ViewChild('emojiContainer') emojiContainer!: ElementRef;
-  @ViewChild('userMenu') userMenu!: ElementRef;
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   user_images = '../assets/img/avatar1.svg';
-  senderImage: string = '';
-  receiverImage: string = '';
+  quill: any;
+
+
+  public quillModules = {
+    'emoji-toolbar': true,
+    'emoji-textarea': true,
+    'emoji-shortname': true,
+    toolbar: [
+      ['mention'],
+      ['clean']
+    ],
+    mention: {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@"],
+      source: this.searchUsers.bind(this),
+      renderItem(item: any) {
+
+        const div = document.createElement('div');
+        const img = document.createElement('img');
+        const span = document.createElement('span');
+
+        img.src = item.photoURL;
+        img.classList.add('user-dropdown-image');
+        span.textContent = item.displayName;
+
+        div.appendChild(img);
+        div.appendChild(span);
+
+        return div;
+      },
+      onSelect: (item: any, insertItem: (arg0: any) => void) => {
+        insertItem(item);
+      }
+    }
+  };
+
 
 
   constructor(
@@ -65,12 +100,13 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
           .subscribe(messages => {
             messages.sort((a, b) => a.timestamp - b.timestamp);
             this.messages = messages;
+            this.groupedMessages = this.groupMessagesByDate(this.messages);
           });
       } else {
         console.error("Either loggedInUser or selectedUser is null");
       }
     });
-    this.filterUsers();
+    // this.filterUsers();
   }
 
 
@@ -85,10 +121,10 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       ).then(() => {
         this.messageContent = '';
       }).catch((error: any) => {
-        console.error("Fehler beim Senden der Nachricht:", error);
+        console.error("Couldn't send a message:", error);
       });
     } else {
-      console.error("Bitte versuchen Sie es erneut.");
+      console.error("Please try again.");
     }
   }
 
@@ -146,83 +182,48 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  toggleEmojiPicker(event: MouseEvent) {
-    event.stopPropagation();
-    this.showEmojiPicker = !this.showEmojiPicker;
-  }
-
-
-  addEmoji(event: { emoji: any; }) {
-    const { emoji } = event;
-    this.messageContent += emoji.native;
-    this.showEmojiPicker = false;
-  }
-
-
-  @HostListener('document:click', ['$event'])
-  clickOutside(event: Event) {
-    const clickedInsideEmojiPicker = this.emojiContainer && this.emojiContainer.nativeElement.contains(event.target);
-    const clickedInsideUserMenu = this.userMenu && this.userMenu.nativeElement.contains(event.target);
-
-    if (this.showEmojiPicker && !clickedInsideEmojiPicker) {
-      this.showEmojiPicker = false;
-    }
-
-    if (this.showUserDropdown && !clickedInsideUserMenu) {
-      this.showUserDropdown = false;
-    }
-  }
-
-
-  onTextChange(event: any) {
-    const value = event.text;
-
-    if (value.includes('@')) {
-      const query = value.slice(value.lastIndexOf('@') + 1);
-      this.showUserDropdown = true;
-      this.filterUsers(query);
-    } else {
-      this.showUserDropdown = false;
-      this.filterUsers();
-    }
-  }
-
-
-
-  // checkForAtSymbol(event: any): void {
-  //   const value = event.target.value;
-  //   if (value.includes('@')) {
-  //     const query = value.slice(value.lastIndexOf('@') + 1);
-  //     this.showUserDropdown = true;
-  //     this.filterUsers(query);
-  //   } else {
-  //     this.showUserDropdown = false;
-  //     this.filterUsers();
-  //   }
-  // }
-
-
-  triggerAtSymbol(event: MouseEvent): void {
-    debugger
-    console.log('Found this users:', this.foundUsers);
-    event.stopPropagation();
-    this.messageContent += '@';
-    this.showUserDropdown = true;
-    this.filterUsers();
-    console.log('Found this users:', this.foundUsers);
-  }
-
-
-  filterUsers(query?: string): void {
-    this.authService.getUsers(query).subscribe((users) => {
-      this.foundUsers = users;
+  searchUsers(searchTerm: string, renderList: Function, mentionChar: string) {
+    this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
+      const values = users.map(user => ({
+        id: user.uid,
+        value: user.displayName,
+        denotationChar: mentionChar,
+        photoURL: user.photoURL,
+        displayName: user.displayName
+      }));
+      renderList(values, searchTerm);
     });
   }
 
 
+  triggerAtSymbol() {
+    this.quill.focus();
+    setTimeout(() => {
+      const currentPosition = this.quill.getSelection()?.index || 0;
+      this.quill.insertText(currentPosition, '@ ');
+      this.quill.setSelection(currentPosition + 1);
+    }, 0);
+  }
+
+
+  toggleEmojiPicker() {
+    const realEmojiButton = document.querySelector('.textarea-emoji-control') as HTMLElement;
+    if (realEmojiButton) {
+      realEmojiButton.click();
+    }
+  }
+
+
+
+  // filterUsers(query?: string): void {
+  //   this.authService.getUsers(query).subscribe((users) => {
+  //     this.foundUsers = users;
+  //   });
+  // }
+
+
   selectUser(user: User): void {
     this.messageContent = this.messageContent.replace(/@[^@]*$/, '@' + user.displayName + ' ');
-    this.showUserDropdown = false;
   }
 
 
@@ -231,15 +232,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+  setFocus(editor: any): void {
+    this.quill = editor;
+    editor.focus();
   }
 
-
-  setFocus($event: any) {
-    $event.focus();
-  }
 
 
   ngAfterViewChecked() {
@@ -249,6 +246,12 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   private scrollToBottom(): void {
     this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+  }
+
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 

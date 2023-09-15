@@ -1,5 +1,5 @@
 <div [ngClass]="{
-    'chatHistoryFullWidth': toggleWorspaceMenuService.workspaceMenuAreClosed
+    chatHistoryFullWidth: toggleWorspaceMenuService.workspaceMenuAreClosed
   }" class="chatHistoryMainContainer">
   <div class="chatHistoryHeader">
     <div (click)="openDialogToEditChannel()" class="channelName">
@@ -22,7 +22,7 @@
     </div>
   </div>
 
-  <div class="scrolleableContainer">
+  <div #messagesContainer class="scrolleableContainer">
     <div class="date">
       <hr />
       <p>Thursday, 03 August</p>
@@ -33,7 +33,7 @@
   </div>
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor (onEditorCreated)="setFocus($event)" placeholder="Message to #{{ channelService.channel.channelName }}">
+  <quill-editor (onEditorCreated)="setFocus($event)" placeholder="Message to #{{ channelService.channel.channelName }}"  [modules]="quillModules">
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
@@ -72,12 +72,13 @@
         <hr class="verticalLine" />
 
         <div class="containerSmileyIcon">
-          <img class="smileyIcon" src="assets/img/icons/smiley.svg" />
+          <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker()" />
         </div>
 
         <div class="containerAtIcon">
-          <img class="atIcon" src="assets/img/icons/@Icon.svg" />
+          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol()" />
         </div>
+
         <img class="sendBtn" src="assets/img/icons/sendBtn.svg" />
       </div>
       <!--------------------------------------- Custom created Container --------------------------------------->

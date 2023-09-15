@@ -33,7 +33,8 @@
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.1);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -246,4 +247,33 @@
   span {
     @include font(18px, 400, 20px);
   }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.32
+  ); /* Hintergrundfarbe mit Transparenz für den Dunkelheitseffekt */
+  z-index: 999; /* Stelle sicher, dass das Overlay über allem anderen Inhalt liegt */
+}
+
+.popUp {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  font-weight: 400;
+  font-size: 18px;
 }
