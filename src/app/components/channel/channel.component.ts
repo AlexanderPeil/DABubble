@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
 import { DialogShowMembersInChannelComponent } from '../dialog-show-members-in-channel/dialog-show-members-in-channel.component';
@@ -9,6 +9,12 @@ import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Channel } from 'src/app/models/channel';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { User } from 'src/app/shared/services/user';
+import "quill-mention";
+import * as Emoji from 'quill-emoji';
+import Quill from 'quill';
+Quill.register('modules/emoji', Emoji);
 
 
 @Component({
@@ -18,13 +24,49 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 })
 
 
-export class ChannelComponent implements OnInit {
+export class ChannelComponent implements OnInit, OnDestroy {
   channelId!: string;
   channel: Channel = new Channel();
   url: string = '';
+  quill: any;
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+  messageContent: string = '';
+
+  public quillModules = {
+    'emoji-toolbar': true,
+    'emoji-textarea': true,
+    'emoji-shortname': true,
+    toolbar: [
+      ['mention'],
+      ['clean']
+    ],
+    mention: {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@"],
+      source: this.searchUsers.bind(this),
+      renderItem(item: any) {
+
+        const div = document.createElement('div');
+        const img = document.createElement('img');
+        const span = document.createElement('span');
+
+        img.src = item.photoURL;
+        img.classList.add('user-dropdown-image');
+        span.textContent = item.displayName;
+
+        div.appendChild(img);
+        div.appendChild(span);
+
+        return div;
+      },
+      onSelect: (item: any, insertItem: (arg0: any) => void) => {
+        insertItem(item);
+      }
+    }
+  };
 
 
-  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService) {
+  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService,     private authService: AuthService,) {
 
   }
 
@@ -65,8 +107,9 @@ export class ChannelComponent implements OnInit {
   }
 
 
-  setFocus($event: any) {
-    $event.focus();
+  setFocus(editor: any): void {
+    this.quill = editor;
+    editor.focus();
   }
 
 
@@ -77,4 +120,57 @@ export class ChannelComponent implements OnInit {
       }
     });
   }
+
+  
+  triggerAtSymbol() {
+    this.quill.focus();
+    setTimeout(() => {
+      const currentPosition = this.quill.getSelection()?.index || 0;
+      this.quill.insertText(currentPosition, '@ ');
+      this.quill.setSelection(currentPosition + 1);
+    }, 0);
+  }
+
+
+  toggleEmojiPicker() {
+    const realEmojiButton = document.querySelector('.textarea-emoji-control') as HTMLElement;
+    if (realEmojiButton) {
+      realEmojiButton.click();
+    }
+  }
+
+  
+  searchUsers(searchTerm: string, renderList: Function, mentionChar: string) {
+    this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
+      const values = users.map(user => ({
+        id: user.uid,
+        value: user.displayName,
+        denotationChar: mentionChar,
+        photoURL: user.photoURL,
+        displayName: user.displayName
+      }));
+      renderList(values, searchTerm);
+    });
+  }
+
+
+  selectUser(user: User): void {
+    this.messageContent = this.messageContent.replace(/@[^@]*$/, '@' + user.displayName + ' ');
+  }
+
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+
+  private scrollToBottom(): void {
+    this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+  }
+
+
+  ngOnDestroy() {
+
+  }
+
 }

@@ -1,9 +1,6 @@
-<div
-  [ngClass]="{
+<div [ngClass]="{
     chatHistoryFullWidth: toggleWorspaceMenuService.workspaceMenuAreClosed
-  }"
-  class="chatHistoryMainContainer"
->
+  }" class="chatHistoryMainContainer">
   <div class="chatHistoryHeader">
     <div (click)="openDialogToEditChannel()" class="channelName">
       <img src="assets/img/icons/hashtag.svg" />
@@ -12,30 +9,20 @@
     </div>
 
     <div class="containerUserInChatHistory">
-      <div
-        (click)="openDialogToShowMembersInChannel()"
-        class="childContainerUserInChatHistory"
-      >
-        <img
-          *ngFor="let user of channelService.channel.users.slice(0, 3)"
-          class="user"
-          [src]="user.photoURL"
-        />
+      <div (click)="openDialogToShowMembersInChannel()" class="childContainerUserInChatHistory">
+        <img *ngFor="let user of channelService.channel.users.slice(0, 3)" class="user" [src]="user.photoURL" />
         <p class="amountOfUserInChannel">
           {{ channelService.channel.users.length }}
         </p>
       </div>
 
-      <div
-        (click)="openDialogToAddMembersToChannel()"
-        class="containerIconAddUser"
-      >
+      <div (click)="openDialogToAddMembersToChannel()" class="containerIconAddUser">
         <img class="iconAddUser" src="assets/img/icons/addUser.svg" />
       </div>
     </div>
   </div>
 
-  <div class="scrolleableContainer">
+  <div #messagesContainer class="scrolleableContainer">
     <div class="date">
       <hr />
       <p>Thursday, 03 August</p>
@@ -46,59 +33,32 @@
   </div>
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor
-    (onEditorCreated)="setFocus($event)"
-    placeholder="Message to #{{ channelService.channel.channelName }}"
-  >
+  <quill-editor (onEditorCreated)="setFocus($event)" placeholder="Message to #{{ channelService.channel.channelName }}"  [modules]="quillModules">
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
         <!--------------------------------------- Displays uploaded Images --------------------------------------->
-        <div
-          *ngFor="
+        <div *ngFor="
             let uploadedImage of storageService.uploadedImages;
             let i = index
-          "
-          class="containerUploadedImages"
-        >
-          <img
-            (click)="openDetailViewFromUploadedImage(uploadedImage)"
-            class="uploadedImage"
-            [src]="uploadedImage ? uploadedImage : null"
-          />
-          <img
-            matTooltipPosition="above"
-            matTooltip="Delete Data"
-            (click)="
+          " class="containerUploadedImages">
+          <img (click)="openDetailViewFromUploadedImage(uploadedImage)" class="uploadedImage"
+            [src]="uploadedImage ? uploadedImage : null" />
+          <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
               this.storageService.deleteUploadedDataService(uploadedImage, i)
-            "
-            class="closeIcon"
-            src="assets/img/icons/closeIcon.svg"
-          />
+            " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
         </div>
         <!--------------------------------------- Displays uploaded Images --------------------------------------->
 
         <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
-        <div
-          *ngFor="
+        <div *ngFor="
             let uploadedData of storageService.uploadedDatas;
             let i = index
-          "
-          class="containerUploadedDatas"
-        >
-          <iframe
-            class="uploadedData"
-            [src]="uploadedData ? uploadedData : null"
-          ></iframe>
-          <img
-            matTooltipPosition="above"
-            matTooltip="Delete Data"
-            (click)="
+          " class="containerUploadedDatas">
+          <iframe class="uploadedData" [src]="uploadedData ? uploadedData : null"></iframe>
+          <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
               this.storageService.deleteUploadedDataService(uploadedData, i)
-            "
-            class="closeIcon"
-            src="assets/img/icons/closeIcon.svg"
-          />
+            " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
         </div>
         <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
       </div>
@@ -106,23 +66,19 @@
       <div class="containerIcons">
         <label for="input" class="containerAddIcon">
           <img src="assets/img/icons/add.svg" />
-          <input
-            (change)="storageService.chooseFileSevice($event)"
-            id="input"
-            type="file"
-            hidden
-          />
+          <input (change)="storageService.chooseFileSevice($event)" id="input" type="file" hidden />
         </label>
 
         <hr class="verticalLine" />
 
         <div class="containerSmileyIcon">
-          <img class="smileyIcon" src="assets/img/icons/smiley.svg" />
+          <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker()" />
         </div>
 
         <div class="containerAtIcon">
-          <img class="atIcon" src="assets/img/icons/@Icon.svg" />
+          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol()" />
         </div>
+
         <img class="sendBtn" src="assets/img/icons/sendBtn.svg" />
       </div>
       <!--------------------------------------- Custom created Container --------------------------------------->

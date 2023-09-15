@@ -29,7 +29,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   messageContent: string = '';
   messages: DirectMessageContent[] = [];
   groupedMessages: { date: string, messages: DirectMessageContent[] }[] = [];
-  foundUsers: User[] = [];
+  // foundUsers: User[] = [];
   private ngUnsubscribe = new Subject<void>();
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   user_images = '../assets/img/avatar1.svg';
@@ -106,7 +106,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         console.error("Either loggedInUser or selectedUser is null");
       }
     });
-    this.filterUsers();
+    // this.filterUsers();
   }
 
 
@@ -215,11 +215,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
 
 
-  filterUsers(query?: string): void {
-    this.authService.getUsers(query).subscribe((users) => {
-      this.foundUsers = users;
-    });
-  }
+  // filterUsers(query?: string): void {
+  //   this.authService.getUsers(query).subscribe((users) => {
+  //     this.foundUsers = users;
+  //   });
+  // }
 
 
   selectUser(user: User): void {
