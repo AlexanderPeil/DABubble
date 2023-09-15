@@ -24,6 +24,7 @@ import { Channel } from 'src/app/models/channel';
 export class ChannelService {
   channelData!: Observable<any>;
   channel: any = new Channel();
+  allChannels: any[] = [];
 
 
   constructor(private firestore: Firestore, public route: Router) {
@@ -43,6 +44,17 @@ export class ChannelService {
       orderBy('channelName')
     );
     this.channelData = collectionData(collectionInstance, { idField: 'id' });
+  }
+
+
+  getChannelToFilterService() {
+    const collectionInstance = query(
+      collection(this.firestore, 'channels'),
+      orderBy('channelName')
+    );
+    collectionData(collectionInstance, { idField: 'id' }).subscribe((channel) => {
+      this.allChannels = channel;
+    })
   }
 
 

@@ -40,7 +40,7 @@ export class DialogCreateChannelComponent implements OnInit {
     private channelService: ChannelService,
     private authService: AuthService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.filterUsers();
@@ -67,14 +67,14 @@ export class DialogCreateChannelComponent implements OnInit {
         map((allUsersData) =>
           allUsersData.map(
             (data) =>
-              ({
-                uid: data['uid'],
-                email: data['email'],
-                displayName: data['displayName'],
-                emailVerified: data['emailVerified'],
-                isOnline: data['isOnline'],
-                photoURL: data['photoURL'],
-              } as User)
+            ({
+              uid: data['uid'],
+              email: data['email'],
+              displayName: data['displayName'],
+              emailVerified: data['emailVerified'],
+              isOnline: data['isOnline'],
+              photoURL: data['photoURL'],
+            } as User)
           )
         )
       )
