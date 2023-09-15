@@ -62,9 +62,7 @@ export class DialogCreateChannelComponent implements OnInit {
   }
 
   async addAllMembers() {
-    this.authService.getUsers().subscribe((allUsers) => {
-      this.channel.users = allUsers;
-    });
+    this.channel.users = this.foundUsers;
   }
 
   checkForDropdown(event: any): void {
