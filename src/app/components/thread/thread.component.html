@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="scrolleableContainer">
+    <div #messagesContainer class="scrolleableContainer">
         <div class="messageMainContainer">
             <img class="profileImg" src="assets/img/avatar1.svg">
 
@@ -63,7 +63,7 @@
 
 
         <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-        <quill-editor (onEditorCreated)="setFocus($event)" placeholder="Answer...">
+        <quill-editor (onEditorCreated)="setFocus($event)" placeholder="Answer..." [modules]="quillModules">
             <div quill-editor-toolbar>
                 <!--------------------------------------- Custom created Container --------------------------------------->
                 <div class="mainContainerUploadedDatas">
@@ -99,11 +99,11 @@
                     <hr class="verticalLine" />
 
                     <div class="containerSmileyIcon">
-                        <img class="smileyIcon" src="assets/img/icons/smiley.svg" />
-                    </div>
-
+                        <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker()" />
+                    </div>                
+    
                     <div class="containerAtIcon">
-                        <img class="atIcon" src="assets/img/icons/@Icon.svg" />
+                        <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol()"/>
                     </div>
                     <img class="sendBtn" src="assets/img/icons/sendBtn.svg" />
                 </div>

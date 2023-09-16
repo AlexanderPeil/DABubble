@@ -25,12 +25,14 @@ Quill.register('modules/emoji', Emoji);
 
 
 export class ChannelComponent implements OnInit, OnDestroy {
+  isOnline?: boolean;
   channelId!: string;
   channel: Channel = new Channel();
   url: string = '';
   quill: any;
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   messageContent: string = '';
+  user_images = '../assets/img/avatar1.svg';
 
   public quillModules = {
     'emoji-toolbar': true,
