@@ -4,7 +4,6 @@ import { StorageService } from 'src/app/shared/services/storage.service';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
 import { ChannelService } from 'src/app/shared/services/channel.service';
-import { User } from '@angular/fire/auth';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
 
@@ -22,6 +21,7 @@ export class NewMessageComponent implements OnInit {
   dropDownMenuUserIsOpen: boolean = false;
   users: { user: any, unreadCount?: number }[] = [];
   isOnline?: boolean;
+  foundUsers: any[] = [];
 
 
   constructor(public dialog: MatDialog,
@@ -66,28 +66,10 @@ export class NewMessageComponent implements OnInit {
   }
 
 
-  getValueFromInput($event: string) {
-    this.inputValue = $event;
-    this.toggleDropdownMenuChannels();
-    this.toggleDropdownMenuUsers();
-  }
-
-
-  toggleDropdownMenuChannels() {
-    if (this.inputValue.startsWith('#')) {
-      this.dropDownMenuChannelsIsOpen = true;
-    } else {
-      this.dropDownMenuChannelsIsOpen = false;
-    }
-  }
-
-
-  toggleDropdownMenuUsers() {
-    if (this.inputValue.startsWith('@')) {
-      this.dropDownMenuUserIsOpen = true;
-    } else {
-      this.dropDownMenuUserIsOpen = false;
-    }
+  filterUsers(query?: string): void {
+    this.authService.getUsers(query).subscribe((users) => {
+      this.foundUsers = users;
+    });
   }
 
 
@@ -99,5 +81,10 @@ export class NewMessageComponent implements OnInit {
     if (!this.elementRef.nativeElement.contains($event.target)) {
       this.dropDownMenuUserIsOpen = false;
     }
+  }
+
+
+  getInputValue() {
+
   }
 }

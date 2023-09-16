@@ -41,7 +41,7 @@ export class DialogCreateChannelComponent implements OnInit {
     private channelService: ChannelService,
     private authService: AuthService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.filterUsers();
@@ -62,9 +62,7 @@ export class DialogCreateChannelComponent implements OnInit {
   }
 
   async addAllMembers() {
-    this.authService.getUsers().subscribe((allUsers) => {
-      this.channel.users = allUsers;
-    });
+    this.channel.users = this.foundUsers;
   }
 
   checkForDropdown(event: any): void {
