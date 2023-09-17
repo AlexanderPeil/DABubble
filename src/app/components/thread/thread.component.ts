@@ -1,8 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
 import { ThreadService } from 'src/app/shared/services/thread.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { User } from 'src/app/shared/services/user';
+import "quill-mention";
+import * as Emoji from 'quill-emoji';
+import Quill from 'quill';
+Quill.register('modules/emoji', Emoji);
 
 
 @Component({
@@ -12,16 +18,59 @@ import { ThreadService } from 'src/app/shared/services/thread.service';
 })
 
 
-export class ThreadComponent {
+export class ThreadComponent implements OnInit, OnDestroy {
+  isOnline?: boolean;
+  messageContent: string = '';
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+  user_images = '../assets/img/avatar1.svg';
+  quill: any;
+
+  public quillModules = {
+    'emoji-toolbar': true,
+    'emoji-textarea': true,
+    'emoji-shortname': true,
+    toolbar: [
+      ['mention'],
+      ['clean']
+    ],
+    mention: {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@"],
+      source: this.searchUsers.bind(this),
+      renderItem(item: any) {
+
+        const div = document.createElement('div');
+        const img = document.createElement('img');
+        const span = document.createElement('span');
+
+        img.src = item.photoURL;
+        img.classList.add('user-dropdown-image');
+        span.textContent = item.displayName;
+
+        div.appendChild(img);
+        div.appendChild(span);
+
+        return div;
+      },
+      onSelect: (item: any, insertItem: (arg0: any) => void) => {
+        insertItem(item);
+      }
+    }
+  };
 
 
-  constructor(public storageService: StorageService, public dialog: MatDialog, public threadService: ThreadService) {
+  constructor(public storageService: StorageService, public dialog: MatDialog, public threadService: ThreadService,     private authService: AuthService,) {
 
   }
 
+  ngOnInit(): void {
+    
+  }
 
-  setFocus($event: any) {
-    $event.focus();
+
+  setFocus(editor: any): void {
+    this.quill = editor;
+    editor.focus();
   }
 
 
@@ -32,4 +81,57 @@ export class ThreadComponent {
       }
     });
   }
+
+
+  searchUsers(searchTerm: string, renderList: Function, mentionChar: string) {
+    this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
+      const values = users.map(user => ({
+        id: user.uid,
+        value: user.displayName,
+        denotationChar: mentionChar,
+        photoURL: user.photoURL,
+        displayName: user.displayName
+      }));
+      renderList(values, searchTerm);
+    });
+  }
+
+
+  triggerAtSymbol() {
+    this.quill.focus();
+    setTimeout(() => {
+      const currentPosition = this.quill.getSelection()?.index || 0;
+      this.quill.insertText(currentPosition, '@ ');
+      this.quill.setSelection(currentPosition + 1);
+    }, 0);
+  }
+
+
+  toggleEmojiPicker() {
+    const realEmojiButton = document.querySelector('.textarea-emoji-control') as HTMLElement;
+    if (realEmojiButton) {
+      realEmojiButton.click();
+    }
+  }
+
+  selectUser(user: User): void {
+    this.messageContent = this.messageContent.replace(/@[^@]*$/, '@' + user.displayName + ' ');
+  }
+
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+
+  private scrollToBottom(): void {
+    this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+  }
+
+
+  ngOnDestroy(): void {
+    
+  }
+
+
 }

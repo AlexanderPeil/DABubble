@@ -2,10 +2,10 @@
     class="chatHistoryMainContainer">
     <div class="chatHistoryHeader">
         <p>New Message</p>
-        <input (ngModelChange)="getValueFromInput($event)" [(ngModel)]="inputValue"
+        <input (input)="getInputValue($event)" [(ngModel)]="inputValue"
             placeholder="At: #channel, or @someone or Mail address " type="text">
 
-        <div class="dropDownMenuChannels" [ngStyle]="{'display': dropDownMenuChannelsIsOpen ? 'flex' : 'none'}">
+        <div class="dropDownMenuChannels" [ngStyle]="{'display':  dropDownMenuChannelsIsOpen ? 'flex' : 'none'}">
             <p *ngFor="let channel of channelService.channelData | async">{{ channel.channelName }}</p>
         </div>
 

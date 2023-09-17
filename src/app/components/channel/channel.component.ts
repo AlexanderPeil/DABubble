@@ -25,12 +25,14 @@ Quill.register('modules/emoji', Emoji);
 
 
 export class ChannelComponent implements OnInit, OnDestroy {
+  isOnline?: boolean;
   channelId!: string;
   channel: Channel = new Channel();
   url: string = '';
   quill: any;
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   messageContent: string = '';
+  user_images = '../assets/img/avatar1.svg';
 
   public quillModules = {
     'emoji-toolbar': true,
@@ -66,7 +68,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService,     private authService: AuthService,) {
+  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService, private authService: AuthService,) {
 
   }
 
@@ -121,7 +123,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
-  
+
   triggerAtSymbol() {
     this.quill.focus();
     setTimeout(() => {
@@ -139,7 +141,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   searchUsers(searchTerm: string, renderList: Function, mentionChar: string) {
     this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
       const values = users.map(user => ({

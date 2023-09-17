@@ -42,7 +42,7 @@ export class ChannelService {
       collection(this.firestore, 'channels'),
       orderBy('channelName')
     );
-    this.channelData = collectionData(collectionInstance, { idField: 'id' });
+    this.channelData = collectionData(collectionInstance, { idField: 'id' }).pipe()
   }
 
 

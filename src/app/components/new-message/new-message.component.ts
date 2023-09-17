@@ -4,9 +4,9 @@ import { StorageService } from 'src/app/shared/services/storage.service';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
 import { ChannelService } from 'src/app/shared/services/channel.service';
-import { User } from '@angular/fire/auth';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
+import { Observable, debounceTime, distinctUntilChanged, of, startWith, switchMap, filter } from 'rxjs';
 
 
 @Component({
@@ -17,11 +17,12 @@ import { DirectMessageService } from 'src/app/shared/services/direct-message.ser
 
 
 export class NewMessageComponent implements OnInit {
-  inputValue: string = '';
   dropDownMenuChannelsIsOpen: boolean = false;
   dropDownMenuUserIsOpen: boolean = false;
   users: { user: any, unreadCount?: number }[] = [];
   isOnline?: boolean;
+  foundUsers: any[] = [];
+  inputValue: string = '';
 
 
   constructor(public dialog: MatDialog,
@@ -32,6 +33,7 @@ export class NewMessageComponent implements OnInit {
     private authService: AuthService,
     private directMessageService: DirectMessageService) {
   }
+
 
 
   ngOnInit(): void {
@@ -52,6 +54,23 @@ export class NewMessageComponent implements OnInit {
   }
 
 
+  getInputValue($event: any) {
+    // this.channelService.channelData = of(this.channels); // Start with all items
+    // // RxJS operators for filtering based on search query
+    // this.channelService.channelData = this.channelService.channelData.pipe(
+    //   startWith($event.target.value),
+    //  filter(($event.target.value),  => {})
+    // );
+  }
+
+
+  // filterItems(value: string): Observable<string[]> {
+  //   return of(this.channels.filter(channel =>
+  //     channel.toLowerCase().startsWith(value.toLowerCase()) ? this.dropDownMenuChannelsIsOpen : !this.dropDownMenuChannelsIsOpen
+  //   ));
+  // }
+
+
   setFocus($event: any) {
     $event.focus();
   }
@@ -66,28 +85,10 @@ export class NewMessageComponent implements OnInit {
   }
 
 
-  getValueFromInput($event: string) {
-    this.inputValue = $event;
-    this.toggleDropdownMenuChannels();
-    this.toggleDropdownMenuUsers();
-  }
-
-
-  toggleDropdownMenuChannels() {
-    if (this.inputValue.startsWith('#')) {
-      this.dropDownMenuChannelsIsOpen = true;
-    } else {
-      this.dropDownMenuChannelsIsOpen = false;
-    }
-  }
-
-
-  toggleDropdownMenuUsers() {
-    if (this.inputValue.startsWith('@')) {
-      this.dropDownMenuUserIsOpen = true;
-    } else {
-      this.dropDownMenuUserIsOpen = false;
-    }
+  filterUsers(query?: string): void {
+    this.authService.getUsers(query).subscribe((users) => {
+      this.foundUsers = users;
+    });
   }
 
 
