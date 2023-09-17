@@ -10,10 +10,12 @@ import { Channel } from 'src/app/models/channel';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
 import { User } from 'src/app/shared/services/user';
 import "quill-mention";
 import * as Emoji from 'quill-emoji';
 import Quill from 'quill';
+import { Subject, takeUntil, tap } from 'rxjs';
 Quill.register('modules/emoji', Emoji);
 
 
@@ -33,6 +35,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   messageContent: string = '';
   user_images = '../assets/img/avatar1.svg';
+  loggedInUser: User | null = null;
+  private ngUnsubscribe = new Subject<void>();
 
   public quillModules = {
     'emoji-toolbar': true,
@@ -68,13 +72,30 @@ export class ChannelComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService,     private authService: AuthService,) {
+  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private directMessageService: DirectMessageService) {
 
   }
 
 
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
+    const loggedInUserId = this.authService.currentUserValue?.uid;
+    console.log(loggedInUserId);
+    
+
+    if (loggedInUserId) {
+      this.directMessageService.getLoggedInUser(loggedInUserId)
+      .pipe(
+          tap(user => console.log("Received user from service:", user)),
+          takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(user => {
+          this.loggedInUser = user;
+      });
+  
+    } else {
+      console.error("No logged in user ID found.");
+    }
   }
 
 
@@ -123,7 +144,26 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
-  
+
+  sendMessage() {
+    console.log(this.messageContent, this.loggedInUser);
+
+    if (this.messageContent && this.loggedInUser) {
+      const cleanedContent = this.directMessageService.removePTags(this.messageContent);
+      this.directMessageService.createAndAddChannelMessage(
+        this.channelId,
+        this.loggedInUser.uid,
+        cleanedContent
+      ).then(() => {
+      }).catch((error: any) => {
+        console.error("Couldn't send a message:", error);
+      });
+    } else {
+      console.error("Please try again.");
+    }
+  }
+
+
   triggerAtSymbol() {
     this.quill.focus();
     setTimeout(() => {
@@ -141,13 +181,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-  
-  searchUsers(searchTerm: string, renderList: Function, mentionChar: string) {
+
+  searchUsers(searchTerm: string, renderList: Function) {
     this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
       const values = users.map(user => ({
         id: user.uid,
         value: user.displayName,
-        denotationChar: mentionChar,
         photoURL: user.photoURL,
         displayName: user.displayName
       }));
@@ -172,7 +211,9 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+}
 
-  }
 
 }

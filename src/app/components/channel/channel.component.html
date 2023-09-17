@@ -33,7 +33,7 @@
   </div>
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor (onEditorCreated)="setFocus($event)" placeholder="Message to #{{ channelService.channel.channelName }}"  [modules]="quillModules">
+  <quill-editor [(ngModel)]="messageContent" (onEditorCreated)="setFocus($event)" placeholder="Message to #{{ channelService.channel.channelName }}"  [modules]="quillModules">
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
@@ -79,7 +79,7 @@
           <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol()" />
         </div>
 
-        <img class="sendBtn" src="assets/img/icons/sendBtn.svg" />
+        <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="sendMessage()"/>
       </div>
       <!--------------------------------------- Custom created Container --------------------------------------->
     </div>

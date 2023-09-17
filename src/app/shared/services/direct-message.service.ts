@@ -55,16 +55,17 @@ export class DirectMessageService {
     const chatId = this.generateChatId(userId1, userId2);
     return collection(doc(this.firestore, `directMessage/${chatId}`), 'messages');
   }
+  
 
   private generateChatId(userId1: string, userId2: string): string {
     return [userId1, userId2].sort().join('_');
   }
 
 
-  async addMessage(userId1: string, userId2: string, message: DirectMessageContent): Promise<void> {
-    const messageCollection = this.getMessageCollection(userId1, userId2);
-    await addDoc(messageCollection, message.toJSON());
-  }
+  // async addMessage(userId1: string, userId2: string, message: DirectMessageContent): Promise<void> {
+  //   const messageCollection = this.getMessageCollection(userId1, userId2);
+  //   await addDoc(messageCollection, message.toJSON());
+  // }
 
 
   getDirectMessages(userId1: string, userId2: string): Observable<DirectMessageContent[]> {
@@ -119,5 +120,35 @@ export class DirectMessageService {
 
     return div.innerHTML;
   }
+
+
+  getLoggedInUser(loggedInUserId: string): Observable<User | null> {
+    return this.authService.getUserData(loggedInUserId);
+  }
+
+
+  async createAndAddChannelMessage(channelId: string, senderId: string, content: string) {
+    const loggedInUser = this.authService.currentUserValue;
+    console.log(channelId, senderId, content), loggedInUser;
+
+    const message = new DirectMessageContent({
+      senderId: senderId,
+      content: content,
+      timestamp: Date.now(),
+      read: false,
+      senderImage: loggedInUser?.photoURL ?? ''
+    });
+    const messageCollection = collection(this.firestore, 'channels', channelId, 'messages');
+    try {
+      await addDoc(messageCollection, message.toJSON());
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+  }
+
+
+  // getChannelCollection() {
+
+  // }
 
 }

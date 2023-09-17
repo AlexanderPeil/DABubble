@@ -83,12 +83,11 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
 
-  searchUsers(searchTerm: string, renderList: Function, mentionChar: string) {
+  searchUsers(searchTerm: string, renderList: Function) {
     this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
       const values = users.map(user => ({
         id: user.uid,
         value: user.displayName,
-        denotationChar: mentionChar,
         photoURL: user.photoURL,
         displayName: user.displayName
       }));

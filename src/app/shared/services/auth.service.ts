@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, filter, map, of, switchMap, tap } from 'rxjs';
@@ -32,8 +32,11 @@ import {
   sendEmailVerification,
   signOut,
   user,
-  deleteUser
+  deleteUser,
+  setPersistence,
+  browserLocalPersistence
 } from '@angular/fire/auth';
+
 
 @Injectable({
   providedIn: 'root',
@@ -52,11 +55,6 @@ export class AuthService implements OnDestroy {
   currentUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
 
-  get currentUserValue(): User | null {
-    return this.currentUser.value;
-  }
-
-
   /**
    * Constructs an instance of the AuthService.
    * @param {Auth} auth - The authentication service dependency provided by Firebase.
@@ -70,6 +68,7 @@ export class AuthService implements OnDestroy {
     private firestore: Firestore) {
     this.user$ = user(this.auth);
     this.initCurrentUser();
+    // setPersistence(this.auth, browserLocalPersistence);
   }
 
 
@@ -95,6 +94,11 @@ export class AuthService implements OnDestroy {
     ).subscribe(user => {
       this.currentUser.next(user);
     });
+  }
+
+
+  get currentUserValue(): User | null {
+    return this.currentUser.value;
   }
 
 

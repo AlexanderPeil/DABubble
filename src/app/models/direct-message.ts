@@ -3,7 +3,7 @@ export class DirectMessageContent {
   content: string;
   timestamp: number;
   senderId: string;
-  receiverId: string;
+  receiverId?: string;
   senderImage: string;
   read: boolean;
 
