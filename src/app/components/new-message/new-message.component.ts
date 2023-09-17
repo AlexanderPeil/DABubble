@@ -6,6 +6,7 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
+import { Observable, debounceTime, distinctUntilChanged, of, startWith, switchMap, filter } from 'rxjs';
 
 
 @Component({
@@ -16,12 +17,12 @@ import { DirectMessageService } from 'src/app/shared/services/direct-message.ser
 
 
 export class NewMessageComponent implements OnInit {
-  inputValue: string = '';
   dropDownMenuChannelsIsOpen: boolean = false;
   dropDownMenuUserIsOpen: boolean = false;
   users: { user: any, unreadCount?: number }[] = [];
   isOnline?: boolean;
   foundUsers: any[] = [];
+  inputValue: string = '';
 
 
   constructor(public dialog: MatDialog,
@@ -32,6 +33,7 @@ export class NewMessageComponent implements OnInit {
     private authService: AuthService,
     private directMessageService: DirectMessageService) {
   }
+
 
 
   ngOnInit(): void {
@@ -50,6 +52,23 @@ export class NewMessageComponent implements OnInit {
       });
     });
   }
+
+
+  getInputValue($event: any) {
+    // this.channelService.channelData = of(this.channels); // Start with all items
+    // // RxJS operators for filtering based on search query
+    // this.channelService.channelData = this.channelService.channelData.pipe(
+    //   startWith($event.target.value),
+    //  filter(($event.target.value),  => {})
+    // );
+  }
+
+
+  // filterItems(value: string): Observable<string[]> {
+  //   return of(this.channels.filter(channel =>
+  //     channel.toLowerCase().startsWith(value.toLowerCase()) ? this.dropDownMenuChannelsIsOpen : !this.dropDownMenuChannelsIsOpen
+  //   ));
+  // }
 
 
   setFocus($event: any) {
@@ -81,10 +100,5 @@ export class NewMessageComponent implements OnInit {
     if (!this.elementRef.nativeElement.contains($event.target)) {
       this.dropDownMenuUserIsOpen = false;
     }
-  }
-
-
-  getInputValue() {
-
   }
 }

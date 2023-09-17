@@ -31,7 +31,7 @@ export class DialogCreateChannelComponent implements OnInit {
   isInputVisible: boolean = false;
   showUserDropdown: boolean = false;
   foundUsers: User[] = [];
-  selectedUsers: any[] = [];
+  selectedUsers: User[] = [];
   inputValue: string = '';
   selectedRadioButtonValue!: string;
   @ViewChild('input') input!: ElementRef;
