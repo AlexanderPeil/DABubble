@@ -66,7 +66,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService,     private authService: AuthService,) {
+  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService, private authService: AuthService,) {
 
   }
 
@@ -121,7 +121,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
-  
+
   triggerAtSymbol() {
     this.quill.focus();
     setTimeout(() => {
@@ -139,7 +139,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   searchUsers(searchTerm: string, renderList: Function, mentionChar: string) {
     this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
       const values = users.map(user => ({

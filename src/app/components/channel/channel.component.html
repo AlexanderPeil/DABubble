@@ -33,7 +33,8 @@
   </div>
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor (onEditorCreated)="setFocus($event)" placeholder="Message to #{{ channelService.channel.channelName }}"  [modules]="quillModules">
+  <quill-editor (onEditorCreated)="setFocus($event)" placeholder="Message to #{{ channelService.channel.channelName }}"
+    [modules]="quillModules">
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
