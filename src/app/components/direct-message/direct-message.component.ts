@@ -3,8 +3,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { Subject, filter, map, switchMap, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
-import { MessageContent } from 'src/app/models/direct-message';
+import { MessageService } from 'src/app/shared/services/message.service';
+import { MessageContent } from 'src/app/models/message';
 import { DialogDirectMessageProfileComponent } from '../dialog-direct-message-profile/dialog-direct-message-profile.component';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
@@ -73,7 +73,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
-    private directMessageService: DirectMessageService,
+    private messageService: MessageService,
     public dialog: MatDialog,
     public storageService: StorageService,
     public toggleWorspaceMenuService: ToggleWorkspaceMenuService,
@@ -86,7 +86,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       filter(uid => !!uid),
       switchMap(uid => {
         const loggedInUserId = this.authService.currentUserValue?.uid;
-        return this.directMessageService.getChatParticipants(loggedInUserId as string, uid as string);
+        return this.messageService.getChatParticipants(loggedInUserId as string, uid as string);
       }),
       takeUntil(this.ngUnsubscribe)
     ).subscribe(([selectedUser, loggedInUser]) => {
@@ -94,12 +94,12 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       this.loggedInUser = loggedInUser;
 
       if (loggedInUser && selectedUser) {
-        this.directMessageService.getDirectMessages(loggedInUser.uid, selectedUser.uid)
+        this.messageService.getDirectMessages(loggedInUser.uid, selectedUser.uid)
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe(messages => {
             messages.sort((a, b) => a.timestamp - b.timestamp);
             this.messages = messages;
-            this.groupedMessages = this.directMessageService.groupMessagesByDate(this.messages);
+            this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
           });
       } else {
         console.error("Either loggedInUser or selectedUser is null");
@@ -111,8 +111,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   sendMessage() {
     if (this.messageContent && this.selectedUser && this.loggedInUser) {
-      const cleanedContent = this.directMessageService.removePTags(this.messageContent);
-      this.directMessageService.createAndAddMessage(
+      const cleanedContent = this.messageService.removePTags(this.messageContent);
+      this.messageService.createAndAddMessage(
         this.loggedInUser.uid,
         this.selectedUser.uid,
         cleanedContent

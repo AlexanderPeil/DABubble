@@ -5,9 +5,12 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 import { ThreadService } from 'src/app/shared/services/thread.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'src/app/shared/services/message.service';
 import "quill-mention";
 import * as Emoji from 'quill-emoji';
 import Quill from 'quill';
+import { MessageContent } from 'src/app/models/message';
 Quill.register('modules/emoji', Emoji);
 
 
@@ -21,6 +24,7 @@ Quill.register('modules/emoji', Emoji);
 export class ThreadComponent implements OnInit, OnDestroy {
   isOnline?: boolean;
   messageContent: string = '';
+  selectedMessage: MessageContent | null = null;
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   user_images = '../assets/img/avatar1.svg';
   quill: any;
@@ -59,13 +63,25 @@ export class ThreadComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(public storageService: StorageService, public dialog: MatDialog, public threadService: ThreadService,     private authService: AuthService,) {
+  constructor(public storageService: StorageService, public dialog: MatDialog, public threadService: ThreadService, private authService: AuthService, 
+    public route: ActivatedRoute, private messageService: MessageService) {
 
   }
+
 
   ngOnInit(): void {
-    
+    const channelId = this.route.snapshot.paramMap.get('channelId');
+    const messageId = this.route.snapshot.paramMap.get('messageId');
+    console.log(this.selectedMessage);
+    console.log(channelId, messageId);    
+
+    if (channelId && messageId) {
+      this.messageService.getMessageById(channelId, messageId).subscribe(message => {
+        this.selectedMessage = message;
+      });
+    }    
   }
+  
 
 
   setFocus(editor: any): void {
@@ -125,6 +141,11 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
   private scrollToBottom(): void {
     this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+  }
+
+
+  closeThreadService() {
+    this.messageService.showThread = false;
   }
 
 

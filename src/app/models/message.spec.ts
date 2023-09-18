@@ -1,4 +1,4 @@
-import { DirectMessage } from './direct-message';
+import { DirectMessage } from './message';
 
 describe('DirectMessage', () => {
   it('should create an instance', () => {

@@ -6,7 +6,7 @@ import { User } from 'src/app/shared/services/user';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
+import { MessageService } from 'src/app/shared/services/message.service';
 
 
 @Component({
@@ -32,7 +32,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     public channelService: ChannelService,
     private router: Router,
-    private directMessageService: DirectMessageService,
+    private messageService: MessageService,
   ) { }
 
 
@@ -42,7 +42,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
       this.users.forEach((userWithCount, index) => {
         const loggedInUid = this.authService.currentUserValue?.uid;
         if (userWithCount.user && loggedInUid) {
-          this.directMessageService.getUnreadMessagesCount(loggedInUid, userWithCount.user.uid)
+          this.messageService.getUnreadMessagesCount(loggedInUid, userWithCount.user.uid)
             .subscribe(unreadCount => {
               if (this.users[index]) {
                 this.users[index].unreadCount = unreadCount;
@@ -82,7 +82,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   onUserClick(userWithCount: { user: User, unreadCount?: number }) {
     const loggedInUid = this.authService.currentUser.value?.uid;
     if (loggedInUid && userWithCount.unreadCount && userWithCount.unreadCount > 0) {
-      this.directMessageService.markAllMessagesAsRead(loggedInUid, userWithCount.user.uid).then(() => {
+      this.messageService.markAllMessagesAsRead(loggedInUid, userWithCount.user.uid).then(() => {
         userWithCount.unreadCount = 0;
       });
     }

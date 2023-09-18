@@ -8,10 +8,12 @@ import {
   where,
   getDocs,
   writeBatch,
-  query
+  query,
+  docData,
+  getDoc
 } from '@angular/fire/firestore';
-import { Observable, ObservedValueOf, catchError, combineLatest, map, of } from 'rxjs';
-import { MessageContent } from 'src/app/models/direct-message';
+import { Observable, catchError, combineLatest, map, of } from 'rxjs';
+import { MessageContent } from 'src/app/models/message';
 import { AuthService } from './auth.service';
 import { User } from 'src/app/shared/services/user';
 
@@ -19,7 +21,8 @@ import { User } from 'src/app/shared/services/user';
 @Injectable({
   providedIn: 'root'
 })
-export class DirectMessageService {
+export class MessageService {
+  public showThread = false;
 
   constructor(
     private firestore: Firestore,
@@ -151,6 +154,21 @@ export class DirectMessageService {
       map(docs => docs.map(doc => new MessageContent(doc)))
     );
   }
+
+
+  getMessageById(channelID: string, messageId: string): Observable<MessageContent | null> {
+    const messageRef = doc(this.getChannelMessageCollection(channelID), messageId);
+    return docData(messageRef, { idField: 'id' }).pipe(
+      map(data => {
+        if (data) {
+          return new MessageContent({ ...data });
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+  
 
 
   groupMessagesByDate(messages: MessageContent[]): { date: string, messages: MessageContent[] }[] {

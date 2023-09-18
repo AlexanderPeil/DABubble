@@ -13,7 +13,7 @@
     </div>
 
     <div #messagesContainer class="scrolleableContainer">
-        <div class="messageMainContainer">
+        <div *ngIf="selectedMessage" class="threadMessageMainContainer">
             <img class="profileImg" src="assets/img/avatar1.svg">
 
             <div class="messageChildContainer">
@@ -22,7 +22,7 @@
                     <p class="time">13:53 Uhr</p>
                 </div>
 
-                <span class="messageText">Hallo this is a test</span>
+                <span class="messageText">{{ selectedMessage.content }}</span>
             </div>
         </div>
 
@@ -31,36 +31,6 @@
             <p>2 Answers</p>
             <hr>
         </div>
-
-
-        <!------------------------------- Only Placeholder ------------------------------->
-        <div class="messageMainContainer">
-            <img class="profileImg" src="assets/img/avatar1.svg">
-
-            <div class="messageChildContainer">
-                <div class="containerUserNameAndTime">
-                    <p class="userName">Tom</p>
-                    <p class="time">13:53 Uhr</p>
-                </div>
-
-                <span class="messageText">Hallo this is a test</span>
-            </div>
-        </div>
-
-        <div class="messageMainContainer">
-            <img class="profileImg" src="assets/img/avatar1.svg">
-
-            <div class="messageChildContainer">
-                <div class="containerUserNameAndTime">
-                    <p class="userName">Tom</p>
-                    <p class="time">13:53 Uhr</p>
-                </div>
-
-                <span class="messageText">Hallo this is a test</span>
-            </div>
-        </div>
-        <!------------------------------- Only Placeholder ------------------------------->
-
 
         <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
         <quill-editor (onEditorCreated)="setFocus($event)" placeholder="Answer..." [modules]="quillModules">

@@ -5,7 +5,7 @@ import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-works
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
+import { MessageService } from 'src/app/shared/services/message.service';
 import { Observable, debounceTime, distinctUntilChanged, of, startWith, switchMap, filter } from 'rxjs';
 
 
@@ -31,7 +31,7 @@ export class NewMessageComponent implements OnInit {
     public channelService: ChannelService,
     public elementRef: ElementRef,
     private authService: AuthService,
-    private directMessageService: DirectMessageService) {
+    private messageService: MessageService) {
   }
 
 
@@ -42,7 +42,7 @@ export class NewMessageComponent implements OnInit {
       this.users.forEach((userWithCount, index) => {
         const loggedInUid = this.authService.currentUserValue?.uid;
         if (userWithCount.user && loggedInUid) {
-          this.directMessageService.getUnreadMessagesCount(loggedInUid, userWithCount.user.uid)
+          this.messageService.getUnreadMessagesCount(loggedInUid, userWithCount.user.uid)
             .subscribe(unreadCount => {
               if (this.users[index]) {
                 this.users[index].unreadCount = unreadCount;

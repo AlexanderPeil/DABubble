@@ -10,6 +10,7 @@ import { MainComponent } from './components/main/main.component';
 import { DirectMessageComponent } from './components/direct-message/direct-message.component';
 import { ChannelComponent } from './components/channel/channel.component';
 import { NewMessageComponent } from './components/new-message/new-message.component';
+import { ThreadComponent } from './components/thread/thread.component';
 
 
 const routes: Routes = [
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'imprint', component: ImprintComponent },
   { path: 'data-protection', component: DataProtectionComponent },
+  { path: 'thread/:channelId/:messageId', component: ThreadComponent }
 ];
 
 

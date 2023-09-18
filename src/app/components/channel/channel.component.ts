@@ -5,18 +5,19 @@ import { DialogShowMembersInChannelComponent } from '../dialog-show-members-in-c
 import { DialogAddMembersInChannelComponent } from '../dialog-add-members-in-channel/dialog-add-members-in-channel.component';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Channel } from 'src/app/models/channel';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
+import { MessageService } from 'src/app/shared/services/message.service';
 import { User } from 'src/app/shared/services/user';
 import "quill-mention";
 import * as Emoji from 'quill-emoji';
 import Quill from 'quill';
 import { Subject, takeUntil, tap } from 'rxjs';
-import { MessageContent } from 'src/app/models/direct-message';
+import { MessageContent } from 'src/app/models/message';
 import { ThreadService } from 'src/app/shared/services/thread.service';
 Quill.register('modules/emoji', Emoji);
 
@@ -76,7 +77,9 @@ export class ChannelComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private directMessageService: DirectMessageService,public threadService: ThreadService) {
+  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, 
+    public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private messageService: MessageService, 
+    public threadService: ThreadService, private router: Router) {
 
   }
 
@@ -84,11 +87,9 @@ export class ChannelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
     const loggedInUserId = this.authService.currentUserValue?.uid;
-    console.log(loggedInUserId);
-
 
     if (loggedInUserId) {
-      this.directMessageService.getLoggedInUser(loggedInUserId)
+      this.messageService.getLoggedInUser(loggedInUserId)
         .pipe(
           tap(user => console.log("Received user from service:", user)),
           takeUntil(this.ngUnsubscribe)
@@ -96,12 +97,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
         .subscribe(user => {
           this.loggedInUser = user;
 
-          this.directMessageService.getChannelMessages(this.channelId)
+          this.messageService.getChannelMessages(this.channelId)
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(messages => {
               messages.sort((a, b) => a.timestamp - b.timestamp);
               this.messages = messages;
-              this.groupedMessages = this.directMessageService.groupMessagesByDate(this.messages);
+              this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
             })
         });
 
@@ -161,8 +162,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
     console.log(this.messageContent, this.loggedInUser);
 
     if (this.messageContent && this.loggedInUser) {
-      const cleanedContent = this.directMessageService.removePTags(this.messageContent);
-      this.directMessageService.createAndAddChannelMessage(
+      const cleanedContent = this.messageService.removePTags(this.messageContent);
+      this.messageService.createAndAddChannelMessage(
         this.channelId,
         this.loggedInUser.uid,
         cleanedContent
@@ -181,7 +182,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     const date = new Date(timestamp);
     const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
     return date.toLocaleTimeString('de-DE', options);
-  } 
+  }
 
 
   triggerAtSymbol() {
@@ -235,5 +236,10 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
+
+  openThreadService(messageId: string) {
+    this.messageService.showThread = true;
+    this.router.navigate(['/thread', this.channelId, messageId]);
+  }
 
 }
