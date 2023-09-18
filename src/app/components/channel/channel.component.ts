@@ -72,7 +72,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService,     private authService: AuthService,) {
+  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private directMessageService: DirectMessageService,) {
 
   }
 
@@ -155,6 +155,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
         this.loggedInUser.uid,
         cleanedContent
       ).then(() => {
+        this.messageContent = '';
       }).catch((error: any) => {
         console.error("Couldn't send a message:", error);
       });

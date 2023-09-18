@@ -17,14 +17,20 @@ export class DirectMessageContent {
     this.read = object ? object.read : '';
   }
 
-  public toJSON() {
-    return {
+  public toJSON(): any {
+    const json: any = {
       content: this.content,
       timestamp: this.timestamp,
       senderId: this.senderId,
-      receiverId: this.receiverId,
       senderImage: this.senderImage,
       read: this.read
     };
+  
+    if (this.receiverId) {
+      json.receiverId = this.receiverId;
+    }
+  
+    return json;
   }
+  
 }
