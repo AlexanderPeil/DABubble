@@ -1,4 +1,4 @@
-export class DirectMessageContent {
+export class MessageContent {
   id?: string;
   content: string;
   timestamp: number;

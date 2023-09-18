@@ -4,7 +4,7 @@ import { User } from 'src/app/shared/services/user';
 import { Subject, filter, map, switchMap, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DirectMessageService } from 'src/app/shared/services/direct-message.service';
-import { DirectMessageContent } from 'src/app/models/direct-message';
+import { MessageContent } from 'src/app/models/direct-message';
 import { DialogDirectMessageProfileComponent } from '../dialog-direct-message-profile/dialog-direct-message-profile.component';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
@@ -27,9 +27,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   selectedUser: User | null = null;
   loggedInUser: User | null = null;
   messageContent: string = '';
-  messages: DirectMessageContent[] = [];
-  groupedMessages: { date: string, messages: DirectMessageContent[] }[] = [];
-  // foundUsers: User[] = [];
+  messages: MessageContent[] = [];
+  groupedMessages: { date: string, messages: MessageContent[] }[] = [];
   private ngUnsubscribe = new Subject<void>();
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   user_images = '../assets/img/avatar1.svg';
@@ -100,13 +99,12 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
           .subscribe(messages => {
             messages.sort((a, b) => a.timestamp - b.timestamp);
             this.messages = messages;
-            this.groupedMessages = this.groupMessagesByDate(this.messages);
+            this.groupedMessages = this.directMessageService.groupMessagesByDate(this.messages);
           });
       } else {
         console.error("Either loggedInUser or selectedUser is null");
       }
     });
-    // this.filterUsers();
   }
 
 
@@ -129,47 +127,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  formatDate(timestamp: number): string {
-    const date = new Date(timestamp);
-    const today = new Date();
-    const yesterday = new Date(today);
-
-    yesterday.setDate(today.getDate() - 1);
-    // Set the time to null to have a better compare for the date
-    date.setHours(0, 0, 0, 0);
-    today.setHours(0, 0, 0, 0);
-    yesterday.setHours(0, 0, 0, 0);
-
-    if (date.getTime() === today.getTime()) {
-      return 'Today';
-    } else if (date.getTime() === yesterday.getTime()) {
-      return 'Yesterday';
-    } else {
-      const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: '2-digit', month: 'long' };
-      return date.toLocaleDateString('en-US', options);
-    }
-  }
-
-
   formatTime(timestamp: number): string {
     const date = new Date(timestamp);
-    const options: Intl.DateTimeFormatOptions = { weekday: 'long', hour: '2-digit', minute: '2-digit' };
+    const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
     return date.toLocaleTimeString('de-DE', options);
-  }
-
-
-  groupMessagesByDate(messages: DirectMessageContent[]): { date: string, messages: DirectMessageContent[] }[] {
-    return messages.reduce<{ date: string, messages: DirectMessageContent[] }[]>((grouped, message) => {
-      const dateStr = this.formatDate(message.timestamp);
-      const foundGroup = grouped.find(group => group.date === dateStr);
-      if (foundGroup) {
-        foundGroup.messages.push(message);
-      } else {
-        grouped.push({ date: dateStr, messages: [message] });
-      }
-      return grouped;
-    }, []);
-  }
+  }  
 
 
   openDialog(): void {
@@ -182,7 +144,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-    searchUsers(searchTerm: string, renderList: Function) {
+  searchUsers(searchTerm: string, renderList: Function) {
     this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
       const values = users.map(user => ({
         id: user.uid,
@@ -211,14 +173,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       realEmojiButton.click();
     }
   }
-
-
-
-  // filterUsers(query?: string): void {
-  //   this.authService.getUsers(query).subscribe((users) => {
-  //     this.foundUsers = users;
-  //   });
-  // }
 
 
   selectUser(user: User): void {

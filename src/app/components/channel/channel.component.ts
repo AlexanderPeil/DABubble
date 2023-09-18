@@ -16,6 +16,8 @@ import "quill-mention";
 import * as Emoji from 'quill-emoji';
 import Quill from 'quill';
 import { Subject, takeUntil, tap } from 'rxjs';
+import { MessageContent } from 'src/app/models/direct-message';
+import { ThreadService } from 'src/app/shared/services/thread.service';
 Quill.register('modules/emoji', Emoji);
 
 
@@ -33,6 +35,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
   url: string = '';
   quill: any;
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+  messages: MessageContent[] = [];
+  groupedMessages: { date: string, messages: MessageContent[] }[] = [];
   messageContent: string = '';
   user_images = '../assets/img/avatar1.svg';
   loggedInUser: User | null = null;
@@ -72,7 +76,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private directMessageService: DirectMessageService,) {
+  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private directMessageService: DirectMessageService,public threadService: ThreadService) {
 
   }
 
@@ -81,18 +85,26 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.getCurrentChannelIdInUrl();
     const loggedInUserId = this.authService.currentUserValue?.uid;
     console.log(loggedInUserId);
-    
+
 
     if (loggedInUserId) {
       this.directMessageService.getLoggedInUser(loggedInUserId)
-      .pipe(
+        .pipe(
           tap(user => console.log("Received user from service:", user)),
           takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe(user => {
+        )
+        .subscribe(user => {
           this.loggedInUser = user;
-      });
-  
+
+          this.directMessageService.getChannelMessages(this.channelId)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(messages => {
+              messages.sort((a, b) => a.timestamp - b.timestamp);
+              this.messages = messages;
+              this.groupedMessages = this.directMessageService.groupMessagesByDate(this.messages);
+            })
+        });
+
     } else {
       console.error("No logged in user ID found.");
     }
@@ -165,6 +177,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
+  formatTime(timestamp: number): string {
+    const date = new Date(timestamp);
+    const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
+    return date.toLocaleTimeString('de-DE', options);
+  } 
+
+
   triggerAtSymbol() {
     this.quill.focus();
     setTimeout(() => {
@@ -214,7 +233,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-}
+  }
 
 
 }

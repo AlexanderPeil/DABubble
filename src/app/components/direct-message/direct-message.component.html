@@ -14,14 +14,14 @@
 
 
     <!-- Message container -->
-    <div #messagesContainer class="messagesContainer scrolleableContainer">
-        <div *ngFor="let group of groupedMessages" class="directMesageContainer">
+    <div #messagesContainer class="messageMainContainer scrolleableContainer">
+        <div *ngFor="let group of groupedMessages" class="messageContainer">
             <div class="date">
                 <hr>
                 <span>{{ group.date }}</span>
                 <hr>
             </div>
-            <div *ngFor="let message of group.messages" class="messageMainContainer">
+            <div *ngFor="let message of group.messages" class="displayMessagesContainer">
                 <div class="messageChildContainer">
                     <img class="userImg"
                         [src]="message.senderImage">
