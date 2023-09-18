@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { DialogAddMembersInChannelComponent } from '../dialog-add-members-in-channel/dialog-add-members-in-channel.component';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { User } from 'src/app/shared/services/user';
@@ -17,7 +21,11 @@ export class DialogShowMembersInChannelComponent implements OnInit {
     public dialog: MatDialog,
     public channelService: ChannelService,
     public authService: AuthService,
-    public dialogRef: MatDialogRef<DialogShowMembersInChannelComponent>
+    public dialogRef: MatDialogRef<DialogShowMembersInChannelComponent>,
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      channelId: string;
+    }
   ) {}
 
   ngOnInit(): void {
@@ -31,7 +39,11 @@ export class DialogShowMembersInChannelComponent implements OnInit {
   }
 
   openDialogToAddMembersToChannel() {
-    this.dialog.open(DialogAddMembersInChannelComponent);
+    this.dialog.open(DialogAddMembersInChannelComponent, {
+      data: {
+        channelId: this.data.channelId,
+      },
+    });
     this.dialogRef.close();
   }
 }

@@ -133,7 +133,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
   openDialogToShowMembersInChannel() {
-    this.dialog.open(DialogShowMembersInChannelComponent);
+    this.dialog.open(DialogShowMembersInChannelComponent, {
+      data: {
+        channelId: this.channelId,
+      },
+    });
+    this.getCurrentChannelIdInUrl();
   }
 
   openDialogToAddMembersToChannel() {
@@ -143,7 +148,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
       },
     });
     this.getCurrentChannelIdInUrl();
-    this.channelService.getSingleChannelService(this.channelId);
   }
 
   setFocus(editor: any): void {
