@@ -4,11 +4,13 @@ import {
   ElementRef,
   HostListener,
   ViewChild,
+  Inject,
 } from '@angular/core';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { Channel } from 'src/app/models/channel';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dialog-add-members-in-channel',
@@ -25,7 +27,11 @@ export class DialogAddMembersInChannelComponent implements OnInit {
 
   constructor(
     public channelService: ChannelService,
-    private authService: AuthService
+    private authService: AuthService,
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      channelId: string;
+    }
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +54,7 @@ export class DialogAddMembersInChannelComponent implements OnInit {
     );
 
     if (!userExists) {
-      this.channel.users.push(user);
+      // this.channel.users.push(user);
       this.selectedUsers.push(user);
     } else {
       // Der Benutzer existiert bereits, setzen Sie die Variable userAlreadyExists auf true
@@ -57,12 +63,14 @@ export class DialogAddMembersInChannelComponent implements OnInit {
         this.userAlreadyExists = false; // Popup ausblenden
       }, 1500);
     }
-    console.log(this.selectedUsers);
   }
 
   addMembersToChannel() {
+    this.channelService.updateChannelMembersService(
+      this.data.channelId,
+      this.selectedUsers
+    );
     this.channel.users.push(this.selectedUsers);
-    console.log(this.channel.users);
   }
 
   checkForDropdown(event: any): void {
@@ -84,6 +92,5 @@ export class DialogAddMembersInChannelComponent implements OnInit {
     if (!this.input.nativeElement.contains(event.target)) {
       this.showUserDropdown = false;
     }
-    // console.log(this.showUserDropdown);
   }
 }
