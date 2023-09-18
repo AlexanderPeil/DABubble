@@ -79,7 +79,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
   constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
     public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private messageService: MessageService,
     public threadService: ThreadService, private router: Router) {
-
   }
 
 
@@ -87,7 +86,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.getCurrentChannelIdInUrl();
     this.loggedInUser = this.authService.currentUserValue;
     console.log(this.loggedInUser?.displayName);
-    
+
     if (this.loggedInUser) {
       this.messageService.getChannelMessages(this.channelId)
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -164,7 +163,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
           cleanedContent
         )
         .then(() => {
-          this.messageContent = '';          
+          this.messageContent = '';
         })
         .catch((error: any) => {
           console.error("Couldn't send a message:", error);

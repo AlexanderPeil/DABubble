@@ -12,13 +12,14 @@
 .loginContainer {
     @include flex_column_center;
     background-color: #eceefe;
-    padding-bottom: 30px;
+    // padding-bottom: 25px;
 }
 
 .loginHeader {
     @include space_between_center;
-    position: relative;
-    top: 0;
+    padding-top: 25px;
+    // position: relative;
+    // top: 0;
 
     img {
         margin-left: 75px
@@ -117,7 +118,7 @@
 @media(max-width:600px) {
 
     .loginContent {
-        gap: 15px;  
+        gap: 15px;
     }
 
     .loginContainer {
@@ -144,7 +145,7 @@
     .signUpContainerMobile {
         @include font(18px, 400, 24.55px);
         @include column_align_center;
-    
+
         a {
             padding: 5px 43px;
             border: 1px solid #797EF3 !important;
@@ -165,7 +166,7 @@
     .loginContent {
         padding: 20px 0;
     }
-    
+
     .loginHeader {
 
         img {

@@ -1,0 +1,59 @@
+@import '../../shared/variables.scss';
+
+.daBubbleIcon {
+    position: absolute;
+    left: 25px;
+    top: 25px;
+}
+
+.containerImprint {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: white;
+    gap: 20px;
+    border-radius: 30px;
+    padding: 40px;
+
+    h1 {
+        font-family: Nunito, sans-serif;
+        font-weight: 700;
+        font-size: 46px;
+        color: #444DF2;
+    }
+
+    h2 {
+        font-family: Nunito, sans-serif;
+        font-weight: 700;
+        font-size: 32px;
+        color: #444DF2;
+    }
+
+    p {
+        font-family: Nunito, sans-serif;
+        font-weight: 400;
+        font-size: 20px;
+    }
+
+    a {
+        color: #444DF2;
+    }
+}
+
+.containerArrowBack {
+    border-radius: 50%;
+    display: flex;
+
+    &:hover {
+        background-color: #ECEEFE;
+        @include button_hover;
+    }
+
+    img {
+        &:hover {
+            @include button_hover;
+            filter: brightness(0) saturate(100%) invert(32%) sepia(83%) saturate(2459%) hue-rotate(227deg) brightness(94%) contrast(102%);
+        }
+    }
+}

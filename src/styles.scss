@@ -45,6 +45,14 @@ app-workspace-menu-btn {
   z-index: 3;
 }
 
+app-imprint {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
 /************************************ Change Global Style from MatDialog ************************************/
 .mat-mdc-dialog-container .mdc-dialog__surface {
   border-top-left-radius: 30px !important;
@@ -116,7 +124,7 @@ app-workspace-menu-btn {
   border-bottom-right-radius: 20px;
 }
 
-.ql-toolbar.ql-snow + .ql-container.ql-snow {
+.ql-toolbar.ql-snow+.ql-container.ql-snow {
   border: unset;
   max-height: 300px;
   padding-bottom: 55px;
@@ -140,7 +148,7 @@ app-workspace-menu-btn {
   right: unset;
 }
 
-.ql-toolbar.ql-snow + .ql-container.ql-snow {
+.ql-toolbar.ql-snow+.ql-container.ql-snow {
   overflow: unset;
 }
 
