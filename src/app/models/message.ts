@@ -4,6 +4,7 @@ export class MessageContent {
   timestamp: number;
   senderId: string;
   receiverId?: string;
+  senderName: string;
   senderImage: string;
   read: boolean;
 
@@ -13,6 +14,7 @@ export class MessageContent {
     this.timestamp = object ? object.timestamp : Date.now();
     this.senderId = object ? object.senderId : '';
     this.receiverId = object ? object.receiverId : '';
+    this.senderName = object ? object.senderName : '';
     this.senderImage = object ? object.senderImage : '';
     this.read = object ? object.read : '';
   }
@@ -22,6 +24,7 @@ export class MessageContent {
       content: this.content,
       timestamp: this.timestamp,
       senderId: this.senderId,
+      senderName: this.senderName,
       senderImage: this.senderImage,
       read: this.read
     };

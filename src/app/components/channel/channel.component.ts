@@ -76,8 +76,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute, 
-    public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private messageService: MessageService, 
+  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
+    public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private messageService: MessageService,
     public threadService: ThreadService, private router: Router) {
 
   }
@@ -85,29 +85,16 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
-    const loggedInUserId = this.authService.currentUserValue?.uid;
-    console.log(loggedInUserId);
-
-
-    if (loggedInUserId) {
-      this.messageService
-        .getLoggedInUser(loggedInUserId)
-        .pipe(
-          tap((user) => console.log('Received user from service:', user)),
-          takeUntil(this.ngUnsubscribe)
-        )
-        .subscribe((user) => {
-          this.loggedInUser = user;
-
-          this.messageService
-            .getChannelMessages(this.channelId)
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((messages) => {
-              messages.sort((a, b) => a.timestamp - b.timestamp);
-              this.messages = messages;
-              this.groupedMessages =
-                this.messageService.groupMessagesByDate(this.messages);
-            });
+    this.loggedInUser = this.authService.currentUserValue;
+    console.log(this.loggedInUser?.displayName);
+    
+    if (this.loggedInUser) {
+      this.messageService.getChannelMessages(this.channelId)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((messages) => {
+          messages.sort((a, b) => a.timestamp - b.timestamp);
+          this.messages = messages;
+          this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
         });
     } else {
       console.error('No logged in user ID found.');
@@ -162,10 +149,10 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
-  sendMessage() {
-    console.log(this.messageContent, this.loggedInUser);
 
+  sendMessage() {
     if (this.messageContent && this.loggedInUser) {
+      const senderName = this.loggedInUser.displayName as string;
       const cleanedContent = this.messageService.removePTags(
         this.messageContent
       );
@@ -173,10 +160,11 @@ export class ChannelComponent implements OnInit, OnDestroy {
         .createAndAddChannelMessage(
           this.channelId,
           this.loggedInUser.uid,
+          senderName,
           cleanedContent
         )
         .then(() => {
-          this.messageContent = '';
+          this.messageContent = '';          
         })
         .catch((error: any) => {
           console.error("Couldn't send a message:", error);

@@ -37,7 +37,7 @@ export class MessageService {
   }
 
 
-  async createAndAddMessage(senderId: string, receiverId: string, content: string): Promise<void> {
+  async createAndAddMessage(senderId: string, receiverId: string, senderName: string, content: string): Promise<void> {
     const loggedInUser = this.authService.currentUserValue;
 
     const message = new MessageContent({
@@ -45,6 +45,7 @@ export class MessageService {
       receiverId: receiverId,
       content: content,
       timestamp: Date.now(),
+      senderName: senderName,
       read: false,
       senderImage: loggedInUser?.photoURL ?? ''
     });
@@ -124,20 +125,22 @@ export class MessageService {
   }
 
 
-  async createAndAddChannelMessage(channelId: string, senderId: string, content: string) {
+  async createAndAddChannelMessage(channelId: string, senderId: string, senderName: string, content: string) {
+    console.log(senderName);
+    
     const loggedInUser = this.authService.currentUserValue;
-    console.log(channelId, senderId, content), loggedInUser;
-
     const message = new MessageContent({
       senderId: senderId,
       content: content,
       timestamp: Date.now(),
       read: false,
+      senderName: senderName,
       senderImage: loggedInUser?.photoURL ?? ''
     });
     const messageCollection = collection(this.firestore, 'channels', channelId, 'messages');
     try {
       await addDoc(messageCollection, message.toJSON());
+      console.log(senderName);
     } catch (error) {
       console.error("Error adding document: ", error);
     }

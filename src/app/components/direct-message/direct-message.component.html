@@ -28,8 +28,7 @@
 
                     <div class="containerUserNameAndTime">
                         <div class="nameTimeContainer">
-                            <p>{{ message.senderId === loggedInUser?.uid ? loggedInUser?.displayName :
-                                selectedUser?.displayName }}</p>
+                            <p>{{ message.senderName }}</p>
                             <p>{{ formatTime(message.timestamp) }}</p>
                         </div>
                         <span class="message">{{ message.content }}</span>

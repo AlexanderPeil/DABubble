@@ -39,17 +39,14 @@
       </div>
       <div
         *ngFor="let message of group.messages"
-        class="displayMessagesContainer"
-      >
+        class="displayMessagesContainer">
         <div class="messageChildContainer">
           <img class="userImg" [src]="message.senderImage" />
           <div class="containerUserNameAndTime">
             <div class="nameTimeContainer">
               <p>
                 {{
-                  message.senderId === loggedInUser?.uid
-                    ? loggedInUser?.displayName
-                    : "Anderer Benutzername"
+                  message.senderName
                 }}
               </p>
               <p>{{ formatTime(message.timestamp) }}</p>
