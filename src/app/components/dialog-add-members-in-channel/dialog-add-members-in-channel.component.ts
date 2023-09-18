@@ -66,11 +66,11 @@ export class DialogAddMembersInChannelComponent implements OnInit {
   }
 
   addMembersToChannel() {
-    this.channel.users.push(this.selectedUsers);
     this.channelService.updateChannelMembersService(
       this.data.channelId,
       this.selectedUsers
     );
+    this.channel.users.push(this.selectedUsers);
   }
 
   checkForDropdown(event: any): void {
