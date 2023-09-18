@@ -17,6 +17,7 @@ import {
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Channel } from 'src/app/models/channel';
+import { User } from './user';
 
 @Injectable({
   providedIn: 'root',
@@ -25,26 +26,22 @@ export class ChannelService {
   channelData!: Observable<any>;
   channel: any = new Channel();
 
-
-  constructor(private firestore: Firestore, public route: Router) {
-
-  }
-
+  constructor(private firestore: Firestore, public route: Router) {}
 
   addChannelService(channel: any) {
     const collectionInstance = collection(this.firestore, 'channels');
     addDoc(collectionInstance, channel.toJSON());
   }
 
-
   getChannelService() {
     const collectionInstance = query(
       collection(this.firestore, 'channels'),
       orderBy('channelName')
     );
-    this.channelData = collectionData(collectionInstance, { idField: 'id' }).pipe()
+    this.channelData = collectionData(collectionInstance, {
+      idField: 'id',
+    }).pipe();
   }
-
 
   updateChannelNameService(changedChannelName: any, channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
@@ -57,8 +54,10 @@ export class ChannelService {
     });
   }
 
-
-  updateChannelDescriptionService(changedChannelDescription: string, channelId: string) {
+  updateChannelDescriptionService(
+    changedChannelDescription: string,
+    channelId: string
+  ) {
     const docInstance = doc(this.firestore, 'channels', channelId);
     const updateData = {
       channelDescription: changedChannelDescription,
@@ -69,6 +68,13 @@ export class ChannelService {
     });
   }
 
+  updateChannelMembersService(channelId: string, selectedUsers: User[]) {
+    const docInstance = doc(this.firestore, 'channels', channelId);
+    const updateData = [...this.channel.users, ...selectedUsers];
+    return updateDoc(docInstance, {
+      users: updateData,
+    });
+  }
 
   deleteChannelService(channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
@@ -78,9 +84,11 @@ export class ChannelService {
     this.navigateToOthersChannelAsSoonAsDeleteService();
   }
 
-
   navigateToOthersChannelAsSoonAsDeleteService() {
-    const querie = query(collection(this.firestore, 'channels'), orderBy('channelName'));
+    const querie = query(
+      collection(this.firestore, 'channels'),
+      orderBy('channelName')
+    );
     getDocs(querie).then((querySnapshot) => {
       if (querySnapshot.empty) {
         this.route.navigate(['/main']);
@@ -89,7 +97,6 @@ export class ChannelService {
       }
     });
   }
-
 
   getSingleChannelService(channelId: string) {
     const collectionInstance = collection(this.firestore, 'channels');
