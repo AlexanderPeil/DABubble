@@ -104,7 +104,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       } else {
         console.error("Either loggedInUser or selectedUser is null");
       }
-    });
+    });    
   }
 
 

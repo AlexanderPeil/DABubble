@@ -3,7 +3,6 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ThreadService } from 'src/app/shared/services/thread.service';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
-import { MessageService } from 'src/app/shared/services/message.service';
 import { User } from 'src/app/shared/services/user';
 
 
@@ -23,8 +22,7 @@ export class MainComponent implements OnDestroy, OnInit {
   constructor(
     public toggleWorspaceMenuService: ToggleWorkspaceMenuService,
     private authService: AuthService,
-    public threadService: ThreadService,
-    public messageService: MessageService) {
+    public threadService: ThreadService) {
 
   }
 

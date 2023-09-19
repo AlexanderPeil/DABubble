@@ -19,8 +19,16 @@ const routes: Routes = [
 
   {
     path: 'main', component: MainComponent, children: [
-      { path: 'channel/:id', component: ChannelComponent },
-      { path: 'direct-message/:id', component: DirectMessageComponent },
+      {
+        path: 'channel/:id', component: ChannelComponent, children: [
+          { path: 'thread/:messageId/:channelId', component: ThreadComponent }
+        ]
+      },
+      {
+        path: 'direct-message/:id', component: DirectMessageComponent, children: [
+          { path: 'thread/:messageId', component: ThreadComponent }
+        ]
+      },
       { path: 'new-message', component: NewMessageComponent },
     ]
   },
@@ -29,7 +37,6 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'imprint', component: ImprintComponent },
   { path: 'data-protection', component: DataProtectionComponent },
-  { path: 'thread/:channelId/:messageId', component: ThreadComponent }
 ];
 
 

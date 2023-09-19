@@ -11,7 +11,6 @@ import { DialogShowMembersInChannelComponent } from '../dialog-show-members-in-c
 import { DialogAddMembersInChannelComponent } from '../dialog-add-members-in-channel/dialog-add-members-in-channel.component';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Channel } from 'src/app/models/channel';
 import { StorageService } from 'src/app/shared/services/storage.service';
@@ -78,7 +77,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
   constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
     public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private messageService: MessageService,
-    public threadService: ThreadService, private router: Router) {
+    public threadService: ThreadService) {
   }
 
 
@@ -100,12 +99,14 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
+
   getCurrentChannelIdInUrl() {
     this.activatedRoute.paramMap.subscribe((params) => {
       this.channelId = String(params.get('id'));
       this.channelService.getSingleChannelService(this.channelId);
     });
   }
+
 
   openDialogToEditChannel() {
     this.dialog.open(DialogEditChannelComponent, {
@@ -117,6 +118,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
+
   openDialogToShowMembersInChannel() {
     this.dialog.open(DialogShowMembersInChannelComponent, {
       data: {
@@ -125,6 +127,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
     this.getCurrentChannelIdInUrl();
   }
+
 
   openDialogToAddMembersToChannel() {
     this.dialog.open(DialogAddMembersInChannelComponent, {
@@ -135,10 +138,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.getCurrentChannelIdInUrl();
   }
 
+
   setFocus(editor: any): void {
     this.quill = editor;
     editor.focus();
   }
+
 
   openDetailViewFromUploadedImage(uploadedImageUrl: string) {
     this.dialog.open(DialogDetailViewUploadedDatasComponent, {
@@ -173,6 +178,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
+
   formatTime(timestamp: number): string {
     const date = new Date(timestamp);
     const options: Intl.DateTimeFormatOptions = {
@@ -181,6 +187,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     };
     return date.toLocaleTimeString('de-DE', options);
   }
+
 
   triggerAtSymbol() {
     this.quill.focus();
@@ -191,6 +198,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }, 0);
   }
 
+
   toggleEmojiPicker() {
     const realEmojiButton = document.querySelector(
       '.textarea-emoji-control'
@@ -199,6 +207,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
       realEmojiButton.click();
     }
   }
+
 
   searchUsers(searchTerm: string, renderList: Function) {
     this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
@@ -212,6 +221,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
+
   selectUser(user: User): void {
     this.messageContent = this.messageContent.replace(
       /@[^@]*$/,
@@ -219,24 +229,21 @@ export class ChannelComponent implements OnInit, OnDestroy {
     );
   }
 
+
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
+
 
   private scrollToBottom(): void {
     this.messagesContainer.nativeElement.scrollTop =
       this.messagesContainer.nativeElement.scrollHeight;
   }
 
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-
-  openThreadService(messageId: string) {
-    this.messageService.showThread = true;
-    this.router.navigate(['/thread', this.channelId, messageId]);
   }
 
 }

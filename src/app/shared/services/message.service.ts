@@ -22,7 +22,6 @@ import { User } from 'src/app/shared/services/user';
   providedIn: 'root'
 })
 export class MessageService {
-  public showThread = false;
 
   constructor(
     private firestore: Firestore,

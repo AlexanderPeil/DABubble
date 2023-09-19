@@ -24,10 +24,11 @@ Quill.register('modules/emoji', Emoji);
 export class ThreadComponent implements OnInit, OnDestroy {
   isOnline?: boolean;
   messageContent: string = '';
-  selectedMessage: MessageContent | null = null;
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   user_images = '../assets/img/avatar1.svg';
   quill: any;
+  selectedMessage: MessageContent | null = null;
+  
 
   public quillModules = {
     'emoji-toolbar': true,
@@ -63,7 +64,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(public storageService: StorageService, public dialog: MatDialog, public threadService: ThreadService, private authService: AuthService, 
+  constructor(public storageService: StorageService, public dialog: MatDialog, public threadService: ThreadService, private authService: AuthService,
     public route: ActivatedRoute, private messageService: MessageService) {
 
   }
@@ -72,16 +73,15 @@ export class ThreadComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const channelId = this.route.snapshot.paramMap.get('channelId');
     const messageId = this.route.snapshot.paramMap.get('messageId');
-    console.log(this.selectedMessage);
-    console.log(channelId, messageId);    
-
-    if (channelId && messageId) {
-      this.messageService.getMessageById(channelId, messageId).subscribe(message => {
+  
+    if (messageId) {
+      this.threadService.loadThreadData(messageId, channelId).subscribe(message => {
         this.selectedMessage = message;
       });
-    }    
+    }
   }
   
+
 
 
   setFocus(editor: any): void {
@@ -144,13 +144,8 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
 
-  closeThreadService() {
-    this.messageService.showThread = false;
-  }
-
-
   ngOnDestroy(): void {
-    
+
   }
 
 
