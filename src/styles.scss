@@ -191,6 +191,7 @@ app-imprint {
   gap: 10px;
   padding: 20px 0px 20px 20px;
   margin-top: 20px;
+  position: relative;
 
   &:last-child {
     margin-bottom: 150px;
@@ -211,6 +212,7 @@ app-imprint {
 
     .containerEmojis {
       display: flex !important;
+      position: relative;
     }
   }
 }
