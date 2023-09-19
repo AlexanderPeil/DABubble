@@ -13,7 +13,7 @@
         alt="Offline" />
     </div>
     <div class="arrowDown"></div>
-    <div class="dropdownMenu" [style.display]="showMenu ? 'flex' : 'none'">
+    <div class="dropdownMenu" *ngIf="showMenu">
       <a (click)="openDialog()">Profile</a>
       <a (click)="onLogout();  $event.stopPropagation()">Logout</a>
     </div>

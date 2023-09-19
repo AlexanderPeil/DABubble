@@ -16,7 +16,6 @@ import Quill from 'quill';
 Quill.register('modules/emoji', Emoji);
 
 
-
 @Component({
   selector: 'app-direct-message',
   templateUrl: './direct-message.component.html',
@@ -24,8 +23,6 @@ Quill.register('modules/emoji', Emoji);
 })
 export class DirectMessageComponent implements OnInit, OnDestroy {
   isOnline?: boolean;
-  selectedUser: User | null = null;
-  loggedInUser: User | null = null;
   messageContent: string = '';
   messages: MessageContent[] = [];
   groupedMessages: { date: string, messages: MessageContent[] }[] = [];
@@ -69,11 +66,10 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   };
 
 
-
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
-    private messageService: MessageService,
+    public messageService: MessageService,
     public dialog: MatDialog,
     public storageService: StorageService,
     public toggleWorspaceMenuService: ToggleWorkspaceMenuService,
@@ -84,15 +80,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     this.route.paramMap.pipe(
       map(params => params.get('id')),
       filter(uid => !!uid),
-      switchMap(uid => {
-        const loggedInUserId = this.authService.currentUserValue?.uid;
-        return this.messageService.getChatParticipants(loggedInUserId as string, uid as string);
-      }),
+      switchMap(uid => this.messageService.loadChatParticipantsForUID(uid as string)),
       takeUntil(this.ngUnsubscribe)
     ).subscribe(([selectedUser, loggedInUser]) => {
-      this.selectedUser = selectedUser;
-      this.loggedInUser = loggedInUser;
-
+      this.messageService.selectedUser = selectedUser;
+      this.messageService.loggedInUser = loggedInUser;
       if (loggedInUser && selectedUser) {
         this.messageService.getDirectMessages(loggedInUser.uid, selectedUser.uid)
           .pipe(takeUntil(this.ngUnsubscribe))
@@ -104,18 +96,20 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       } else {
         console.error("Either loggedInUser or selectedUser is null");
       }
-    });    
+    });
   }
 
 
-
   sendMessage() {
-    if (this.messageContent && this.selectedUser && this.loggedInUser) {
-      const senderName = this.loggedInUser.displayName as string;
+    console.log("Message Content:", !!this.messageContent);
+    console.log("Selected User:", !!this.messageService.selectedUser);
+    console.log("Logged In User:", !!this.messageService.loggedInUser);
+    if (this.messageContent && this.messageService.selectedUser && this.messageService.loggedInUser) {
+      const senderName = this.messageService.loggedInUser.displayName as string;
       const cleanedContent = this.messageService.removePTags(this.messageContent);
       this.messageService.createAndAddMessage(
-        this.loggedInUser.uid,
-        this.selectedUser.uid,
+        this.messageService.loggedInUser.uid,
+        this.messageService.selectedUser.uid,
         senderName,
         cleanedContent
       ).then(() => {
@@ -133,7 +127,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     const date = new Date(timestamp);
     const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
     return date.toLocaleTimeString('de-DE', options);
-  }  
+  }
 
 
   openDialog(): void {
@@ -141,7 +135,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       width: '600px',
       height: '700px',
       panelClass: 'custom-dialog-container',
-      data: { selectedUser: this.selectedUser }
+      data: { selectedUser: this.messageService.selectedUser }
     });
   }
 
@@ -191,7 +185,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     this.quill = editor;
     editor.focus();
   }
-
 
 
   ngAfterViewChecked() {
