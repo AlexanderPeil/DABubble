@@ -22,7 +22,7 @@ import { User } from 'src/app/shared/services/user';
 import 'quill-mention';
 import * as Emoji from 'quill-emoji';
 import Quill from 'quill';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Subject, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { ThreadService } from 'src/app/shared/services/thread.service';
 Quill.register('modules/emoji', Emoji);
@@ -55,7 +55,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     'emoji-toolbar': true,
     'emoji-textarea': true,
     'emoji-shortname': true,
-    toolbar: [['mention'], ['clean']],
     mention: {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ['@'],
@@ -93,18 +92,18 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.getCurrentChannelIdInUrl();
     this.loggedInUser = this.authService.currentUserValue;
     console.log(this.loggedInUser?.displayName);
-
-    if (this.loggedInUser) {
-      this.messageService.getChannelMessages(this.channelId)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((messages) => {
-          messages.sort((a, b) => a.timestamp - b.timestamp);
-          this.messages = messages;
-          this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
-        });
-    } else {
-      console.error('No logged in user ID found.');
-    }
+    this.activatedRoute.params
+      .pipe(
+        map(params => params['id']), 
+        filter((channelId: any) => !!channelId && !!this.loggedInUser), 
+        switchMap(channelId => this.messageService.getChannelMessages(channelId)),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(messages => {
+        messages.sort((a, b) => a.timestamp - b.timestamp);
+        this.messages = messages;
+        this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
+      });
   }
 
 

@@ -22,6 +22,8 @@ import { User } from 'src/app/shared/services/user';
   providedIn: 'root'
 })
 export class MessageService {
+  selectedUser: User | null = null;
+  loggedInUser: User | null = null;
 
   constructor(
     private firestore: Firestore,
@@ -33,6 +35,12 @@ export class MessageService {
     const loggedInUser$ = this.authService.getUserData(loggedInUserId);
 
     return combineLatest([selectedUser$, loggedInUser$]);
+  }
+
+
+  loadChatParticipantsForUID(uid: string): Observable<[User | null, User | null]> {
+    const loggedInUserId = this.authService.currentUserValue?.uid;
+    return this.getChatParticipants(loggedInUserId as string, uid);
   }
 
 
