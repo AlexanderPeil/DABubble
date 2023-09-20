@@ -4,6 +4,7 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
+  HostListener,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
@@ -43,7 +44,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
   messageContent: string = '';
   user_images = '../assets/img/avatar1.svg';
   loggedInUser: User | null = null;
+  displayCheckedIcon: boolean = false;
+  displayHandsUpIcon: boolean = false;
+  emojiPopUpIsOopen: boolean = false;
+  @ViewChild('popUp') popUp!: ElementRef;
   private ngUnsubscribe = new Subject<void>();
+
 
   public quillModules = {
     'emoji-toolbar': true,
@@ -77,10 +83,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
   constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
     public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private messageService: MessageService,
     public threadService: ThreadService) {
+
   }
 
 
   ngOnInit(): void {
+    // document.addEventListener('click', this.onDocumentClick.bind(this));
     this.getCurrentChannelIdInUrl();
     console.log("Channel ID in component:", this.channelId);
     this.loggedInUser = this.authService.currentUserValue;
@@ -245,4 +253,40 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
+
+  setCheckedIcon() {
+    this.displayCheckedIcon = !this.displayCheckedIcon;
+  }
+
+
+  setHandsUpIcon() {
+    this.displayHandsUpIcon = !this.displayHandsUpIcon;
+  }
+
+
+  openEmojiPopUp() {
+    this.emojiPopUpIsOopen = !this.emojiPopUpIsOopen;
+  }
+
+
+  // @HostListener('document:click', ['$event.target'])
+  // onClick(target: any): void {
+  //   if (this.popUp.nativeElement.contains(this.popUp.nativeElement)) {
+  //     this.emojiPopUpIsOopen = true;
+  //   }
+  //   if (!this.popUp.nativeElement.contains(target)) {
+  //     this.emojiPopUpIsOopen = false;
+  //   }
+
+  // if (this.popUp.nativeElement.contains(event.target)) {
+  //   this.emojiPopUpIsOopen = false;
+  // } else {
+  //   this.emojiPopUpIsOopen = true;
+  // }
+  // closePopUpIfClickOutside(clickOutside: Event) {
+  //   if (clickOutside.target !== this.popUp.nativeElement) {
+  //     this.emojiPopUpIsOopen = false;
+  //   }
+
+  // }
 }

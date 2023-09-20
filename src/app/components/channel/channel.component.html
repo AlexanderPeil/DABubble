@@ -9,15 +9,8 @@
     </div>
 
     <div class="containerUserInChatHistory">
-      <div
-        (click)="openDialogToShowMembersInChannel()"
-        class="childContainerUserInChatHistory"
-      >
-        <img
-          *ngFor="let user of channelService.channel.users.slice(0, 3)"
-          class="user"
-          [src]="user.photoURL"
-        />
+      <div (click)="openDialogToShowMembersInChannel()" class="childContainerUserInChatHistory">
+        <img *ngFor="let user of channelService.channel.users.slice(0, 3)" class="user" [src]="user.photoURL" />
         <p class="amountOfUserInChannel">
           {{ channelService.channel.users.length }}
         </p>
@@ -37,16 +30,14 @@
         <span>{{ group.date }}</span>
         <hr />
       </div>
-      <div
-        *ngFor="let message of group.messages"
-        class="displayMessagesContainer">
+      <div *ngFor="let message of group.messages" class="displayMessagesContainer">
         <div class="messageChildContainer">
           <img class="userImg" [src]="message.senderImage" />
           <div class="containerUserNameAndTime">
             <div class="nameTimeContainer">
               <p>
                 {{
-                  message.senderName
+                message.senderName
                 }}
               </p>
               <p>{{ formatTime(message.timestamp) }}</p>
@@ -55,20 +46,39 @@
           </div>
         </div>
 
+        <div #popUp *ngIf="emojiPopUpIsOopen" class="containerPopUp">
+          <img src="assets/img/icons/completeEmoji.svg">
+          <img src="assets/img/icons/handsUpEmoji.svg">
+          <img src="assets/img/icons/rocket.svg">
+          <img src="assets/img/icons/nerdSmiley.svg">
+        </div>
+
         <!-- Emoji container -->
         <div class="containerEmojis d-none">
-          <img class="completeEmoji" src="assets/img/icons/completeEmoji.svg" />
-          <img class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg" />
-          <div class="containerAddEmojiIcon">
+          <img (click)="setCheckedIcon()" class="completeEmoji" src="assets/img/icons/completeEmoji.svg" />
+          <img (click)="setHandsUpIcon()" class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg" />
+          <div (click)="openEmojiPopUp()" class="containerAddEmojiIcon">
             <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg" />
           </div>
-          <div (click)="message.id && threadService.openThreadService(message.id, channelId)" class="containerAnswerOnThreadIcon">
-            <img
-              class="answerOnThreadIcon"
-              src="assets/img/icons/answerOnThreadIcon.svg"
-            />
+          <div (click)="message.id && threadService.openThreadService(message.id, channelId)"
+            class="containerAnswerOnThreadIcon">
+            <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg" />
           </div>
         </div>
+
+        <!-- Emojis to react on Messages -->
+        <div *ngIf="displayCheckedIcon" class="containerCheckIcon">
+          <img src="assets/img/icons/completeEmoji.svg">
+          <p>1</p>
+        </div>
+
+
+        <div *ngIf="displayHandsUpIcon" class="containerHandsUpIcon">
+          <img src="assets/img/icons/handsUpEmoji.svg">
+          <p>1</p>
+        </div>
+        <!-- Emojis to react on Messages -->
+
       </div>
     </div>
   </div>
@@ -76,12 +86,8 @@
   <!-- <app-message></app-message> -->
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor
-    [(ngModel)]="messageContent"
-    (onEditorCreated)="setFocus($event)"
-    placeholder="Message to #{{ channelService.channel.channelName }}"
-    [modules]="quillModules"
-  >
+  <quill-editor [(ngModel)]="messageContent" (onEditorCreated)="setFocus($event)"
+    placeholder="Message to #{{ channelService.channel.channelName }}" [modules]="quillModules">
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
@@ -127,11 +133,7 @@
           <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol()" />
         </div>
 
-        <img
-          class="sendBtn"
-          src="assets/img/icons/sendBtn.svg"
-          (click)="sendMessage()"
-        />
+        <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="sendMessage()" />
       </div>
       <!--------------------------------------- Custom created Container --------------------------------------->
     </div>
