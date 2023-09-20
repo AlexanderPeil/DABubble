@@ -71,15 +71,17 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    const selectedUserId = this.route.snapshot.paramMap.get('selectedUserId'); 
     const channelId = this.route.snapshot.paramMap.get('channelId');
     const messageId = this.route.snapshot.paramMap.get('messageId');
-  
+    
     if (messageId) {
       this.threadService.loadThreadData(messageId, channelId).subscribe(message => {
         this.selectedMessage = message;
       });
     }
   }
+  
   
 
 

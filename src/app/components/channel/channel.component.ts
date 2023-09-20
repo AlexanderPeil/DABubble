@@ -82,8 +82,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
+    console.log("Channel ID in component:", this.channelId);
     this.loggedInUser = this.authService.currentUserValue;
-    console.log(this.loggedInUser?.displayName);
     this.activatedRoute.params
       .pipe(
         map(params => params['id']), 
@@ -171,7 +171,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
         })
         .catch((error: any) => {
           console.error("Couldn't send a message:", error);
-        });
+        })
     } else {
       console.error('Please try again.');
     }

@@ -101,9 +101,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
 
   sendMessage() {
-    console.log("Message Content:", !!this.messageContent);
-    console.log("Selected User:", !!this.messageService.selectedUser);
-    console.log("Logged In User:", !!this.messageService.loggedInUser);
     if (this.messageContent && this.messageService.selectedUser && this.messageService.loggedInUser) {
       const senderName = this.messageService.loggedInUser.displayName as string;
       const cleanedContent = this.messageService.removePTags(this.messageContent);

@@ -132,9 +132,7 @@ export class MessageService {
   }
 
 
-  async createAndAddChannelMessage(channelId: string, senderId: string, senderName: string, content: string) {
-    console.log(senderName);
-    
+  async createAndAddChannelMessage(channelId: string, senderId: string, senderName: string, content: string) {    
     const loggedInUser = this.authService.currentUserValue;
     const message = new MessageContent({
       senderId: senderId,

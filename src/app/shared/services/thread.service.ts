@@ -28,12 +28,14 @@ export class ThreadService {
   }
 
 
-  openThreadService(messageId: string, channelId?: string) {
+  openThreadService(messageId: string, selectedUserId?: string, channelId?: string) {
+    console.log("Channel ID in service:", channelId);
+
     this.threadAreClosed = true;
     if (channelId) {
       this.router.navigate(['/main', 'channel', channelId, 'thread', messageId, channelId]);
     } else {
-      this.router.navigate(['/main', 'direct-message', messageId, 'thread', messageId]);
+      this.router.navigate(['/main', 'direct-message', selectedUserId, 'thread', messageId]);
     }
   }
 
