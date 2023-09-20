@@ -18,7 +18,8 @@
 
             <div class="messageChildContainer">
                 <div class="containerUserNameAndTime">
-                    <p class="userName">Tom</p>
+                    <img class="userImg" [src]="selectedMessage.senderImage" />
+                    <p class="userName">{{ selectedMessage.senderName }}</p>
                     <p class="time">13:53 Uhr</p>
                 </div>
 

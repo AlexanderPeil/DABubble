@@ -44,7 +44,8 @@
 
       img {
         transform: scale(1.1);
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+          contrast(91%);
       }
     }
   }
@@ -85,7 +86,8 @@
 
       img {
         transform: scale(1.1);
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+          contrast(91%);
       }
     }
   }
@@ -108,7 +110,8 @@
     }
 
     cursor: pointer;
-    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+      contrast(91%);
   }
 }
 
@@ -143,7 +146,8 @@
 
       img,
       p {
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+          contrast(91%);
         font-weight: 600;
       }
     }
@@ -171,7 +175,8 @@
 
     img,
     p {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
     }
   }
 }
@@ -203,7 +208,8 @@ ul {
     border-radius: 20px;
 
     p {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
       font-weight: 600;
     }
   }
@@ -230,12 +236,22 @@ ul {
   height: 15px;
 }
 
+.unreadCount {
+  background-color: #797ef3;
+  color: white;
+  padding: 2px 7px;
+  border-radius: 100%;
+  margin-left: 5px;
+  margin-top: 10px;
+}
+
 .activeChannelLiElement {
   background-color: #eceefe;
   border-radius: 20px;
 }
 
 .activeChannelImgAndPElement {
-  filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+  filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+    contrast(91%);
   font-weight: 600;
 }

@@ -40,7 +40,7 @@
                 message.senderName
                 }}
               </p>
-              <p>{{ formatTime(message.timestamp) }}</p>
+              <p>{{ this.messageService.formatTime(message.timestamp) }}</p>
             </div>
             <span class="message">{{ message.content }}</span>
           </div>

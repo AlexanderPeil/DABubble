@@ -68,7 +68,7 @@
         </div>
         <p>{{ userWithCount.user.displayName }}</p>
         <!-- Hier können Sie auch die unreadCount anzeigen, wenn Sie möchten -->
-        <span *ngIf="userWithCount.unreadCount && userWithCount.unreadCount > 0">
+        <span *ngIf="userWithCount.unreadCount && userWithCount.unreadCount > 0" class="unreadCount">
           {{ userWithCount.unreadCount }}
         </span>
       </li>

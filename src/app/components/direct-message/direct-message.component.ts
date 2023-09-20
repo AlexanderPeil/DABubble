@@ -119,14 +119,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  formatTime(timestamp: number): string {
-    const date = new Date(timestamp);
-    const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
-    return date.toLocaleTimeString('de-DE', options);
-  }
-
-
+  
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogDirectMessageProfileComponent, {
       width: '600px',

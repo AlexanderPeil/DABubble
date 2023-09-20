@@ -81,7 +81,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
 
   constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
-    public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, private messageService: MessageService,
+    public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, public messageService: MessageService,
     public threadService: ThreadService) {
 
   }
@@ -183,16 +183,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     } else {
       console.error('Please try again.');
     }
-  }
-
-
-  formatTime(timestamp: number): string {
-    const date = new Date(timestamp);
-    const options: Intl.DateTimeFormatOptions = {
-      hour: '2-digit',
-      minute: '2-digit',
-    };
-    return date.toLocaleTimeString('de-DE', options);
   }
 
 

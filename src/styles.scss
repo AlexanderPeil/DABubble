@@ -184,6 +184,10 @@ app-imprint {
   }
 }
 
+.messageContainer:last-of-type {
+  margin-bottom: 130px;
+}
+
 .displayMessagesContainer {
   display: flex;
   justify-content: space-between;
@@ -192,10 +196,6 @@ app-imprint {
   padding: 20px 0px 20px 20px;
   margin-top: 20px;
   position: relative;
-
-  &:last-child {
-    margin-bottom: 150px;
-  }
 
   &:hover {
     cursor: pointer;

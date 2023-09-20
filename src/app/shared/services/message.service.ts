@@ -175,8 +175,7 @@ export class MessageService {
         }
       })
     );
-  }
-  
+  }  
 
 
   groupMessagesByDate(messages: MessageContent[]): { date: string, messages: MessageContent[] }[] {
@@ -212,6 +211,12 @@ export class MessageService {
       const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: '2-digit', month: 'long' };
       return date.toLocaleDateString('en-US', options);
     }
+  }
+
+  formatTime(timestamp: number): string {
+    const date = new Date(timestamp);
+    const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
+    return date.toLocaleTimeString('de-DE', options);
   }
 
 }
