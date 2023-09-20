@@ -46,7 +46,7 @@
           </div>
         </div>
 
-        <div #popUp *ngIf="emojiPopUpIsOopen" class="containerPopUp">
+        <div *ngIf="emojiPopUpIsOopen" class="containerPopUp">
           <img src="assets/img/icons/completeEmoji.svg">
           <img src="assets/img/icons/handsUpEmoji.svg">
           <img src="assets/img/icons/rocket.svg">
@@ -57,14 +57,24 @@
         <div class="containerEmojis d-none">
           <img (click)="setCheckedIcon()" class="completeEmoji" src="assets/img/icons/completeEmoji.svg" />
           <img (click)="setHandsUpIcon()" class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg" />
-          <div (click)="openEmojiPopUp()" class="containerAddEmojiIcon">
+          <div #popUp (click)="openEmojiPopUp()" class="containerAddEmojiIcon">
             <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg" />
           </div>
           <div (click)="message.id && threadService.openChannelThread(message.id, channelId)"
             class="containerAnswerOnThreadIcon">
             <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg" />
           </div>
+          <div (click)="openPopUpEditMessage()" class="containerThreePointsIcon">
+            <img src="assets/img/icons/threePointsIcon.svg">
+          </div>
         </div>
+        <!-- Emoji container -->
+
+        <!-- Pop Up to Edit Message -->
+        <div *ngIf="popUpToEditMessageIsOpen" class="popUpEditMessage">
+          <p>Edit message</p>
+        </div>
+        <!-- Pop Up to Edit Message -->
 
         <!-- Emojis to react on Messages -->
         <div *ngIf="displayCheckedIcon" class="containerCheckIcon">

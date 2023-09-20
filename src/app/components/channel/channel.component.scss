@@ -191,6 +191,51 @@
   }
 }
 
+.containerThreePointsIcon {
+  display: flex;
+  border-radius: 50%;
+  padding: 8px;
+
+  &:hover {
+    @include button_hover;
+    background-color: #ECEEFE;
+  }
+
+  img {
+    &:hover {
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+    }
+  }
+}
+
+.popUpEditMessage {
+  position: absolute;
+  right: 10px;
+  top: 18px;
+  z-index: 2;
+  padding: 10px 20px 10px 20px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-top-right-radius: 30px;
+  box-shadow: 0 6px 14px 0 rgb(0, 0, 0, 0.2);
+  background-color: white;
+
+  p {
+    margin: 0;
+    padding: 10px 20px 10px 20px;
+    border-radius: 100px;
+    font-family: Nunito, sans-serif !important;
+    font-weight: 500;
+    font-size: 20px;
+
+    &:hover {
+      background-color: #ECEEFE;
+      color: #535AF1;
+      font-weight: 700;
+    }
+  }
+}
+
 .scrolleableContainer {
   height: 55vh;
   overflow-x: hidden;
