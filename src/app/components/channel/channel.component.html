@@ -60,7 +60,7 @@
           <div (click)="openEmojiPopUp()" class="containerAddEmojiIcon">
             <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg" />
           </div>
-          <div (click)="message.id && threadService.openThreadService(message.id, channelId)"
+          <div (click)="message.id && threadService.openChannelThread(message.id, channelId)"
             class="containerAnswerOnThreadIcon">
             <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg" />
           </div>

@@ -41,8 +41,8 @@
                     <img class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg">
                     <div class="containerAddEmojiIcon">
                         <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg">
-                    </div>
-                    <div (click)="message.id && threadService.openThreadService(message.id, messageService.selectedUser?.uid)" class="containerAnswerOnThreadIcon">
+                        <div (click)="messageService.selectedUser && messageService.selectedUser.uid
+                         && message.id && threadService.openDirectMessageThread(message.id, messageService.selectedUser.uid)" class="containerAnswerOnThreadIcon">
                         <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg">
                     </div>
                 </div>

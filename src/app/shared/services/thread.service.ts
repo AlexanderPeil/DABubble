@@ -28,16 +28,17 @@ export class ThreadService {
   }
 
 
-  openThreadService(messageId: string, selectedUserId?: string, channelId?: string) {
-    console.log("Channel ID in service:", channelId);
-
+  openDirectMessageThread(messageId: string, selectedUserId: string) {
     this.threadAreClosed = true;
-    if (channelId) {
-      this.router.navigate(['/main', 'channel', channelId, 'thread', messageId, channelId]);
-    } else {
-      this.router.navigate(['/main', 'direct-message', selectedUserId, 'thread', messageId]);
-    }
+    this.router.navigate(['/main', 'direct-message', selectedUserId, 'thread', messageId]);
   }
+
+
+  openChannelThread(messageId: string, channelId: string) {
+    this.threadAreClosed = true;
+    this.router.navigate(['/main', 'channel', channelId, 'thread', messageId, channelId]);
+  }
+
 
 
   loadThreadData(messageId: string, channelId?: string | null): Observable<MessageContent | null> {
