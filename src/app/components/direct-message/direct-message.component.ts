@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { Subject, filter, map, switchMap, takeUntil } from 'rxjs';
+import { Subject, filter, map, of, switchMap, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { MessageContent } from 'src/app/models/message';
@@ -119,7 +119,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogDirectMessageProfileComponent, {
       width: '600px',

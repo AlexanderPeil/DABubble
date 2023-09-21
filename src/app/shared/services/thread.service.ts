@@ -34,16 +34,15 @@ export class ThreadService {
   }
 
 
-  openChannelThread(messageId: string, channelId: string) { 
+  openChannelThread(messageId: string, channelId: string) {
     this.threadAreClosed = true;
     this.router.navigate(['/main', 'channel', channelId, 'thread', messageId, channelId]);
   }
 
 
-
   loadThreadData(messageId: string, channelId?: string | null): Observable<MessageContent | null> {
     if (channelId && messageId) {
-      return this.messageService.getMessageById(channelId, messageId);
+      return this.messageService.getChannelMessageById(channelId, messageId);
     }
     return of(null);
   }

@@ -6,6 +6,7 @@ import { ThreadService } from 'src/app/shared/services/thread.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
 import "quill-mention";
 import * as Emoji from 'quill-emoji';
@@ -28,7 +29,9 @@ export class ThreadComponent implements OnInit, OnDestroy {
   user_images = '../assets/img/avatar1.svg';
   quill: any;
   selectedMessage: MessageContent | null = null;
-  
+  selectedUser: User | null = null;
+  loggedInUser: User | null = null;
+
 
   public quillModules = {
     'emoji-toolbar': true,
@@ -65,25 +68,40 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
 
   constructor(public storageService: StorageService, public dialog: MatDialog, public threadService: ThreadService, private authService: AuthService,
-    public route: ActivatedRoute, private messageService: MessageService) {
+    public route: ActivatedRoute, private messageService: MessageService, public router: Router,) {
 
   }
 
 
   ngOnInit(): void {
-    // const selectedUserId = this.route.snapshot.paramMap.get('selectedUserId'); 
-    const channelId = this.route.snapshot.paramMap.get('channelId');
-    const messageId = this.route.snapshot.paramMap.get('messageId');
-    console.log('messageId:', messageId);
-    
-    if (messageId) {
-      this.threadService.loadThreadData(messageId, channelId).subscribe(message => {
-        this.selectedMessage = message;        
-        console.log(this.selectedMessage);  
+    const urlSegments = this.router.url.split('/');
+    let messageId: string;
+    let channelId: string | null = null;    
+
+    if (urlSegments.includes('channel')) {
+      channelId = urlSegments[3];
+      messageId = urlSegments[5];
+      this.messageService.getChannelMessageById(channelId, messageId).subscribe(message => {
+        this.selectedMessage = message;
+        console.log(message);
+        
       });
-    }  
+    } else if (urlSegments.includes('direct-message')) {
+      messageId = urlSegments[5];
+      this.selectedUser = this.messageService.selectedUser;
+      this.loggedInUser = this.messageService.loggedInUser;
+      console.log(this.selectedUser, this.loggedInUser);
+      
+      if (this.loggedInUser && this.selectedUser) {
+        this.messageService.getDirectMessageById(this.loggedInUser.uid, this.selectedUser.uid, messageId).subscribe(message => {
+          this.selectedMessage = message;
+          console.log(message);
+          
+        });
+      }
+    }
   }
-  
+
 
   setFocus(editor: any): void {
     this.quill = editor;
