@@ -69,17 +69,41 @@
 //   }
 // }
 
-.inputContainer {
+// .inputContainer {
+//   margin-top: 20px;
+
+//   input {
+//     padding: 15px 210px 15px 15px;
+//     border-radius: 30px;
+//     outline: none;
+//     border: 1px solid #adb0d9;
+//     font-weight: 400;
+//     font-size: 18px;
+//     color: #686868;
+
+//     &:hover {
+//       @include hover_input_or_textarea;
+//     }
+
+//     &:focus {
+//       @include focus_input_or_textarea;
+//     }
+//   }
+// }
+
+.textContainer {
   margin-top: 20px;
 
-  input {
+  textarea {
     padding: 15px 210px 15px 15px;
+    height: 18px;
     border-radius: 30px;
     outline: none;
     border: 1px solid #adb0d9;
     font-weight: 400;
     font-size: 18px;
     color: #686868;
+    resize: none;
 
     &:hover {
       @include hover_input_or_textarea;
