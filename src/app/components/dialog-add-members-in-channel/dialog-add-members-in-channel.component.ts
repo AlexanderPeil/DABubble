@@ -24,6 +24,8 @@ export class DialogAddMembersInChannelComponent implements OnInit {
   @ViewChild('input') input!: ElementRef;
   userAlreadyExists: boolean = false;
   selectedUsers: User[] = [];
+  // messageContent: string = '';
+  // quill: any;
 
   constructor(
     public channelService: ChannelService,
@@ -40,11 +42,56 @@ export class DialogAddMembersInChannelComponent implements OnInit {
     document.addEventListener('click', this.onDocumentClick.bind(this));
   }
 
+  // public quillModules = {
+  //   toolbar: false,
+  //   mention: {
+  //     allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+  //     mentionDenotationChars: [' ', ''],
+  //     source: this.searchUsers.bind(this),
+  //     renderItem(item: any) {
+  //       const div = document.createElement('div');
+  //       const img = document.createElement('img');
+  //       const span = document.createElement('span');
+
+  //       img.src = item.photoURL;
+  //       img.classList.add('user-dropdown-image');
+  //       span.textContent = item.displayName;
+
+  //       div.appendChild(img);
+  //       div.appendChild(span);
+
+  //       return div;
+  //     },
+  //     onSelect: (item: any, insertItem: (arg0: any) => void) => {
+  //       insertItem(item);
+  //     },
+  //   },
+  // };
+
+  // searchUsers(searchTerm: string, renderList: Function) {
+  //   console.log('searchUsers called with searchTerm:', searchTerm);
+
+  //   this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
+  //     const values = users.map((user) => ({
+  //       id: user.uid,
+  //       value: user.displayName,
+  //       photoURL: user.photoURL,
+  //       displayName: user.displayName,
+  //     }));
+  //     renderList(values, searchTerm);
+  //   });
+  // }
+
   filterUsers(query?: string): void {
     this.authService.getUsers(query).subscribe((users) => {
       this.foundUsers = users;
     });
   }
+
+  // setFocus(editor: any): void {
+  //   this.quill = editor;
+  //   editor.focus();
+  // }
 
   selectUser(user: User): void {
     this.showUserDropdown = false;

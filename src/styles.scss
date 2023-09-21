@@ -1,4 +1,4 @@
-@import 'app/shared/variables.scss';
+@import "app/shared/variables.scss";
 // @import "@ctrl/ngx-emoji-mart/picker";
 @import "~quill/dist/quill.bubble.css";
 @import "~quill/dist/quill.snow.css";
@@ -51,7 +51,6 @@ app-imprint {
   justify-content: center;
   align-items: center;
 }
-
 
 /************************************ Change Global Style from MatDialog ************************************/
 .mat-mdc-dialog-container .mdc-dialog__surface {
@@ -124,7 +123,7 @@ app-imprint {
   border-bottom-right-radius: 20px;
 }
 
-.ql-toolbar.ql-snow+.ql-container.ql-snow {
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
   border: unset;
   max-height: 300px;
   padding-bottom: 55px;
@@ -148,14 +147,16 @@ app-imprint {
   right: unset;
 }
 
-.ql-toolbar.ql-snow+.ql-container.ql-snow {
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
   overflow: unset;
 }
 
 /******** global Style from Direct-Message quill-editor   *********/
 
 /************************************ Change Global Style from quill-editor ************************************/
-
+.ql-container {
+  border: unset !important;
+}
 
 /************************************ Styles for the message container ************************************/
 .messageMainContainer {
@@ -200,7 +201,7 @@ app-imprint {
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
 
     .message {
       background-color: white;
@@ -260,13 +261,12 @@ app-imprint {
   border-bottom-left-radius: 25px;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
-  border: 1px solid #ADB0D9;
+  border: 1px solid #adb0d9;
   background-color: white;
 
   &:hover {
-
     .messageMainContainer {
-      background-color: #ECEEFE;
+      background-color: #eceefe;
     }
   }
 }
@@ -278,7 +278,7 @@ app-imprint {
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
   }
 }
 
@@ -289,7 +289,7 @@ app-imprint {
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
   }
 }
 
@@ -303,14 +303,15 @@ app-imprint {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
   }
 }
 
@@ -324,14 +325,15 @@ app-imprint {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
   }
 }
 
@@ -347,7 +349,7 @@ app-imprint {
     border-radius: 30px;
     padding: 10px;
     margin: 0;
-    border: 1px solid #ADB0D9;
+    border: 1px solid #adb0d9;
     text-align: center;
     display: inline-block;
     white-space: nowrap;
@@ -357,12 +359,11 @@ app-imprint {
     width: 100%;
     margin: 0;
     transform: rotate(180deg);
-    border-color: #ADB0D9;
+    border-color: #adb0d9;
   }
 }
 
 /************************************ Styles for the message container ************************************/
-
 
 .d-none {
   display: none !important;
