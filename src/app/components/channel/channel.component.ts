@@ -47,7 +47,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   displayCheckedIcon: boolean = false;
   displayHandsUpIcon: boolean = false;
   emojiPopUpIsOopen: boolean = false;
-  @ViewChild('popUp') popUp!: ElementRef;
+  popUpToEditMessageIsOpen: boolean = false;
   private ngUnsubscribe = new Subject<void>();
 
 
@@ -82,20 +82,19 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
   constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
     public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, public messageService: MessageService,
-    public threadService: ThreadService) {
-
+    public threadService: ThreadService,
+    private elementRef: ElementRef) {
   }
 
 
   ngOnInit(): void {
-    // document.addEventListener('click', this.onDocumentClick.bind(this));
     this.getCurrentChannelIdInUrl();
     console.log("Channel ID in component:", this.channelId);
     this.loggedInUser = this.authService.currentUserValue;
     this.activatedRoute.params
       .pipe(
-        map(params => params['id']), 
-        filter((channelId: any) => !!channelId && !!this.loggedInUser), 
+        map(params => params['id']),
+        filter((channelId: any) => !!channelId && !!this.loggedInUser),
         switchMap(channelId => this.messageService.getChannelMessages(channelId)),
         takeUntil(this.ngUnsubscribe)
       )
@@ -259,24 +258,23 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
-  // @HostListener('document:click', ['$event.target'])
-  // onClick(target: any): void {
-  //   if (this.popUp.nativeElement.contains(this.popUp.nativeElement)) {
-  //     this.emojiPopUpIsOopen = true;
-  //   }
-  //   if (!this.popUp.nativeElement.contains(target)) {
-  //     this.emojiPopUpIsOopen = false;
-  //   }
+  openPopUpEditMessage() {
+    this.popUpToEditMessageIsOpen = !this.popUpToEditMessageIsOpen;
+  }
 
-  // if (this.popUp.nativeElement.contains(event.target)) {
-  //   this.emojiPopUpIsOopen = false;
-  // } else {
-  //   this.emojiPopUpIsOopen = true;
-  // }
-  // closePopUpIfClickOutside(clickOutside: Event) {
-  //   if (clickOutside.target !== this.popUp.nativeElement) {
-  //     this.emojiPopUpIsOopen = false;
-  //   }
 
-  // }
+  @HostListener('document:click', ['$event'])
+  onCloseEmojiPopUp($event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.contains($event.target)) {
+      this.emojiPopUpIsOopen = false;
+    }
+  }
+
+
+  @HostListener('document:click', ['$event'])
+  onCloseEditMessagePopUp($event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.contains($event.target)) {
+      this.popUpToEditMessageIsOpen = false;
+    }
+  }
 }
