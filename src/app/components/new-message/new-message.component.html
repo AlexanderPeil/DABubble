@@ -6,12 +6,19 @@
 >
   <div class="chatHistoryHeader">
     <p>New Message</p>
-    <input
+    <quill-editor
+      class="quill-editor-new-message"
+      [(ngModel)]="messageContent"
+      (onEditorCreated)="setFocus($event)"
+      placeholder="At: #channel, or @someone or Mail address"
+      [modules]="quillModules"
+    ></quill-editor>
+    <!-- <input
       (input)="getInputValue($event)"
       [(ngModel)]="inputValue"
       placeholder="At: #channel, or @someone or Mail address "
       type="text"
-    />
+    /> -->
 
     <div
       class="dropDownMenuChannels"
@@ -50,6 +57,7 @@
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
   <quill-editor
+    class="quill-editor-textarea"
     (onEditorCreated)="setFocus($event)"
     placeholder="Start a new Message"
   >
