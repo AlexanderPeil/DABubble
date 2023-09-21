@@ -134,6 +134,12 @@ export class DialogAddMembersInChannelComponent implements OnInit {
     }
   }
 
+  preventEnterKey(event: any) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  }
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     if (!this.input.nativeElement.contains(event.target)) {

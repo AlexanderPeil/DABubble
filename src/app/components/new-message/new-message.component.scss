@@ -222,7 +222,20 @@
   align-items: center;
 }
 
-quill-editor {
+.quill-editor-new-message {
+  margin-top: 20px;
+  border: 1px solid #adb0d9 !important;
+  border-radius: 30px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    @include hover_input_or_textarea;
+  }
+}
+
+.quill-editor-textarea {
   border: 1px solid #adb0d9;
   border-radius: 20px;
   background-color: white;

@@ -158,6 +158,10 @@ app-imprint {
   border: unset !important;
 }
 
+.ql-editor p {
+  padding-bottom: 0;
+}
+
 /************************************ Styles for the message container ************************************/
 .messageMainContainer {
   height: 70vh !important;

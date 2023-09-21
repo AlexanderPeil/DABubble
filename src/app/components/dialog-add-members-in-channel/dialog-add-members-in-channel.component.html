@@ -13,14 +13,21 @@
       <p>{{ channelService.channel.channelName }}</p>
     </div>
 
-    <div class="inputContainer">
-      <input
+    <div class="textContainer">
+      <textarea
+        placeholder="enterName"
+        id="input"
+        (click)="checkForDropdown($event)"
+        (input)="checkForDropdown($event)"
+        (keydown)="preventEnterKey($event)"
+      ></textarea>
+      <!-- <input
         #input
         type="text"
         placeholder="enter Name"
         (click)="checkForDropdown($event)"
         (input)="checkForDropdown($event)"
-      />
+      /> -->
     </div>
 
     <!-- <quill-editor
