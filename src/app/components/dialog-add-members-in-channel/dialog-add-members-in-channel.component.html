@@ -19,6 +19,7 @@
         id="input"
         (click)="checkForDropdown($event)"
         (input)="checkForDropdown($event)"
+        (keydown)="preventEnterKey($event)"
       ></textarea>
       <!-- <input
         #input
