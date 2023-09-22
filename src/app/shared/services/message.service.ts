@@ -118,21 +118,20 @@ export class MessageService {
 
 
 
+  // getChatParticipants(loggedInUserId: string, selectedUserId: string): Observable<[User | null, User | null]> {
+  //   const selectedUser$ = this.authService.getUserData(selectedUserId);
+  //   const loggedInUser$ = this.authService.getUserData(loggedInUserId);
+
+  //   return combineLatest([selectedUser$, loggedInUser$]);
+  // }
+
+
+  // loadChatParticipantsForUID(uid: string): Observable<[User | null, User | null]> {
+  //   const loggedInUserId = this.authService.currentUserValue?.uid;
+  //   return this.getChatParticipants(loggedInUserId as string, uid);
+  // }
+
   // Here begins the logic for the direct-messages
-  getChatParticipants(loggedInUserId: string, selectedUserId: string): Observable<[User | null, User | null]> {
-    const selectedUser$ = this.authService.getUserData(selectedUserId);
-    const loggedInUser$ = this.authService.getUserData(loggedInUserId);
-
-    return combineLatest([selectedUser$, loggedInUser$]);
-  }
-
-
-  loadChatParticipantsForUID(uid: string): Observable<[User | null, User | null]> {
-    const loggedInUserId = this.authService.currentUserValue?.uid;
-    return this.getChatParticipants(loggedInUserId as string, uid);
-  }
-
-
   async createAndAddMessage(senderId: string, receiverId: string, senderName: string, content: string): Promise<void> {
     const loggedInUser = this.authService.currentUserValue;
 

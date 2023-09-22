@@ -33,6 +33,7 @@ import {
   signOut,
   user,
   deleteUser,
+  onAuthStateChanged,
   setPersistence,
   browserLocalPersistence
 } from '@angular/fire/auth';
@@ -49,7 +50,7 @@ import {
  * @property {Observable<User | null>} user$ - Observable representing the current user. Emits either the user data or null if not authenticated.
  * @property {Subscription} userSubscription - Subscription to the user$ observable to handle user state changes.
  */
-export class AuthService implements OnDestroy {
+export class AuthService {
   public user$: Observable<User | null>;
   private userSubscription?: Subscription;
   currentUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
@@ -66,7 +67,10 @@ export class AuthService implements OnDestroy {
     public router: Router,
     public storageService: StorageService,
     private firestore: Firestore) {
-    this.user$ = user(this.auth);
+    this.user$ = new Observable(subscriber => {
+      const unsubscribe = onAuthStateChanged(this.auth, subscriber);
+      return unsubscribe;
+    });
     this.initCurrentUser();
     // setPersistence(this.auth, browserLocalPersistence);
   }
@@ -421,9 +425,9 @@ export class AuthService implements OnDestroy {
    * Lifecycle hook that Angular calls when the component is destroyed.
    * If there's an active subscription to `user$`, it will be unsubscribed.
    */
-  ngOnDestroy() {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-  }
+  // ngOnDestroy() {
+  //   if (this.userSubscription) {
+  //     this.userSubscription.unsubscribe();
+  //   }
+  // }
 }
