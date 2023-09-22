@@ -4,7 +4,7 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
-  HostListener,
+  HostListener
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
@@ -48,6 +48,10 @@ export class ChannelComponent implements OnInit, OnDestroy {
   displayHandsUpIcon: boolean = false;
   emojiPopUpIsOopen: boolean = false;
   popUpToEditMessageIsOpen: boolean = false;
+  showEditMessageButton: boolean = false;
+  currentlyEditingMessageId: string | null = null;
+  isEditing: string | null = null;
+  updatedMessageContent: string = '';
   private ngUnsubscribe = new Subject<void>();
 
 
@@ -89,8 +93,9 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
-    console.log("Channel ID in component:", this.channelId);
     this.loggedInUser = this.authService.currentUserValue;
+    console.log(this.loggedInUser);
+    
     this.activatedRoute.params
       .pipe(
         map(params => params['id']),
@@ -175,6 +180,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
         )
         .then(() => {
           this.messageContent = '';
+          this.scrollToBottom();
         })
         .catch((error: any) => {
           console.error("Couldn't send a message:", error);
@@ -182,6 +188,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     } else {
       console.error('Please try again.');
     }
+
   }
 
 
@@ -226,12 +233,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
-
-  private scrollToBottom(): void {
+  scrollToBottom(): void {
     this.messagesContainer.nativeElement.scrollTop =
       this.messagesContainer.nativeElement.scrollHeight;
   }
@@ -244,7 +246,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
 
   setCheckedIcon() {
-    this.displayCheckedIcon = !this.displayCheckedIcon;
+    this.displayCheckedIcon = !this.displayCheckedIcon
   }
 
 
@@ -258,8 +260,10 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
-  openPopUpEditMessage() {
-    this.popUpToEditMessageIsOpen = !this.popUpToEditMessageIsOpen;
+  openPopUpEditMessage(message: MessageContent) {
+    if (this.loggedInUser?.uid === message.senderId && message.id) {
+      this.currentlyEditingMessageId = this.currentlyEditingMessageId === message.id ? null : message.id;
+    }
   }
 
 
@@ -277,4 +281,55 @@ export class ChannelComponent implements OnInit, OnDestroy {
       this.popUpToEditMessageIsOpen = false;
     }
   }
+
+
+  onMessageHover(message: MessageContent) {
+    this.showEditMessageButton = this.loggedInUser?.uid === message.senderId;
+  }
+
+
+  closeEditMenu() {
+    this.currentlyEditingMessageId = null;
+  }
+
+
+  handleMouseLeave(messageId: string): void {
+    if (this.isEditing) {
+      return;
+    } else if (!this.isMessageBeingEdited(messageId)) {
+      this.showEditMessageButton = false;
+      this.closeEditMenu();
+    }
+  }
+
+
+  isMessageBeingEdited(messageId: string): boolean {
+    return this.isEditing === messageId;
+  }
+
+
+
+  stopEvent(event: Event) {
+    event.stopPropagation();
+  }
+
+
+  saveEditedMessage(message: MessageContent) {
+    const messageId = message.id;
+    const channelId = this.channelId;
+    const updatedMessageContent = this.updatedMessageContent;
+
+    if (messageId && channelId && this.updatedMessageContent && this.updatedMessageContent !== message.content) {
+      this.messageService.updateChannelMessage(channelId, messageId, updatedMessageContent);
+    }
+    this.isEditing = null;
+  }
+
+
+  editMessage(messageId: string, currentContent: string) {
+    this.isEditing = messageId;
+    this.updatedMessageContent = currentContent;
+  }
+
+
 }

@@ -13,6 +13,7 @@ import { ThreadService } from 'src/app/shared/services/thread.service';
 import "quill-mention";
 import * as Emoji from 'quill-emoji';
 import Quill from 'quill';
+import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
 Quill.register('modules/emoji', Emoji);
 
 
@@ -30,6 +31,14 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   user_images = '../assets/img/avatar1.svg';
   quill: any;
+  displayCheckedIcon: boolean = false;
+  displayHandsUpIcon: boolean = false;
+  emojiPopUpIsOopen: boolean = false;
+  popUpToEditMessageIsOpen: boolean = false;
+  showEditMessageButton: boolean = false;
+  currentlyEditingMessageId: string | null = null;
+  isEditing: string | null = null;
+  updatedMessageContent: string = '';
 
 
   public quillModules = {
@@ -177,6 +186,15 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
+  openDetailViewFromUploadedImage(uploadedImageUrl: string) {
+    this.dialog.open(DialogDetailViewUploadedDatasComponent, {
+      data: {
+        uploadedImageUrl: uploadedImageUrl,
+      },
+    });
+  }
+
+
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
@@ -187,14 +205,82 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+  setCheckedIcon() {
+    this.displayCheckedIcon = !this.displayCheckedIcon
   }
 
 
-  openThread() {
+  setHandsUpIcon() {
+    this.displayHandsUpIcon = !this.displayHandsUpIcon;
+  }
 
+
+  openEmojiPopUp() {
+    this.emojiPopUpIsOopen = !this.emojiPopUpIsOopen;
+  }
+
+
+  openPopUpEditMessage(message: MessageContent) {
+    if (this.messageService.loggedInUser?.uid === message.senderId && message.id) {
+      this.currentlyEditingMessageId = this.currentlyEditingMessageId === message.id ? null : message.id;
+    }
+  }
+
+
+  onMessageHover(message: MessageContent) {
+    this.showEditMessageButton = this.messageService.loggedInUser?.uid === message.senderId;
+  }
+
+
+  closeEditMenu() {
+    this.currentlyEditingMessageId = null;
+  }
+
+
+  handleMouseLeave(messageId: string): void {
+    if (this.isEditing) {
+      return;
+    } else if (!this.isMessageBeingEdited(messageId)) {
+      this.showEditMessageButton = false;
+      this.closeEditMenu();
+    }
+  }
+
+
+  isMessageBeingEdited(messageId: string): boolean {
+    return this.isEditing === messageId;
+  }
+
+
+  stopEvent(event: Event) {
+    event.stopPropagation();
+  }
+
+
+  saveEditedMessage(message: MessageContent) {
+    const messageId = message.id;
+    const updatedMessageContent = this.updatedMessageContent;
+    const loggedInUserId = this.messageService.loggedInUser?.uid as string;
+    const receiverUserId = this.messageService.selectedUser?.uid as string;    
+
+
+    if (messageId && this.updatedMessageContent && this.updatedMessageContent !== message.content) {
+      this.messageService.updateDirectMessage(loggedInUserId, receiverUserId, messageId, updatedMessageContent);
+    }
+    this.isEditing = null;
+  }
+
+
+
+  editMessage(messageId: string, currentContent: string) {
+    this.isEditing = messageId;
+    this.updatedMessageContent = currentContent;
+  }
+
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

@@ -30,19 +30,20 @@
         <span>{{ group.date }}</span>
         <hr />
       </div>
-      <div *ngFor="let message of group.messages" class="displayMessagesContainer">
+      <div *ngFor="let message of group.messages" class="displayMessagesContainer"
+      (mouseenter)="onMessageHover(message)" (mouseleave)="message.id ? handleMouseLeave(message.id) : null">  
         <div class="messageChildContainer">
           <img class="userImg" [src]="message.senderImage" />
           <div class="containerUserNameAndTime">
             <div class="nameTimeContainer">
-              <p>
-                {{
-                message.senderName
-                }}
-              </p>
+              <p>{{ message.senderName }}</p>
               <p>{{ this.messageService.formatTime(message.timestamp) }}</p>
             </div>
-            <span class="message">{{ message.content }}</span>
+            <span *ngIf="isEditing !== message.id" class="message">{{ message.content }}</span>
+            <div *ngIf="currentlyEditingMessageId === message.id && isEditing === message.id" class="editMessageContainer">
+              <input [(ngModel)]="updatedMessageContent">
+              <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)">
+          </div>          
           </div>
         </div>
 
@@ -64,14 +65,14 @@
             class="containerAnswerOnThreadIcon">
             <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg" />
           </div>
-          <div (click)="openPopUpEditMessage()" class="containerThreePointsIcon">
+          <div *ngIf="showEditMessageButton" (click)="openPopUpEditMessage(message)" class="containerThreePointsIcon">
             <img src="assets/img/icons/threePointsIcon.svg">
           </div>
         </div>
         <!-- Emoji container -->
 
         <!-- Pop Up to Edit Message -->
-        <div *ngIf="popUpToEditMessageIsOpen" class="popUpEditMessage">
+        <div *ngIf="currentlyEditingMessageId === message.id" class="popUpEditMessage" (mouseover)="stopEvent($event)" (click)="editMessage(message.id, message.content)">
           <p>Edit message</p>
         </div>
         <!-- Pop Up to Edit Message -->

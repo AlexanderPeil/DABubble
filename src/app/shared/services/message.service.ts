@@ -10,7 +10,7 @@ import {
   writeBatch,
   query,
   docData,
-  getDoc
+  updateDoc
 } from '@angular/fire/firestore';
 import { Observable, catchError, combineLatest, map, of } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
@@ -189,6 +189,21 @@ export class MessageService {
     );
   }
 
+  async updateDirectMessage(userId1: string, userId2: string, messageId: string, updatedContent: string): Promise<void> {
+    const messageCollection = this.getDirectMessageCollection(userId1, userId2);
+    const messageRef = doc(messageCollection, messageId);
+  
+    try {
+      await updateDoc(messageRef, {
+        content: updatedContent,
+        timestamp: Date.now() 
+      });
+    } catch (error) {
+      console.error("Error updating document: ", error);
+    }
+  }
+  
+
   // Here ends the logic for the direct-messages
 
 
@@ -236,6 +251,20 @@ export class MessageService {
       })
     );
   }
+
+  async updateChannelMessage(channelID: string, messageId: string, updatedContent: string) {
+    const messageRef = doc(this.getChannelMessageCollection(channelID), messageId);
+
+    try {
+        await updateDoc(messageRef, {
+            content: updatedContent,
+            timestamp: Date.now() 
+        });
+    } catch (error) {
+        console.error("Error updating document: ", error);
+    }
+}
+
   // Here ends the logic for channel-messages
 
 }
