@@ -7,6 +7,8 @@ export class MessageContent {
   senderName: string;
   senderImage: string;
   read: boolean;
+  hasThread: boolean = false;
+  messageId?: string;
 
   constructor(object?: any) {
     this.id = object ? object.id : undefined;
@@ -17,6 +19,8 @@ export class MessageContent {
     this.senderName = object ? object.senderName : '';
     this.senderImage = object ? object.senderImage : '';
     this.read = object ? object.read : '';
+    this.hasThread = object ? object.hasThread : false;
+    this.messageId = object ? object.messageId : '';
   }
 
   public toJSON(): any {
@@ -26,14 +30,19 @@ export class MessageContent {
       senderId: this.senderId,
       senderName: this.senderName,
       senderImage: this.senderImage,
-      read: this.read
+      read: this.read,
+      hasThread: this.hasThread
     };
-  
+
     if (this.receiverId) {
       json.receiverId = this.receiverId;
     }
-  
+
+    if (this.messageId) {
+      json.messageId = this.messageId;
+    }
+
     return json;
   }
-  
+
 }
