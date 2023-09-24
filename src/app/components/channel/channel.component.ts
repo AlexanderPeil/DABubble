@@ -60,7 +60,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
     this.fetchAndDisplayMessages();
-    this.scrollToBottom();
   }
 
 

@@ -1,7 +1,7 @@
 import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription, filter, map, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, filter, firstValueFrom, map, of, switchMap, take, tap } from 'rxjs';
 import { updateEmail } from "firebase/auth";
 import { StorageService } from 'src/app/shared/services/storage.service';
 import {
@@ -34,9 +34,11 @@ import {
   user,
   deleteUser,
   onAuthStateChanged,
-  setPersistence,
-  browserLocalPersistence
 } from '@angular/fire/auth';
+import {
+  browserSessionPersistence,
+  browserLocalPersistence
+} from 'firebase/auth';
 
 
 @Injectable({
@@ -72,7 +74,7 @@ export class AuthService {
       return unsubscribe;
     });
     this.initCurrentUser();
-    // setPersistence(this.auth, browserLocalPersistence);
+    this.initializePersistence();
   }
 
 
@@ -84,6 +86,28 @@ export class AuthService {
     '../assets/img/avatar5.svg',
     '../assets/img/avatar6.svg',
   ]
+
+
+  async initializePersistence() {
+    this.user$.pipe(
+      switchMap(user => user ? this.getUserData(user.uid) : of(null)),
+      take(1)  
+    ).subscribe(async userData => {
+      if (userData) {
+        try {
+          if (userData.displayName === 'Guest') {
+            await this.auth.setPersistence(browserSessionPersistence);
+            console.log("Set persistence for Guest-User!");
+          } else {
+            await this.auth.setPersistence(browserLocalPersistence);
+            console.log("Set standard persistence!");
+          }
+        } catch (error) {
+          console.error("Couldn't set persistence", error);
+        }
+      }
+    });
+  }
 
 
   getRandomGuestImage(): string {
@@ -419,15 +443,4 @@ export class AuthService {
       lastActive: Timestamp.now()
     });
   }
-
-
-  /**
-   * Lifecycle hook that Angular calls when the component is destroyed.
-   * If there's an active subscription to `user$`, it will be unsubscribed.
-   */
-  // ngOnDestroy() {
-  //   if (this.userSubscription) {
-  //     this.userSubscription.unsubscribe();
-  //   }
-  // }
 }
