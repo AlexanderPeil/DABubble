@@ -36,8 +36,8 @@
                             <p>{{ this.messageService.formatTime(message.timestamp) }}</p>
                         </div>
                         <span *ngIf="isEditing !== message.id" class="message"
-                        [ngClass]="{'senderMessage': message.senderId === authService.currentUser.value?.uid}">
-                        {{
+                            [ngClass]="{'senderMessage': message.senderId === authService.currentUser.value?.uid}">
+                            {{
                             message.content }}</span>
                         <div *ngIf="currentlyEditingMessageId === message.id && isEditing === message.id"
                             class="editMessageContainer">
@@ -95,6 +95,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Message container -->
 
         <quill-editor [(ngModel)]="messageContent" placeholder="Write a message"
@@ -148,5 +149,4 @@
             </div>
         </quill-editor>
         <!-- Message textarea -->
-
     </div>
