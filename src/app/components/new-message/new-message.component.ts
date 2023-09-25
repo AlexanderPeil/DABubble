@@ -105,14 +105,14 @@ export class NewMessageComponent implements OnInit {
     editor.focus();
   }
 
-  getInputValue($event: any) {
-    // this.channelService.channelData = of(this.channels); // Start with all items
-    // // RxJS operators for filtering based on search query
-    // this.channelService.channelData = this.channelService.channelData.pipe(
-    //   startWith($event.target.value),
-    //  filter(($event.target.value),  => {})
-    // );
-  }
+  // getInputValue($event: any) {
+  //   this.channelService.channelData = of(this.channels); // Start with all items
+  //   // RxJS operators for filtering based on search query
+  //   this.channelService.channelData = this.channelService.channelData.pipe(
+  //     startWith($event.target.value),
+  //    filter(($event.target.value),  => {})
+  //   );
+  // }
 
   // filterItems(value: string): Observable<string[]> {
   //   return of(this.channels.filter(channel =>
@@ -132,19 +132,19 @@ export class NewMessageComponent implements OnInit {
     });
   }
 
-  filterUsers(query?: string): void {
-    this.authService.getUsers(query).subscribe((users) => {
-      this.foundUsers = users;
-    });
-  }
+  // filterUsers(query?: string): void {
+  //   this.authService.getUsers(query).subscribe((users) => {
+  //     this.foundUsers = users;
+  //   });
+  // }
 
-  @HostListener('document: click', ['$event.target'])
-  closeDropdownIfClickingOutside($event: MouseEvent) {
-    if (!this.elementRef.nativeElement.contains($event.target)) {
-      this.dropDownMenuChannelsIsOpen = false;
-    }
-    if (!this.elementRef.nativeElement.contains($event.target)) {
-      this.dropDownMenuUserIsOpen = false;
-    }
-  }
+  // @HostListener('document: click', ['$event.target'])
+  // closeDropdownIfClickingOutside($event: MouseEvent) {
+  //   if (!this.elementRef.nativeElement.contains($event.target)) {
+  //     this.dropDownMenuChannelsIsOpen = false;
+  //   }
+  //   if (!this.elementRef.nativeElement.contains($event.target)) {
+  //     this.dropDownMenuUserIsOpen = false;
+  //   }
+  // }
 }
