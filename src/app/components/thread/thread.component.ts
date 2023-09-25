@@ -8,11 +8,9 @@ import { User } from 'src/app/shared/services/user';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
-import "quill-mention";
-import * as Emoji from 'quill-emoji';
-import Quill from 'quill';
 import { MessageContent } from 'src/app/models/message';
-Quill.register('modules/emoji', Emoji);
+import { QuillService } from 'src/app/shared/services/quill.service';
+import { Observable, Subject, combineLatest, of, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -26,86 +24,125 @@ export class ThreadComponent implements OnInit, OnDestroy {
   isOnline?: boolean;
   messageContent: string = '';
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+  private unsubscribe: Subject<void> = new Subject<void>();
   user_images = '../assets/img/avatar1.svg';
-  quill: any;
   selectedMessage: MessageContent | null = null;
+  threadMessages: MessageContent[] = [];
   selectedUser: User | null = null;
   loggedInUser: User | null = null;
+  channelId: string | null = null;
 
 
-  public quillModules = {
-    'emoji-toolbar': true,
-    'emoji-textarea': true,
-    'emoji-shortname': true,
-    toolbar: [
-      ['mention'],
-      ['clean']
-    ],
-    mention: {
-      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      mentionDenotationChars: ["@"],
-      source: this.searchUsers.bind(this),
-      renderItem(item: any) {
-
-        const div = document.createElement('div');
-        const img = document.createElement('img');
-        const span = document.createElement('span');
-
-        img.src = item.photoURL;
-        img.classList.add('user-dropdown-image');
-        span.textContent = item.displayName;
-
-        div.appendChild(img);
-        div.appendChild(span);
-
-        return div;
-      },
-      onSelect: (item: any, insertItem: (arg0: any) => void) => {
-        insertItem(item);
-      }
-    }
-  };
-
-
-  constructor(public storageService: StorageService, public dialog: MatDialog, public threadService: ThreadService, private authService: AuthService,
-    public route: ActivatedRoute, private messageService: MessageService, public router: Router,) {
+  constructor(public storageService: StorageService,
+    public dialog: MatDialog,
+    public threadService: ThreadService,
+    private authService: AuthService,
+    public route: ActivatedRoute,
+    public messageService: MessageService,
+    public router: Router,
+    public quillService: QuillService) {
 
   }
 
 
   ngOnInit(): void {
-    const urlSegments = this.router.url.split('/');
-    let messageId: string;
-    let channelId: string | null = null;    
+    combineLatest([
+      this.loadLoggedInUser(),
+      of(this.router.url)
+    ])
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(([loggedInUser, currentUrl]) => {
+        this.loggedInUser = loggedInUser;
+        const urlSegments = currentUrl.split('/');
+        let messageId: string = urlSegments[5];
 
-    if (urlSegments.includes('channel')) {
-      channelId = urlSegments[3];
-      messageId = urlSegments[5];
-      this.messageService.getChannelMessageById(channelId, messageId).subscribe(message => {
-        this.selectedMessage = message;
-        console.log(message);
-        
+        if (urlSegments.includes('channel')) {
+          this.handleChannel(urlSegments, messageId);
+        } else if (urlSegments.includes('direct-message') && this.loggedInUser) {
+          this.handleDirectMessage(messageId);
+        }
       });
-    } else if (urlSegments.includes('direct-message')) {
-      messageId = urlSegments[5];
-      this.selectedUser = this.messageService.selectedUser;
-      this.loggedInUser = this.messageService.loggedInUser;
-      console.log(this.selectedUser, this.loggedInUser);
-      
-      if (this.loggedInUser && this.selectedUser) {
-        this.messageService.getDirectMessageById(this.loggedInUser.uid, this.selectedUser.uid, messageId).subscribe(message => {
+  }
+
+
+  handleChannel(urlSegments: string[], messageId: string): void {
+    this.channelId = urlSegments[3];
+    this.messageService.getChannelMessageById(this.channelId, messageId)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(message => {
+        this.selectedMessage = message;
+        this.fetchThreadMessages(messageId);
+      });
+  }
+
+
+  handleDirectMessage(messageId: string): void {
+    this.selectedUser = this.messageService.selectedUser;
+
+    if (this.loggedInUser && this.selectedUser) {
+      this.messageService.getDirectMessageById(this.loggedInUser.uid, this.selectedUser.uid, messageId)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(message => {
           this.selectedMessage = message;
-          console.log(message);
-          
+          this.fetchThreadMessages(messageId);
         });
-      }
     }
   }
 
 
-  setFocus(editor: any): void {
-    this.quill = editor;
-    editor.focus();
+  loadLoggedInUser(): Observable<User | null> {
+    return this.authService.user$.pipe(takeUntil(this.unsubscribe));
+  }
+
+
+  fetchThreadMessages(messageId: string): void {
+    if (this.selectedMessage?.hasThread) {
+      this.messageService.getThreadMessagesForMessageId(messageId)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((threadMessages: MessageContent[]) => {
+          this.threadMessages = threadMessages;
+        });
+    }
+  }
+
+
+  sendMessage() {
+    const urlSegments = this.router.url.split('/');
+
+    if (this.messageContent && this.loggedInUser) {
+      const senderName = this.loggedInUser.displayName as string;
+      const messageId = this.selectedMessage?.id;
+      const cleanedContent = this.messageService.removePTags(this.messageContent);
+
+      if (messageId) {
+        this.messageService
+          .createAndAddThreadMessage(
+            this.loggedInUser.uid,
+            senderName,
+            cleanedContent,
+            messageId
+          )
+          .then(() => {
+            if (urlSegments.includes('channel')) {
+              return this.messageService.updateHasThreadForChannelMessage(this.channelId!, messageId, true);
+            } else if (urlSegments.includes('direct-message') && this.selectedUser) {
+              return this.messageService.updateHasThreadForDirectMessage(this.loggedInUser!.uid, this.selectedUser.uid, messageId, true);
+            }
+            return Promise.resolve();
+          })
+          .then(() => {
+            this.messageContent = '';
+            this.scrollToBottom();
+          })
+          .catch((error: any) => {
+            console.error("Couldn't send a message:", error);
+          });
+      } else {
+        console.error('Please try again.');
+      }
+    } else {
+      console.error('Either message content or loggedInUser was not found.');
+    }
   }
 
 
@@ -115,29 +152,6 @@ export class ThreadComponent implements OnInit, OnDestroy {
         uploadedImageUrl: uploadedImageUrl,
       }
     });
-  }
-
-
-  searchUsers(searchTerm: string, renderList: Function) {
-    this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
-      const values = users.map(user => ({
-        id: user.uid,
-        value: user.displayName,
-        photoURL: user.photoURL,
-        displayName: user.displayName
-      }));
-      renderList(values, searchTerm);
-    });
-  }
-
-
-  triggerAtSymbol() {
-    this.quill.focus();
-    setTimeout(() => {
-      const currentPosition = this.quill.getSelection()?.index || 0;
-      this.quill.insertText(currentPosition, '@ ');
-      this.quill.setSelection(currentPosition + 1);
-    }, 0);
   }
 
 
@@ -153,19 +167,13 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
-
   private scrollToBottom(): void {
     this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
   }
 
 
   ngOnDestroy(): void {
-
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
-
-
 }

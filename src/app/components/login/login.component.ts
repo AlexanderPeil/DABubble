@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
           setTimeout(() => {
             this.loginFailed = false;
           }, 3000);
-          console.log(error); // Firebase error in the console.
+          console.log(error);
         });
     }
   }

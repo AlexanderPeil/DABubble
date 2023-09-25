@@ -20,11 +20,16 @@
                 <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
                 <input type="password" placeholder="Password" formControlName="password">
             </div>
+            <div class="inputContainer">
+                <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
+                <input type="password" placeholder="Confirm Password" formControlName="passwordConfirm">
+            </div>
             <label class="checkboxContent">
                 <input type="checkbox" [formControl]="checked">
                 <span class="checkmark"></span>
                 I agree to the <a routerLink="/data-protection">data protection</a>.
             </label>
+            <div class="notification warning" *ngIf="signupForm.hasError('passwordsMismatch')">Passwords do not match.</div>
             <button type="button" class="nextBtn" (click)="onNextClick()" [disabled]="!signupForm.valid">Next</button>
         </form>
     </div>

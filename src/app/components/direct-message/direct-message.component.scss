@@ -1,4 +1,4 @@
-@import'../../shared/variables.scss';
+@import "../../shared/variables.scss";
 
 .statusIcon {
   position: absolute;
@@ -16,7 +16,7 @@
   height: 84vh;
   border-radius: 30px;
   margin: 0 15px 0px 15px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   position: relative;
   transition: all 225ms ease-in-out;
 }
@@ -40,7 +40,7 @@
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
     border-radius: 20px;
   }
 
@@ -56,10 +56,6 @@
   z-index: 99;
   width: 348px;
 }
-
-// .directMesageContainer:last-child {
-//   margin-bottom: 130px;
-// }
 
 .user-dropdown {
   display: flex;
@@ -95,9 +91,25 @@
   }
 }
 
+.emptyChatDiv {
+
+  p {
+    @include font(20px, 400, 27px);
+  }
+
+  span {
+    color: #535af1;
+  }
+
+  img {
+    width: 100px;
+    border-radius: 100%;
+  }
+}
+
 /* quill-editor Styles */
 quill-editor {
-  border: 1px solid #ADB0D9;
+  border: 1px solid #adb0d9;
   border-radius: 20px;
   background-color: white;
   display: flex;
@@ -109,12 +121,11 @@ quill-editor {
 
   &:hover {
     border-radius: 20px;
-    border: 1px solid #797EF3;
+    border: 1px solid #797ef3;
   }
 }
 
 /* quill-editor Styles */
-
 
 /************************************ Styles for the texfield ************************************/
 .mainContainerUploadedDatas {
@@ -134,7 +145,7 @@ quill-editor {
   height: 40px;
   border-radius: 8px;
 
-  &:hover+.closeIcon {
+  &:hover + .closeIcon {
     display: flex;
   }
 
@@ -155,7 +166,7 @@ quill-editor {
     border-radius: 8px;
     border: unset;
 
-    &:hover+.closeIcon {
+    &:hover + .closeIcon {
       display: flex;
     }
   }
@@ -186,7 +197,7 @@ quill-editor {
 .verticalLine {
   height: 25px;
   margin: 0px 5px 0px 5px;
-  border: 1px solid #ADB0D9;
+  border: 1px solid #adb0d9;
 }
 
 .containerAddIcon {
@@ -199,15 +210,15 @@ quill-editor {
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
   }
 
   img {
-
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -220,15 +231,15 @@ quill-editor {
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
   }
 
   img {
-
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -241,15 +252,15 @@ quill-editor {
   &:hover {
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
   }
 
   img {
-
     &:hover {
       transform: scale(1.05);
       transition: all 225ms ease-in-out;
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }

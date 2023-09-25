@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/shared/services/storage.service';
@@ -34,8 +34,9 @@ export class SignUpComponent implements OnInit {
       displayName: new FormControl(null, [Validators.required, this.fullNameValidator]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, Validators.required),
+      passwordConfirm: new FormControl(null, Validators.required),
       checked: this.checked
-    });
+    }, { validators: Validators.compose([this.passwordsMatchValidator.bind(this)]) });
 
     const displayNameControl = this.signupForm.get('displayName');
     if (displayNameControl) {
@@ -43,7 +44,6 @@ export class SignUpComponent implements OnInit {
         this.displayName = value;
       });
     }
-
     this.avatarUrls = this.authService.user_images;
   }
 
@@ -57,10 +57,27 @@ export class SignUpComponent implements OnInit {
   }
 
 
+  passwordsMatchValidator(formGroup: AbstractControl): ValidationErrors | null {
+    const password = (formGroup.get('password') as FormControl)?.value;
+    const passwordConfirm = (formGroup.get('passwordConfirm') as FormControl)?.value;
+
+    if (password !== passwordConfirm) {
+      return { passwordsMismatch: true };
+    }
+    return null;
+  }
+
+
   onSubmit() {
+    if (this.signupForm.invalid) {
+      console.error("Form is invalid, can't proceed with registration");
+      return;
+    }
+
     const displayName = this.signupForm.value.displayName;
     const email = this.signupForm.value.email;
     const password = this.signupForm.value.password;
+
     this.authService.signUp(displayName, email, password, this.selectedAvatarURL)
       .then(() => {
         this.userCreated = true;
@@ -69,7 +86,7 @@ export class SignUpComponent implements OnInit {
         }, 3000);
       })
       .catch((error: { message: string; }) => {
-        console.log(error); // Firebase error in the console.
+        console.log(error);
         this.userExists = true;
         this.signupForm.controls['email'].reset();
         setTimeout(() => {
@@ -100,7 +117,7 @@ export class SignUpComponent implements OnInit {
     }).catch((error: any) => {
       console.error("Error uploading file: ", error);
     });
-  }   
+  }
 
 
   // This Code down here is for the verification mail function.
