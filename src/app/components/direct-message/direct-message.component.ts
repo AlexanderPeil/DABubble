@@ -37,7 +37,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private route: ActivatedRoute,
     public messageService: MessageService,
     public dialog: MatDialog,

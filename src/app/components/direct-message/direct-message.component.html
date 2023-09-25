@@ -12,6 +12,11 @@
         </div>
     </div>
 
+    <div *ngIf="!groupedMessages.length" class="emptyChatDiv">
+        <img class="userImgEmptyChat" [src]="messageService.selectedUser?.photoURL" alt="Receiver Image" />
+        <p>This chat is only between <span>@{{messageService.selectedUser?.displayName}}</span> and you.</p>
+    </div>
+
 
     <!-- Message container -->
     <div #messagesContainer class="messageMainContainer scrolleableContainer">
@@ -30,7 +35,10 @@
                             <p>{{ message.senderName }}</p>
                             <p>{{ this.messageService.formatTime(message.timestamp) }}</p>
                         </div>
-                        <span *ngIf="isEditing !== message.id" class="message">{{ message.content }}</span>
+                        <span *ngIf="isEditing !== message.id" class="message"
+                        [ngClass]="{'senderMessage': message.senderId === authService.currentUser.value?.uid}">
+                        {{
+                            message.content }}</span>
                         <div *ngIf="currentlyEditingMessageId === message.id && isEditing === message.id"
                             class="editMessageContainer">
                             <input [(ngModel)]="updatedMessageContent">
@@ -89,8 +97,8 @@
         </div>
         <!-- Message container -->
 
-        <quill-editor [(ngModel)]="messageContent" placeholder="Write a message" (onEditorCreated)="this.quillService.setFocus($event)"
-            [modules]="this.quillService.quillModules">
+        <quill-editor [(ngModel)]="messageContent" placeholder="Write a message"
+            (onEditorCreated)="this.quillService.setFocus($event)" [modules]="this.quillService.quillModules">
             <div quill-editor-toolbar>
 
                 <!--------------------------------------- Custom created Container --------------------------------------->
@@ -130,7 +138,8 @@
                     </div>
 
                     <div class="containerAtIcon">
-                        <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol()" />
+                        <img class="atIcon" src="assets/img/icons/@Icon.svg"
+                            (click)="this.quillService.triggerAtSymbol()" />
                     </div>
                     <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg" />
                 </div>

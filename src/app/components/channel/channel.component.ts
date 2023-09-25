@@ -52,7 +52,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
 
   constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
-    public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, public messageService: MessageService,
+    public channelService: ChannelService, public storageService: StorageService, public authService: AuthService, public messageService: MessageService,
     public threadService: ThreadService, private elementRef: ElementRef, public quillService: QuillService) {
   }
 
