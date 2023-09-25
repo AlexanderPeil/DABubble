@@ -30,8 +30,7 @@
         <span>{{ group.date }}</span>
         <hr />
       </div>
-      <div *ngFor="let message of group.messages" class="displayMessagesContainer"
-      (mouseenter)="onMessageHover(message)" (mouseleave)="message.id ? handleMouseLeave(message.id) : null">  
+      <div *ngFor="let message of group.messages" class="displayMessagesContainer" (mouseenter)="onMessageHover(message)" (mouseleave)="message.id ? handleMouseLeave(message.id) : null">  
         <div class="messageChildContainer">
           <img class="userImg" [src]="message.senderImage" />
           <div class="containerUserNameAndTime">
@@ -39,10 +38,13 @@
               <p>{{ message.senderName }}</p>
               <p>{{ this.messageService.formatTime(message.timestamp) }}</p>
             </div>
-            <span *ngIf="isEditing !== message.id" class="message">{{ message.content }}</span>
+            <span *ngIf="isEditing !== message.id" class="message" 
+            [ngClass]="{'senderMessage': message.senderId === authService.currentUser.value?.uid}">{{ message.content }}
+      </span>
+      
             <div *ngIf="currentlyEditingMessageId === message.id && isEditing === message.id" class="editMessageContainer">
               <input [(ngModel)]="updatedMessageContent">
-              <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)">
+              <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)"> 
           </div>          
           </div>
         </div>
@@ -97,8 +99,8 @@
   <!-- <app-message></app-message> -->
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor [(ngModel)]="messageContent" (onEditorCreated)="setFocus($event)"
-    placeholder="Message to #{{ channelService.channel.channelName }}" [modules]="quillModules">
+  <quill-editor [(ngModel)]="messageContent" (onEditorCreated)="this.quillService.setFocus($event)"
+    placeholder="Message to #{{ channelService.channel.channelName }}" [modules]="this.quillService.quillModules">
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
@@ -141,7 +143,7 @@
         </div>
 
         <div class="containerAtIcon">
-          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="triggerAtSymbol()" />
+          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol()" />
         </div>
 
         <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="sendMessage()" />

@@ -1,8 +1,7 @@
-import { Injectable, OnInit, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription, filter, map, of, switchMap, tap } from 'rxjs';
-import { updateEmail } from "firebase/auth";
+import { BehaviorSubject, Observable, Subscription, map, of, switchMap, take } from 'rxjs';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import {
   Firestore,
@@ -31,11 +30,13 @@ import {
   GoogleAuthProvider,
   sendEmailVerification,
   signOut,
-  user,
   deleteUser,
-  setPersistence,
-  browserLocalPersistence
+  onAuthStateChanged,
 } from '@angular/fire/auth';
+import {
+  browserSessionPersistence,
+  browserLocalPersistence
+} from 'firebase/auth';
 
 
 @Injectable({
@@ -49,7 +50,7 @@ import {
  * @property {Observable<User | null>} user$ - Observable representing the current user. Emits either the user data or null if not authenticated.
  * @property {Subscription} userSubscription - Subscription to the user$ observable to handle user state changes.
  */
-export class AuthService implements OnDestroy {
+export class AuthService {
   public user$: Observable<User | null>;
   private userSubscription?: Subscription;
   currentUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
@@ -66,9 +67,12 @@ export class AuthService implements OnDestroy {
     public router: Router,
     public storageService: StorageService,
     private firestore: Firestore) {
-    this.user$ = user(this.auth);
+    this.user$ = new Observable(subscriber => {
+      const unsubscribe = onAuthStateChanged(this.auth, subscriber);
+      return unsubscribe;
+    });
     this.initCurrentUser();
-    // setPersistence(this.auth, browserLocalPersistence);
+    this.initializePersistence();
   }
 
 
@@ -80,6 +84,28 @@ export class AuthService implements OnDestroy {
     '../assets/img/avatar5.svg',
     '../assets/img/avatar6.svg',
   ]
+
+
+  async initializePersistence() {
+    this.user$.pipe(
+      switchMap(user => user ? this.getUserData(user.uid) : of(null)),
+      take(1)
+    ).subscribe(async userData => {
+      if (userData) {
+        try {
+          if (userData.displayName === 'Guest') {
+            await this.auth.setPersistence(browserSessionPersistence);
+            console.log("Set persistence for Guest-User!");
+          } else {
+            await this.auth.setPersistence(browserLocalPersistence);
+            console.log("Set standard persistence!");
+          }
+        } catch (error) {
+          console.error("Couldn't set persistence", error);
+        }
+      }
+    });
+  }
 
 
   getRandomGuestImage(): string {
@@ -254,16 +280,6 @@ export class AuthService implements OnDestroy {
    * @returns {User} The data structure that was set in Firestore.
    */
   async setUserData(user: FirebaseUser, isOnline?: boolean) {
-    let photoURL = user.photoURL;
-
-    // if (photoURL?.startsWith('https://lh3.googleusercontent.com/')) {
-    //   try {
-    //     photoURL = await this.storageService.uploadGooglePhotoToFirebaseStorage(photoURL, user.uid);
-    //   } catch (error) {
-    //     console.error('Can*t upload image.');
-    //   }
-    // }
-
     const userData: User = {
       uid: user.uid,
       email: user.email || null,
@@ -361,21 +377,6 @@ export class AuthService implements OnDestroy {
   }
 
 
-  // async updateUserEmail(newEmail: string) {
-  //   const user = this.auth.currentUser;
-
-  //   if (user) {
-  //     try {
-  //       await updateEmail(user, newEmail);
-  //       console.log("Email updated successfully in both Firebase Auth and Firestore.");
-  //     } catch (error) {
-  //       console.error("Error updating email: ", error);
-  //       throw error;
-  //     }
-  //   }
-  // }
-
-
   /**
    * Sends a verification email to the currently authenticated user.
    * @async
@@ -414,16 +415,5 @@ export class AuthService implements OnDestroy {
     updateDoc(userRef, {
       lastActive: Timestamp.now()
     });
-  }
-
-
-  /**
-   * Lifecycle hook that Angular calls when the component is destroyed.
-   * If there's an active subscription to `user$`, it will be unsubscribed.
-   */
-  ngOnDestroy() {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
   }
 }

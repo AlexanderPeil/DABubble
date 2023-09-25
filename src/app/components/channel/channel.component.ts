@@ -19,13 +19,10 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { User } from 'src/app/shared/services/user';
-import 'quill-mention';
-import * as Emoji from 'quill-emoji';
-import Quill from 'quill';
-import { Subject, filter, map, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, combineLatest, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { ThreadService } from 'src/app/shared/services/thread.service';
-Quill.register('modules/emoji', Emoji);
+import { QuillService } from 'src/app/shared/services/quill.service';
 
 @Component({
   selector: 'app-channel',
@@ -37,7 +34,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
   channelId!: string;
   channel: Channel = new Channel();
   url: string = '';
-  quill: any;
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   messages: MessageContent[] = [];
   groupedMessages: { date: string; messages: MessageContent[] }[] = [];
@@ -55,59 +51,44 @@ export class ChannelComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
 
-  public quillModules = {
-    'emoji-toolbar': true,
-    'emoji-textarea': true,
-    'emoji-shortname': true,
-    mention: {
-      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      mentionDenotationChars: ['@'],
-      source: this.searchUsers.bind(this),
-      renderItem(item: any) {
-        const div = document.createElement('div');
-        const img = document.createElement('img');
-        const span = document.createElement('span');
-
-        img.src = item.photoURL;
-        img.classList.add('user-dropdown-image');
-        span.textContent = item.displayName;
-
-        div.appendChild(img);
-        div.appendChild(span);
-
-        return div;
-      },
-      onSelect: (item: any, insertItem: (arg0: any) => void) => {
-        insertItem(item);
-      },
-    },
-  };
-
-
   constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
-    public channelService: ChannelService, public storageService: StorageService, private authService: AuthService, public messageService: MessageService,
-    public threadService: ThreadService,
-    private elementRef: ElementRef) {
+    public channelService: ChannelService, public storageService: StorageService, public authService: AuthService, public messageService: MessageService,
+    public threadService: ThreadService, private elementRef: ElementRef, public quillService: QuillService) {
   }
 
 
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
-    this.loggedInUser = this.authService.currentUserValue;
-    console.log(this.loggedInUser);
-    
-    this.activatedRoute.params
-      .pipe(
-        map(params => params['id']),
-        filter((channelId: any) => !!channelId && !!this.loggedInUser),
-        switchMap(channelId => this.messageService.getChannelMessages(channelId)),
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe(messages => {
-        messages.sort((a, b) => a.timestamp - b.timestamp);
-        this.messages = messages;
-        this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
-      });
+    this.fetchAndDisplayMessages();
+  }
+
+
+  fetchAndDisplayMessages(): void {
+    this.getParamsAndUser().pipe(
+      switchMap(([channelId, user]) => {
+        this.loggedInUser = user;
+        return this.messageService.getChannelMessages(channelId);
+      }),
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(messages => this.processMessages(messages));
+  }
+
+
+  getParamsAndUser(): Observable<[string, User | null]> {
+    return combineLatest([
+      this.activatedRoute.params,
+      this.authService.user$
+    ]).pipe(
+      map(([params, user]) => [params['id'], user] as [string, User | null]),
+      filter(([channelId, user]) => !!channelId && !!user)
+    );
+  }
+
+
+  processMessages(messages: MessageContent[]): void {
+    messages.sort((a, b) => a.timestamp - b.timestamp);
+    this.messages = messages;
+    this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
   }
 
 
@@ -150,12 +131,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
-  setFocus(editor: any): void {
-    this.quill = editor;
-    editor.focus();
-  }
-
-
   openDetailViewFromUploadedImage(uploadedImageUrl: string) {
     this.dialog.open(DialogDetailViewUploadedDatasComponent, {
       data: {
@@ -188,17 +163,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     } else {
       console.error('Please try again.');
     }
-
-  }
-
-
-  triggerAtSymbol() {
-    this.quill.focus();
-    setTimeout(() => {
-      const currentPosition = this.quill.getSelection()?.index || 0;
-      this.quill.insertText(currentPosition, '@ ');
-      this.quill.setSelection(currentPosition + 1);
-    }, 0);
   }
 
 
@@ -209,19 +173,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     if (realEmojiButton) {
       realEmojiButton.click();
     }
-  }
-
-
-  searchUsers(searchTerm: string, renderList: Function) {
-    this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
-      const values = users.map((user) => ({
-        id: user.uid,
-        value: user.displayName,
-        photoURL: user.photoURL,
-        displayName: user.displayName,
-      }));
-      renderList(values, searchTerm);
-    });
   }
 
 
@@ -236,12 +187,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
   scrollToBottom(): void {
     this.messagesContainer.nativeElement.scrollTop =
       this.messagesContainer.nativeElement.scrollHeight;
-  }
-
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
 
@@ -308,7 +253,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
-
   stopEvent(event: Event) {
     event.stopPropagation();
   }
@@ -331,5 +275,10 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.updatedMessageContent = currentContent;
   }
 
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
 }
