@@ -6,16 +6,11 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MessageService } from 'src/app/shared/services/message.service';
-import {
-  Observable,
-  debounceTime,
-  distinctUntilChanged,
-  of,
-  startWith,
-  switchMap,
-  filter,
-} from 'rxjs';
+import { startWith, map, Observable, of, BehaviorSubject, filter, } from 'rxjs';
 import { User } from 'src/app/shared/services/user';
+import { DocumentData } from '@angular/fire/firestore';
+import { FormControl } from '@angular/forms';
+
 
 @Component({
   selector: 'app-new-message',
@@ -28,9 +23,9 @@ export class NewMessageComponent implements OnInit {
   users: { user: any; unreadCount?: number }[] = [];
   isOnline?: boolean;
   foundUsers: any[] = [];
-  inputValue: string = '';
   messageContent: string = '';
   quill: any;
+
 
   constructor(
     public dialog: MatDialog,
@@ -39,8 +34,8 @@ export class NewMessageComponent implements OnInit {
     public channelService: ChannelService,
     public elementRef: ElementRef,
     private authService: AuthService,
-    private messageService: MessageService
-  ) {}
+    private messageService: MessageService) { }
+
 
   ngOnInit(): void {
     // this.authService.getUsers().subscribe((usersData) => {
@@ -59,6 +54,7 @@ export class NewMessageComponent implements OnInit {
     //   });
     // });
   }
+
 
   public quillModules = {
     toolbar: false,
@@ -105,24 +101,6 @@ export class NewMessageComponent implements OnInit {
     editor.focus();
   }
 
-  getInputValue($event: any) {
-    // this.channelService.channelData = of(this.channels); // Start with all items
-    // // RxJS operators for filtering based on search query
-    // this.channelService.channelData = this.channelService.channelData.pipe(
-    //   startWith($event.target.value),
-    //  filter(($event.target.value),  => {})
-    // );
-  }
-
-  // filterItems(value: string): Observable<string[]> {
-  //   return of(this.channels.filter(channel =>
-  //     channel.toLowerCase().startsWith(value.toLowerCase()) ? this.dropDownMenuChannelsIsOpen : !this.dropDownMenuChannelsIsOpen
-  //   ));
-  // }
-
-  // setFocus($event: any) {
-  //   $event.focus();
-  // }
 
   openDetailViewFromUploadedImage(uploadedImageUrl: string) {
     this.dialog.open(DialogDetailViewUploadedDatasComponent, {
