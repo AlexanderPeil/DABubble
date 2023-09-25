@@ -1,8 +1,7 @@
-import { Injectable, OnInit, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription, filter, firstValueFrom, map, of, switchMap, take, tap } from 'rxjs';
-import { updateEmail } from "firebase/auth";
+import { BehaviorSubject, Observable, Subscription, map, of, switchMap, take } from 'rxjs';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import {
   Firestore,
@@ -31,7 +30,6 @@ import {
   GoogleAuthProvider,
   sendEmailVerification,
   signOut,
-  user,
   deleteUser,
   onAuthStateChanged,
 } from '@angular/fire/auth';
@@ -91,7 +89,7 @@ export class AuthService {
   async initializePersistence() {
     this.user$.pipe(
       switchMap(user => user ? this.getUserData(user.uid) : of(null)),
-      take(1)  
+      take(1)
     ).subscribe(async userData => {
       if (userData) {
         try {
@@ -282,16 +280,6 @@ export class AuthService {
    * @returns {User} The data structure that was set in Firestore.
    */
   async setUserData(user: FirebaseUser, isOnline?: boolean) {
-    let photoURL = user.photoURL;
-
-    // if (photoURL?.startsWith('https://lh3.googleusercontent.com/')) {
-    //   try {
-    //     photoURL = await this.storageService.uploadGooglePhotoToFirebaseStorage(photoURL, user.uid);
-    //   } catch (error) {
-    //     console.error('Can*t upload image.');
-    //   }
-    // }
-
     const userData: User = {
       uid: user.uid,
       email: user.email || null,
@@ -387,21 +375,6 @@ export class AuthService {
 
     return this.mapFirestoreDataToUsers(userQuery);
   }
-
-
-  // async updateUserEmail(newEmail: string) {
-  //   const user = this.auth.currentUser;
-
-  //   if (user) {
-  //     try {
-  //       await updateEmail(user, newEmail);
-  //       console.log("Email updated successfully in both Firebase Auth and Firestore.");
-  //     } catch (error) {
-  //       console.error("Error updating email: ", error);
-  //       throw error;
-  //     }
-  //   }
-  // }
 
 
   /**
