@@ -6,7 +6,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { provideStorage, getStorage } from "@angular/fire/storage";
+import { provideStorage, getStorage } from '@angular/fire/storage';
 import { HeaderComponent } from './components/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
@@ -49,7 +49,7 @@ import { DialogDetailViewUploadedDatasComponent } from './components/dialog-deta
 import { NewMessageComponent } from './components/new-message/new-message.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -101,6 +101,7 @@ import { MatInputModule } from '@angular/material/input';
     QuillModule,
     MatFormFieldModule,
     MatInputModule,
+    MatChipsModule,
     QuillConfigModule.forRoot({
       modules: {
         toolbar: [],
@@ -114,4 +115,4 @@ import { MatInputModule } from '@angular/material/input';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

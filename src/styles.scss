@@ -123,7 +123,7 @@ app-imprint {
   border-bottom-right-radius: 20px;
 }
 
-.ql-toolbar.ql-snow+.ql-container.ql-snow {
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
   border: unset;
   max-height: 300px;
   padding-bottom: 55px;
@@ -147,7 +147,7 @@ app-imprint {
   right: unset;
 }
 
-.ql-toolbar.ql-snow+.ql-container.ql-snow {
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
   overflow: unset;
 }
 
@@ -297,7 +297,8 @@ app-imprint {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 
@@ -318,7 +319,8 @@ app-imprint {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 
@@ -363,4 +365,22 @@ app-imprint {
 
 .show {
   display: flex !important;
+}
+
+/************************************ Styles for material chips ************************************/
+
+mat-chip-row {
+  background-color: #eceefe !important;
+  padding: 5px;
+  img {
+    width: 35px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-right: 5px;
+  }
+}
+
+.mat-mdc-chip-action-label {
+  display: flex;
+  align-items: center;
 }

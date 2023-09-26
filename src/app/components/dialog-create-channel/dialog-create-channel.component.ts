@@ -41,7 +41,7 @@ export class DialogCreateChannelComponent implements OnInit {
     private channelService: ChannelService,
     private authService: AuthService,
     public dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.filterUsers();
@@ -103,7 +103,11 @@ export class DialogCreateChannelComponent implements OnInit {
       (existingUser: { uid: string }) => existingUser.uid === user.uid
     );
 
-    if (!userExists) {
+    const userAlreadySelected = this.selectedUsers.some(
+      (selectedUser: { uid: string }) => selectedUser.uid === user.uid
+    );
+
+    if (!userExists && !!userAlreadySelected) {
       this.channel.users.push(user);
       this.selectedUsers.push(user);
     } else {
