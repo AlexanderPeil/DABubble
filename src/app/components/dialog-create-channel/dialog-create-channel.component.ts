@@ -103,11 +103,7 @@ export class DialogCreateChannelComponent implements OnInit {
       (existingUser: { uid: string }) => existingUser.uid === user.uid
     );
 
-    const userAlreadySelected = this.selectedUsers.some(
-      (selectedUser: { uid: string }) => selectedUser.uid === user.uid
-    );
-
-    if (!userExists && !!userAlreadySelected) {
+    if (!userExists) {
       this.channel.users.push(user);
       this.selectedUsers.push(user);
     } else {
