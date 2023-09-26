@@ -11,11 +11,14 @@ import {
   query,
   deleteDoc,
   onSnapshot,
+  where,
   limit,
   getDocs,
+  DocumentData,
+  Query,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Channel } from 'src/app/models/channel';
 import { User } from './user';
 
@@ -104,5 +107,35 @@ export class ChannelService {
     getDoc(docRef).then((doc) => {
       this.channel = doc.data();
     });
+  }
+
+  getChannels(searchTerm?: string): Observable<Channel[]> {
+    let channelQuery;
+    if (searchTerm) {
+      const lowerCaseTerm = searchTerm.toLowerCase();
+      channelQuery = query(
+        collection(this.firestore, 'channels'),
+        where('channelName', '>=', lowerCaseTerm),
+        where('channelName', '<=', lowerCaseTerm + '\uf8ff')
+      );
+    } else {
+      channelQuery = collection(this.firestore, 'channels');
+    }
+    return this.mapFirestoreDataToChannels(channelQuery);
+  }
+
+  mapFirestoreDataToChannels(
+    channelQuery: Query<DocumentData>
+  ): Observable<Channel[]> {
+    return collectionData(channelQuery).pipe(
+      map((channelsData) =>
+        channelsData.map(
+          (data) =>
+            ({
+              channelName: data['channelName'],
+            } as Channel)
+        )
+      )
+    );
   }
 }
