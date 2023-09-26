@@ -123,7 +123,7 @@ app-imprint {
   border-bottom-right-radius: 20px;
 }
 
-.ql-toolbar.ql-snow + .ql-container.ql-snow {
+.ql-toolbar.ql-snow+.ql-container.ql-snow {
   border: unset;
   max-height: 300px;
   padding-bottom: 55px;
@@ -147,7 +147,7 @@ app-imprint {
   right: unset;
 }
 
-.ql-toolbar.ql-snow + .ql-container.ql-snow {
+.ql-toolbar.ql-snow+.ql-container.ql-snow {
   overflow: unset;
 }
 
@@ -208,6 +208,7 @@ app-imprint {
     background-color: #eceefe;
 
     .message {
+      color: black;
       background-color: white;
     }
 
@@ -224,6 +225,7 @@ app-imprint {
 
 .messageChildContainer {
   display: flex;
+  align-items: center;
   gap: 10px;
 }
 
@@ -263,23 +265,6 @@ app-imprint {
   background-color: #797ef3;
 }
 
-.containerEmojis {
-  gap: 10px;
-  margin: -45px 170px 0 0;
-  padding: 5px 20px 5px 20px;
-  border-bottom-left-radius: 25px;
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
-  border: 1px solid #adb0d9;
-  background-color: white;
-
-  &:hover {
-    .messageMainContainer {
-      background-color: #eceefe;
-    }
-  }
-}
-
 .completeEmoji {
   padding: 8px;
   border-radius: 50%;
@@ -312,8 +297,7 @@ app-imprint {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 
@@ -334,8 +318,7 @@ app-imprint {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 

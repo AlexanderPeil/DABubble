@@ -51,10 +51,32 @@
   }
 }
 
+.containerEmojis {
+  gap: 10px;
+  margin: -140px 130px 0px 300px;
+  padding: 5px 20px 5px 20px;
+  border-bottom-left-radius: 25px;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  border: 1px solid #adb0d9;
+  background-color: white;
+
+  &:hover {
+    .messageMainContainer {
+      @include button_hover;
+      background-color: #eceefe;
+    }
+  }
+}
+
 .smileyContainer {
   position: relative;
   z-index: 99;
   width: 348px;
+}
+
+.containerThreePointsIcon {
+  display: flex;
 }
 
 .user-dropdown {
@@ -145,7 +167,7 @@ quill-editor {
   height: 40px;
   border-radius: 8px;
 
-  &:hover + .closeIcon {
+  &:hover+.closeIcon {
     display: flex;
   }
 
@@ -166,7 +188,7 @@ quill-editor {
     border-radius: 8px;
     border: unset;
 
-    &:hover + .closeIcon {
+    &:hover+.closeIcon {
       display: flex;
     }
   }
@@ -217,8 +239,7 @@ quill-editor {
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -238,8 +259,7 @@ quill-editor {
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -259,8 +279,7 @@ quill-editor {
     &:hover {
       transform: scale(1.05);
       transition: all 225ms ease-in-out;
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }

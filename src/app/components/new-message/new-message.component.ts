@@ -6,17 +6,11 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MessageService } from 'src/app/shared/services/message.service';
-import {
-  Observable,
-  debounceTime,
-  distinctUntilChanged,
-  of,
-  startWith,
-  switchMap,
-  filter,
-} from 'rxjs';
+import { startWith, map, Observable, of, BehaviorSubject, filter } from 'rxjs';
 import { User } from 'src/app/shared/services/user';
 import { Channel } from 'src/app/models/channel';
+import { DocumentData } from '@angular/fire/firestore';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-new-message',
@@ -29,7 +23,6 @@ export class NewMessageComponent implements OnInit {
   users: { user: any; unreadCount?: number }[] = [];
   isOnline?: boolean;
   foundUsers: any[] = [];
-  inputValue: string = '';
   messageContent: string = '';
   quill: any;
 

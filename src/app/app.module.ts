@@ -47,7 +47,8 @@ import { DialogDataUploadSuccessfulComponent } from './components/dialog-data-up
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DialogDetailViewUploadedDatasComponent } from './components/dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
 import { NewMessageComponent } from './components/new-message/new-message.component';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -98,6 +99,8 @@ import { NewMessageComponent } from './components/new-message/new-message.compon
     MatAutocompleteModule,
     MatTooltipModule,
     QuillModule,
+    MatFormFieldModule,
+    MatInputModule,
     QuillConfigModule.forRoot({
       modules: {
         toolbar: [],
