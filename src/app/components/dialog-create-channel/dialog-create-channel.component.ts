@@ -115,6 +115,24 @@ export class DialogCreateChannelComponent implements OnInit {
     }
   }
 
+  removeUserFromSelectedUser(user: User): void {
+    // Entfernen Sie den Benutzer aus selectedUsers
+    const selectedUsersIndex = this.selectedUsers.indexOf(user);
+    if (selectedUsersIndex >= 0) {
+      this.selectedUsers.splice(selectedUsersIndex, 1);
+    }
+
+    // Entfernen Sie den Benutzer aus this.channel.users, wenn er vorhanden ist
+    if (this.channel.users) {
+      const channelUsersIndex = this.channel.users.findIndex(
+        (channelUser: { uid: string }) => channelUser.uid === user.uid
+      );
+      if (channelUsersIndex >= 0) {
+        this.channel.users.splice(channelUsersIndex, 1);
+      }
+    }
+  }
+
   async onSubmitWithMembers(channel: any) {
     if (this.selectedRadioButtonValue == '1') {
       await this.addAllMembers(); // Call addAllMembers only if radioSelected and user IDs are not defined
@@ -122,7 +140,10 @@ export class DialogCreateChannelComponent implements OnInit {
       // Call the addChannelService method to create the channel
       this.getValueForChannelNameAndConvertToLowerCase(channel.channelName);
       this.channelService.addChannelService(this.channel);
-    } else {
+    } else if (
+      this.selectedRadioButtonValue == '2' &&
+      this.channel.users.length > 0
+    ) {
       // Call the addChannelService method to create the channel without adding all members
       this.getValueForChannelNameAndConvertToLowerCase(channel.channelName);
       this.channelService.addChannelService(this.channel);
