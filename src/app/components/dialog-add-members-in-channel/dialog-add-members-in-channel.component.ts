@@ -5,19 +5,21 @@ import {
   HostListener,
   ViewChild,
   Inject,
+  OnDestroy,
 } from '@angular/core';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { Channel } from 'src/app/models/channel';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dialog-add-members-in-channel',
   templateUrl: './dialog-add-members-in-channel.component.html',
   styleUrls: ['./dialog-add-members-in-channel.component.scss'],
 })
-export class DialogAddMembersInChannelComponent implements OnInit {
+export class DialogAddMembersInChannelComponent implements OnInit, OnDestroy {
   showUserDropdown: boolean = false;
   foundUsers: User[] = [];
   channel: Channel = new Channel();
@@ -25,6 +27,8 @@ export class DialogAddMembersInChannelComponent implements OnInit {
   userAlreadyExists: boolean = false;
   selectedUsers: User[] = [];
   addOnBlur = true;
+
+  private usersSubscription: Subscription | undefined;
 
   constructor(
     public channelService: ChannelService,
@@ -42,9 +46,11 @@ export class DialogAddMembersInChannelComponent implements OnInit {
   }
 
   filterUsers(query?: string): void {
-    this.authService.getUsers(query).subscribe((users) => {
-      this.foundUsers = users;
-    });
+    this.usersSubscription = this.authService
+      .getUsers(query)
+      .subscribe((users) => {
+        this.foundUsers = users;
+      });
   }
 
   selectUser(user: User): void {
@@ -112,6 +118,12 @@ export class DialogAddMembersInChannelComponent implements OnInit {
   onDocumentClick(event: Event): void {
     if (!this.input.nativeElement.contains(event.target)) {
       this.showUserDropdown = false;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.usersSubscription) {
+      this.usersSubscription.unsubscribe();
     }
   }
 }
