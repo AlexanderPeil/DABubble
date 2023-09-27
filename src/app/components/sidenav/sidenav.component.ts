@@ -88,8 +88,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }
     this.messageService.setCurrentChatPartner(userWithCount.user.uid);
     this.router.navigate(['main', 'direct-message', userWithCount.user.uid]);
-    console.log(userWithCount.user.uid);
-    
   }
 
 

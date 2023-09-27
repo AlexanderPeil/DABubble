@@ -63,6 +63,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
+  ngAfterViewInit(): void {
+    this.scrollToBottom();
+  }
+
+
   loadChatParticipants(): Observable<[User | null, User | null]> {
     return combineLatest([
       this.route.paramMap.pipe(map(params => params.get('id'))),
@@ -89,6 +94,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         messages.sort((a, b) => a.timestamp - b.timestamp);
         this.messages = messages;
         this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
+        this.scrollToBottom();
       });
   }
 

@@ -243,9 +243,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
         return this.messageService.getChannelMessages(channelId);
       }),
       takeUntil(this.ngUnsubscribe)
-    ).subscribe(messages => this.processMessages(messages));
+    ).subscribe(messages => {
+      this.processMessages(messages);
+      setTimeout(() => this.scrollToBottom());
+    });
   }
-
+  
 
   getParamsAndUser(): Observable<[string, User | null]> {
     return combineLatest([
