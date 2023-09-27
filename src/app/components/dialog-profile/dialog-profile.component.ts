@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, switchMap, tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -23,22 +23,14 @@ export class DialogProfileComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.userSubscription = this.authService.user$
-      .pipe(
-        tap(firebaseUser => {
-          if (!firebaseUser?.uid) {
-            this.user = null;
-            this.isOnline = undefined;
-          }
-        }),
-        switchMap(firebaseUser =>
-          firebaseUser?.uid ? this.authService.getUserData(firebaseUser.uid) : []
-        )
-      )
-      .subscribe(userData => {
+    const firebaseUser = this.authService.currentUserValue;
+
+    if (firebaseUser) {
+      this.userSubscription = this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
         this.user = userData ?? null;
         this.isOnline = userData?.isOnline ?? undefined;
       });
+    }
   }
 
 

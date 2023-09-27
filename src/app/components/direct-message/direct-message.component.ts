@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { Observable, Subject, combineLatest, filter, map, of, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, Subscription, combineLatest, filter, map, of, switchMap, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { MessageContent } from 'src/app/models/message';
@@ -34,6 +34,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   currentlyEditingMessageId: string | null = null;
   isEditing: string | null = null;
   updatedMessageContent: string = '';
+  messagesSubscription: Subscription | null = null;
 
 
   constructor(
@@ -53,6 +54,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       this.messageService.loggedInUser = loggedInUser;
 
       if (loggedInUser && selectedUser) {
+        this.messageService.usersInChat[loggedInUser.uid] = true;
         this.loadDirectMessages(loggedInUser.uid, selectedUser.uid);
       } else {
         console.error("Either loggedInUser or selectedUser is null");
@@ -77,7 +79,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
 
   loadDirectMessages(userId1: string, userId2: string) {
-    this.messageService.getDirectMessages(userId1, userId2)
+    if (this.messagesSubscription) {
+      this.messagesSubscription.unsubscribe();
+    }
+
+    this.messagesSubscription = this.messageService.getDirectMessages(userId1, userId2)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(messages => {
         messages.sort((a, b) => a.timestamp - b.timestamp);
@@ -225,6 +231,10 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    if (this.messagesSubscription) {
+      this.messagesSubscription.unsubscribe();
+    }
+    this.messageService.setCurrentChatPartner(null);
   }
 
 }

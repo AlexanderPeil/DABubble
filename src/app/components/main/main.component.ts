@@ -17,6 +17,7 @@ export class MainComponent implements OnDestroy, OnInit {
   userSubscription!: Subscription;
   lastUpdate: number = 0;
   updateUserActivityTimeout: any;
+  inactiveGuestUserSubscription!: Subscription;
 
 
   constructor(
@@ -64,7 +65,8 @@ export class MainComponent implements OnDestroy, OnInit {
 
 
   autoLogoutInactiveGuestUsers() {
-    this.authService.getInactiveGuestUsers().subscribe((users: User[]) => {
+    this.inactiveGuestUserSubscription?.unsubscribe();
+    this.inactiveGuestUserSubscription = this.authService.getInactiveGuestUsers().subscribe((users: User[]) => {
       users.forEach((user: User) => {
         if (user.lastActive && Date.now() - user.lastActive.toMillis() > 60 * 60 * 1000) {
           this.authService.deleteGuestUser(user.uid);
@@ -77,6 +79,7 @@ export class MainComponent implements OnDestroy, OnInit {
   ngOnDestroy() {
     clearInterval(this.checkUserActivityInterval);
     this.userSubscription?.unsubscribe();
+    this.inactiveGuestUserSubscription?.unsubscribe();
   }
 
 }

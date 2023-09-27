@@ -12,7 +12,7 @@ import {
   docData,
   updateDoc
 } from '@angular/fire/firestore';
-import { Observable, catchError, combineLatest, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, firstValueFrom, map, of, take } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { AuthService } from './auth.service';
 import { User } from 'src/app/shared/services/user';
@@ -24,6 +24,10 @@ import { User } from 'src/app/shared/services/user';
 export class MessageService {
   selectedUser: User | null = null;
   loggedInUser: User | null = null;
+  currentChatPartners: { [userId: string]: string } = {};
+  usersInChat: { [userId: string]: boolean } = {};
+  currentChatPartnerSubject = new BehaviorSubject<string | null>(null);
+  currentChatPartner$ = this.currentChatPartnerSubject.asObservable();
 
   constructor(
     private firestore: Firestore,
@@ -120,25 +124,30 @@ export class MessageService {
   // Here begins the logic for the direct-messages
   async createAndAddMessage(senderId: string, receiverId: string, senderName: string, content: string): Promise<void> {
     const loggedInUser = this.authService.currentUserValue;
+    let read = false; 
+    const currentChatPartner = await firstValueFrom(this.currentChatPartner$.pipe(take(1)));
+    if (currentChatPartner === receiverId) {
+        read = true;
+    }
 
     const message = new MessageContent({
-      senderId: senderId,
-      receiverId: receiverId,
-      content: content,
-      timestamp: Date.now(),
-      senderName: senderName,
-      read: false,
-      senderImage: loggedInUser?.photoURL ?? '',
-      hasThread: false
+        senderId: senderId,
+        receiverId: receiverId,
+        content: content,
+        timestamp: Date.now(),
+        senderName: senderName,
+        read: read, 
+        senderImage: loggedInUser?.photoURL ?? '',
+        hasThread: false
     });
 
     const messageCollection = this.getDirectMessageCollection(senderId, receiverId);
     try {
-      await addDoc(messageCollection, message.toJSON());
+        await addDoc(messageCollection, message.toJSON());
     } catch (error) {
-      console.error("Error adding document: ", error);
+        console.error("Error adding document: ", error);
     }
-  }
+}
 
 
   getDirectMessageCollection(userId1: string, userId2: string) {
@@ -175,6 +184,7 @@ export class MessageService {
     );
   }
 
+
   async updateDirectMessage(userId1: string, userId2: string, messageId: string, updatedContent: string): Promise<void> {
     const messageCollection = this.getDirectMessageCollection(userId1, userId2);
     const messageRef = doc(messageCollection, messageId);
@@ -187,6 +197,11 @@ export class MessageService {
     } catch (error) {
       console.error("Error updating document: ", error);
     }
+  }
+
+
+  setCurrentChatPartner(userId: string | null) {
+    this.currentChatPartnerSubject.next(userId);
   }
   // Here ends the logic for the direct-messages
 

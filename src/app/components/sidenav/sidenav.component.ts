@@ -86,13 +86,14 @@ export class SidenavComponent implements OnInit, OnDestroy {
         userWithCount.unreadCount = 0;
       });
     }
+    this.messageService.setCurrentChatPartner(userWithCount.user.uid);
     this.router.navigate(['main', 'direct-message', userWithCount.user.uid]);
+    console.log(userWithCount.user.uid);
+    
   }
 
 
   ngOnDestroy() {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
+    this.userSubscription?.unsubscribe();
   }
 }

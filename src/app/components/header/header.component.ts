@@ -24,22 +24,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.userSubscription = this.authService.user$
-      .pipe(
-        tap(firebaseUser => {
-          if (!firebaseUser?.uid) {
-            this.user = null;
-            this.isOnline = undefined;
-          }
-        }),
-        switchMap(firebaseUser =>
-          firebaseUser?.uid ? this.authService.getUserData(firebaseUser.uid) : []
-        )
-      )
-      .subscribe(userData => {
-        this.user = userData ?? null;
-        this.isOnline = userData?.isOnline ?? undefined;
-      });
+    this.userSubscription = this.authService.currentUser.subscribe(user => {
+      this.user = user;
+      this.isOnline = user?.isOnline ?? undefined;
+    });
   }
 
 
@@ -59,13 +47,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnDestroy() {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-  }
-
-
   @HostListener('document:click', ['$event'])
   clickout(event: { target: any; }) {
     if (!this._eref.nativeElement.contains(event.target)) {
@@ -82,6 +63,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogout() {
     this.authService.signOut();
     this.showMenu = false;
+  }
+
+
+  ngOnDestroy() {
+    this.userSubscription?.unsubscribe();
   }
 
 }

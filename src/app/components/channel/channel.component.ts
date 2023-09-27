@@ -19,7 +19,7 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { User } from 'src/app/shared/services/user';
-import { Observable, Subject, combineLatest, filter, map, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, combineLatest, filter, map, switchMap, takeUntil } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { ThreadService } from 'src/app/shared/services/thread.service';
 import { QuillService } from 'src/app/shared/services/quill.service';
@@ -60,28 +60,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
     this.fetchAndDisplayMessages();
-  }
-
-
-  fetchAndDisplayMessages(): void {
-    this.getParamsAndUser().pipe(
-      switchMap(([channelId, user]) => {
-        this.loggedInUser = user;
-        return this.messageService.getChannelMessages(channelId);
-      }),
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe(messages => this.processMessages(messages));
-  }
-
-
-  getParamsAndUser(): Observable<[string, User | null]> {
-    return combineLatest([
-      this.activatedRoute.params,
-      this.authService.user$
-    ]).pipe(
-      map(([params, user]) => [params['id'], user] as [string, User | null]),
-      filter(([channelId, user]) => !!channelId && !!user)
-    );
   }
 
 
@@ -255,6 +233,28 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
   stopEvent(event: Event) {
     event.stopPropagation();
+  }
+
+
+  fetchAndDisplayMessages(): void {
+    this.getParamsAndUser().pipe(
+      switchMap(([channelId, user]) => {
+        this.loggedInUser = user;
+        return this.messageService.getChannelMessages(channelId);
+      }),
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(messages => this.processMessages(messages));
+  }
+
+
+  getParamsAndUser(): Observable<[string, User | null]> {
+    return combineLatest([
+      this.activatedRoute.params,
+      this.authService.user$
+    ]).pipe(
+      map(([params, user]) => [params['id'], user] as [string, User | null]),
+      filter(([channelId, user]) => !!channelId && !!user)
+    );
   }
 
 

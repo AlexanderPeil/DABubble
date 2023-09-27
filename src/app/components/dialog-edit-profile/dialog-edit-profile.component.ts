@@ -49,20 +49,20 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initForm();
+    const firebaseUser = this.authService.currentUserValue;
 
-    this.userSubscription = this.authService.user$.subscribe(firebaseUser => {
-      if (firebaseUser) {
-        this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
-          if (userData) {
-            this.user = userData;
-            this.userForm.patchValue(userData);
-          } else {
-            this.user = null;
-          }
-        });
-      }
-    });
+    if (firebaseUser) {
+      this.userSubscription = this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
+        if (userData) {
+          this.user = userData;
+          this.userForm.patchValue(userData);
+        } else {
+          this.user = null;
+        }
+      });
+    }
   }
+
 
 
   private initForm() {
@@ -111,9 +111,7 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
+    this.userSubscription?.unsubscribe();
   }
 
 }

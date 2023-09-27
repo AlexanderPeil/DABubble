@@ -28,7 +28,6 @@ import {
   User as FirebaseUser,
   signInAnonymously,
   GoogleAuthProvider,
-  sendEmailVerification,
   signOut,
   deleteUser,
   onAuthStateChanged,
@@ -375,26 +374,6 @@ export class AuthService {
 
     return this.mapFirestoreDataToUsers(userQuery);
   }
-
-
-  /**
-   * Sends a verification email to the currently authenticated user.
-   * @async
-   * @throws Will throw an error if sending the email fails.
-   */
-  // async sendVerificationMail() {
-  //   if (this.auth.currentUser) {
-  //     try {
-  //       await sendEmailVerification(this.auth.currentUser);
-  //       // console.log("Verification Email Sent!");
-  //     } catch (error) {
-  //       console.error("Failed to send verification email:", error);
-  //       throw error;
-  //     }
-  //   } else {
-  //     console.log("No user signed in");
-  //   }
-  // }
 
 
   /**
