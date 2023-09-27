@@ -6,11 +6,12 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MessageService } from 'src/app/shared/services/message.service';
-import { startWith, map, Observable, of, BehaviorSubject, filter } from 'rxjs';
-import { User } from 'src/app/shared/services/user';
-import { Channel } from 'src/app/models/channel';
-import { DocumentData } from '@angular/fire/firestore';
-import { FormControl } from '@angular/forms';
+// import { startWith, map, Observable, of, BehaviorSubject, filter } from 'rxjs';
+// import { User } from 'src/app/shared/services/user';
+// import { Channel } from 'src/app/models/channel';
+// import { DocumentData } from '@angular/fire/firestore';
+// import { FormControl } from '@angular/forms';
+import { QuillService } from 'src/app/shared/services/quill.service';
 
 @Component({
   selector: 'app-new-message',
@@ -33,7 +34,8 @@ export class NewMessageComponent implements OnInit {
     public channelService: ChannelService,
     public elementRef: ElementRef,
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public quillService: QuillService
   ) {}
 
   ngOnInit(): void {
@@ -52,80 +54,6 @@ export class NewMessageComponent implements OnInit {
     //     }
     //   });
     // });
-  }
-
-  public quillModules = {
-    toolbar: false,
-    mention: {
-      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      mentionDenotationChars: ['@', '#'],
-      source: this.searchMentions.bind(this),
-      renderItem(item: any) {
-        const div = document.createElement('div');
-        const img = document.createElement('img');
-        const span = document.createElement('span');
-
-        img.src = item.photoURL;
-        img.classList.add('user-dropdown-image');
-        span.textContent = item.displayName;
-
-        div.appendChild(img);
-        div.appendChild(span);
-
-        return div;
-      },
-      onSelect: (item: any, insertItem: (arg0: any) => void) => {
-        insertItem(item);
-      },
-    },
-  };
-
-  searchMentions(mentionText: string, renderList: Function) {
-    // Überprüfen Sie, ob der Text mit "@" oder "#" beginnt, um Benutzer oder Channels zu suchen.
-    if (mentionText.startsWith('@')) {
-      const userSearchTerm = mentionText.slice(1); // Entfernen Sie das "@"-Zeichen
-      this.searchUsers(userSearchTerm, renderList);
-    } else if (mentionText.startsWith('#')) {
-      const channelSearchTerm = mentionText.slice(1); // Entfernen Sie das "#" -Zeichen
-      this.searchChannels(channelSearchTerm, renderList);
-    } else {
-      // Wenn weder "@" noch "#" vorhanden ist, geben Sie ein leeres Array zurück.
-      renderList([]);
-    }
-  }
-
-  searchUsers(searchTerm: string, renderList: Function) {
-    console.log('searchUsers called with searchTerm:', searchTerm);
-
-    this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
-      const values = users.map((user) => ({
-        id: user.uid,
-        value: user.displayName,
-        photoURL: user.photoURL,
-        displayName: user.displayName,
-      }));
-      renderList(values, searchTerm);
-    });
-  }
-
-  searchChannels(searchTerm: string, renderList: Function) {
-    console.log('searchChannels called with searchTerm:', searchTerm);
-
-    this.channelService
-      .getChannels(searchTerm)
-      .subscribe((channels: Channel[]) => {
-        const values = channels.map((channel) => ({
-          id: channel.channelName, // Stellen Sie sicher, dass Ihre Channels eine eindeutige ID haben
-          value: channel.channelName,
-          displayName: channel.channelName,
-        }));
-        renderList(values, searchTerm);
-      });
-  }
-
-  setFocus(editor: any): void {
-    this.quill = editor;
-    editor.focus();
   }
 
   // getInputValue($event: any) {
