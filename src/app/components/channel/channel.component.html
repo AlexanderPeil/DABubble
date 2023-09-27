@@ -1,6 +1,5 @@
-<div [ngClass]="{
-    chatHistoryFullWidth: toggleWorspaceMenuService.workspaceMenuAreClosed
-  }" class="chatHistoryMainContainer">
+<div [ngClass]="{ chatHistoryFullWidth: toggleWorspaceMenuService.workspaceMenuAreClosed }"
+  class="chatHistoryMainContainer">
   <div class="chatHistoryHeader">
     <div (click)="openDialogToEditChannel()" class="channelName">
       <img src="assets/img/icons/hashtag.svg" />
@@ -30,7 +29,8 @@
         <span>{{ group.date }}</span>
         <hr />
       </div>
-      <div *ngFor="let message of group.messages" class="displayMessagesContainer" (mouseenter)="onMessageHover(message)" (mouseleave)="message.id ? handleMouseLeave(message.id) : null">  
+      <div *ngFor="let message of group.messages" class="displayMessagesContainer"
+        (mouseenter)="onMessageHover(message)" (mouseleave)="message.id ? handleMouseLeave(message.id) : null">
         <div class="messageChildContainer">
           <img class="userImg" [src]="message.senderImage" />
           <div class="containerUserNameAndTime">
@@ -38,14 +38,14 @@
               <p>{{ message.senderName }}</p>
               <p>{{ this.messageService.formatTime(message.timestamp) }}</p>
             </div>
-            <span *ngIf="isEditing !== message.id" class="message" 
-            [ngClass]="{'senderMessage': message.senderId === authService.currentUser.value?.uid}">{{ message.content }}
-      </span>
-      
-            <div *ngIf="currentlyEditingMessageId === message.id && isEditing === message.id" class="editMessageContainer">
+            <span *ngIf="isEditing !== message.id" class="message"
+              [ngClass]="{'senderMessage': message.senderId === authService.currentUser.value?.uid}">{{ message.content
+              }}</span>
+            <div *ngIf="currentlyEditingMessageId === message.id && isEditing === message.id"
+              class="editMessageContainer">
               <input [(ngModel)]="updatedMessageContent">
-              <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)"> 
-          </div>          
+              <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)">
+            </div>
           </div>
         </div>
 
@@ -74,7 +74,8 @@
         <!-- Emoji container -->
 
         <!-- Pop Up to Edit Message -->
-        <div *ngIf="currentlyEditingMessageId === message.id" class="popUpEditMessage" (mouseover)="stopEvent($event)" (click)="editMessage(message.id, message.content)">
+        <div *ngIf="currentlyEditingMessageId === message.id" class="popUpEditMessage" (mouseover)="stopEvent($event)"
+          (click)="editMessage(message.id, message.content)">
           <p>Edit message</p>
         </div>
         <!-- Pop Up to Edit Message -->
@@ -95,6 +96,7 @@
       </div>
     </div>
   </div>
+  <!-- Message container -->
 
   <!-- <app-message></app-message> -->
 
@@ -118,10 +120,7 @@
         <!--------------------------------------- Displays uploaded Images --------------------------------------->
 
         <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
-        <div *ngFor="
-            let uploadedData of storageService.uploadedDatas;
-            let i = index
-          " class="containerUploadedDatas">
+        <div *ngFor=" let uploadedData of storageService.uploadedDatas; let i = index " class="containerUploadedDatas">
           <iframe class="uploadedData" [src]="uploadedData ? uploadedData : null"></iframe>
           <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
               this.storageService.deleteUploadedDataService(uploadedData, i)

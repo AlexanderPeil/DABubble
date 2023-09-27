@@ -32,8 +32,7 @@
             <hr>
             <div *ngFor="let threadMessage of threadMessages" class="messageChildContainer">
                 <div class="containerUserNameAndTime">
-                    <img class="userImg" [src]="threadMessage.senderImage"
-                        alt="{{ threadMessage.senderName }}'s profile image" />
+                    <img class="userImg" [src]="threadMessage.senderImage" alt="{{ threadMessage.senderName }}'s profile image" />
                     <p class="userName">{{ threadMessage.senderName }}</p>
                     <p class="time">{{ messageService.formatTime(threadMessage.timestamp) }}</p>
                 </div>

@@ -53,7 +53,7 @@
 
 .containerEmojis {
   gap: 10px;
-  margin: -140px 130px 0px 300px;
+  margin: -40px 30px 0px 0px;
   padding: 5px 20px 5px 20px;
   border-bottom-left-radius: 25px;
   border-top-left-radius: 25px;
@@ -73,10 +73,6 @@
   position: relative;
   z-index: 99;
   width: 348px;
-}
-
-.containerThreePointsIcon {
-  display: flex;
 }
 
 .user-dropdown {
