@@ -83,10 +83,10 @@ export class NewMessageComponent implements OnInit {
   searchMentions(mentionText: string, renderList: Function) {
     // Überprüfen Sie, ob der Text mit "@" oder "#" beginnt, um Benutzer oder Channels zu suchen.
     if (mentionText.startsWith('@')) {
-      const userSearchTerm = mentionText.substr(1); // Entfernen Sie das "@"-Zeichen
+      const userSearchTerm = mentionText.slice(1); // Entfernen Sie das "@"-Zeichen
       this.searchUsers(userSearchTerm, renderList);
     } else if (mentionText.startsWith('#')) {
-      const channelSearchTerm = mentionText.substr(1); // Entfernen Sie das "#" -Zeichen
+      const channelSearchTerm = mentionText.slice(1); // Entfernen Sie das "#" -Zeichen
       this.searchChannels(channelSearchTerm, renderList);
     } else {
       // Wenn weder "@" noch "#" vorhanden ist, geben Sie ein leeres Array zurück.

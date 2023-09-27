@@ -110,6 +110,7 @@
 }
 
 .emptyChatDiv {
+  padding: 20px;
 
   p {
     @include font(20px, 400, 27px);
@@ -163,7 +164,7 @@ quill-editor {
   height: 40px;
   border-radius: 8px;
 
-  &:hover+.closeIcon {
+  &:hover + .closeIcon {
     display: flex;
   }
 
@@ -184,7 +185,7 @@ quill-editor {
     border-radius: 8px;
     border: unset;
 
-    &:hover+.closeIcon {
+    &:hover + .closeIcon {
       display: flex;
     }
   }
@@ -235,7 +236,8 @@ quill-editor {
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -255,7 +257,8 @@ quill-editor {
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -275,7 +278,8 @@ quill-editor {
     &:hover {
       transform: scale(1.05);
       transition: all 225ms ease-in-out;
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
