@@ -159,7 +159,7 @@
 .mainContainerUploadedDatas {
   display: flex;
   gap: 15px;
-  padding-bottom: 8px;
+  // padding-bottom: 8px;
 }
 
 .containerUploadedImages {
@@ -232,23 +232,6 @@
 
   &:hover {
     @include hover_input_or_textarea;
-  }
-}
-
-.quill-editor-textarea {
-  border: 1px solid #adb0d9;
-  border-radius: 20px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  left: 20px;
-  right: 20px;
-  bottom: 15px;
-
-  &:hover {
-    border-radius: 20px;
-    border: 1px solid #797ef3;
   }
 }
 
