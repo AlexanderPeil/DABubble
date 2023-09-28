@@ -172,6 +172,11 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
 
+  retryLoadImage(senderImage: string) {
+    senderImage = this.user_images;
+  }
+
+
   ngOnDestroy(): void {
     this.unsubscribe.next();
     this.unsubscribe.complete();

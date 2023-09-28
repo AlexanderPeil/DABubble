@@ -27,10 +27,7 @@ export class MessageContent {
     this.read = object ? object.read : '';
     this.hasThread = object ? object.hasThread : false;
     this.messageId = object ? object.messageId : '';
-
-    if (object && object.emojis) {
-      this.emojis = object.emojis;
-    }
+    this.emojis = object ? object.emojis || {} : {};
   }
 
   public toJSON(): any {
@@ -42,7 +39,7 @@ export class MessageContent {
       senderImage: this.senderImage,
       read: this.read,
       hasThread: this.hasThread,
-      emojis: this.emojis
+      emojis: this.emojis || {} 
     };
 
     if (this.receiverId) {

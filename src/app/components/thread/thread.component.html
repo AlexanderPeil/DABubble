@@ -17,7 +17,7 @@
         <div *ngIf="selectedMessage" class="threadMessageMainContainer">
             <div class="messageChildContainer">
                 <div class="containerUserNameAndTime">
-                    <img class="userImg" [src]="selectedMessage.senderImage" />
+                    <img class="userImg" [src]="selectedMessage.senderImage" (error)="retryLoadImage(selectedMessage.senderImage)"/>
                     <p class="userName">{{ selectedMessage.senderName }}</p>
                     <p class="time">{{ this.messageService.formatTime(selectedMessage.timestamp) }}</p>
                 </div>
@@ -32,7 +32,7 @@
             <hr>
             <div *ngFor="let threadMessage of threadMessages" class="messageChildContainer">
                 <div class="containerUserNameAndTime">
-                    <img class="userImg" [src]="threadMessage.senderImage" alt="{{ threadMessage.senderName }}'s profile image" />
+                    <img class="userImg" [src]="threadMessage.senderImage" alt="{{ threadMessage.senderName }}'s profile image" (error)="retryLoadImage(threadMessage.senderImage)" />
                     <p class="userName">{{ threadMessage.senderName }}</p>
                     <p class="time">{{ messageService.formatTime(threadMessage.timestamp) }}</p>
                 </div>

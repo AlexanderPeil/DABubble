@@ -80,15 +80,23 @@ export class QuillService {
 
   searchUsers(searchTerm: string, renderList: Function) {
     this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
-      const values = users.map((user) => ({
-        id: user.uid,
-        value: user.displayName,
-        photoURL: user.photoURL,
-        displayName: user.displayName,
-      }));
+      const user_images = '../assets/img/avatar1.svg';
+      const values = users.map((user) => {
+        let photoURL = user.photoURL;
+        if(!photoURL) {
+          photoURL = user_images;
+        }
+        return {
+          id: user.uid,
+          value: user.displayName,
+          photoURL: photoURL,
+          displayName: user.displayName,
+        };
+      });
       renderList(values, searchTerm);
     });
-  }
+}
+
 
   searchChannels(searchTerm: string, renderList: Function) {
     console.log('searchChannels called with searchTerm:', searchTerm);

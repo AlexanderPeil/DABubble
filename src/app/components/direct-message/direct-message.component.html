@@ -2,7 +2,7 @@
     <div class="chatHistoryHeader">
         <div class="userName" (click)="openDialog()">
             <div class="userIconWrapper">
-                <img class="userImg" [src]="messageService.selectedUser?.photoURL" alt="">
+                <img class="userImg" [src]="messageService.selectedUser?.photoURL" (error)="retryLoadImage(messageService.selectedUser)">
                 <img *ngIf="messageService.selectedUser?.isOnline" class="statusIcon"
                     src="../../../assets/img/icons/user_online.svg" alt="Online" />
                 <img *ngIf="messageService.selectedUser?.isOnline" class="statusIcon"
@@ -13,7 +13,7 @@
     </div>
 
     <div *ngIf="!groupedMessages.length" class="emptyChatDiv">
-        <img class="userImgEmptyChat" [src]="messageService.selectedUser?.photoURL" alt="Receiver Image" />
+        <img class="userImgEmptyChat" [src]="messageService.selectedUser?.photoURL" (error)="retryLoadImage(messageService.selectedUser)" alt="Receiver Image" />
         <p>This chat is only between <span>@{{messageService.selectedUser?.displayName}}</span> and you.</p>
     </div>
 
@@ -29,7 +29,7 @@
             <div *ngFor="let message of group.messages" class="displayMessagesContainer"
                 (mouseenter)="onMessageHover(message)" (mouseleave)="message.id ? handleMouseLeave(message.id) : null">
                 <div class="messageChildContainer">
-                    <img class="userImg" [src]="message.senderImage" />
+                    <img class="userImg" [src]="message.senderImage" (error)="retryLoadImage(messageService.selectedUser)" />
                     <div class="containerUserNameAndTime">
                         <div class="nameTimeContainer">
                             <p>{{ message.senderName }}</p>
