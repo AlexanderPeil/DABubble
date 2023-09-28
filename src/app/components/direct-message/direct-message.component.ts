@@ -234,6 +234,13 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
+  retryLoadImage(user: User | null) {
+    if (user) {
+      user.photoURL = this.user_images;
+    }
+  }
+
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

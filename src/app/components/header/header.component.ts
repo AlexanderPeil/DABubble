@@ -31,9 +31,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
 
-  retryLoadImage() {
-    if (this.user) {
-      this.user.photoURL = this.user_images;
+  retryLoadImage(user: User | null) {
+    if (user) {
+      user.photoURL = this.user_images;
     }
   }
 

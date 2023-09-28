@@ -20,6 +20,7 @@
           *ngFor="let user of channelService.channel.users.slice(0, 3)"
           class="user"
           [src]="user.photoURL"
+          (error)="retryLoadImage(user)"
         />
         <p class="amountOfUserInChannel">
           {{ channelService.channel.users.length }}
@@ -50,7 +51,11 @@
         (mouseleave)="message.id ? handleMouseLeave(message.id) : null"
       >
         <div class="messageChildContainer">
-          <img class="userImg" [src]="message.senderImage" />
+          <img
+            class="userImg"
+            [src]="message.senderImage"
+            (error)="retryLoadSenderImage(message.senderImage)"
+          />
           <div class="containerUserNameAndTime">
             <div class="nameTimeContainer">
               <p>{{ message.senderName }}</p>

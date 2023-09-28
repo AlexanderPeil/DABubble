@@ -249,7 +249,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
       setTimeout(() => this.scrollToBottom());
     });
   }
-  
+
 
   getParamsAndUser(): Observable<[string, User | null]> {
     return combineLatest([
@@ -279,6 +279,16 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.isEditing = messageId;
     this.updatedMessageContent = currentContent;
     this.showEditMenu = false;
+  }
+
+
+  retryLoadImage(user: User) {
+    user.photoURL = this.user_images;
+  }
+
+
+  retryLoadSenderImage(senderImage: string) {
+    senderImage = this.user_images;
   }
 
 

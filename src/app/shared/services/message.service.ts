@@ -33,7 +33,7 @@ export class MessageService {
   constructor(
     private firestore: Firestore,
     private authService: AuthService) { }
-    
+
 
   // Here begins the logic for all messages
   getUnreadMessagesCount(userId1: string, userId2: string): Observable<number> {
@@ -125,30 +125,30 @@ export class MessageService {
   // Here begins the logic for the direct-messages
   async createAndAddMessage(senderId: string, receiverId: string, senderName: string, content: string): Promise<void> {
     const loggedInUser = this.authService.currentUserValue;
-    let read = false; 
+    let read = false;
     const currentChatPartner = await firstValueFrom(this.currentChatPartner$.pipe(take(1)));
     if (currentChatPartner === receiverId) {
-        read = true;
+      read = true;
     }
 
     const message = new MessageContent({
-        senderId: senderId,
-        receiverId: receiverId,
-        content: content,
-        timestamp: Date.now(),
-        senderName: senderName,
-        read: read, 
-        senderImage: loggedInUser?.photoURL ?? '',
-        hasThread: false
+      senderId: senderId,
+      receiverId: receiverId,
+      content: content,
+      timestamp: Date.now(),
+      senderName: senderName,
+      read: read,
+      senderImage: loggedInUser?.photoURL ?? '',
+      hasThread: false
     });
 
     const messageCollection = this.getDirectMessageCollection(senderId, receiverId);
     try {
-        await addDoc(messageCollection, message.toJSON());
+      await addDoc(messageCollection, message.toJSON());
     } catch (error) {
-        console.error("Error adding document: ", error);
+      console.error("Error adding document: ", error);
     }
-}
+  }
 
 
   getDirectMessageCollection(userId1: string, userId2: string) {
@@ -204,7 +204,7 @@ export class MessageService {
   async setEmoji(userId1: string, userId2: string, messageId: string, emojiType: string): Promise<void> {
     const messageCollection = this.getDirectMessageCollection(userId1, userId2);
     const messageRef = doc(messageCollection, messageId);
-    
+
     try {
       const messageDoc = await getDoc(messageRef);
       if (messageDoc.exists()) {
@@ -289,7 +289,7 @@ export class MessageService {
   async setChannelMessageEmoji(channelID: string, messageId: string, emojiType: string): Promise<void> {
     const messageCollection = this.getChannelMessageCollection(channelID);
     const messageRef = doc(messageCollection, messageId);
-  
+
     try {
       const messageDoc = await getDoc(messageRef);
       if (messageDoc.exists()) {
@@ -303,7 +303,7 @@ export class MessageService {
       console.error("Error updating document: ", error);
     }
   }
-  
+
   // Here ends the logic for channel-messages
 
 

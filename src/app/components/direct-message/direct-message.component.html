@@ -5,7 +5,7 @@
         <img
           class="userImg"
           [src]="messageService.selectedUser?.photoURL"
-          alt=""
+          (error)="retryLoadImage(messageService.selectedUser)"
         />
         <img
           *ngIf="messageService.selectedUser?.isOnline"
@@ -28,6 +28,7 @@
     <img
       class="userImgEmptyChat"
       [src]="messageService.selectedUser?.photoURL"
+      (error)="retryLoadImage(messageService.selectedUser)"
       alt="Receiver Image"
     />
     <p>
@@ -51,7 +52,11 @@
         (mouseleave)="message.id ? handleMouseLeave(message.id) : null"
       >
         <div class="messageChildContainer">
-          <img class="userImg" [src]="message.senderImage" />
+          <img
+            class="userImg"
+            [src]="message.senderImage"
+            (error)="retryLoadImage(messageService.selectedUser)"
+          />
           <div class="containerUserNameAndTime">
             <div class="nameTimeContainer">
               <p>{{ message.senderName }}</p>
