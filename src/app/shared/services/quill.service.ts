@@ -42,23 +42,42 @@ export class QuillService {
     },
   };
 
-  public quillModulesWithHash = {
+  public quillModulesWithAtAndHash = {
     toolbar: false,
     mention: {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      mentionDenotationChars: ['#'],
-      source: this.searchChannels.bind(this),
+      mentionDenotationChars: ['@', '#'],
+      source: (
+        searchTerm: string,
+        renderList: Function,
+        mentionChar: string
+      ) => {
+        if (mentionChar === '@') {
+          this.searchUsers(searchTerm, renderList);
+        } else if (mentionChar === '#') {
+          this.searchChannels(searchTerm, renderList);
+        }
+      },
       renderItem(item: any) {
         const div = document.createElement('div');
-        const img = document.createElement('img');
-        const span = document.createElement('span');
 
-        img.src = item.photoURL;
-        img.classList.add('user-dropdown-image');
-        span.textContent = item.displayName;
+        if (item.type === 'user') {
+          const img = document.createElement('img');
+          const span = document.createElement('span');
 
-        div.appendChild(img);
-        div.appendChild(span);
+          img.src = item.photoURL;
+          img.classList.add('user-dropdown-image');
+          span.textContent = item.displayName;
+
+          div.appendChild(img);
+          div.appendChild(span);
+        } else if (item.type === 'channel') {
+          const span = document.createElement('span');
+
+          span.textContent = `#${item.displayName}`;
+
+          div.appendChild(span);
+        }
 
         return div;
       },
@@ -83,7 +102,7 @@ export class QuillService {
       const user_images = '../assets/img/avatar1.svg';
       const values = users.map((user) => {
         let photoURL = user.photoURL;
-        if(!photoURL) {
+        if (!photoURL) {
           photoURL = user_images;
         }
         return {
@@ -91,16 +110,14 @@ export class QuillService {
           value: user.displayName,
           photoURL: photoURL,
           displayName: user.displayName,
+          type: 'user',
         };
       });
       renderList(values, searchTerm);
     });
-}
-
+  }
 
   searchChannels(searchTerm: string, renderList: Function) {
-    console.log('searchChannels called with searchTerm:', searchTerm);
-
     this.channelService
       .getChannels(searchTerm)
       .subscribe((channels: Channel[]) => {
@@ -108,25 +125,11 @@ export class QuillService {
           id: channel.channelName, // Stellen Sie sicher, dass Ihre Channels eine eindeutige ID haben
           value: channel.channelName,
           displayName: channel.channelName,
+          type: 'channel',
         }));
         renderList(values, searchTerm);
       });
   }
-
-  // searchMentions(mentionText: string, renderList: Function) {
-  //   console.log('searchMentions called with mentionText:', mentionText);
-  //   // Überprüfen Sie, ob der Text mit "@" oder "#" beginnt, um Benutzer oder Channels zu suchen.
-  //   if (mentionText.startsWith('@')) {
-  //     const userSearchTerm = mentionText.substr(1); // Entfernen Sie das "@"-Zeichen
-  //     this.searchUsers(userSearchTerm, renderList);
-  //   } else if (mentionText.startsWith('#')) {
-  //     const channelSearchTerm = mentionText.substr(1); // Entfernen Sie das "#" -Zeichen
-  //     this.searchChannels(channelSearchTerm, renderList);
-  //   } else {
-  //     // Wenn weder "@" noch "#" vorhanden ist, geben Sie ein leeres Array zurück.
-  //     renderList([]);
-  //   }
-  // }
 
   triggerAtSymbol() {
     this.quill.focus();

@@ -11,21 +11,8 @@
       [(ngModel)]="messageContent"
       (onEditorCreated)="this.quillService.setFocus($event)"
       placeholder="At: #channel, or @someone or *Mail address"
-      [modules]="this.quillService.quillModulesWithHash"
+      [modules]="this.quillService.quillModulesWithAtAndHash"
     ></quill-editor>
-
-    <!-- <input
-      (input)="getInputValue($event)"
-      [(ngModel)]="inputValue"
-      placeholder="At: #channel, or @someone or Mail address "
-      type="text"
-    /> -->
-
-    <!-- <div class="dropDownMenuChannels" [ngStyle]="{ display: dropDownMenuChannelsIsOpen ? 'flex' : 'none' }">
-      <p *ngFor="let channel of channelService.channelData | async">
-        {{ channel.channelName }}
-      </p>
-    </div> -->
 
     <div
       class="dropDownMenuUsers"
