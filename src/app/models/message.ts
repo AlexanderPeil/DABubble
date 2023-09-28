@@ -9,6 +9,12 @@ export class MessageContent {
   read: boolean;
   hasThread: boolean = false;
   messageId?: string;
+  emojis?: {
+    complete?: number;
+    handsUp?: number;
+    rocket?: number;
+    nerdSmiley?: number;
+  }
 
   constructor(object?: any) {
     this.id = object ? object.id : undefined;
@@ -21,6 +27,10 @@ export class MessageContent {
     this.read = object ? object.read : '';
     this.hasThread = object ? object.hasThread : false;
     this.messageId = object ? object.messageId : '';
+
+    if (object && object.emojis) {
+      this.emojis = object.emojis;
+    }
   }
 
   public toJSON(): any {
@@ -31,7 +41,8 @@ export class MessageContent {
       senderName: this.senderName,
       senderImage: this.senderImage,
       read: this.read,
-      hasThread: this.hasThread
+      hasThread: this.hasThread,
+      emojis: this.emojis
     };
 
     if (this.receiverId) {

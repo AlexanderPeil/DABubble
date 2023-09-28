@@ -10,7 +10,8 @@ import {
   writeBatch,
   query,
   docData,
-  updateDoc
+  updateDoc,
+  getDoc
 } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, catchError, firstValueFrom, map, of, take } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
@@ -32,7 +33,7 @@ export class MessageService {
   constructor(
     private firestore: Firestore,
     private authService: AuthService) { }
-
+    
 
   // Here begins the logic for all messages
   getUnreadMessagesCount(userId1: string, userId2: string): Observable<number> {
@@ -200,6 +201,25 @@ export class MessageService {
   }
 
 
+  async setEmoji(userId1: string, userId2: string, messageId: string, emojiType: string): Promise<void> {
+    const messageCollection = this.getDirectMessageCollection(userId1, userId2);
+    const messageRef = doc(messageCollection, messageId);
+    
+    try {
+      const messageDoc = await getDoc(messageRef);
+      if (messageDoc.exists()) {
+        const currentEmojis = messageDoc.data() ? messageDoc.data()['emojis'] || {} : {};
+        const currentCount = currentEmojis[emojiType] || 0;
+        await updateDoc(messageRef, {
+          [`emojis.${emojiType}`]: currentCount + 1
+        });
+      }
+    } catch (error) {
+      console.error("Error updating document: ", error);
+    }
+  }
+
+
   setCurrentChatPartner(userId: string | null) {
     this.currentChatPartnerSubject.next(userId);
   }
@@ -264,6 +284,26 @@ export class MessageService {
       console.error("Error updating document: ", error);
     }
   }
+
+
+  async setChannelMessageEmoji(channelID: string, messageId: string, emojiType: string): Promise<void> {
+    const messageCollection = this.getChannelMessageCollection(channelID);
+    const messageRef = doc(messageCollection, messageId);
+  
+    try {
+      const messageDoc = await getDoc(messageRef);
+      if (messageDoc.exists()) {
+        const currentEmojis = messageDoc.data() ? messageDoc.data()['emojis'] || {} : {};
+        const currentCount = currentEmojis[emojiType] || 0;
+        await updateDoc(messageRef, {
+          [`emojis.${emojiType}`]: currentCount + 1
+        });
+      }
+    } catch (error) {
+      console.error("Error updating document: ", error);
+    }
+  }
+  
   // Here ends the logic for channel-messages
 
 

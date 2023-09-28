@@ -26,15 +26,14 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   user_images = '../assets/img/avatar1.svg';
-  displayCheckedIcon: boolean = false;
-  displayHandsUpIcon: boolean = false;
-  emojiPopUpIsOopen: boolean = false;
   popUpToEditMessageIsOpen: boolean = false;
   showEditMessageButton: boolean = false;
   currentlyEditingMessageId: string | null = null;
   isEditing: string | null = null;
   updatedMessageContent: string = '';
   messagesSubscription: Subscription | null = null;
+  selectedMessageId: string | null = null;
+  showEditMenu: boolean = true;
 
 
   constructor(
@@ -60,11 +59,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         console.error("Either loggedInUser or selectedUser is null");
       }
     });
-  }
-
-
-  ngAfterViewInit(): void {
-    this.scrollToBottom();
   }
 
 
@@ -94,7 +88,9 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         messages.sort((a, b) => a.timestamp - b.timestamp);
         this.messages = messages;
         this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
-        this.scrollToBottom();
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 500);
       });
   }
 
@@ -162,18 +158,15 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  setCheckedIcon() {
-    this.displayCheckedIcon = !this.displayCheckedIcon
+  onEmojiClick(messageId: string, emojiType: string): void {
+    const loggedInUserId = this.messageService.loggedInUser?.uid as string;
+    const receiverUserId = this.messageService.selectedUser?.uid as string;
+    this.messageService.setEmoji(loggedInUserId, receiverUserId, messageId, emojiType);
   }
 
 
-  setHandsUpIcon() {
-    this.displayHandsUpIcon = !this.displayHandsUpIcon;
-  }
-
-
-  openEmojiPopUp() {
-    this.emojiPopUpIsOopen = !this.emojiPopUpIsOopen;
+  openEmojiPopUp(messageId: string) {
+    this.selectedMessageId = this.selectedMessageId === messageId ? null : messageId;
   }
 
 
@@ -195,8 +188,13 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
 
   handleMouseLeave(messageId: string): void {
+    if (this.selectedMessageId === messageId) {
+      this.selectedMessageId = null;
+    }
+
     if (this.isEditing) {
       return;
+
     } else if (!this.isMessageBeingEdited(messageId)) {
       this.showEditMessageButton = false;
       this.closeEditMenu();
@@ -225,12 +223,14 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       this.messageService.updateDirectMessage(loggedInUserId, receiverUserId, messageId, updatedMessageContent);
     }
     this.isEditing = null;
+    this.showEditMenu = true;
   }
 
 
   editMessage(messageId: string, currentContent: string) {
     this.isEditing = messageId;
     this.updatedMessageContent = currentContent;
+    this.showEditMenu = false;
   }
 
 

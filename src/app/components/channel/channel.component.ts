@@ -47,6 +47,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
   showEditMessageButton: boolean = false;
   currentlyEditingMessageId: string | null = null;
   isEditing: string | null = null;
+  selectedMessageId: string | null = null;
+  showEditMenu: boolean = true;
   updatedMessageContent: string = '';
   private ngUnsubscribe = new Subject<void>();
 
@@ -167,19 +169,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
       this.messagesContainer.nativeElement.scrollHeight;
   }
 
-
-  setCheckedIcon() {
-    this.displayCheckedIcon = !this.displayCheckedIcon
+  onEmojiClick(messageId: string, emojiType: string): void {
+    this.messageService.setChannelMessageEmoji(this.channelId, messageId, emojiType);
   }
 
 
-  setHandsUpIcon() {
-    this.displayHandsUpIcon = !this.displayHandsUpIcon;
-  }
-
-
-  openEmojiPopUp() {
-    this.emojiPopUpIsOopen = !this.emojiPopUpIsOopen;
+  openEmojiPopUp(messageId: string) {
+    this.selectedMessageId = this.selectedMessageId === messageId ? null : messageId;
   }
 
 
@@ -217,8 +213,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
 
   handleMouseLeave(messageId: string): void {
+    if (this.selectedMessageId === messageId) {
+      this.selectedMessageId = null;
+    }
+
     if (this.isEditing) {
       return;
+
     } else if (!this.isMessageBeingEdited(messageId)) {
       this.showEditMessageButton = false;
       this.closeEditMenu();
@@ -270,12 +271,14 @@ export class ChannelComponent implements OnInit, OnDestroy {
       this.messageService.updateChannelMessage(channelId, messageId, updatedMessageContent);
     }
     this.isEditing = null;
+    this.showEditMenu = true;
   }
 
 
   editMessage(messageId: string, currentContent: string) {
     this.isEditing = messageId;
     this.updatedMessageContent = currentContent;
+    this.showEditMenu = false;
   }
 
 

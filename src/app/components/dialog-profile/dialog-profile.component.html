@@ -3,7 +3,7 @@
         <p>Profile</p>
         <div mat-dialog-close></div>
     </div>
-    <img *ngIf="user?.photoURL" class="userImg" [src]="user?.photoURL" (error)="retryLoadImage()">
+    <img *ngIf="user?.photoURL" class="userImgProfile" [src]="user?.photoURL" (error)="retryLoadImage()">
     <div class="userNameEdit">
         <div> {{ user?.displayName }} </div>
         <a (click)="openDialog()">Edit profile</a>

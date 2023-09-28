@@ -360,8 +360,8 @@ app-imprint {
 .containerPopUp {
   display: flex;
   position: absolute;
-  bottom: 185px;
-  right: 28px;
+  bottom: 45px;
+  right: 0;
   background-color: white;
   border: 1px solid #adb0d9;
   padding: 5px 10px 5px 10px;
@@ -423,13 +423,10 @@ app-imprint {
   }
 }
 
-.containerCheckIcon {
+.messageIcons {
   display: flex;
   align-items: center;
   gap: 10px;
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
   padding: 5px 10px 5px 10px;
   border-radius: 20px;
   background-color: white;
@@ -444,25 +441,12 @@ app-imprint {
   }
 }
 
-.containerHandsUpIcon {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.messageDisplayiconContainer {
   position: absolute;
-  right: 80px;
-  bottom: 10px;
-  padding: 5px 10px 5px 10px;
-  border-radius: 20px;
-  background-color: white;
-  border: 1px solid #adb0d9;
-
-  img {
-    width: 20px;
-  }
-
-  p {
-    margin: 0;
-  }
+  top: 40px;
+  right: 30px;
+  display: flex;
+  gap: 5px;
 }
 
 /************************************ Styles for the message container ************************************/

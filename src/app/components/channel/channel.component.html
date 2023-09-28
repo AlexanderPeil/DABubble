@@ -49,18 +49,13 @@
           </div>
         </div>
 
-        <div *ngIf="emojiPopUpIsOopen" class="containerPopUp">
-          <img src="assets/img/icons/completeEmoji.svg">
-          <img src="assets/img/icons/handsUpEmoji.svg">
-          <img src="assets/img/icons/rocket.svg">
-          <img src="assets/img/icons/nerdSmiley.svg">
-        </div>
-
         <!-- Emoji container -->
         <div class="containerEmojis d-none">
-          <img (click)="setCheckedIcon()" class="completeEmoji" src="assets/img/icons/completeEmoji.svg" />
-          <img (click)="setHandsUpIcon()" class="handsUpEmoji" src="assets/img/icons/handsUpEmoji.svg" />
-          <div #popUp (click)="openEmojiPopUp()" class="containerAddEmojiIcon">
+          <img *ngIf="message.id" (click)="onEmojiClick(message.id, 'complete')"
+            src="assets/img/icons/completeEmoji.svg" />
+          <img *ngIf="message.id" (click)="onEmojiClick(message.id, 'handsUp')"
+            src="assets/img/icons/handsUpEmoji.svg" />
+          <div *ngIf="message.id" #popUp (click)="openEmojiPopUp(message.id)" class="containerAddEmojiIcon">
             <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg" />
           </div>
           <div (click)="message.id && threadService.openChannelThread(message.id, channelId)"
@@ -70,26 +65,47 @@
           <div *ngIf="showEditMessageButton" (click)="openPopUpEditMessage(message)" class="containerThreePointsIcon">
             <img src="assets/img/icons/threePointsIcon.svg">
           </div>
+
+          <div *ngIf="selectedMessageId === message.id" class="containerPopUp">
+            <img *ngIf="message.id" src="assets/img/icons/completeEmoji.svg"
+              (click)="onEmojiClick(message.id, 'complete')">
+            <img *ngIf="message.id" src="assets/img/icons/handsUpEmoji.svg"
+              (click)="onEmojiClick(message.id, 'handsUp')">
+            <img *ngIf="message.id" src="assets/img/icons/rocket.svg" (click)="onEmojiClick(message.id, 'rocket')">
+            <img *ngIf="message.id" src="assets/img/icons/nerdSmiley.svg"
+              (click)="onEmojiClick(message.id, 'nerdSmiley')">
+          </div>
         </div>
         <!-- Emoji container -->
 
         <!-- Pop Up to Edit Message -->
-        <div *ngIf="currentlyEditingMessageId === message.id" class="popUpEditMessage" (mouseover)="stopEvent($event)"
+        <div *ngIf="showEditMenu && currentlyEditingMessageId === message.id" class="popUpEditMessage" (mouseover)="stopEvent($event)"
           (click)="editMessage(message.id, message.content)">
           <p>Edit message</p>
         </div>
         <!-- Pop Up to Edit Message -->
 
         <!-- Emojis to react on Messages -->
-        <div *ngIf="displayCheckedIcon" class="containerCheckIcon">
-          <img src="assets/img/icons/completeEmoji.svg">
-          <p>1</p>
-        </div>
+        <div class="messageDisplayiconContainer">
+          <div *ngIf="message.emojis?.complete" class="messageIcons">
+            <img src="assets/img/icons/completeEmoji.svg">
+            <p>{{ message.emojis?.complete }}</p>
+          </div>
 
+          <div *ngIf="message.emojis?.handsUp" class="messageIcons">
+            <img src="assets/img/icons/handsUpEmoji.svg">
+            <p>{{ message.emojis?.handsUp }}</p>
+          </div>
 
-        <div *ngIf="displayHandsUpIcon" class="containerHandsUpIcon">
-          <img src="assets/img/icons/handsUpEmoji.svg">
-          <p>1</p>
+          <div *ngIf="message.emojis?.rocket" class="messageIcons">
+            <img src="assets/img/icons/rocket.svg">
+            <p>{{ message.emojis?.rocket }}</p>
+          </div>
+
+          <div *ngIf="message.emojis?.nerdSmiley" class="messageIcons">
+            <img src="assets/img/icons/nerdSmiley.svg">
+            <p>{{ message.emojis?.nerdSmiley }}</p>
+          </div>
         </div>
         <!-- Emojis to react on Messages -->
 
