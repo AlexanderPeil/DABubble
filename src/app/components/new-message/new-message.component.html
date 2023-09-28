@@ -10,7 +10,7 @@
       class="quill-editor-new-message"
       [(ngModel)]="messageContent"
       (onEditorCreated)="this.quillService.setFocus($event)"
-      placeholder="At: #channel, or @someone or Mail address"
+      placeholder="At: #channel, or @someone or *Mail address"
       [modules]="this.quillService.quillModulesWithHash"
     ></quill-editor>
 

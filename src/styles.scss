@@ -85,6 +85,24 @@ app-imprint {
 /************************************ Styles for the Scrollbar ************************************/
 
 /************************************ Change Global Style from quill-editor ************************************/
+.quill-editor-textarea {
+  border: 1px solid #adb0d9;
+  border-radius: 20px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 15px;
+  height: 130px;
+
+  &:hover {
+    border-radius: 20px;
+    border: 1px solid #797ef3;
+  }
+}
+
 .ql-editor.ql-blank::before {
   font-family: Nunito, sans-serif;
   font-size: 18px;
@@ -390,7 +408,8 @@ app-imprint {
 
   img {
     &:hover {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }

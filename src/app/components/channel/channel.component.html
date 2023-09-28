@@ -1,5 +1,9 @@
-<div [ngClass]="{ chatHistoryFullWidth: toggleWorspaceMenuService.workspaceMenuAreClosed }"
-  class="chatHistoryMainContainer">
+<div
+  [ngClass]="{
+    chatHistoryFullWidth: toggleWorspaceMenuService.workspaceMenuAreClosed
+  }"
+  class="chatHistoryMainContainer"
+>
   <div class="chatHistoryHeader">
     <div (click)="openDialogToEditChannel()" class="channelName">
       <img src="assets/img/icons/hashtag.svg" />
@@ -8,14 +12,25 @@
     </div>
 
     <div class="containerUserInChatHistory">
-      <div (click)="openDialogToShowMembersInChannel()" class="childContainerUserInChatHistory">
-        <img *ngFor="let user of channelService.channel.users.slice(0, 3)" class="user" [src]="user.photoURL" (error)="retryLoadImage(user)"/>
+      <div
+        (click)="openDialogToShowMembersInChannel()"
+        class="childContainerUserInChatHistory"
+      >
+        <img
+          *ngFor="let user of channelService.channel.users.slice(0, 3)"
+          class="user"
+          [src]="user.photoURL"
+          (error)="retryLoadImage(user)"
+        />
         <p class="amountOfUserInChannel">
           {{ channelService.channel.users.length }}
         </p>
       </div>
 
-      <div (click)="openDialogToAddMembersToChannel()" class="containerIconAddUser">
+      <div
+        (click)="openDialogToAddMembersToChannel()"
+        class="containerIconAddUser"
+      >
         <img class="iconAddUser" src="assets/img/icons/addUser.svg" />
       </div>
     </div>
@@ -29,58 +44,121 @@
         <span>{{ group.date }}</span>
         <hr />
       </div>
-      <div *ngFor="let message of group.messages" class="displayMessagesContainer"
-        (mouseenter)="onMessageHover(message)" (mouseleave)="message.id ? handleMouseLeave(message.id) : null">
+      <div
+        *ngFor="let message of group.messages"
+        class="displayMessagesContainer"
+        (mouseenter)="onMessageHover(message)"
+        (mouseleave)="message.id ? handleMouseLeave(message.id) : null"
+      >
         <div class="messageChildContainer">
-          <img class="userImg" [src]="message.senderImage" (error)="retryLoadSenderImage(message.senderImage)" />
+          <img
+            class="userImg"
+            [src]="message.senderImage"
+            (error)="retryLoadSenderImage(message.senderImage)"
+          />
           <div class="containerUserNameAndTime">
             <div class="nameTimeContainer">
               <p>{{ message.senderName }}</p>
               <p>{{ this.messageService.formatTime(message.timestamp) }}</p>
             </div>
-            <span *ngIf="isEditing !== message.id" class="message"
-              [ngClass]="{'senderMessage': message.senderId === authService.currentUser.value?.uid}">{{ message.content
-              }}</span>
-            <div *ngIf="currentlyEditingMessageId === message.id && isEditing === message.id"
-              class="editMessageContainer">
-              <input [(ngModel)]="updatedMessageContent">
-              <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)">
+            <span
+              *ngIf="isEditing !== message.id"
+              class="message"
+              [ngClass]="{
+                senderMessage:
+                  message.senderId === authService.currentUser.value?.uid
+              }"
+              >{{ message.content }}</span
+            >
+            <div
+              *ngIf="
+                currentlyEditingMessageId === message.id &&
+                isEditing === message.id
+              "
+              class="editMessageContainer"
+            >
+              <input [(ngModel)]="updatedMessageContent" />
+              <img
+                class="sendBtn"
+                src="assets/img/icons/sendBtn.svg"
+                (click)="saveEditedMessage(message)"
+              />
             </div>
           </div>
         </div>
 
         <!-- Emoji container -->
         <div class="containerEmojis d-none">
-          <img *ngIf="message.id" (click)="onEmojiClick(message.id, 'complete')"
-            src="assets/img/icons/completeEmoji.svg" />
-          <img *ngIf="message.id" (click)="onEmojiClick(message.id, 'handsUp')"
-            src="assets/img/icons/handsUpEmoji.svg" />
-          <div *ngIf="message.id" #popUp (click)="openEmojiPopUp(message.id)" class="containerAddEmojiIcon">
+          <img
+            *ngIf="message.id"
+            (click)="onEmojiClick(message.id, 'complete')"
+            src="assets/img/icons/completeEmoji.svg"
+          />
+          <img
+            *ngIf="message.id"
+            (click)="onEmojiClick(message.id, 'handsUp')"
+            src="assets/img/icons/handsUpEmoji.svg"
+          />
+          <div
+            *ngIf="message.id"
+            #popUp
+            (click)="openEmojiPopUp(message.id)"
+            class="containerAddEmojiIcon"
+          >
             <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg" />
           </div>
-          <div (click)="message.id && threadService.openChannelThread(message.id, channelId)"
-            class="containerAnswerOnThreadIcon">
-            <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg" />
+          <div
+            (click)="
+              message.id &&
+                threadService.openChannelThread(message.id, channelId)
+            "
+            class="containerAnswerOnThreadIcon"
+          >
+            <img
+              class="answerOnThreadIcon"
+              src="assets/img/icons/answerOnThreadIcon.svg"
+            />
           </div>
-          <div *ngIf="showEditMessageButton" (click)="openPopUpEditMessage(message)" class="containerThreePointsIcon">
-            <img src="assets/img/icons/threePointsIcon.svg">
+          <div
+            *ngIf="showEditMessageButton"
+            (click)="openPopUpEditMessage(message)"
+            class="containerThreePointsIcon"
+          >
+            <img src="assets/img/icons/threePointsIcon.svg" />
           </div>
 
           <div *ngIf="selectedMessageId === message.id" class="containerPopUp">
-            <img *ngIf="message.id" src="assets/img/icons/completeEmoji.svg"
-              (click)="onEmojiClick(message.id, 'complete')">
-            <img *ngIf="message.id" src="assets/img/icons/handsUpEmoji.svg"
-              (click)="onEmojiClick(message.id, 'handsUp')">
-            <img *ngIf="message.id" src="assets/img/icons/rocket.svg" (click)="onEmojiClick(message.id, 'rocket')">
-            <img *ngIf="message.id" src="assets/img/icons/nerdSmiley.svg"
-              (click)="onEmojiClick(message.id, 'nerdSmiley')">
+            <img
+              *ngIf="message.id"
+              src="assets/img/icons/completeEmoji.svg"
+              (click)="onEmojiClick(message.id, 'complete')"
+            />
+            <img
+              *ngIf="message.id"
+              src="assets/img/icons/handsUpEmoji.svg"
+              (click)="onEmojiClick(message.id, 'handsUp')"
+            />
+            <img
+              *ngIf="message.id"
+              src="assets/img/icons/rocket.svg"
+              (click)="onEmojiClick(message.id, 'rocket')"
+            />
+            <img
+              *ngIf="message.id"
+              src="assets/img/icons/nerdSmiley.svg"
+              (click)="onEmojiClick(message.id, 'nerdSmiley')"
+            />
           </div>
         </div>
         <!-- Emoji container -->
 
         <!-- Pop Up to Edit Message -->
-        <div *ngIf="showEditMenu && currentlyEditingMessageId === message.id" class="popUpEditMessage" (mouseover)="stopEvent($event)"
-          (click)="editMessage(message.id, message.content)">
+        <div
+          *ngIf="showEditMenu && currentlyEditingMessageId === message.id"
+          class="popUpEditMessage"
+          (mouseover)="stopEvent($event)"
+          (click)="editMessage(message.id, message.content)"
+        >
           <p>Edit message</p>
         </div>
         <!-- Pop Up to Edit Message -->
@@ -88,27 +166,26 @@
         <!-- Emojis to react on Messages -->
         <div class="messageDisplayiconContainer">
           <div *ngIf="message.emojis?.complete" class="messageIcons">
-            <img src="assets/img/icons/completeEmoji.svg">
+            <img src="assets/img/icons/completeEmoji.svg" />
             <p>{{ message.emojis?.complete }}</p>
           </div>
 
           <div *ngIf="message.emojis?.handsUp" class="messageIcons">
-            <img src="assets/img/icons/handsUpEmoji.svg">
+            <img src="assets/img/icons/handsUpEmoji.svg" />
             <p>{{ message.emojis?.handsUp }}</p>
           </div>
 
           <div *ngIf="message.emojis?.rocket" class="messageIcons">
-            <img src="assets/img/icons/rocket.svg">
+            <img src="assets/img/icons/rocket.svg" />
             <p>{{ message.emojis?.rocket }}</p>
           </div>
 
           <div *ngIf="message.emojis?.nerdSmiley" class="messageIcons">
-            <img src="assets/img/icons/nerdSmiley.svg">
+            <img src="assets/img/icons/nerdSmiley.svg" />
             <p>{{ message.emojis?.nerdSmiley }}</p>
           </div>
         </div>
         <!-- Emojis to react on Messages -->
-
       </div>
     </div>
   </div>
@@ -117,30 +194,62 @@
   <!-- <app-message></app-message> -->
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor [(ngModel)]="messageContent" (onEditorCreated)="this.quillService.setFocus($event)"
-    placeholder="Message to #{{ channelService.channel.channelName }}" [modules]="this.quillService.quillModules">
+  <quill-editor
+    class="quill-editor-textarea"
+    [(ngModel)]="messageContent"
+    (onEditorCreated)="this.quillService.setFocus($event)"
+    placeholder="Message to #{{ channelService.channel.channelName }}"
+    [modules]="this.quillService.quillModules"
+  >
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
         <!--------------------------------------- Displays uploaded Images --------------------------------------->
-        <div *ngFor="
+        <div
+          *ngFor="
             let uploadedImage of storageService.uploadedImages;
             let i = index
-          " class="containerUploadedImages">
-          <img (click)="openDetailViewFromUploadedImage(uploadedImage)" class="uploadedImage"
-            [src]="uploadedImage ? uploadedImage : null" />
-          <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
+          "
+          class="containerUploadedImages"
+        >
+          <img
+            (click)="openDetailViewFromUploadedImage(uploadedImage)"
+            class="uploadedImage"
+            [src]="uploadedImage ? uploadedImage : null"
+          />
+          <img
+            matTooltipPosition="above"
+            matTooltip="Delete Data"
+            (click)="
               this.storageService.deleteUploadedDataService(uploadedImage, i)
-            " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
+            "
+            class="closeIcon"
+            src="assets/img/icons/closeIcon.svg"
+          />
         </div>
         <!--------------------------------------- Displays uploaded Images --------------------------------------->
 
         <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
-        <div *ngFor=" let uploadedData of storageService.uploadedDatas; let i = index " class="containerUploadedDatas">
-          <iframe class="uploadedData" [src]="uploadedData ? uploadedData : null"></iframe>
-          <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
+        <div
+          *ngFor="
+            let uploadedData of storageService.uploadedDatas;
+            let i = index
+          "
+          class="containerUploadedDatas"
+        >
+          <iframe
+            class="uploadedData"
+            [src]="uploadedData ? uploadedData : null"
+          ></iframe>
+          <img
+            matTooltipPosition="above"
+            matTooltip="Delete Data"
+            (click)="
               this.storageService.deleteUploadedDataService(uploadedData, i)
-            " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
+            "
+            class="closeIcon"
+            src="assets/img/icons/closeIcon.svg"
+          />
         </div>
         <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
       </div>
@@ -148,20 +257,37 @@
       <div class="containerIcons">
         <label for="input" class="containerAddIcon">
           <img src="assets/img/icons/add.svg" />
-          <input (change)="storageService.chooseFileSevice($event)" id="input" type="file" hidden />
+          <input
+            (change)="storageService.chooseFileSevice($event)"
+            id="input"
+            type="file"
+            hidden
+          />
         </label>
 
         <hr class="verticalLine" />
 
         <div class="containerSmileyIcon">
-          <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker()" />
+          <img
+            class="smileyIcon"
+            src="assets/img/icons/smiley.svg"
+            (click)="toggleEmojiPicker()"
+          />
         </div>
 
         <div class="containerAtIcon">
-          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol()" />
+          <img
+            class="atIcon"
+            src="assets/img/icons/@Icon.svg"
+            (click)="this.quillService.triggerAtSymbol()"
+          />
         </div>
 
-        <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="sendMessage()" />
+        <img
+          class="sendBtn"
+          src="assets/img/icons/sendBtn.svg"
+          (click)="sendMessage()"
+        />
       </div>
       <!--------------------------------------- Custom created Container --------------------------------------->
     </div>
