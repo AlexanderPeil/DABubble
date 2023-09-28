@@ -1,8 +1,8 @@
 import { Component, NgZone, OnInit, OnDestroy } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -18,6 +18,11 @@ export class AppComponent implements OnInit, OnDestroy {
     (private router: Router,
       private authService: AuthService,
       private ngZone: NgZone) {
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      localStorage.setItem('lastRoute', event.urlAfterRedirects);
+    });
   }
 
 
@@ -25,9 +30,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.user$.subscribe(user => {
       this.ngZone.run(() => {
         if (user) {
-          this.router.navigate(['/main']);
-        } else {
-          this.router.navigate(['/login']);
+          const lastRoute = localStorage.getItem('lastRoute');
+          if (lastRoute !== '/login') {
+            this.router.navigate([lastRoute || '/main/channel/tcgLB0MdDpTD27cGTU95']);
+          } else {
+            this.router.navigate(['/main/channel/tcgLB0MdDpTD27cGTU95']);
+          }
         }
       });
     });

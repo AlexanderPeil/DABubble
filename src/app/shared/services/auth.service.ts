@@ -140,7 +140,10 @@ export class AuthService {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       if (userCredential.user) {
         await this.setUserOnlineStatus(userCredential.user.uid, true);
-        this.router.navigate(['main']);
+        const lastRoute = localStorage.getItem('lastRoute') || 'main/channel/tcgLB0MdDpTD27cGTU95';
+        this.router.navigate([lastRoute]);
+        console.log(lastRoute);
+        
       }
     } catch (error) {
       console.log('An unexpected error occurred. Please try again', error);
@@ -188,7 +191,8 @@ export class AuthService {
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: 'Guest', photoURL: randomImageURL });
         await this.setUserData(userCredential.user, true);
-        this.router.navigate(['/main/channel/tcgLB0MdDpTD27cGTU95']);
+        const lastRoute = localStorage.getItem('lastRoute') || 'main/channel/tcgLB0MdDpTD27cGTU95';
+        this.router.navigate([lastRoute]);
       }
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -211,9 +215,8 @@ export class AuthService {
       const user = result.user;
       if (user) {
         await this.setUserData(user, true);
-        setTimeout(() => {
-          this.router.navigate(['main']);
-        }, 2000);
+        const lastRoute = localStorage.getItem('lastRoute') || 'main/channel/tcgLB0MdDpTD27cGTU95';
+        this.router.navigate([lastRoute]);
       }
     } catch (error) {
       console.error('Google Sign In failed:', error);
