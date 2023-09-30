@@ -29,17 +29,20 @@ export class ChannelService {
   channelData!: Observable<any>;
   channel: any = new Channel();
 
+  constructor(private firestore: Firestore, public route: Router) {}
 
-  constructor(private firestore: Firestore, public route: Router) {
-
-  }
-
-
-  addChannelService(channel: any) {
+  addChannelService(channel: Channel) {
     const collectionInstance = collection(this.firestore, 'channels');
-    addDoc(collectionInstance, channel.toJSON());
-  }
 
+    addDoc(collectionInstance, channel.toJSON()).then((docRef) => {
+      const channelId = docRef.id;
+      const updatedData = { channelId };
+
+      const docInstance = doc(this.firestore, 'channels', channelId);
+
+      updateDoc(docInstance, updatedData);
+    });
+  }
 
   getChannelService() {
     const collectionInstance = query(
@@ -50,7 +53,6 @@ export class ChannelService {
       idField: 'id',
     }).pipe();
   }
-
 
   updateChannelNameService(changedChannelName: any, channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
