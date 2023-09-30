@@ -8,14 +8,26 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   animations: [
-    trigger('logoAnimation', [
-      state('initial', style({ transform: 'translateX(50%)' })), // leicht rechts positioniert
-      state('middle', style({ transform: 'translateX(0%)' })), // Zentriert
-      state('final', style({ transform: 'translate(-200%, -390%)' })), // Diagonal nach oben links
+    trigger('logoAnimationDesktop', [
+      state('initial', style({ transform: 'translateX(30vw)' })),
+      state('middle', style({ transform: 'translateX(0)' })),
+      state('final', style({ transform: 'translate(calc(-47vw + 100px), calc(-76vh + 50px))' })),
       transition('initial => middle', animate('500ms ease-out')),
       transition('middle => final', animate('500ms ease-in-out')),
     ]),
     trigger('nameAnimation', [
+      state('hidden', style({ transform: 'translateX(-100%)' })),
+      state('visible', style({ transform: 'translateX(0)' })),
+      transition('hidden => visible', animate('500ms ease-in')),
+    ]),
+    trigger('logoAnimationMobile', [
+      state('initial', style({ transform: 'translate(0, 0)' })),
+      state('middle', style({ transform: 'translateX(-20vw' })), 
+      state('final', style({ transform: 'translate(-20vw, -45vh)' })), 
+      transition('initial => middle', animate('500ms ease-out')),
+      transition('middle => final', animate('500ms ease-in-out')),
+    ]),
+    trigger('nameAnimationMobile', [
       state('hidden', style({ transform: 'translateX(-100%)' })),
       state('visible', style({ transform: 'translateX(0)' })),
       transition('hidden => visible', animate('500ms ease-in')),
@@ -28,7 +40,7 @@ export class LoginComponent implements OnInit {
   nameState: 'hidden' | 'visible' = 'hidden';
   background = '#6168ee'; // Start background-color
   logoBackgroundColor = '#6168ee';
-
+  isMobile: boolean = window.innerWidth < 900;
   loginForm!: FormGroup;
   loginFailed = false;
   containerVisible = true;
@@ -74,20 +86,20 @@ export class LoginComponent implements OnInit {
 
   loginAnimation() {
     setTimeout(() => {
-      this.logoState = 'middle'; 
+      this.logoState = 'middle';
     }, 500);
     setTimeout(() => {
       this.nameState = 'visible';
-    }, 1000); 
+    }, 1000);
     setTimeout(() => {
-      this.logoState = 'final'; 
-      this.background = 'transparent'; 
-      this.logoBackgroundColor = 'transparent'; 
+      this.logoState = 'final';
+      this.background = 'transparent';
+      this.logoBackgroundColor = 'transparent';
     }, 2000);
     setTimeout(() => {
-      this.containerVisible = false; 
-    }, 2500); 
+      this.containerVisible = false;
+    }, 2500);
   }
-  
+
 
 }

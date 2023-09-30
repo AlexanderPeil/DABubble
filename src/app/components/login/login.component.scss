@@ -136,7 +136,6 @@
 
     .animationLogo {
         z-index: 1;
-        // background-color: #6168ee;
         padding-right: 100px;
     }
 
@@ -146,13 +145,37 @@
       }
 
       .animationAppName {
-        white-space: nowrap; // Verhindert Zeilenumbruch des Textes
+        white-space: nowrap; 
         color: white;
         font-size: 60px;
         font-weight: 700;
       }
 }
 /****************** Style for Login-Animation   *******************/
+
+@media (max-width: 900px) {
+    .animationContainer {
+        align-items: center;
+    }
+
+    .animationLogoName {
+        margin: unset;
+
+        .animationLogo {
+            width: 85px;
+            padding-right: 80px;
+        }
+
+        .animationNameContainer {
+            right: -165px;
+        }
+
+        .animationAppName {
+            font-size: 35px;
+            font-weight: 600;
+        }
+    }
+}
 
 @media (max-width: 600px) {
     .loginContent {

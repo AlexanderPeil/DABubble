@@ -1,12 +1,13 @@
 <div class="animationContainer" *ngIf="containerVisible" [style.background]="background">
-    <div [@logoAnimation]="logoState" class="animationLogoName">
-      <img src="../../../assets/img/animationLogo.svg" alt="App-Logo" class="animationLogo" [style.background-color]="logoBackgroundColor">
-      <div [@nameAnimation]="nameState" class="animationNameContainer">
-        <span class="animationAppName">DABubble</span>
-      </div>
+    <div [@logoAnimationDesktop]="!isMobile ? logoState : undefined"
+        [@logoAnimationMobile]="isMobile ? logoState : undefined" [style.background-color]="logoBackgroundColor" class="animationLogoName">
+        <img src="../../../assets/img/animationLogo.svg" alt="App-Logo" class="animationLogo" [style.background-color]="logoBackgroundColor">
+        <div [@nameAnimation]="nameState" class="animationNameContainer">
+            <span class="animationAppName">DABubble</span>
+        </div>
     </div>
-  </div>
-  
+</div>
+
 
 <div class="loginContent">
     <div class="loginHeader">
@@ -41,7 +42,8 @@
             </div>
             <div class="loginBottomContainer">
                 <button class="loginBtn loginButtonsMobile" type="submit" [disabled]="!loginForm.valid">Login</button>
-                <button class="guestLoginbtn loginButtonsMobiles" type="button" (click)="onGuestLogin()">Guest-Login</button>
+                <button class="guestLoginbtn loginButtonsMobiles" type="button"
+                    (click)="onGuestLogin()">Guest-Login</button>
             </div>
         </form>
     </div>
