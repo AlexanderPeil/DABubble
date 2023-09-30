@@ -1,3 +1,13 @@
+<div class="animationContainer" *ngIf="containerVisible" [style.background]="background">
+    <div [@logoAnimation]="logoState" class="animationLogoName">
+      <img src="../../../assets/img/animationLogo.svg" alt="App-Logo" class="animationLogo" [style.background-color]="logoBackgroundColor">
+      <div [@nameAnimation]="nameState" class="animationNameContainer">
+        <span class="animationAppName">DABubble</span>
+      </div>
+    </div>
+  </div>
+  
+
 <div class="loginContent">
     <div class="loginHeader">
         <img src="../../../assets/img/logo_animation.svg">

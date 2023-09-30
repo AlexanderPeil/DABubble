@@ -36,31 +36,6 @@ export class MessageService {
 
 
   // Here begins the logic for all messages
-  getUnreadMessagesCount(userId1: string, userId2: string): Observable<number> {
-    return this.getDirectMessages(userId1, userId2).pipe(
-      map(messages => messages.filter(message => !message.read && message.receiverId === userId1).length),
-      catchError(error => {
-        console.error("Error getting unread messages:", error);
-        return of(0);
-      })
-    );
-  }
-
-
-  async markAllMessagesAsRead(userId1: string, userId2: string): Promise<void> {
-    const messageCollection = this.getDirectMessageCollection(userId1, userId2);
-    const unreadQuery = query(messageCollection, where("read", "==", false), where("receiverId", "==", userId1));
-    const querySnapshot = await getDocs(unreadQuery);
-    const batch = writeBatch(this.firestore);
-
-    querySnapshot.forEach(queryDoc => {
-      const messageDoc = doc(this.firestore, `directMessage/${this.generateChatId(userId1, userId2)}/messages/${queryDoc.id}`);
-      batch.update(messageDoc, { read: true });
-    });
-    await batch.commit();
-  }
-
-
   removePTags(htmlContent: string) {
     const div = document.createElement('div');
     div.innerHTML = htmlContent;
@@ -151,6 +126,31 @@ export class MessageService {
   }
 
 
+  getUnreadMessagesCount(userId1: string, userId2: string): Observable<number> {
+    return this.getDirectMessages(userId1, userId2).pipe(
+      map(messages => messages.filter(message => !message.read && message.receiverId === userId1).length),
+      catchError(error => {
+        console.error("Error getting unread messages:", error);
+        return of(0);
+      })
+    );
+  }
+
+
+  async markAllMessagesAsRead(userId1: string, userId2: string): Promise<void> {
+    const messageCollection = this.getDirectMessageCollection(userId1, userId2);
+    const unreadQuery = query(messageCollection, where("read", "==", false), where("receiverId", "==", userId1));
+    const querySnapshot = await getDocs(unreadQuery);
+    const batch = writeBatch(this.firestore);
+
+    querySnapshot.forEach(queryDoc => {
+      const messageDoc = doc(this.firestore, `directMessage/${this.generateChatId(userId1, userId2)}/messages/${queryDoc.id}`);
+      batch.update(messageDoc, { read: true });
+    });
+    await batch.commit();
+  }
+
+
   getDirectMessageCollection(userId1: string, userId2: string) {
     const chatId = this.generateChatId(userId1, userId2);
     return collection(doc(this.firestore, `directMessage/${chatId}`), 'messages');
@@ -234,6 +234,7 @@ export class MessageService {
       content: content,
       timestamp: Date.now(),
       read: false,
+      readBy: [],
       senderName: senderName,
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: false
@@ -304,6 +305,40 @@ export class MessageService {
     }
   }
 
+
+  async markAllMessagesAsReadInChannel(channelId: string, userId: string): Promise<void> {
+    try {
+      const channelMessagesCollection = collection(this.firestore, 'channels', channelId, 'messages');
+      const querySnapshot = await getDocs(channelMessagesCollection);
+
+      const batch = writeBatch(this.firestore);
+
+      querySnapshot.forEach(queryDoc => {
+        if (!queryDoc.exists()) return;
+
+        const messageDoc = doc(this.firestore, `channels/${channelId}/messages/${queryDoc.id}`);
+
+        const currentData = queryDoc.data();
+        const readBy = currentData['readBy'] ? [...currentData['readBy']] : [];
+
+        if (!readBy.includes(userId)) {
+          readBy.push(userId);
+          batch.update(messageDoc, { readBy });
+        }
+      });
+
+      await batch.commit();
+    } catch (error) {
+      console.error('Error marking messages as read:', error);
+    }
+  }
+
+
+  getUnreadMessagesCountForChannel(channelId: string, userId: string): Observable<number> {
+    return this.getChannelMessages(channelId).pipe(
+      map(messages => messages.filter(message => !message.readBy?.includes(userId)).length)
+    );
+  }
   // Here ends the logic for channel-messages
 
 

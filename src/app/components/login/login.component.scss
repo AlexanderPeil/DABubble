@@ -1,5 +1,5 @@
-@import '../../shared/variables.scss';
-@import '../../shared/login_standard.scss';
+@import "../../shared/variables.scss";
+@import "../../shared/login_standard.scss";
 
 .signUpContainerMobile {
     display: none;
@@ -12,17 +12,14 @@
 .loginContainer {
     @include flex_column_center;
     background-color: #eceefe;
-    // padding-bottom: 25px;
 }
 
 .loginHeader {
     @include space_between_center;
     padding-top: 25px;
-    // position: relative;
-    // top: 0;
 
     img {
-        margin-left: 75px
+        margin-left: 75px;
     }
 }
 
@@ -41,7 +38,7 @@
     @include button_hover;
     text-decoration: none;
     padding: 10px 15px;
-    color: #797EF3;
+    color: #797ef3;
     border-radius: 30px;
     transition: text-shadow 225ms ease;
 
@@ -58,7 +55,7 @@
 
     div {
         @include width_height(150px, 1px);
-        background-color: #ADB0D9;
+        background-color: #adb0d9;
     }
 
     span {
@@ -85,7 +82,7 @@
         content: "";
         display: inline-block;
         margin-right: 10px;
-        background-image: url('../../../assets/img/google_logo.svg');
+        background-image: url("../../../assets/img/google_logo.svg");
         background-size: cover;
     }
 
@@ -115,8 +112,49 @@
     border: 1px solid #444df2;
 }
 
-@media(max-width:600px) {
+/****************** Style for Login-Animation   *******************/
+.animationContainer {
+    background: transparent;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    transition: background 500ms ease-in-out;
+    z-index: 1;
+    overflow: hidden;
+}
 
+.animationLogoName {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 100px;
+
+    .animationLogo {
+        z-index: 1;
+        // background-color: #6168ee;
+        padding-right: 100px;
+    }
+
+    .animationNameContainer {
+        position: absolute;
+        right: -280px;
+      }
+
+      .animationAppName {
+        white-space: nowrap; // Verhindert Zeilenumbruch des Textes
+        color: white;
+        font-size: 60px;
+        font-weight: 700;
+      }
+}
+/****************** Style for Login-Animation   *******************/
+
+@media (max-width: 600px) {
     .loginContent {
         gap: 15px;
     }
@@ -148,34 +186,31 @@
 
         a {
             padding: 5px 43px;
-            border: 1px solid #797EF3 !important;
+            border: 1px solid #797ef3 !important;
         }
     }
 }
 
-@media(max-width:500px) {
+@media (max-width: 500px) {
     .alternatively {
-
         div {
             width: 80px;
         }
     }
 }
 
-@media(max-width:360px) {
+@media (max-width: 360px) {
     .loginContent {
         padding: 20px 0;
     }
 
     .loginHeader {
-
         img {
             height: 40px;
         }
     }
 
     .alternatively {
-
         div {
             width: 45px;
         }
