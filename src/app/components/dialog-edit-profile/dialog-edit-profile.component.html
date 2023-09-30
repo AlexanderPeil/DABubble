@@ -4,7 +4,7 @@
         <div mat-dialog-close></div>
     </div>
     <!-- <img class="userImg" src="assets/img/avatar1.svg"> -->
-    <img *ngIf="user?.photoURL" class="userImg" [src]="user?.photoURL" [matMenuTriggerFor]="imageMenu">
+    <img *ngIf="user?.photoURL" class="userImgEditProfile" [src]="user?.photoURL" [matMenuTriggerFor]="imageMenu">
     <mat-menu #imageMenu="matMenu">
         <div *ngFor="let imageUrl of user_images">
             <button mat-menu-item (click)="changeImage(imageUrl)">
