@@ -12,7 +12,8 @@ import {
   docData,
   updateDoc,
   getDoc,
-  arrayUnion
+  arrayUnion,
+  arrayRemove
 } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, catchError, firstValueFrom, map, of, take } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
@@ -25,9 +26,9 @@ import { Channel } from 'src/app/models/channel';
   providedIn: 'root'
 })
 export class MessageService {
-  selectedUser: User | null = null;
+  selectedUser: User  | null = null;
   loggedInUser: User | null = null;
-  // currentChatPartners: { [userId: string]: string } = {};
+  currentReceiverId: string | null = null;
   usersInChat: { [userId: string]: boolean } = {};
   currentChatPartnerSubject = new BehaviorSubject<string | null>(null);
   currentChatPartner = this.currentChatPartnerSubject.asObservable();
@@ -102,19 +103,12 @@ export class MessageService {
   // Here begins the logic for the direct-messages
   async createAndAddMessage(senderId: string, receiverId: string, senderName: string, content: string): Promise<void> {
     const loggedInUser = this.authService.currentUserValue;
-    let read = false;
-    const currentChatPartner = await firstValueFrom(this.currentChatPartner.pipe(take(1)));
-    if (currentChatPartner === receiverId) {
-      read = true;
-    }
-
     const message = new MessageContent({
       senderId: senderId,
       receiverId: receiverId,
       content: content,
       timestamp: Date.now(),
       senderName: senderName,
-      read: read,
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: false
     });
@@ -122,34 +116,13 @@ export class MessageService {
     const messageCollection = this.getDirectMessageCollection(senderId, receiverId);
     try {
       await addDoc(messageCollection, message.toJSON());
+
+      const receiverRef = doc(this.firestore, 'users', receiverId);
+      await updateDoc(receiverRef, { hasUnreadMessages: arrayUnion(senderId) });   
+       
     } catch (error) {
       console.error("Error adding document: ", error);
     }
-  }
-
-
-  getUnreadMessagesCount(userId1: string, userId2: string): Observable<number> {
-    return this.getDirectMessages(userId1, userId2).pipe(
-      map(messages => messages.filter(message => !message.read && message.receiverId === userId1).length),
-      catchError(error => {
-        console.error("Error getting unread messages:", error);
-        return of(0);
-      })
-    );
-  }
-
-
-  async markAllMessagesAsRead(userId1: string, userId2: string): Promise<void> {
-    const messageCollection = this.getDirectMessageCollection(userId1, userId2);
-    const unreadQuery = query(messageCollection, where("read", "==", false), where("receiverId", "==", userId1));
-    const querySnapshot = await getDocs(unreadQuery);
-    const batch = writeBatch(this.firestore);
-
-    querySnapshot.forEach(queryDoc => {
-      const messageDoc = doc(this.firestore, `directMessage/${this.generateChatId(userId1, userId2)}/messages/${queryDoc.id}`);
-      batch.update(messageDoc, { read: true });
-    });
-    await batch.commit();
   }
 
 
@@ -197,9 +170,19 @@ export class MessageService {
         content: updatedContent,
         timestamp: Date.now()
       });
+      const receiverRef = doc(this.firestore, 'users', userId2);
+      await updateDoc(receiverRef, { hasUnreadMessages: arrayUnion(userId1) });  
     } catch (error) {
       console.error("Error updating document: ", error);
     }
+  }
+
+
+  hasUnreadMessages(userId1: string, userId2: string, currentUser: string): Observable<boolean> {
+    const messageCollection = this.getDirectMessageCollection(userId1, userId2);
+    return collectionData(messageCollection, { idField: 'id' }).pipe(
+      map(messages => messages.some(message => !message['read'] && message['receiverId'] === currentUser))
+    );
   }
 
 
@@ -222,8 +205,21 @@ export class MessageService {
   }
 
 
-  setCurrentChatPartner(userId: string | null) {
-    this.currentChatPartnerSubject.next(userId);
+  async markMessagesAsRead(senderId: string, receiverId: string) {
+    const receiverRef = doc(this.firestore, 'users', receiverId);
+    await updateDoc(receiverRef, { hasUnreadMessages: arrayRemove(senderId) });
+  }
+  
+
+  selectReceiver(userId: string) {
+    this.currentReceiverId = userId;
+  }
+
+
+  markAsReadIfCurrentReceiver(senderId: string) {
+    if (this.currentReceiverId === senderId) {
+      
+    }
   }
   // Here ends the logic for the direct-messages
 
@@ -336,7 +332,6 @@ export class MessageService {
       senderId: senderId,
       content: content,
       timestamp: Date.now(),
-      read: false,
       senderName: senderName,
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: true,

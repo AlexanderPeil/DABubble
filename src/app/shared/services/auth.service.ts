@@ -327,7 +327,8 @@ export class AuthService {
           displayName: data.displayName,
           emailVerified: data.emailVerified,
           isOnline: data.isOnline,
-          photoURL: data.photoURL
+          photoURL: data.photoURL,
+          hasUnreadMessages: data.hasUnreadMessages || []
         };
       })
     );
@@ -344,7 +345,8 @@ export class AuthService {
         emailVerified: data['emailVerified'],
         isOnline: data['isOnline'],
         photoURL: data['photoURL'],
-        lastActive: data['lastActive']
+        lastActive: data['lastActive'],
+        hasUnreadMessages: data['hasUnreadMessages']
       }) as User))
     );
   }

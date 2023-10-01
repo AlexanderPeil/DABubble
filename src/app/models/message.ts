@@ -6,7 +6,6 @@ export class MessageContent {
   receiverId?: string;
   senderName: string;
   senderImage: string;
-  read: boolean;
   hasThread: boolean = false;
   messageId?: string;
   emojis?: {
@@ -24,7 +23,6 @@ export class MessageContent {
     this.receiverId = object ? object.receiverId : '';
     this.senderName = object ? object.senderName : '';
     this.senderImage = object ? object.senderImage : '';
-    this.read = object ? object.read : '';
     this.hasThread = object ? object.hasThread : false;
     this.messageId = object ? object.messageId : '';
     this.emojis = object ? object.emojis || {} : {};
@@ -37,7 +35,6 @@ export class MessageContent {
       senderId: this.senderId,
       senderName: this.senderName,
       senderImage: this.senderImage,
-      read: this.read,
       hasThread: this.hasThread,
       emojis: this.emojis || {} 
     };

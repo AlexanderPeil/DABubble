@@ -4,7 +4,7 @@ import { DialogCreateChannelComponent } from '../dialog-create-channel/dialog-cr
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { ChannelService } from 'src/app/shared/services/channel.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, take, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
 
@@ -19,7 +19,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   chatsVisible: boolean = true;
   arrowImageRotatedChannel: boolean = false;
   arrowImageRotatedChat: boolean = false;
-  users: { user: User, unreadCount?: number }[] = [];
+  users: User[] = [];
   userSubscription!: Subscription;
   isOnline?: boolean;
   loggedInUser: Observable<User | null> = this.authService.currentUser.asObservable();
@@ -28,7 +28,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    private authService: AuthService,
+    public authService: AuthService,
     public channelService: ChannelService,
     private router: Router,
     private messageService: MessageService,
@@ -36,20 +36,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.authService.getUsers().subscribe((usersData) => {
-      this.users = usersData.map(user => ({ user, unreadCount: 0 }));
-      this.users.forEach((userWithCount, index) => {
-        const loggedInUid = this.authService.currentUserValue?.uid;
-        if (userWithCount.user && loggedInUid) {
-          this.messageService.getUnreadMessagesCount(loggedInUid, userWithCount.user.uid)
-            .subscribe(unreadCount => {
-              if (this.users[index]) {
-                this.users[index].unreadCount = unreadCount;
-              }
-            });
-        }
-      });
-    });
+    this.userSubscription = this.authService.getUsers().subscribe(users => this.users = users);
     this.channelService.getChannelService();
   }
 
@@ -78,22 +65,26 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }
 
 
-  onUserClick(userWithCount: { user: User, unreadCount?: number }) {
-    const loggedInUid = this.authService.currentUser.value?.uid;
-    if (loggedInUid && userWithCount.unreadCount && userWithCount.unreadCount > 0) {
-      this.messageService.markAllMessagesAsRead(loggedInUid, userWithCount.user.uid).then(() => {
-        userWithCount.unreadCount = 0;
-      });
-    }
-    this.messageService.setCurrentChatPartner(userWithCount.user.uid);
-    this.router.navigate(['main', 'direct-message', userWithCount.user.uid]);
+  onUserClick(clickedUser: User) {
+    this.loggedInUser.pipe(
+      take(1),
+      tap(loggedInUser => {
+        if (loggedInUser && loggedInUser.hasUnreadMessages?.includes(clickedUser.uid)) {
+          this.messageService.markMessagesAsRead(clickedUser.uid, loggedInUser.uid);
+        }
+      })
+    ).subscribe();
+  
+    this.router.navigate(['main', 'direct-message', clickedUser.uid]);
   }
+  
+
 
 
   onChannelClick(channelId: string) {
     this.messageService.markChannelMessageAsRead(channelId);
   }
-  
+
 
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();
