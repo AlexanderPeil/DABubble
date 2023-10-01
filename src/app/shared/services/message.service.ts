@@ -11,12 +11,14 @@ import {
   query,
   docData,
   updateDoc,
-  getDoc
+  getDoc,
+  arrayUnion
 } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, catchError, firstValueFrom, map, of, take } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { AuthService } from './auth.service';
 import { User } from 'src/app/shared/services/user';
+import { Channel } from 'src/app/models/channel';
 
 
 @Injectable({
@@ -25,10 +27,10 @@ import { User } from 'src/app/shared/services/user';
 export class MessageService {
   selectedUser: User | null = null;
   loggedInUser: User | null = null;
-  currentChatPartners: { [userId: string]: string } = {};
+  // currentChatPartners: { [userId: string]: string } = {};
   usersInChat: { [userId: string]: boolean } = {};
   currentChatPartnerSubject = new BehaviorSubject<string | null>(null);
-  currentChatPartner$ = this.currentChatPartnerSubject.asObservable();
+  currentChatPartner = this.currentChatPartnerSubject.asObservable();
 
   constructor(
     private firestore: Firestore,
@@ -101,7 +103,7 @@ export class MessageService {
   async createAndAddMessage(senderId: string, receiverId: string, senderName: string, content: string): Promise<void> {
     const loggedInUser = this.authService.currentUserValue;
     let read = false;
-    const currentChatPartner = await firstValueFrom(this.currentChatPartner$.pipe(take(1)));
+    const currentChatPartner = await firstValueFrom(this.currentChatPartner.pipe(take(1)));
     if (currentChatPartner === receiverId) {
       read = true;
     }
@@ -234,18 +236,27 @@ export class MessageService {
       content: content,
       timestamp: Date.now(),
       read: false,
-      readBy: [],
       senderName: senderName,
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: false
     });
+
     const messageCollection = collection(this.firestore, 'channels', channelId, 'messages');
     try {
       await addDoc(messageCollection, message.toJSON());
+
+      const channelRef = doc(this.firestore, 'channels', channelId);
+      const channelSnap = await getDoc(channelRef);
+
+      if (channelSnap.exists()) {
+        await updateDoc(channelRef, { readBy: [senderId] });
+      }
+
     } catch (error) {
       console.error("Error adding document: ", error);
     }
   }
+
 
   getChannelMessageCollection(channelID: string) {
     return collection(this.firestore, 'channels', channelID, 'messages');
@@ -306,38 +317,14 @@ export class MessageService {
   }
 
 
-  async markAllMessagesAsReadInChannel(channelId: string, userId: string): Promise<void> {
-    try {
-      const channelMessagesCollection = collection(this.firestore, 'channels', channelId, 'messages');
-      const querySnapshot = await getDocs(channelMessagesCollection);
-
-      const batch = writeBatch(this.firestore);
-
-      querySnapshot.forEach(queryDoc => {
-        if (!queryDoc.exists()) return;
-
-        const messageDoc = doc(this.firestore, `channels/${channelId}/messages/${queryDoc.id}`);
-
-        const currentData = queryDoc.data();
-        const readBy = currentData['readBy'] ? [...currentData['readBy']] : [];
-
-        if (!readBy.includes(userId)) {
-          readBy.push(userId);
-          batch.update(messageDoc, { readBy });
-        }
-      });
-
-      await batch.commit();
-    } catch (error) {
-      console.error('Error marking messages as read:', error);
+  markChannelMessageAsRead(channelId: string) {
+    const userId = this.authService.currentUserValue?.uid;
+    if (userId) {
+      const channelRef = doc(this.firestore, 'channels', channelId);
+      updateDoc(channelRef, {
+        readBy: arrayUnion(userId)
+      }).catch(error => console.error("Error updating document: ", error));
     }
-  }
-
-
-  getUnreadMessagesCountForChannel(channelId: string, userId: string): Observable<number> {
-    return this.getChannelMessages(channelId).pipe(
-      map(messages => messages.filter(message => !message.readBy?.includes(userId)).length)
-    );
   }
   // Here ends the logic for channel-messages
 

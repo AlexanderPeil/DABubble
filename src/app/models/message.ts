@@ -9,7 +9,6 @@ export class MessageContent {
   read: boolean;
   hasThread: boolean = false;
   messageId?: string;
-  readBy?: string[]; 
   emojis?: {
     complete?: number;
     handsUp?: number;
@@ -28,7 +27,6 @@ export class MessageContent {
     this.read = object ? object.read : '';
     this.hasThread = object ? object.hasThread : false;
     this.messageId = object ? object.messageId : '';
-    this.readBy = object ? object.readBy : undefined;
     this.emojis = object ? object.emojis || {} : {};
   }
 
@@ -50,10 +48,6 @@ export class MessageContent {
 
     if (this.messageId) {
       json.messageId = this.messageId;
-    }
-
-    if (this.readBy) {
-      json.readBy = this.readBy;
     }
 
     return json;

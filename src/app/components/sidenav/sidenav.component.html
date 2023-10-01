@@ -31,6 +31,7 @@
         *ngFor="let channel of channelService.channelData | async" class="channel" (click)="onChannelClick(channel.id)">
         <img [routerLinkActive]="'activeChannelImgAndPElement'" src="./assets/img/icons/tag.svg" alt="" />
         <p [routerLinkActive]="'activeChannelImgAndPElement'">{{ channel.channelName }}</p>
+        <span *ngIf="!(channel.readBy?.includes((loggedInUser | async)?.uid))" class="unreadCount"></span>
       </li>
     </ul>
 
