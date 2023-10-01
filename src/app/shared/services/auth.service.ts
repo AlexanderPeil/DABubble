@@ -89,22 +89,22 @@ export class AuthService {
     this.user$.pipe(
       switchMap(user => user ? this.getUserData(user.uid) : of(null)),
       take(1)
-    ).subscribe(async userData => {
-      if (userData) {
-        try {
-          if (userData.displayName === 'Guest') {
-            await this.auth.setPersistence(browserSessionPersistence);
-            console.log("Set persistence for Guest-User!");
-          } else {
-            await this.auth.setPersistence(browserLocalPersistence);
-            console.log("Set standard persistence!");
-          }
-        } catch (error) {
-          console.error("Couldn't set persistence", error);
-        }
-      }
-    });
+    ).subscribe(userData => this.setPersistenceBasedOnUserData(userData));
   }
+
+
+  async setPersistenceBasedOnUserData(userData: any) {
+    if (!userData) return;
+
+    try {
+      const isGuest = userData.displayName === 'Guest';
+      await this.auth.setPersistence(isGuest ? browserSessionPersistence : browserLocalPersistence);
+      console.log(isGuest ? "Set persistence for Guest-User!" : "Set standard persistence!");
+    } catch (error) {
+      console.error("Couldn't set persistence", error);
+    }
+  }
+
 
 
   getRandomGuestImage(): string {
@@ -143,7 +143,7 @@ export class AuthService {
         const lastRoute = localStorage.getItem('lastRoute') || 'main/channel/tcgLB0MdDpTD27cGTU95';
         this.router.navigate([lastRoute]);
         console.log(lastRoute);
-        
+
       }
     } catch (error) {
       console.log('An unexpected error occurred. Please try again', error);
@@ -275,30 +275,22 @@ export class AuthService {
 
 
 
-  /**
-   * Sets or updates the user's data in the Firestore.
-   * @async
-   * @param {FirebaseUser} user - The user object from Firebase Authentication.
-   * @returns {User} The data structure that was set in Firestore.
-   */
   async setUserData(user: FirebaseUser, isOnline?: boolean) {
+    const { uid, email, displayName, emailVerified, photoURL } = user;
     const userData: User = {
-      uid: user.uid,
-      email: user.email || null,
-      displayName: user.displayName || null,
-      displayNameLower: user.displayName?.toLowerCase() || null,
-      emailVerified: user.emailVerified,
-      photoURL: user.photoURL,
-      lastActive: Timestamp.now()
+      uid,
+      email: email || null,
+      displayName: displayName || null,
+      displayNameLower: displayName?.toLowerCase() || null,
+      emailVerified,
+      photoURL,
+      lastActive: Timestamp.now(),
+      ...(typeof isOnline !== 'undefined' && { isOnline })
     };
-
-    if (typeof isOnline !== 'undefined') {
-      userData.isOnline = isOnline;
-    }
-
-    await setDoc(doc(this.firestore, `users/${user.uid}`), userData);
+    await setDoc(doc(this.firestore, `users/${uid}`), userData);
     return userData;
   }
+
 
 
   async updateUser(uid: string, data: Partial<User>) {

@@ -121,28 +121,19 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
 
   sendMessage() {
-    if (this.messageContent && this.loggedInUser) {
-      const senderName = this.loggedInUser.displayName as string;
-      const cleanedContent = this.messageService.removePTags(
-        this.messageContent
-      );
-      this.messageService
-        .createAndAddChannelMessage(
-          this.channelId,
-          this.loggedInUser.uid,
-          senderName,
-          cleanedContent
-        )
-        .then(() => {
-          this.messageContent = '';
-          this.scrollToBottom();
-        })
-        .catch((error: any) => {
-          console.error("Couldn't send a message:", error);
-        })
-    } else {
-      console.error('Please try again.');
-    }
+    const { loggedInUser, messageContent, channelId, messageService } = this;
+
+    if (!loggedInUser || !messageContent) return console.error('Please try again.');
+
+    messageService
+      .createAndAddChannelMessage(
+        channelId,
+        loggedInUser.uid,
+        loggedInUser.displayName as string,
+        messageService.removePTags(messageContent)
+      )
+      .then(() => (this.messageContent = '', this.scrollToBottom()))
+      .catch((error: any) => console.error("Couldn't send a message:", error));
   }
 
 
@@ -242,16 +233,14 @@ export class ChannelComponent implements OnInit, OnDestroy {
       switchMap(([channelId, user]) => {
         this.loggedInUser = user;
         return this.messageService.getChannelMessages(channelId);
-      }),
-      takeUntil(this.ngUnsubscribe)
+      }), takeUntil(this.ngUnsubscribe)
     ).subscribe(messages => {
       this.processMessages(messages);
       messages.forEach(message => {
-        if (message.senderId !== this.loggedInUser?.uid) { 
-          this.messageService.markChannelMessageAsRead(this.channelId); 
+        if (message.senderId !== this.loggedInUser?.uid) {
+          this.messageService.markChannelMessageAsRead(this.channelId);
         }
-      });
-      setTimeout(() => this.scrollToBottom());
+      }); setTimeout(() => this.scrollToBottom());
     });
   }
 

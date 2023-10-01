@@ -6,8 +6,6 @@ import {
   doc,
   collectionData,
   where,
-  getDocs,
-  writeBatch,
   query,
   docData,
   updateDoc,
@@ -15,11 +13,10 @@ import {
   arrayUnion,
   arrayRemove
 } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable, catchError, firstValueFrom, map, of, take } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { AuthService } from './auth.service';
 import { User } from 'src/app/shared/services/user';
-import { Channel } from 'src/app/models/channel';
 
 
 @Injectable({
@@ -30,8 +27,8 @@ export class MessageService {
   loggedInUser: User | null = null;
   currentReceiverId: string | null = null;
   usersInChat: { [userId: string]: boolean } = {};
-  currentChatPartnerSubject = new BehaviorSubject<string | null>(null);
-  currentChatPartner = this.currentChatPartnerSubject.asObservable();
+  // currentChatPartnerSubject = new BehaviorSubject<string | null>(null);
+  // currentChatPartner = this.currentChatPartnerSubject.asObservable();
 
   constructor(
     private firestore: Firestore,
@@ -73,24 +70,23 @@ export class MessageService {
 
 
   formatDate(timestamp: number): string {
-    const date = new Date(timestamp);
-    const today = new Date();
-    const yesterday = new Date(today);
-
-    yesterday.setDate(today.getDate() - 1);
-    date.setHours(0, 0, 0, 0);
-    today.setHours(0, 0, 0, 0);
-    yesterday.setHours(0, 0, 0, 0);
-
-    if (date.getTime() === today.getTime()) {
-      return 'Today';
-    } else if (date.getTime() === yesterday.getTime()) {
-      return 'Yesterday';
-    } else {
-      const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: '2-digit', month: 'long' };
-      return date.toLocaleDateString('en-US', options);
-    }
+    const date = this.stripTime(new Date(timestamp));
+    const today = this.stripTime(new Date());
+    const yesterday = this.stripTime(new Date(Date.now() - 86400000)); // 24 * 60 * 60 * 1000
+  
+    if (date.getTime() === today.getTime()) return 'Today';
+    if (date.getTime() === yesterday.getTime()) return 'Yesterday';
+  
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: '2-digit', month: 'long' };
+    return date.toLocaleDateString('en-US', options);
   }
+  
+  
+  stripTime(date: Date): Date {
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }
+  
 
   formatTime(timestamp: number): string {
     const date = new Date(timestamp);
