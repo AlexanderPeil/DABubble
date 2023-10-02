@@ -69,14 +69,17 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.loggedInUser.pipe(
       take(1),
       tap(loggedInUser => {
-        if (loggedInUser && loggedInUser.hasUnreadMessages?.includes(clickedUser.uid)) {
-          this.messageService.markMessagesAsRead(clickedUser.uid, loggedInUser.uid);
+        if (loggedInUser && loggedInUser.uid !== clickedUser.uid) {
+          if (loggedInUser.hasUnreadMessages?.includes(clickedUser.uid)) {
+            this.messageService.markMessagesAsRead(clickedUser.uid, loggedInUser.uid);
+          }
         }
       })
     ).subscribe();
   
     this.router.navigate(['main', 'direct-message', clickedUser.uid]);
   }
+  
   
 
 

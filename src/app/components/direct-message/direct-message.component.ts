@@ -89,11 +89,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     this.messagesSubscription = this.messageService.getDirectMessages(userId1, userId2)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(messages => {
-
         if (this.messageService.loggedInUser && this.messageService.selectedUser) {
-          this.messageService.markMessagesAsRead(this.messageService.selectedUser.uid, this.messageService.loggedInUser.uid);
+          if (this.messageService.loggedInUser.uid !== this.messageService.selectedUser.uid) {
+            this.messageService.markMessagesAsRead(this.messageService.selectedUser.uid, this.messageService.loggedInUser.uid);
+          }
         }
-
         messages.sort((a, b) => a.timestamp - b.timestamp);
         this.messages = messages;
         this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
@@ -102,6 +102,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         }, 500);
       });
   }
+  
 
 
   handleReceivedMessages(messages: MessageContent[]) {
