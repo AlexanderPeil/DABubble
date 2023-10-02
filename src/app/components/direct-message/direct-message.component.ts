@@ -83,9 +83,24 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
 
   loadDirectMessages(userId1: string, userId2: string) {
+    if (this.messagesSubscription) {
+      this.messagesSubscription.unsubscribe();
+    }
     this.messagesSubscription = this.messageService.getDirectMessages(userId1, userId2)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(messages => this.handleReceivedMessages(messages));
+      .subscribe(messages => {
+
+        if (this.messageService.loggedInUser && this.messageService.selectedUser) {
+          this.messageService.markMessagesAsRead(this.messageService.selectedUser.uid, this.messageService.loggedInUser.uid);
+        }
+
+        messages.sort((a, b) => a.timestamp - b.timestamp);
+        this.messages = messages;
+        this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 500);
+      });
   }
 
 
@@ -104,25 +119,22 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
 
   sendMessage() {
-    const { messageContent, messageService } = this;
-    const { selectedUser, loggedInUser } = messageService;
-
-    if (!messageContent || !selectedUser || !loggedInUser) return console.error('Please try again.');
-
-    const senderName = loggedInUser.displayName as string;
-    const cleanedContent = messageService.removePTags(messageContent);
-
-    this.attemptMessageSending(loggedInUser.uid, selectedUser.uid, senderName, cleanedContent)
-      .then(() => (this.messageContent = '', this.scrollToBottom()))
-      .catch((error: any) => console.error("Couldn't send a message:", error));
-  }
-
-
-  async attemptMessageSending(senderId: string, recipientId: string, senderName: string, content: string) {
-    try {
-      await this.messageService.createAndAddMessage(senderId, recipientId, senderName, content);
-    } catch (error) {
-      throw error;
+    if (this.messageContent && this.messageService.selectedUser && this.messageService.loggedInUser) {
+      const senderName = this.messageService.loggedInUser.displayName as string;
+      const cleanedContent = this.messageService.removePTags(this.messageContent);
+      this.messageService.createAndAddMessage(
+        this.messageService.loggedInUser.uid,
+        this.messageService.selectedUser.uid,
+        senderName,
+        cleanedContent
+      ).then(() => {
+        this.messageContent = '';
+        this.scrollToBottom();
+      }).catch((error: any) => {
+        console.error("Couldn't send a message:", error);
+      });
+    } else {
+      console.error("Please try again.");
     }
   }
 
@@ -255,6 +267,9 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    if (this.messagesSubscription) {
+      this.messagesSubscription.unsubscribe();
+    }
   }
 
 
