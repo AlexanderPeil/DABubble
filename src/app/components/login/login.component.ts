@@ -1,4 +1,10 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -11,7 +17,12 @@ import { AuthService } from 'src/app/shared/services/auth.service';
     trigger('logoAnimationDesktop', [
       state('initial', style({ transform: 'translateX(30vw)' })),
       state('middle', style({ transform: 'translateX(0)' })),
-      state('final', style({ transform: 'translate(calc(-47vw + 100px), calc(-76vh + 50px))' })),
+      state(
+        'final',
+        style({
+          transform: 'translate(calc(-47vw + 100px), calc(-76vh + 50px))',
+        })
+      ),
       transition('initial => middle', animate('500ms ease-out')),
       transition('middle => final', animate('500ms ease-in-out')),
     ]),
@@ -22,8 +33,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
     ]),
     trigger('logoAnimationMobile', [
       state('initial', style({ transform: 'translate(0, 0)' })),
-      state('middle', style({ transform: 'translateX(-20vw' })), 
-      state('final', style({ transform: 'translate(-20vw, -45vh)' })), 
+      state('middle', style({ transform: 'translateX(-20vw' })),
+      state('final', style({ transform: 'translate(-20vw, -45vh)' })),
       transition('initial => middle', animate('500ms ease-out')),
       transition('middle => final', animate('500ms ease-in-out')),
     ]),
@@ -32,9 +43,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
       state('visible', style({ transform: 'translateX(0)' })),
       transition('hidden => visible', animate('500ms ease-in')),
     ]),
-  ]
+  ],
 })
-
 export class LoginComponent implements OnInit {
   logoState: 'initial' | 'middle' | 'final' = 'initial';
   nameState: 'hidden' | 'visible' = 'hidden';
@@ -45,7 +55,7 @@ export class LoginComponent implements OnInit {
   loginFailed = false;
   containerVisible = true;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.loginAnimation();
@@ -55,13 +65,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-
   onSubmit() {
     if (this.loginForm.valid) {
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
-      this.authService.signIn(email, password)
-        .catch((error: { message: string; }) => {
+      this.authService
+        .signIn(email, password)
+        .catch((error: { message: string }) => {
           this.loginFailed = true;
           this.loginForm.controls['password'].reset();
           setTimeout(() => {
@@ -72,17 +82,13 @@ export class LoginComponent implements OnInit {
     }
   }
 
-
   onGuestLogin() {
     this.authService.signInAnonymously();
   }
 
-
   signInWithGoogle() {
-    this.authService.signInWithGoogle().catch(error => {
-    });
+    this.authService.signInWithGoogle().catch((error) => {});
   }
-
 
   loginAnimation() {
     setTimeout(() => {
@@ -100,6 +106,4 @@ export class LoginComponent implements OnInit {
       this.containerVisible = false;
     }, 2500);
   }
-
-
 }
