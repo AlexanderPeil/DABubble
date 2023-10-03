@@ -45,8 +45,8 @@ export class QuillService {
   public quillModulesWithAtAndHash = {
     toolbar: false,
     mention: {
-      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      mentionDenotationChars: ['@', '#'],
+      allowedChars: /^[A-Za-z\sÅÄÖåäö.]*$/,
+      mentionDenotationChars: ['@', '#', '*'],
       source: (
         searchTerm: string,
         renderList: Function,
@@ -56,21 +56,34 @@ export class QuillService {
           this.searchUsers(searchTerm, renderList);
         } else if (mentionChar === '#') {
           this.searchChannels(searchTerm, renderList);
+        } else if (mentionChar === '*') {
+          this.searchEmails(searchTerm, renderList);
         }
       },
       renderItem(item: any) {
         const div = document.createElement('div');
 
         if (item.type === 'user') {
+          const dropdownDiv = document.createElement('div');
           const img = document.createElement('img');
+          const contentDiv = document.createElement('div');
           const span = document.createElement('span');
+          const emailSpan = document.createElement('span');
 
           img.src = item.photoURL;
           img.classList.add('user-dropdown-image');
           span.textContent = item.displayName;
+          emailSpan.textContent = item.email;
 
-          div.appendChild(img);
-          div.appendChild(span);
+          contentDiv.appendChild(span);
+          contentDiv.appendChild(emailSpan);
+          contentDiv.classList.add('user-dropdown-text');
+
+          dropdownDiv.appendChild(img);
+          dropdownDiv.appendChild(contentDiv);
+          dropdownDiv.classList.add('user-dropdown-container');
+
+          div.appendChild(dropdownDiv);
         } else if (item.type === 'channel') {
           const span = document.createElement('span');
 
@@ -110,6 +123,7 @@ export class QuillService {
           value: user.displayName,
           photoURL: photoURL,
           displayName: user.displayName,
+          email: user.email,
           type: 'user',
         };
       });
@@ -127,6 +141,29 @@ export class QuillService {
           displayName: channel.channelName,
           type: 'channel',
         }));
+        renderList(values, searchTerm);
+      });
+  }
+
+  searchEmails(searchTerm: string, renderList: Function) {
+    this.authService
+      .getUsersWithEmail(searchTerm)
+      .subscribe((users: User[]) => {
+        const user_images = '../assets/img/avatar1.svg';
+        const values = users.map((user) => {
+          let photoURL = user.photoURL;
+          if (!photoURL) {
+            photoURL = user_images;
+          }
+          return {
+            id: user.uid,
+            value: user.email,
+            photoURL: photoURL,
+            displayName: user.displayName,
+            email: user.email,
+            type: 'user',
+          };
+        });
         renderList(values, searchTerm);
       });
   }

@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription, map, of, switchMap, take } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subscription,
+  map,
+  of,
+  switchMap,
+  take,
+} from 'rxjs';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import {
   Firestore,
@@ -16,7 +24,7 @@ import {
   where,
   Timestamp,
   Query,
-  DocumentData
+  DocumentData,
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -34,9 +42,8 @@ import {
 } from '@angular/fire/auth';
 import {
   browserSessionPersistence,
-  browserLocalPersistence
+  browserLocalPersistence,
 } from 'firebase/auth';
-
 
 @Injectable({
   providedIn: 'root',
@@ -45,15 +52,16 @@ import {
 /**
  * `AuthService` is a service class responsible for handling user authentication.
  * It observes the user's authentication state and logs relevant information.
- * 
+ *
  * @property {Observable<User | null>} user$ - Observable representing the current user. Emits either the user data or null if not authenticated.
  * @property {Subscription} userSubscription - Subscription to the user$ observable to handle user state changes.
  */
 export class AuthService {
   public user$: Observable<User | null>;
   private userSubscription?: Subscription;
-  currentUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
-
+  currentUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(
+    null
+  );
 
   /**
    * Constructs an instance of the AuthService.
@@ -65,15 +73,15 @@ export class AuthService {
     public auth: Auth,
     public router: Router,
     public storageService: StorageService,
-    private firestore: Firestore) {
-    this.user$ = new Observable(subscriber => {
+    private firestore: Firestore
+  ) {
+    this.user$ = new Observable((subscriber) => {
       const unsubscribe = onAuthStateChanged(this.auth, subscriber);
       return unsubscribe;
     });
     this.initCurrentUser();
     this.initializePersistence();
   }
-
 
   user_images: string[] = [
     '../assets/img/avatar1.svg',
@@ -82,50 +90,55 @@ export class AuthService {
     '../assets/img/avatar4.svg',
     '../assets/img/avatar5.svg',
     '../assets/img/avatar6.svg',
-  ]
-
+  ];
 
   async initializePersistence() {
-    this.user$.pipe(
-      switchMap(user => user ? this.getUserData(user.uid) : of(null)),
-      take(1)
-    ).subscribe(userData => this.setPersistenceBasedOnUserData(userData));
+    this.user$
+      .pipe(
+        switchMap((user) => (user ? this.getUserData(user.uid) : of(null))),
+        take(1)
+      )
+      .subscribe((userData) => this.setPersistenceBasedOnUserData(userData));
   }
-
 
   async setPersistenceBasedOnUserData(userData: any) {
     if (!userData) return;
 
     try {
       const isGuest = userData.displayName === 'Guest';
-      await this.auth.setPersistence(isGuest ? browserSessionPersistence : browserLocalPersistence);
-      console.log(isGuest ? "Set persistence for Guest-User!" : "Set standard persistence!");
+      await this.auth.setPersistence(
+        isGuest ? browserSessionPersistence : browserLocalPersistence
+      );
+      console.log(
+        isGuest
+          ? 'Set persistence for Guest-User!'
+          : 'Set standard persistence!'
+      );
     } catch (error) {
       console.error("Couldn't set persistence", error);
     }
   }
-
-
 
   getRandomGuestImage(): string {
     const randomIndex = Math.floor(Math.random() * this.user_images.length);
     return this.user_images[randomIndex];
   }
 
-
   initCurrentUser(): void {
-    this.user$.pipe(
-      switchMap(firebaseUser => firebaseUser?.uid ? this.getUserData(firebaseUser.uid) : of(null))
-    ).subscribe(user => {
-      this.currentUser.next(user);
-    });
+    this.user$
+      .pipe(
+        switchMap((firebaseUser) =>
+          firebaseUser?.uid ? this.getUserData(firebaseUser.uid) : of(null)
+        )
+      )
+      .subscribe((user) => {
+        this.currentUser.next(user);
+      });
   }
-
 
   get currentUserValue(): User | null {
     return this.currentUser.value;
   }
-
 
   /**
    * Sign in using email and password.
@@ -137,20 +150,24 @@ export class AuthService {
    */
   async signIn(email: string, password: string) {
     try {
-      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        this.auth,
+        email,
+        password
+      );
       if (userCredential.user) {
         await this.setUserOnlineStatus(userCredential.user.uid, true);
-        const lastRoute = localStorage.getItem('lastRoute') || 'main/channel/tcgLB0MdDpTD27cGTU95';
+        const lastRoute =
+          localStorage.getItem('lastRoute') ||
+          'main/channel/tcgLB0MdDpTD27cGTU95';
         this.router.navigate([lastRoute]);
         console.log(lastRoute);
-
       }
     } catch (error) {
       console.log('An unexpected error occurred. Please try again', error);
       throw error;
     }
   }
-
 
   /**
    * Sign up using display name, email, and password.
@@ -162,11 +179,23 @@ export class AuthService {
    * @throws Will throw an error if the sign-up process fails.
    * @returns {Promise<void>} Returns a promise that resolves when the sign-up process is complete.
    */
-  async signUp(displayName: string, email: string, password: string, selectedAvatarURL: string) {
+  async signUp(
+    displayName: string,
+    email: string,
+    password: string,
+    selectedAvatarURL: string
+  ) {
     try {
-      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        this.auth,
+        email,
+        password
+      );
       if (userCredential.user) {
-        await updateProfile(userCredential.user, { displayName, photoURL: selectedAvatarURL });
+        await updateProfile(userCredential.user, {
+          displayName,
+          photoURL: selectedAvatarURL,
+        });
         await this.setUserData(userCredential.user);
         this.router.navigate(['login']);
       }
@@ -175,7 +204,6 @@ export class AuthService {
       throw error;
     }
   }
-
 
   /**
    * Signs in the user anonymously.
@@ -189,9 +217,14 @@ export class AuthService {
       const userCredential = await signInAnonymously(this.auth);
       const randomImageURL = this.getRandomGuestImage();
       if (userCredential.user) {
-        await updateProfile(userCredential.user, { displayName: 'Guest', photoURL: randomImageURL });
+        await updateProfile(userCredential.user, {
+          displayName: 'Guest',
+          photoURL: randomImageURL,
+        });
         await this.setUserData(userCredential.user, true);
-        const lastRoute = localStorage.getItem('lastRoute') || 'main/channel/tcgLB0MdDpTD27cGTU95';
+        const lastRoute =
+          localStorage.getItem('lastRoute') ||
+          'main/channel/tcgLB0MdDpTD27cGTU95';
         this.router.navigate([lastRoute]);
       }
     } catch (error) {
@@ -199,7 +232,6 @@ export class AuthService {
       throw error;
     }
   }
-
 
   /**
    * Signs in the user using Google authentication.
@@ -215,7 +247,9 @@ export class AuthService {
       const user = result.user;
       if (user) {
         await this.setUserData(user, true);
-        const lastRoute = localStorage.getItem('lastRoute') || 'main/channel/tcgLB0MdDpTD27cGTU95';
+        const lastRoute =
+          localStorage.getItem('lastRoute') ||
+          'main/channel/tcgLB0MdDpTD27cGTU95';
         this.router.navigate([lastRoute]);
       }
     } catch (error) {
@@ -223,7 +257,6 @@ export class AuthService {
       throw error;
     }
   }
-
 
   /**
    * Sends a password reset email to the specified email address.
@@ -239,7 +272,6 @@ export class AuthService {
       throw error;
     }
   }
-
 
   /**
    * Signs out the currently authenticated user. If the user is logged in, updates
@@ -260,7 +292,6 @@ export class AuthService {
     this.router.navigate(['login']);
   }
 
-
   async deleteGuestUser(uid: string) {
     try {
       if (this.auth.currentUser && this.auth.currentUser.uid === uid) {
@@ -269,11 +300,9 @@ export class AuthService {
       await deleteDoc(doc(this.firestore, 'users', uid));
       this.userSubscription?.unsubscribe();
     } catch (error) {
-      console.error("Error during deleting guest user:", error);
+      console.error('Error during deleting guest user:', error);
     }
   }
-
-
 
   async setUserData(user: FirebaseUser, isOnline?: boolean) {
     const { uid, email, displayName, emailVerified, photoURL } = user;
@@ -285,23 +314,20 @@ export class AuthService {
       emailVerified,
       photoURL,
       lastActive: Timestamp.now(),
-      ...(typeof isOnline !== 'undefined' && { isOnline })
+      ...(typeof isOnline !== 'undefined' && { isOnline }),
     };
     await setDoc(doc(this.firestore, `users/${uid}`), userData);
     return userData;
   }
 
-
-
   async updateUser(uid: string, data: Partial<User>) {
     try {
       await updateDoc(doc(this.firestore, `users/${uid}`), data);
     } catch (error) {
-      console.error("Error updating user data: ", error);
+      console.error('Error updating user data: ', error);
       throw error;
     }
   }
-
 
   /**
    * Fetches the online status of a user from Firestore based on their UID.
@@ -320,29 +346,32 @@ export class AuthService {
           emailVerified: data.emailVerified,
           isOnline: data.isOnline,
           photoURL: data.photoURL,
-          hasUnreadMessages: data.hasUnreadMessages || []
+          hasUnreadMessages: data.hasUnreadMessages || [],
         };
       })
     );
   }
 
-
   mapFirestoreDataToUsers(userQuery: Query<DocumentData>): Observable<User[]> {
     return collectionData(userQuery).pipe(
-      map(usersData => usersData.map(data => ({
-        uid: data['uid'],
-        email: data['email'],
-        displayName: data['displayName'],
-        displayNameLower: data['displayNameLower'],
-        emailVerified: data['emailVerified'],
-        isOnline: data['isOnline'],
-        photoURL: data['photoURL'],
-        lastActive: data['lastActive'],
-        hasUnreadMessages: data['hasUnreadMessages']
-      }) as User))
+      map((usersData) =>
+        usersData.map(
+          (data) =>
+            ({
+              uid: data['uid'],
+              email: data['email'],
+              displayName: data['displayName'],
+              displayNameLower: data['displayNameLower'],
+              emailVerified: data['emailVerified'],
+              isOnline: data['isOnline'],
+              photoURL: data['photoURL'],
+              lastActive: data['lastActive'],
+              hasUnreadMessages: data['hasUnreadMessages'],
+            } as User)
+        )
+      )
     );
   }
-
 
   getUsers(searchTerm?: string): Observable<User[]> {
     let userQuery;
@@ -359,9 +388,23 @@ export class AuthService {
     return this.mapFirestoreDataToUsers(userQuery);
   }
 
+  getUsersWithEmail(searchTerm?: string): Observable<User[]> {
+    let userQuery;
+    if (searchTerm) {
+      const lowerCaseTerm = searchTerm.toLowerCase();
+      userQuery = query(
+        collection(this.firestore, 'users'),
+        where('email', '>=', lowerCaseTerm),
+        where('email', '<=', lowerCaseTerm + '\uf8ff')
+      );
+    } else {
+      userQuery = collection(this.firestore, 'users');
+    }
+    return this.mapFirestoreDataToUsers(userQuery);
+  }
 
   getInactiveGuestUsers(): Observable<User[]> {
-    const dateOneHourAgo = new Date(Date.now() - (60 * 60 * 1000));
+    const dateOneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
     const firestoreTimestampOneHourAgo = Timestamp.fromDate(dateOneHourAgo);
     const userQuery = query(
       collection(this.firestore, 'users'),
@@ -372,7 +415,6 @@ export class AuthService {
     return this.mapFirestoreDataToUsers(userQuery);
   }
 
-
   /**
    * Sets or updates the online status of the user in Firestore.
    * @async
@@ -382,14 +424,16 @@ export class AuthService {
    */
   async setUserOnlineStatus(uid: string, isOnline: boolean) {
     const userRef = doc(this.firestore, `users/${uid}`);
-    await updateDoc(userRef, { isOnline: isOnline, lastActive: Timestamp.now() });
+    await updateDoc(userRef, {
+      isOnline: isOnline,
+      lastActive: Timestamp.now(),
+    });
   }
-
 
   updateLastActive(uid: string) {
     const userRef = doc(this.firestore, `users/${uid}`);
     updateDoc(userRef, {
-      lastActive: Timestamp.now()
+      lastActive: Timestamp.now(),
     });
   }
 }
