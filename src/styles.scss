@@ -151,10 +151,23 @@ app-imprint {
 
 /******** global Style from Direct-Message quill-editor   *********/
 
+.user-dropdown-container {
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
 .user-dropdown-image {
   height: 35px;
   width: 35px;
   border-radius: 100%;
+  margin-right: 5px;
+}
+
+.user-dropdown-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 25px;
 }
 
 .textarea-emoji-control {
@@ -178,6 +191,10 @@ app-imprint {
 
 .ql-editor p {
   padding-bottom: 0;
+}
+
+.ql-mention-list-container {
+  width: 280px !important;
 }
 
 /************************************ Styles for the message container ************************************/
