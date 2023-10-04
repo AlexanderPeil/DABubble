@@ -1,8 +1,8 @@
 import { Component, NgZone, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 
 
 @Component({
@@ -27,18 +27,20 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.userSubscription = this.authService.user$.subscribe(user => {
-      this.ngZone.run(() => {
-        if (user) {
-          const lastRoute = localStorage.getItem('lastRoute');
-          if (lastRoute !== '/login') {
-            this.router.navigate([lastRoute || '/main/channel/tcgLB0MdDpTD27cGTU95']);
-          } else {
-            this.router.navigate(['/main/channel/tcgLB0MdDpTD27cGTU95']);
+    setTimeout(() => {
+      this.userSubscription = this.authService.user$.subscribe(user => {
+        this.ngZone.run(() => {
+          if (user) {
+            const lastRoute = localStorage.getItem('lastRoute');
+            if (lastRoute !== '/login') {
+              this.router.navigate([lastRoute || '/main/channel/tcgLB0MdDpTD27cGTU95']);
+            } else {
+              this.router.navigate(['/main/channel/tcgLB0MdDpTD27cGTU95']);
+            }
           }
-        }
+        });
       });
-    });
+    }, 2400);
   }
 
 

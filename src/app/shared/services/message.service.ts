@@ -13,7 +13,7 @@ import {
   arrayUnion,
   arrayRemove
 } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, switchMap } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { AuthService } from './auth.service';
 import { User } from 'src/app/shared/services/user';
@@ -23,12 +23,10 @@ import { User } from 'src/app/shared/services/user';
   providedIn: 'root'
 })
 export class MessageService {
-  selectedUser: User  | null = null;
+  selectedUser: User | null = null;
   loggedInUser: User | null = null;
   currentReceiverId: string | null = null;
   usersInChat: { [userId: string]: boolean } = {};
-  // currentChatPartnerSubject = new BehaviorSubject<string | null>(null);
-  // currentChatPartner = this.currentChatPartnerSubject.asObservable();
 
   constructor(
     private firestore: Firestore,
@@ -73,20 +71,20 @@ export class MessageService {
     const date = this.stripTime(new Date(timestamp));
     const today = this.stripTime(new Date());
     const yesterday = this.stripTime(new Date(Date.now() - 86400000)); // 24 * 60 * 60 * 1000
-  
+
     if (date.getTime() === today.getTime()) return 'Today';
     if (date.getTime() === yesterday.getTime()) return 'Yesterday';
-  
+
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: '2-digit', month: 'long' };
     return date.toLocaleDateString('en-US', options);
   }
-  
-  
+
+
   stripTime(date: Date): Date {
     date.setHours(0, 0, 0, 0);
     return date;
   }
-  
+
 
   formatTime(timestamp: number): string {
     const date = new Date(timestamp);
@@ -114,8 +112,8 @@ export class MessageService {
       await addDoc(messageCollection, message.toJSON());
 
       const receiverRef = doc(this.firestore, 'users', receiverId);
-      await updateDoc(receiverRef, { hasUnreadMessages: arrayUnion(senderId) });   
-       
+      await updateDoc(receiverRef, { hasUnreadMessages: arrayUnion(senderId) });
+
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -157,6 +155,28 @@ export class MessageService {
   }
 
 
+  getAllDirectMessages(): Observable<MessageContent[]> {
+    const chatsCollection = collection(this.firestore, 'direct-message');
+    return collectionData(chatsCollection).pipe(
+      switchMap(chatDocs => {
+        const allMessagesObservables: Observable<MessageContent[]>[] = chatDocs.map(chatDoc => {
+          const messagesCollection = collection(doc(this.firestore, 'direct-message', chatDoc['chatId']), 'messages');
+          return collectionData(messagesCollection).pipe(
+            map(docs => docs.map(doc => new MessageContent(doc)))
+          );
+        });
+
+        return combineLatest(allMessagesObservables);
+      }),
+      map(messageLists => {
+        return messageLists.reduce((acc, curr) => acc.concat(curr), []);
+      })
+    );
+  }
+
+
+
+
   async updateDirectMessage(userId1: string, userId2: string, messageId: string, updatedContent: string): Promise<void> {
     const messageCollection = this.getDirectMessageCollection(userId1, userId2);
     const messageRef = doc(messageCollection, messageId);
@@ -167,7 +187,7 @@ export class MessageService {
         timestamp: Date.now()
       });
       const receiverRef = doc(this.firestore, 'users', userId2);
-      await updateDoc(receiverRef, { hasUnreadMessages: arrayUnion(userId1) });  
+      await updateDoc(receiverRef, { hasUnreadMessages: arrayUnion(userId1) });
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -205,7 +225,7 @@ export class MessageService {
     const receiverRef = doc(this.firestore, 'users', receiverId);
     await updateDoc(receiverRef, { hasUnreadMessages: arrayRemove(senderId) });
   }
-  
+
 
   selectReceiver(userId: string) {
     this.currentReceiverId = userId;
@@ -214,7 +234,7 @@ export class MessageService {
 
   markAsReadIfCurrentReceiver(senderId: string) {
     if (this.currentReceiverId === senderId) {
-      
+
     }
   }
   // Here ends the logic for the direct-messages

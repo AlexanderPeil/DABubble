@@ -9,10 +9,10 @@ export class Channel {
   constructor(object?: any) {
     this.channelName = object ? object.channelName : '';
     this.channelDescription = object ? object.channelDescription : '';
-    this.createDate = object ? object.createDate : null;
+    this.createDate = object ? object.createDate : Date.now();
     this.users = object ? object.users : null;
     this.channelId = object ? object.channelId : null;
-    this.readBy = object ? object.readBy : undefined;
+    this.readBy = object && object.readBy ? object.readBy : [];
   }
 
   toJSON() {

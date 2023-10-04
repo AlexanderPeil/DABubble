@@ -76,12 +76,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
         }
       })
     ).subscribe();
-  
+
     this.router.navigate(['main', 'direct-message', clickedUser.uid]);
   }
-  
-  
-
 
 
   onChannelClick(channelId: string) {

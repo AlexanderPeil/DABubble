@@ -132,7 +132,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 100px;
+    margin-bottom: 250px;
 
     .animationLogo {
         z-index: 1;
@@ -142,16 +142,17 @@
     .animationNameContainer {
         position: absolute;
         right: -280px;
-      }
+    }
 
-      .animationAppName {
-        white-space: nowrap; 
+    .animationAppName {
+        white-space: nowrap;
         color: white;
         font-size: 60px;
         font-weight: 700;
-      }
+    }
 }
 /****************** Style for Login-Animation   *******************/
+
 
 @media (max-width: 900px) {
     .animationContainer {

@@ -1,7 +1,7 @@
 <div class="headerContainer">
   <img src="./assets/img/logo.svg" alt="" />
   <div class="inputContainer">
-    <input type="text" placeholder="Search for code learning">
+    <input [(ngModel)]="searchTerm" (focus)="onSearchFocus()" (ngModelChange)="onSearchChange(searchTerm)"  type="text" placeholder="Search for code learning">
     <img src="../../../assets/img/icons/search_icon.svg" alt="Search Icon">
   </div>
   <div class="headerProfileContent" (click)="toggleMenu(); $event.stopPropagation()">
