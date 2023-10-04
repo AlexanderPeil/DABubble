@@ -1,13 +1,16 @@
+<!-- Login animation -->
 <div class="animationContainer" *ngIf="containerVisible" [style.background]="background">
     <div [@logoAnimationDesktop]="!isMobile ? logoState : undefined"
-        [@logoAnimationMobile]="isMobile ? logoState : undefined" [style.background-color]="logoBackgroundColor" class="animationLogoName">
-        <img src="../../../assets/img/animationLogo.svg" alt="App-Logo" class="animationLogo" [style.background-color]="logoBackgroundColor">
+        [@logoAnimationMobile]="isMobile ? logoState : undefined" [style.background-color]="logoBackgroundColor"
+        class="animationLogoName">
+        <img src="../../../assets/img/animationLogo.svg" alt="App-Logo" class="animationLogo"
+            [style.background-color]="logoBackgroundColor">
         <div [@nameAnimation]="nameState" class="animationNameContainer">
             <span class="animationAppName">DABubble</span>
         </div>
     </div>
 </div>
-
+<!-- Login animation -->
 
 <div class="loginContent">
     <div class="loginHeader">

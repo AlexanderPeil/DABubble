@@ -15,14 +15,9 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./login.component.scss'],
   animations: [
     trigger('logoAnimationDesktop', [
-      state('initial', style({ transform: 'translateX(30vw)' })),
-      state('middle', style({ transform: 'translateX(0)' })),
-      state(
-        'final',
-        style({
-          transform: 'translate(calc(-47vw + 100px), calc(-76vh + 50px))',
-        })
-      ),
+      state('initial', style({ transform: 'translateX(30vw) scale(1)' })),
+      state('middle', style({ transform: 'translateX(0) scale(1)' })),
+      state('final', style({ transform: 'translate(calc(-45vw + 75px), calc(-63vh + 25px)) scale(0.5)'})),
       transition('initial => middle', animate('500ms ease-out')),
       transition('middle => final', animate('500ms ease-in-out')),
     ]),

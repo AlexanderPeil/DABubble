@@ -29,11 +29,18 @@ export class ChannelService {
   channelData!: Observable<any>;
   channel: any = new Channel();
 
-  constructor(private firestore: Firestore, public route: Router) {}
+  constructor(private firestore: Firestore, public route: Router) { }
 
   addChannelService(channel: Channel) {
     const collectionInstance = collection(this.firestore, 'channels');
-
+    const channelData = channel.toJSON();
+    if (channelData.users) {
+      for (let user of channelData.users) {
+        if (!user.hasUnreadMessages) {
+          user.hasUnreadMessages = [];
+        }
+      }
+    }
     addDoc(collectionInstance, channel.toJSON()).then((docRef) => {
       const channelId = docRef.id;
       const updatedData = { channelId };
@@ -139,9 +146,9 @@ export class ChannelService {
       map((channelsData) =>
         channelsData.map(
           (data) =>
-            ({
-              channelName: data['channelName'],
-            } as Channel)
+          ({
+            channelName: data['channelName'],
+          } as Channel)
         )
       )
     );

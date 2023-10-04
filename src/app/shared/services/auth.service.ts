@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription, map, of, switchMap, take } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, map, of, shareReplay, switchMap, take } from 'rxjs';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import {
   Firestore,
@@ -33,7 +33,6 @@ import {
   onAuthStateChanged,
 } from '@angular/fire/auth';
 import {
-  browserSessionPersistence,
   browserLocalPersistence
 } from 'firebase/auth';
 
@@ -66,12 +65,11 @@ export class AuthService {
     public router: Router,
     public storageService: StorageService,
     private firestore: Firestore) {
-    this.user$ = new Observable(subscriber => {
-      const unsubscribe = onAuthStateChanged(this.auth, subscriber);
-      return unsubscribe;
-    });
+    this.user$ = new Observable<User | null>(subscriber => {
+      return onAuthStateChanged(this.auth, subscriber);
+    }).pipe(shareReplay(1));
     this.initCurrentUser();
-    this.initializePersistence();
+    this.setPersistence();
   }
 
 
@@ -82,29 +80,17 @@ export class AuthService {
     '../assets/img/avatar4.svg',
     '../assets/img/avatar5.svg',
     '../assets/img/avatar6.svg',
-  ]
+  ];
 
 
-  async initializePersistence() {
-    this.user$.pipe(
-      switchMap(user => user ? this.getUserData(user.uid) : of(null)),
-      take(1)
-    ).subscribe(userData => this.setPersistenceBasedOnUserData(userData));
-  }
-
-
-  async setPersistenceBasedOnUserData(userData: any) {
-    if (!userData) return;
-
+  async setPersistence() {
     try {
-      const isGuest = userData.displayName === 'Guest';
-      await this.auth.setPersistence(isGuest ? browserSessionPersistence : browserLocalPersistence);
-      console.log(isGuest ? "Set persistence for Guest-User!" : "Set standard persistence!");
+      await this.auth.setPersistence(browserLocalPersistence);
+      console.log("Set standard persistence!");
     } catch (error) {
       console.error("Couldn't set persistence", error);
     }
   }
-
 
 
   getRandomGuestImage(): string {
@@ -119,6 +105,11 @@ export class AuthService {
     ).subscribe(user => {
       this.currentUser.next(user);
     });
+  }
+
+
+  getCurrentUser(): User | null {
+    return this.auth.currentUser;  // Checks if a user is authenticated (set in the elocal sotrage last time) to show the loading screen or not
   }
 
 

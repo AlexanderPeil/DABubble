@@ -13,12 +13,23 @@
     </div>
   </div>
 
-  <div *ngIf="!groupedMessages.length" class="emptyChatDiv">
+  <div *ngIf="!groupedMessages.length && authService.currentUser.value?.uid !== messageService.selectedUser?.uid"
+    class="emptyChatDiv">
     <img class="userImgEmptyChat" [src]="messageService.selectedUser?.photoURL"
       (error)="retryLoadImage(messageService.selectedUser)" alt="Receiver Image" />
     <p>
       This chat is only between
       <span>@{{ messageService.selectedUser?.displayName }}</span> and you.
+    </p>
+  </div>
+
+  <div *ngIf="!groupedMessages.length && authService.currentUser.value?.uid === messageService.selectedUser?.uid"
+    class="emptyChatDiv">
+    <img class="userImgEmptyChat" [src]="messageService.selectedUser?.photoURL"
+      (error)="retryLoadImage(messageService.selectedUser)" alt="Receiver Image" />
+    <p>
+      This space is here for you. Make notes, list your to-dos, or keep links and files at hand. You can also discuss
+      things with yourself here if you'd like.
     </p>
   </div>
 
@@ -30,19 +41,24 @@
         <span>{{ group.date }}</span>
         <hr />
       </div>
+
       <div *ngFor="let message of group.messages" class="displayMessagesContainer"
         (mouseenter)="onMessageHover(message)" (mouseleave)="message.id ? handleMouseLeave(message.id) : null">
         <div class="messageChildContainer">
           <img class="userImg" [src]="message.senderImage" (error)="retryLoadImage(messageService.selectedUser)" />
+
           <div class="containerUserNameAndTime">
             <div class="nameTimeContainer">
               <p>{{ message.senderName }}</p>
               <p>{{ this.messageService.formatTime(message.timestamp) }}</p>
             </div>
+
+            <!-- Edit message logic -->
             <span *ngIf="isEditing !== message.id" class="message" [ngClass]="{
                 senderMessage:
                   message.senderId === authService.currentUser.value?.uid
               }">{{ message.content }}</span>
+
             <div *ngIf="
                 currentlyEditingMessageId === message.id &&
                 isEditing === message.id
@@ -50,6 +66,8 @@
               <input [(ngModel)]="updatedMessageContent" />
               <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)" />
             </div>
+            <!-- Edit message logic -->
+            
           </div>
         </div>
 

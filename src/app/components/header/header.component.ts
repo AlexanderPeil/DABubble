@@ -4,6 +4,10 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogProfileComponent } from '../dialog-profile/dialog-profile.component';
+import { Channel } from 'src/app/models/channel';
+import { MessageContent } from 'src/app/models/message';
+import { MessageService } from 'src/app/shared/services/message.service';
+import { ChannelService } from 'src/app/shared/services/channel.service';
 
 @Component({
   selector: 'app-header',
@@ -16,11 +20,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   showMenu = false;
   isOnline?: boolean;
   user_images = '../assets/img/avatar1.svg';
+  searchTerm!: string;
+  isDataLoaded: boolean = false;
+  searchResults: {
+    users?: User[],
+    channels?: Channel[],
+    directMessages?: MessageContent[],
+    channelMessages?: MessageContent[],
+  } = {};
 
   constructor(
     private authService: AuthService,
     private _eref: ElementRef,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private messageService: MessageService,
+    private channelService: ChannelService) { }
+
 
 
   ngOnInit() {
@@ -63,6 +78,47 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogout() {
     this.authService.signOut();
     this.showMenu = false;
+  }
+
+
+  onSearchFocus(): void {
+    if (!this.isDataLoaded) {
+      this.loadData();
+    }
+  }
+
+
+  loadData(): void {
+    this.authService.getUsers().subscribe(users => {
+      this.searchResults.users = users;
+    });
+
+    this.channelService.getChannels().subscribe(channels => {
+      this.searchResults.channels = channels;
+    });
+
+    this.messageService.getAllDirectMessages().subscribe(directMessages => {
+      this.searchResults.directMessages = directMessages;
+    });
+
+    this.isDataLoaded = true;
+  }
+
+
+  onSearchChange(term: string): void {
+    if (this.searchResults.users) {
+      this.searchResults.users = this.searchResults.users.filter(user => user.displayName?.includes(term));
+
+    } 
+    
+    if (this.searchResults.channels) {
+      this.searchResults.channels = this.searchResults.channels.filter(channel => channel.channelName.includes(term));
+    }
+
+    if (this.searchResults.directMessages) {
+      this.searchResults.directMessages = this.searchResults.directMessages.filter(directMessage => directMessage.content.includes(term));
+    }
+
   }
 
 
