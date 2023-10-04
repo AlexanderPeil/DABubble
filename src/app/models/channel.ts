@@ -21,14 +21,13 @@ export class Channel {
       channelDescription: this.channelDescription,
       createDate: this.createDate,
       users: this.users,
-      channelId: this.channelId
+      channelId: this.channelId,
     };
 
-    if (this.readBy) { 
+    if (this.readBy) {
       json.readBy = this.readBy;
     }
 
     return json;
   }
-
 }
