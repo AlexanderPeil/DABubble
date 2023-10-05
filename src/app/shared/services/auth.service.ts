@@ -17,6 +17,8 @@ import {
   Timestamp,
   Query,
   DocumentData,
+  getDoc,
+  getDocs,
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -66,11 +68,40 @@ export class AuthService {
     public storageService: StorageService,
     private firestore: Firestore) {
     this.user$ = new Observable<User | null>(subscriber => {
+      console.log("Constructor start");
       return onAuthStateChanged(this.auth, subscriber);
     }).pipe(shareReplay(1));
+    console.log("Calling initCurrentUser");
     this.initCurrentUser();
+    console.log("Called initCurrentUser");
+    console.log("Calling setPersistence");
     this.setPersistence();
+    console.log("Called setPersistence");
+    console.log("Calling fetchDirectMessageDocs");
+    this.fetchDirectMessageDocs();
+    console.log("Called fetchDirectMessageDocs");
+
+    console.log("Constructor end");
   }
+
+
+  async fetchDirectMessageDocs() {
+    console.log('fetchDirectMessageDocs method initialized');
+    
+    const chatsCollectionRef = collection(this.firestore, 'directMessage');
+    try {
+      const chatDocsSnapshot = await getDocs(chatsCollectionRef);
+    
+      const chatDocs = chatDocsSnapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id
+      }));
+      console.log(chatDocs);
+    } catch (error) {
+      console.error('Error fetching directMessage docs:', error);
+    }
+  }
+
 
   user_images: string[] = [
     '../assets/img/avatar1.svg',
@@ -336,17 +367,17 @@ export class AuthService {
       map((usersData) =>
         usersData.map(
           (data) =>
-            ({
-              uid: data['uid'],
-              email: data['email'],
-              displayName: data['displayName'],
-              displayNameLower: data['displayNameLower'],
-              emailVerified: data['emailVerified'],
-              isOnline: data['isOnline'],
-              photoURL: data['photoURL'],
-              lastActive: data['lastActive'],
-              hasUnreadMessages: data['hasUnreadMessages'],
-            } as User)
+          ({
+            uid: data['uid'],
+            email: data['email'],
+            displayName: data['displayName'],
+            displayNameLower: data['displayNameLower'],
+            emailVerified: data['emailVerified'],
+            isOnline: data['isOnline'],
+            photoURL: data['photoURL'],
+            lastActive: data['lastActive'],
+            hasUnreadMessages: data['hasUnreadMessages'],
+          } as User)
         )
       )
     );

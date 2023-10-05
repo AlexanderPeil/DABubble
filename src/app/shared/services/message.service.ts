@@ -101,6 +101,7 @@ export class MessageService {
       senderId: senderId,
       receiverId: receiverId,
       content: content,
+      contentLowerCase: content.toLowerCase(),
       timestamp: Date.now(),
       senderName: senderName,
       senderImage: loggedInUser?.photoURL ?? '',
@@ -159,21 +160,22 @@ export class MessageService {
     const lowerCaseTerm = searchTerm.toLowerCase();
     const chatsCollection = collection(this.firestore, 'directMessage');
 
-    return collectionData(chatsCollection).pipe(
+    return collectionData(chatsCollection,  { idField: 'id' }).pipe(
+      tap(chatDocs => console.log('Fetched chatDocs:', chatDocs)),
       switchMap(chatDocs => {
-
         if (!chatDocs.length) {
-          return of([]); 
+          return of([]);
         }
 
         const searchedMessagesObservables: Observable<MessageContent[]>[] = chatDocs.map(chatDoc => {
-          const chatId = chatDoc['id'];
-          const messagesCollection = collection(doc(this.firestore, 'directMessage', chatId), 'messages');
-
+          const chatId = (chatDoc as any).id;
+          const chatDocRef = doc(this.firestore, 'directMessage', chatId);
+          const messagesCollectionRef = collection(chatDocRef, 'messages');
+          
           const messagesQuery = query(
-            messagesCollection,
-            where('content', '>=', lowerCaseTerm),
-            where('content', '<=', lowerCaseTerm + '\uf8ff')
+            messagesCollectionRef,
+            where('contentLowerCase', '>=', lowerCaseTerm),
+            where('contentLowerCase', '<=', lowerCaseTerm + '\uf8ff')
           );
 
           return collectionData(messagesQuery).pipe(
@@ -187,7 +189,7 @@ export class MessageService {
         return messageLists.reduce((acc, curr) => acc.concat(curr), []);
       })
     );
-  }
+}
 
 
 
@@ -319,25 +321,16 @@ export class MessageService {
     const channelsCollection = collection(this.firestore, 'channels');
 
     return collectionData(channelsCollection, { idField: 'id' }).pipe(
-      tap(channelDocs => console.log('Fetched channelDocs:', channelDocs)),
-      switchMap(channelDocs => {        
+      switchMap(channelDocs => {
         const searchedMessagesObservables: Observable<MessageContent[]>[] = channelDocs.map(channelDoc => {
           const channelId = (channelDoc as any).id;
-          console.log('Processing channelId:', channelId);      
           const messagesCollection = this.getChannelMessageCollection(channelId);
-          console.log('Searching messages with term:', toLowerCase);
           const messagesQuery = query(
             messagesCollection,
             where('contentLowerCase', '>=', toLowerCase),
             where('contentLowerCase', '<=', toLowerCase + '\uf8ff')
           );
           return collectionData(messagesQuery).pipe(
-            tap(docs => {
-              console.log(`Found ${docs.length} messages for channel ${channelId}`);
-              if (docs.length > 0) {
-                console.log('Sample message:', docs[0]);
-              }
-            }),
             tap(docs => {
               if (!docs.length) {
               }
