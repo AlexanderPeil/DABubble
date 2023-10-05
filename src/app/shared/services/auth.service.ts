@@ -71,35 +71,8 @@ export class AuthService {
       console.log("Constructor start");
       return onAuthStateChanged(this.auth, subscriber);
     }).pipe(shareReplay(1));
-    console.log("Calling initCurrentUser");
     this.initCurrentUser();
-    console.log("Called initCurrentUser");
-    console.log("Calling setPersistence");
     this.setPersistence();
-    console.log("Called setPersistence");
-    console.log("Calling fetchDirectMessageDocs");
-    this.fetchDirectMessageDocs();
-    console.log("Called fetchDirectMessageDocs");
-
-    console.log("Constructor end");
-  }
-
-
-  async fetchDirectMessageDocs() {
-    console.log('fetchDirectMessageDocs method initialized');
-    
-    const chatsCollectionRef = collection(this.firestore, 'directMessage');
-    try {
-      const chatDocsSnapshot = await getDocs(chatsCollectionRef);
-    
-      const chatDocs = chatDocsSnapshot.docs.map(doc => ({
-        ...doc.data(),
-        id: doc.id
-      }));
-      console.log(chatDocs);
-    } catch (error) {
-      console.error('Error fetching directMessage docs:', error);
-    }
   }
 
 

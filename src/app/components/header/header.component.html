@@ -25,14 +25,6 @@
         </div>
       </div>
 
-      <!-- Direct-messages section -->
-      <div *ngIf="searchResults.directMessages && searchResults.directMessages.length">
-        <h5>Direct-Messages</h5>
-        <div *ngFor="let message of searchResults.directMessages">
-          <span>{{ message.content }}</span>
-        </div>
-      </div>
-
       <!-- Channel-messages section -->
       <div *ngIf="searchResults.channelMessages && searchResults.channelMessages.length">
         <h5>Channel-Messages</h5>

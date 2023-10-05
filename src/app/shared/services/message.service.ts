@@ -13,7 +13,7 @@ import {
   arrayUnion,
   arrayRemove
 } from '@angular/fire/firestore';
-import { BehaviorSubject, EMPTY, Observable, catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
+import { Observable, combineLatest, map, switchMap, tap } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { AuthService } from './auth.service';
 import { User } from 'src/app/shared/services/user';
@@ -154,45 +154,6 @@ export class MessageService {
       })
     );
   }
-
-
-  getSearchedDirectMessages(searchTerm: string): Observable<MessageContent[]> {
-    const lowerCaseTerm = searchTerm.toLowerCase();
-    const chatsCollection = collection(this.firestore, 'directMessage');
-
-    return collectionData(chatsCollection,  { idField: 'id' }).pipe(
-      tap(chatDocs => console.log('Fetched chatDocs:', chatDocs)),
-      switchMap(chatDocs => {
-        if (!chatDocs.length) {
-          return of([]);
-        }
-
-        const searchedMessagesObservables: Observable<MessageContent[]>[] = chatDocs.map(chatDoc => {
-          const chatId = (chatDoc as any).id;
-          const chatDocRef = doc(this.firestore, 'directMessage', chatId);
-          const messagesCollectionRef = collection(chatDocRef, 'messages');
-          
-          const messagesQuery = query(
-            messagesCollectionRef,
-            where('contentLowerCase', '>=', lowerCaseTerm),
-            where('contentLowerCase', '<=', lowerCaseTerm + '\uf8ff')
-          );
-
-          return collectionData(messagesQuery).pipe(
-            map(docs => docs.map(doc => new MessageContent(doc)))
-          );
-        });
-
-        return combineLatest(searchedMessagesObservables);
-      }),
-      map(messageLists => {
-        return messageLists.reduce((acc, curr) => acc.concat(curr), []);
-      })
-    );
-}
-
-
-
 
 
   async updateDirectMessage(userId1: string, userId2: string, messageId: string, updatedContent: string): Promise<void> {

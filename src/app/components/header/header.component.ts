@@ -94,13 +94,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.searchSub = combineLatest([      
       this.authService.getUsers(term),
       this.channelService.getChannels(term),
-      this.messageService.getSearchedDirectMessages(term),
       this.messageService.getSearchedChannelMessages(term)
     ])
-    .subscribe(([users, channels, directMessages, channelMessages]) => {
+    .subscribe(([users, channels, channelMessages]) => {
       this.searchResults.users = users;
       this.searchResults.channels = channels;
-      this.searchResults.directMessages = directMessages;
       this.searchResults.channelMessages = channelMessages;
     });
   }
