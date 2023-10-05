@@ -1,16 +1,56 @@
 <div class="headerContainer">
   <img src="./assets/img/logo.svg" alt="" />
   <div class="inputContainer">
-    <input [(ngModel)]="searchTerm" (focus)="onSearchFocus()" (ngModelChange)="onSearchChange(searchTerm)"  type="text" placeholder="Search for code learning">
+    <input [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange(searchTerm)" type="text"
+      placeholder="Search for code learning">
     <img src="../../../assets/img/icons/search_icon.svg" alt="Search Icon">
+
+    <!-- Search dropdown list -->
+    <div *ngIf="searchList" class="searchDropdown">
+
+      <!-- Users section -->
+      <div class="searchResult" *ngIf="searchResults.users && searchResults.users.length">
+        <h5>Users</h5>
+        <div class="searchResultContent" *ngFor="let user of searchResults.users">
+          <img [src]="user.photoURL" alt="{{ user.displayName }}">
+          <span>{{ user.displayName }}</span>
+        </div>
+      </div>
+
+      <!-- Channels section -->
+      <div *ngIf="searchResults.channels && searchResults.channels.length">
+        <h5>Channels</h5>
+        <div *ngFor="let channel of searchResults.channels">
+          <span>{{ channel.channelName }}</span>
+        </div>
+      </div>
+
+      <!-- Direct-messages section -->
+      <div *ngIf="searchResults.directMessages && searchResults.directMessages.length">
+        <h5>Channel Messages</h5>
+        <div *ngFor="let message of searchResults.directMessages">
+          <span>{{ message.content }}</span>
+        </div>
+      </div>
+
+      <!-- Channel-messages section -->
+      <div *ngIf="searchResults.channelMessages && searchResults.channelMessages.length">
+        <h5>Direct Messages</h5>
+        <div *ngFor="let message of searchResults.channelMessages">
+          <span>{{ message.content }}</span>
+        </div>
+      </div>
+
+    </div>
+    <!-- Search dropdown list -->
+
   </div>
   <div class="headerProfileContent" (click)="toggleMenu(); $event.stopPropagation()">
     <div class="userName" *ngIf="user"> {{ user.displayName }} </div>
     <div class="userIconWrapper">
       <img class="userImg" [src]="user?.photoURL" (error)="retryLoadImage(user)" />
       <img *ngIf="user?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_online.svg" alt="Online" />
-      <img *ngIf="!user?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_offline.svg"
-        alt="Offline" />
+      <img *ngIf="!user?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_offline.svg" alt="Offline" />
     </div>
     <div class="arrowDown"></div>
     <div class="dropdownMenu" *ngIf="showMenu">

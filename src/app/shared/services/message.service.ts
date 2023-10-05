@@ -13,7 +13,7 @@ import {
   arrayUnion,
   arrayRemove
 } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable, combineLatest, map, switchMap } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { AuthService } from './auth.service';
 import { User } from 'src/app/shared/services/user';
@@ -155,24 +155,40 @@ export class MessageService {
   }
 
 
-  getAllDirectMessages(): Observable<MessageContent[]> {
-    const chatsCollection = collection(this.firestore, 'direct-message');
+  getSearchedDirectMessages(searchTerm: string): Observable<MessageContent[]> {
+    const lowerCaseTerm = searchTerm.toLowerCase();
+    const chatsCollection = collection(this.firestore, 'directMessage');
+
     return collectionData(chatsCollection).pipe(
       switchMap(chatDocs => {
-        const allMessagesObservables: Observable<MessageContent[]>[] = chatDocs.map(chatDoc => {
-          const messagesCollection = collection(doc(this.firestore, 'direct-message', chatDoc['chatId']), 'messages');
-          return collectionData(messagesCollection).pipe(
+
+        if (!chatDocs.length) {
+          return of([]); 
+        }
+
+        const searchedMessagesObservables: Observable<MessageContent[]>[] = chatDocs.map(chatDoc => {
+          const chatId = chatDoc['id'];
+          const messagesCollection = collection(doc(this.firestore, 'directMessage', chatId), 'messages');
+
+          const messagesQuery = query(
+            messagesCollection,
+            where('content', '>=', lowerCaseTerm),
+            where('content', '<=', lowerCaseTerm + '\uf8ff')
+          );
+
+          return collectionData(messagesQuery).pipe(
             map(docs => docs.map(doc => new MessageContent(doc)))
           );
         });
 
-        return combineLatest(allMessagesObservables);
+        return combineLatest(searchedMessagesObservables);
       }),
       map(messageLists => {
         return messageLists.reduce((acc, curr) => acc.concat(curr), []);
       })
     );
   }
+
 
 
 
@@ -246,6 +262,7 @@ export class MessageService {
     const message = new MessageContent({
       senderId: senderId,
       content: content,
+      contentLowerCase: content.toLowerCase(),
       timestamp: Date.now(),
       read: false,
       senderName: senderName,
@@ -295,6 +312,48 @@ export class MessageService {
       })
     );
   }
+
+
+  getSearchedChannelMessages(searchTerm: string): Observable<MessageContent[]> {
+    const toLowerCase = searchTerm.toLocaleLowerCase();
+    const channelsCollection = collection(this.firestore, 'channels');
+
+    return collectionData(channelsCollection, { idField: 'id' }).pipe(
+      tap(channelDocs => console.log('Fetched channelDocs:', channelDocs)),
+      switchMap(channelDocs => {        
+        const searchedMessagesObservables: Observable<MessageContent[]>[] = channelDocs.map(channelDoc => {
+          const channelId = (channelDoc as any).id;
+          console.log('Processing channelId:', channelId);      
+          const messagesCollection = this.getChannelMessageCollection(channelId);
+          console.log('Searching messages with term:', toLowerCase);
+          const messagesQuery = query(
+            messagesCollection,
+            where('contentLowerCase', '>=', toLowerCase),
+            where('contentLowerCase', '<=', toLowerCase + '\uf8ff')
+          );
+          return collectionData(messagesQuery).pipe(
+            tap(docs => {
+              console.log(`Found ${docs.length} messages for channel ${channelId}`);
+              if (docs.length > 0) {
+                console.log('Sample message:', docs[0]);
+              }
+            }),
+            tap(docs => {
+              if (!docs.length) {
+              }
+            }),
+            map(docs => docs.map(doc => new MessageContent(doc)))
+          );
+        });
+        return combineLatest(searchedMessagesObservables);
+      }),
+      map(messageLists => {
+        return messageLists.reduce((acc, curr) => acc.concat(curr), []);
+      })
+    );
+  }
+
+
 
   async updateChannelMessage(channelID: string, messageId: string, updatedContent: string) {
     const messageRef = doc(this.getChannelMessageCollection(channelID), messageId);

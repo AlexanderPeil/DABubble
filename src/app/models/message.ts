@@ -1,6 +1,7 @@
 export class MessageContent {
   id?: string;
   content: string;
+  contentLowerCase: string;
   timestamp: number;
   senderId: string;
   receiverId?: string;
@@ -18,6 +19,7 @@ export class MessageContent {
   constructor(object?: any) {
     this.id = object ? object.id : undefined;
     this.content = object ? object.content : '';
+    this.contentLowerCase = object ? object.contentLowerCase: '';
     this.timestamp = object ? object.timestamp : Date.now();
     this.senderId = object ? object.senderId : '';
     this.receiverId = object ? object.receiverId : '';
@@ -31,6 +33,7 @@ export class MessageContent {
   public toJSON(): any {
     const json: any = {
       content: this.content,
+      contentLowerCase: this.contentLowerCase,
       timestamp: this.timestamp,
       senderId: this.senderId,
       senderName: this.senderName,
