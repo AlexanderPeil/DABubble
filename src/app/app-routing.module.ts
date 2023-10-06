@@ -13,27 +13,34 @@ import { NewMessageComponent } from './components/new-message/new-message.compon
 import { ThreadComponent } from './components/thread/thread.component';
 import { AuthGuard } from './shared/services/auth.guard';
 
-
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
 
   {
-    path: 'main', component: MainComponent,
+    path: 'main',
+    component: MainComponent,
     // canActivate: [AuthGuard],
     children: [
       {
-        path: 'channel/:id', component: ChannelComponent, children: [
-          { path: 'thread/:messageId/:channelId', component: ThreadComponent }
-        ]
+        path: '',
+        redirectTo: 'channel/tcgLB0MdDpTD27cGTU95',
+        pathMatch: 'full', // Hier wird auf den ersten Channel geleitet.
       },
       {
-        path: 'direct-message/:id', component: DirectMessageComponent, children: [
-          { path: 'thread/:messageId', component: ThreadComponent }
-        ]
+        path: 'channel/:id',
+        component: ChannelComponent,
+        children: [
+          { path: 'thread/:messageId/:channelId', component: ThreadComponent },
+        ],
+      },
+      {
+        path: 'direct-message/:id',
+        component: DirectMessageComponent,
+        children: [{ path: 'thread/:messageId', component: ThreadComponent }],
       },
       { path: 'new-message', component: NewMessageComponent },
-    ]
+    ],
   },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
@@ -42,9 +49,8 @@ const routes: Routes = [
   { path: 'data-protection', component: DataProtectionComponent },
 ];
 
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
