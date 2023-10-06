@@ -11,12 +11,15 @@ import {
   updateDoc,
   getDoc,
   arrayUnion,
-  arrayRemove
+  arrayRemove,
+  orderBy
 } from '@angular/fire/firestore';
-import { Observable, combineLatest, map, switchMap, tap } from 'rxjs';
+import { Observable, catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { AuthService } from './auth.service';
+import { ChannelService } from 'src/app/shared/services/channel.service';
 import { User } from 'src/app/shared/services/user';
+import { Channel } from 'src/app/models/channel';
 
 
 @Injectable({
@@ -30,7 +33,8 @@ export class MessageService {
 
   constructor(
     private firestore: Firestore,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    public channelService: ChannelService) { }
 
 
   // Here begins the logic for all messages
@@ -105,7 +109,8 @@ export class MessageService {
       timestamp: Date.now(),
       senderName: senderName,
       senderImage: loggedInUser?.photoURL ?? '',
-      hasThread: false
+      hasThread: false,
+      channelId: null
     });
 
     const messageCollection = this.getDirectMessageCollection(senderId, receiverId);
@@ -230,7 +235,8 @@ export class MessageService {
       read: false,
       senderName: senderName,
       senderImage: loggedInUser?.photoURL ?? '',
-      hasThread: false
+      hasThread: false,
+      channelId: channelId
     });
 
     const messageCollection = collection(this.firestore, 'channels', channelId, 'messages');
@@ -258,7 +264,11 @@ export class MessageService {
   getChannelMessages(channelID: string): Observable<MessageContent[]> {
     const messageCollection = this.getChannelMessageCollection(channelID);
     return collectionData(messageCollection, { idField: 'id' }).pipe(
-      map(docs => docs.map(doc => new MessageContent(doc)))
+      map(docs => docs.map(doc => new MessageContent(doc))),
+      catchError(error => {
+        console.error(`Fehler beim Abrufen der Nachrichten für den Kanal ${channelID}:`, error);
+        return of([]);
+      })
     );
   }
 
@@ -277,36 +287,41 @@ export class MessageService {
   }
 
 
-  getSearchedChannelMessages(searchTerm: string): Observable<MessageContent[]> {
-    const toLowerCase = searchTerm.toLocaleLowerCase();
-    const channelsCollection = collection(this.firestore, 'channels');
+  getChannels(): Observable<Channel[]> {
+    const collectionInstance = query(
+      collection(this.firestore, 'channels'),
+      orderBy('channelName')
+    );
 
-    return collectionData(channelsCollection, { idField: 'id' }).pipe(
-      switchMap(channelDocs => {
-        const searchedMessagesObservables: Observable<MessageContent[]>[] = channelDocs.map(channelDoc => {
-          const channelId = (channelDoc as any).id;
-          const messagesCollection = this.getChannelMessageCollection(channelId);
-          const messagesQuery = query(
-            messagesCollection,
-            where('contentLowerCase', '>=', toLowerCase),
-            where('contentLowerCase', '<=', toLowerCase + '\uf8ff')
-          );
-          return collectionData(messagesQuery).pipe(
-            tap(docs => {
-              if (!docs.length) {
-              }
+    return collectionData(collectionInstance, {
+      idField: 'id',
+    }).pipe(
+      map((docs: any[]) => docs.map(doc => new Channel(doc)))
+    );
+  }
+
+
+  fetchAllChannelMessages(): Observable<MessageContent[]> {
+    return this.getChannels().pipe(
+      switchMap(channels => {
+        const messageObservables = channels.map(channel => {
+          const messagesRef = collection(this.firestore, `channels/${channel.channelId}/messages`);
+          return collectionData(messagesRef, { idField: 'id' }).pipe(
+            catchError(error => {
+              console.error("Fehler beim Laden der Nachrichten für Channel:", channel.channelId, error);
+              return of([]); 
             }),
             map(docs => docs.map(doc => new MessageContent(doc)))
           );
         });
-        return combineLatest(searchedMessagesObservables);
-      }),
-      map(messageLists => {
-        return messageLists.reduce((acc, curr) => acc.concat(curr), []);
+        return combineLatest(messageObservables).pipe(
+          map((messageArrays: MessageContent[][]) => {
+            return messageArrays.reduce((acc, curr) => acc.concat(curr), []);
+          })
+        );
       })
     );
   }
-
 
 
   async updateChannelMessage(channelID: string, messageId: string, updatedContent: string) {
@@ -361,10 +376,12 @@ export class MessageService {
       senderId: senderId,
       content: content,
       timestamp: Date.now(),
+      contentLowerCase: content.toLowerCase(),
       senderName: senderName,
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: true,
-      messageId: messageId
+      messageId: messageId,
+      channelId: null
     });
     const messageCollection = collection(this.firestore, 'thread-messages');
     try {

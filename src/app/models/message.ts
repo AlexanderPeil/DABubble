@@ -9,6 +9,7 @@ export class MessageContent {
   senderImage: string;
   hasThread: boolean = false;
   messageId?: string;
+  channelId?: string;
   emojis?: {
     complete?: number;
     handsUp?: number;
@@ -27,6 +28,7 @@ export class MessageContent {
     this.senderImage = object ? object.senderImage : '';
     this.hasThread = object ? object.hasThread : false;
     this.messageId = object ? object.messageId : '';
+    this.channelId = object ? object.channelId : '';
     this.emojis = object ? object.emojis || {} : {};
   }
 
@@ -48,6 +50,10 @@ export class MessageContent {
 
     if (this.messageId) {
       json.messageId = this.messageId;
+    }
+
+    if (this.channelId) {
+      json.channelId = this.channelId;
     }
 
     return json;

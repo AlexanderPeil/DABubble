@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
-import { Subscription, combineLatest, switchMap, takeUntil, tap } from 'rxjs';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Observable, Subscription, combineLatest } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,6 +9,7 @@ import { MessageContent } from 'src/app/models/message';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { QuillService } from 'src/app/shared/services/quill.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ import { QuillService } from 'src/app/shared/services/quill.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event'])
+  // @ViewChildren('messageElement') messagesElements!: QueryList<ElementRef>;
   user: User | null = null;
   userSubscription!: Subscription;
   showMenu = false;
@@ -25,6 +27,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   searchTerm: string = '';
   searchList?: boolean;
   searchSub?: Subscription;
+  messagesSubscription?: Subscription;
+  messages: MessageContent[] = [];
+  filteredMessages: MessageContent[] = [];
   searchResults: {
     users?: User[],
     channels?: Channel[],
@@ -39,7 +44,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public quillService: QuillService,
     private messageService: MessageService,
-    private channelService: ChannelService) { }
+    private channelService: ChannelService,
+    private router: Router) { }
 
 
 
@@ -91,24 +97,72 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.searchSub) {
       this.searchSub.unsubscribe();
     }
-    this.searchSub = combineLatest([      
+    this.searchSub = combineLatest([
       this.authService.getUsers(term),
       this.channelService.getChannels(term),
-      this.messageService.getSearchedChannelMessages(term)
+      this.filterMessages(term)
     ])
-    .subscribe(([users, channels, channelMessages]) => {
-      this.searchResults.users = users;
-      this.searchResults.channels = channels;
-      this.searchResults.channelMessages = channelMessages;
+      .subscribe(([users, channels, channelMessages]) => {
+        this.searchResults.users = users;
+        this.searchResults.channels = channels;
+        this.searchResults.channelMessages = channelMessages;
+      });
+  }
+
+
+  filterMessages(term: string): Observable<MessageContent[]> {
+    return new Observable(observer => {
+      if (term) {
+        const filtered = this.messages.filter(message => message.contentLowerCase.includes(term.toLowerCase()));
+        observer.next(filtered);
+        observer.complete();
+      } else {
+        observer.next([...this.messages]);
+        observer.complete();
+      }
     });
   }
 
 
+  navigateToChannel(channelId: string): void {
+    this.searchList = false;
+    this.searchTerm = '';
+    this.router.navigate(['/main/channel', channelId]);
+  }
+
+
+  navigateToDirectMessage(uid: string) {
+    this.searchList = false;
+    this.searchTerm = '';
+    this.router.navigate(['/main/direct-message', uid])
+  }
+
+
+  loadAllMessages(): void {
+    this.messagesSubscription?.unsubscribe();
+    this.messagesSubscription = this.messageService.fetchAllChannelMessages().subscribe(
+      messages => {
+        console.log("Geladene Nachrichten:", messages);
+        this.messages = messages;
+      },
+      error => {
+        console.error("Fehler beim Laden der Nachrichten:", error);
+      }
+    );
+  }
+
+
+  navigateToChannelMessage(channelId: string, timestamp: number): void {
+    this.searchList = false;
+    this.searchTerm = '';
+    this.router.navigate(['/main/channel', channelId], { queryParams: { timestamp } });
+  }  
+
+
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();
-    if (this.searchSub) {
-      this.searchSub.unsubscribe();
-    }
+    this.searchSub?.unsubscribe();
+    this.messagesSubscription?.unsubscribe();
   }
 
 }

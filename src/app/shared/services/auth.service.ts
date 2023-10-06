@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription, map, of, shareReplay, switchMap, take } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, map, of, shareReplay, switchMap } from 'rxjs';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import {
   Firestore,
@@ -16,9 +16,7 @@ import {
   where,
   Timestamp,
   Query,
-  DocumentData,
-  getDoc,
-  getDocs,
+  DocumentData
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -34,10 +32,7 @@ import {
   deleteUser,
   onAuthStateChanged,
 } from '@angular/fire/auth';
-import {
-  browserLocalPersistence
-} from 'firebase/auth';
-
+import { browserLocalPersistence } from 'firebase/auth';
 @Injectable({
   providedIn: 'root',
 })
@@ -101,6 +96,7 @@ export class AuthService {
     return this.user_images[randomIndex];
   }
 
+
   initCurrentUser(): void {
     this.user$
       .pipe(
@@ -122,6 +118,7 @@ export class AuthService {
   get currentUserValue(): User | null {
     return this.currentUser.value;
   }
+
 
   /**
    * Sign in using email and password.
@@ -151,6 +148,7 @@ export class AuthService {
       throw error;
     }
   }
+
 
   /**
    * Sign up using display name, email, and password.
@@ -188,6 +186,7 @@ export class AuthService {
     }
   }
 
+
   /**
    * Signs in the user anonymously.
    * After a successful sign-in, updates the user profile to set the display name as 'Guest', sets user data, updates user's online status and navigates to chat history.<------ Maybe I have to change the route later.
@@ -216,6 +215,7 @@ export class AuthService {
     }
   }
 
+
   /**
    * Signs in the user using Google authentication.
    * After successful sign-in, sets user data, updates user's online status and navigates to chat history.<------ Maybe I have to change the route later.
@@ -241,6 +241,7 @@ export class AuthService {
     }
   }
 
+
   /**
    * Sends a password reset email to the specified email address.
    * @async
@@ -255,6 +256,7 @@ export class AuthService {
       throw error;
     }
   }
+
 
   /**
    * Signs out the currently authenticated user. If the user is logged in, updates
@@ -275,6 +277,7 @@ export class AuthService {
     this.router.navigate(['login']);
   }
 
+
   async deleteGuestUser(uid: string) {
     try {
       if (this.auth.currentUser && this.auth.currentUser.uid === uid) {
@@ -286,6 +289,7 @@ export class AuthService {
       console.error('Error during deleting guest user:', error);
     }
   }
+
 
   async setUserData(user: FirebaseUser, isOnline?: boolean) {
     const { uid, email, displayName, emailVerified, photoURL } = user;
@@ -303,6 +307,7 @@ export class AuthService {
     return userData;
   }
 
+
   async updateUser(uid: string, data: Partial<User>) {
     try {
       await updateDoc(doc(this.firestore, `users/${uid}`), data);
@@ -311,6 +316,7 @@ export class AuthService {
       throw error;
     }
   }
+
 
   /**
    * Fetches the online status of a user from Firestore based on their UID.
@@ -335,6 +341,7 @@ export class AuthService {
     );
   }
 
+
   mapFirestoreDataToUsers(userQuery: Query<DocumentData>): Observable<User[]> {
     return collectionData(userQuery).pipe(
       map((usersData) =>
@@ -356,6 +363,7 @@ export class AuthService {
     );
   }
 
+
   getUsers(searchTerm?: string): Observable<User[]> {
     let userQuery;
     if (searchTerm) {
@@ -370,6 +378,7 @@ export class AuthService {
     }
     return this.mapFirestoreDataToUsers(userQuery);
   }
+
 
   getUsersWithEmail(searchTerm?: string): Observable<User[]> {
     let userQuery;
@@ -386,6 +395,7 @@ export class AuthService {
     return this.mapFirestoreDataToUsers(userQuery);
   }
 
+
   getInactiveGuestUsers(): Observable<User[]> {
     const dateOneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
     const firestoreTimestampOneHourAgo = Timestamp.fromDate(dateOneHourAgo);
@@ -397,6 +407,7 @@ export class AuthService {
 
     return this.mapFirestoreDataToUsers(userQuery);
   }
+
 
   /**
    * Sets or updates the online status of the user in Firestore.
@@ -412,6 +423,7 @@ export class AuthService {
       lastActive: Timestamp.now(),
     });
   }
+
 
   updateLastActive(uid: string) {
     const userRef = doc(this.firestore, `users/${uid}`);

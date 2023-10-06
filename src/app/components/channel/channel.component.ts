@@ -4,7 +4,9 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
-  HostListener
+  HostListener,
+  ViewChildren,
+  QueryList
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
@@ -36,6 +38,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   url: string = '';
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   messages: MessageContent[] = [];
+  @ViewChildren('messageElement') messageElements!: QueryList<ElementRef>;
   groupedMessages: { date: string; messages: MessageContent[] }[] = [];
   messageContent: string = '';
   user_images = '../assets/img/avatar1.svg';
@@ -51,6 +54,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   showEditMenu: boolean = true;
   updatedMessageContent: string = '';
   private ngUnsubscribe = new Subject<void>();
+  private shouldScrollToSpecificMessage = false;
 
 
   constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
@@ -63,6 +67,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.getCurrentChannelIdInUrl();
     this.fetchAndDisplayMessages();
   }
+
+
+  ngAfterViewInit() {
+    this.checkQueryParams();
+  }
+  
 
 
   processMessages(messages: MessageContent[]): void {
@@ -240,9 +250,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
         if (message.senderId !== this.loggedInUser?.uid) {
           this.messageService.markChannelMessageAsRead(this.channelId);
         }
-      }); setTimeout(() => this.scrollToBottom());
+      });
+      if (!this.shouldScrollToSpecificMessage) {
+        setTimeout(() => this.scrollToBottom());
+      }
     });
   }
+  
 
 
   getParamsAndUser(): Observable<[string, User | null]> {
@@ -281,9 +295,35 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
-  retryLoadSenderImage(senderImage: string) {
-    senderImage = this.user_images;
+  retryLoadSenderImage(message: MessageContent) {
+    message.senderImage = this.user_images;
   }
+
+
+  checkQueryParams() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params['timestamp']) {
+        this.shouldScrollToSpecificMessage = true;
+        this.scrollToMessage(+params['timestamp']);
+      }
+    });
+  }  
+
+
+  scrollToMessage(timestamp: number): void {
+    if (this.messageElements) {
+      const messageElement = this.messageElements.find(el => el.nativeElement.id === `message-${timestamp}`);
+      if (messageElement) {
+        messageElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        console.warn('MessageElement not found for timestamp:', timestamp);
+      }
+    } else {
+      console.warn('messageElements is not defined yet.');
+    }
+  }
+  
+  
 
 
   ngOnDestroy() {

@@ -123,21 +123,23 @@ export class ChannelService {
       this.channel = doc.data();
     });
   }
+  
 
   getChannels(searchTerm?: string): Observable<Channel[]> {
     let channelQuery;
     if (searchTerm) {
-      const lowerCaseTerm = searchTerm.toLowerCase();
-      channelQuery = query(
-        collection(this.firestore, 'channels'),
-        where('channelName', '>=', lowerCaseTerm),
-        where('channelName', '<=', lowerCaseTerm + '\uf8ff')
-      );
+        const lowerCaseTerm = searchTerm.toLowerCase();
+        channelQuery = query(
+            collection(this.firestore, 'channels'),
+            where('channelName', '>=', lowerCaseTerm),
+            where('channelName', '<=', lowerCaseTerm + '\uf8ff')
+        );
     } else {
-      channelQuery = collection(this.firestore, 'channels');
+        channelQuery = collection(this.firestore, 'channels');
     }
-    return this.mapFirestoreDataToChannels(channelQuery);
-  }
+    return collectionData(channelQuery, { idField: 'channelId' }) as Observable<Channel[]>;
+}
+
 
   mapFirestoreDataToChannels(
     channelQuery: Query<DocumentData>

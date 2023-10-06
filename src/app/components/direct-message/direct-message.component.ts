@@ -102,7 +102,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         }, 500);
       });
   }
-  
+
 
 
   handleReceivedMessages(messages: MessageContent[]) {
@@ -262,6 +262,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     if (user) {
       user.photoURL = this.user_images;
     }
+  }
+
+
+  retryLoadSenderImage(message: MessageContent) {
+    message.senderImage = this.user_images;
   }
 
 
