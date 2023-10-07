@@ -23,7 +23,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'channel/tcgLB0MdDpTD27cGTU95',
-        pathMatch: 'full', // Hier wird auf den ersten Channel geleitet.
+        pathMatch: 'full',
       },
       {
         path: 'channel/:id',

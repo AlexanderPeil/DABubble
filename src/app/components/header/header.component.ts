@@ -140,15 +140,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   loadAllMessages(): void {
     this.messagesSubscription?.unsubscribe();
-    this.messagesSubscription = this.messageService.fetchAllChannelMessages().subscribe(
-      messages => {
-        console.log("Geladene Nachrichten:", messages);
+    this.messageService.fetchAllChannelMessages().subscribe({
+      next: messages => {
         this.messages = messages;
       },
-      error => {
+      error: error => {
         console.error("Fehler beim Laden der Nachrichten:", error);
       }
-    );
+    });
   }
 
 
@@ -156,7 +155,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.searchList = false;
     this.searchTerm = '';
     this.router.navigate(['/main/channel', channelId], { queryParams: { timestamp } });
-  }  
+  }
 
 
   ngOnDestroy() {
