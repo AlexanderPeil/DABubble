@@ -4,14 +4,16 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
-  HostListener
+  HostListener,
+  QueryList,
+  ViewChildren
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
 import { DialogShowMembersInChannelComponent } from '../dialog-show-members-in-channel/dialog-show-members-in-channel.component';
 import { DialogAddMembersInChannelComponent } from '../dialog-add-members-in-channel/dialog-add-members-in-channel.component';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Channel } from 'src/app/models/channel';
 import { StorageService } from 'src/app/shared/services/storage.service';
@@ -19,7 +21,7 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { User } from 'src/app/shared/services/user';
-import { Observable, Subject, combineLatest, filter, map, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, combineLatest, filter, map, switchMap, takeUntil } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { ThreadService } from 'src/app/shared/services/thread.service';
 import { QuillService } from 'src/app/shared/services/quill.service';
@@ -51,17 +53,22 @@ export class ChannelComponent implements OnInit, OnDestroy {
   showEditMenu: boolean = true;
   updatedMessageContent: string = '';
   private ngUnsubscribe = new Subject<void>();
+  @ViewChildren('messageElement') messageElements!: QueryList<ElementRef>;
+  shouldScrollToBottom: boolean = true;
+  private fragmentSub!: Subscription;
 
 
   constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
     public channelService: ChannelService, public storageService: StorageService, public authService: AuthService, public messageService: MessageService,
-    public threadService: ThreadService, private elementRef: ElementRef, public quillService: QuillService) {
+    public threadService: ThreadService, private elementRef: ElementRef, public quillService: QuillService, private router: Router) {
   }
 
 
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
     this.fetchAndDisplayMessages();
+    this.initScrollToMessageById();
+    this.handleRefreshPage();
   }
 
 
@@ -69,7 +76,16 @@ export class ChannelComponent implements OnInit, OnDestroy {
     messages.sort((a, b) => a.timestamp - b.timestamp);
     this.messages = messages;
     this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
+
+    const messageId = this.activatedRoute.snapshot.fragment;
+    if (messageId) {
+      this.shouldScrollToBottom = false;
+      setTimeout(() => {
+        this.scrollToMessageById(messageId);
+      }, 50);
+    }
   }
+
 
 
   getCurrentChannelIdInUrl() {
@@ -240,7 +256,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
         if (message.senderId !== this.loggedInUser?.uid) {
           this.messageService.markChannelMessageAsRead(this.channelId);
         }
-      }); setTimeout(() => this.scrollToBottom());
+      });
+      setTimeout(() => {
+        if (this.shouldScrollToBottom) {
+          this.scrollToBottom();
+        }
+        this.shouldScrollToBottom = true;
+      }, 100);
     });
   }
 
@@ -286,9 +308,45 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
+  initScrollToMessageById() {
+    this.fragmentSub = this.activatedRoute.fragment.subscribe(fragment => {
+      if (fragment) {
+        this.scrollToMessageById(fragment);
+      }
+    });
+  }
+
+
+  scrollToMessageById(messageId: string): void {
+    setTimeout(() => {
+      if (this.messageElements && this.messageElements.length > 0) {
+        const messageElement = this.messageElements.find(el => el.nativeElement.id === messageId);
+        if (messageElement && messageElement.nativeElement) {
+          messageElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          console.warn('MessageElement or its nativeElement not found for id:', messageId);
+        }
+      } else {
+        console.warn('messageElements is not defined or empty.');
+      }
+    }, 500);
+  }
+  
+
+  handleRefreshPage() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd && event.url.includes('%23')) {
+        const correctedUrl = event.url.replace('%23', '#');
+        this.router.navigate([correctedUrl], { replaceUrl: true });
+      }
+    });
+  }
+
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.fragmentSub.unsubscribe();
   }
 
 }

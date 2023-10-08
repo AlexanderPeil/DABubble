@@ -32,7 +32,9 @@
         <hr />
       </div>
       <div *ngFor="let message of group.messages" class="displayMessagesContainer"
-        (mouseenter)="onMessageHover(message)" (mouseleave)="message.id ? handleMouseLeave(message.id) : null">
+     (mouseenter)="onMessageHover(message)" 
+     (mouseleave)="message.id ? handleMouseLeave(message.id) : null" 
+     [id]="'message-' + message.id" #messageElement>
         <div class="messageChildContainer">
           <img class="userImg" [src]="message.senderImage" (error)="retryLoadSenderImage(message)" />
           <div class="containerUserNameAndTime">

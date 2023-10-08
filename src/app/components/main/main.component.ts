@@ -44,7 +44,7 @@ export class MainComponent implements OnDestroy, OnInit {
 
   debouncedUpdateUserActivity() {
     const timeSinceLastUpdate = Date.now() - this.lastUpdate;
-    if (timeSinceLastUpdate > 5 * 60 * 1000) {
+    if (timeSinceLastUpdate > 30 * 60 * 1000) {
       this.updateUserActivity();
     } else if (!this.updateUserActivityTimeout) {
       this.updateUserActivityTimeout = setTimeout(() => {

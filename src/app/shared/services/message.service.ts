@@ -241,8 +241,9 @@ export class MessageService {
 
     const messageCollection = collection(this.firestore, 'channels', channelId, 'messages');
     try {
-      await addDoc(messageCollection, message.toJSON());
-
+      const docRef = await addDoc(messageCollection, message.toJSON());
+      const generatedId = docRef.id;
+      message.id = generatedId;
       const channelRef = doc(this.firestore, 'channels', channelId);
       const channelSnap = await getDoc(channelRef);
 

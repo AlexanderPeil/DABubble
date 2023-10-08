@@ -151,10 +151,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
 
-  navigateToChannelMessage(channelId: string, timestamp: number): void {
+  navigateToChannelMessage(channelId: string, messageId: string): void {
     this.searchList = false;
     this.searchTerm = '';
-    this.router.navigate(['/main/channel', channelId], { queryParams: { timestamp } });
+    this.router.navigate(['/main/channel', channelId], { fragment: 'message-' + messageId });
   }
 
 
