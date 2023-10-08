@@ -117,13 +117,16 @@ export class MessageService {
     try {
       await addDoc(messageCollection, message.toJSON());
 
-      const receiverRef = doc(this.firestore, 'users', receiverId);
-      await updateDoc(receiverRef, { hasUnreadMessages: arrayUnion(senderId) });
+      if (senderId !== receiverId) {
+        const receiverRef = doc(this.firestore, 'users', receiverId);
+        await updateDoc(receiverRef, { hasUnreadMessages: arrayUnion(senderId) });
+      }
 
     } catch (error) {
       console.error("Error adding document: ", error);
     }
-  }
+}
+
 
 
   getDirectMessageCollection(userId1: string, userId2: string) {
