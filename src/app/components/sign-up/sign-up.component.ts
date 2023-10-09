@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/shared/services/storage.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { StorageService } from 'src/app/shared/services/storage.service';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
   signupForm!: FormGroup;
   displayName!: string;
   userCreated = false;
@@ -20,6 +21,7 @@ export class SignUpComponent implements OnInit {
   selectedAvatarURL!: string;
   avatarUrls: string[] = [];
   defaultAvatar: string = '../../assets/img/default_avatar.svg';
+  private displayNameSubscription?: Subscription;
 
 
   constructor(
@@ -37,14 +39,18 @@ export class SignUpComponent implements OnInit {
       passwordConfirm: new FormControl(null, Validators.required),
       checked: this.checked
     }, { validators: Validators.compose([this.passwordsMatchValidator.bind(this)]) });
+    this.subscribeDisplayName();
+    this.avatarUrls = this.authService.user_images;
+  }
 
+
+  subscribeDisplayName() {
     const displayNameControl = this.signupForm.get('displayName');
     if (displayNameControl) {
-      displayNameControl.valueChanges.subscribe(value => {
+      this.displayNameSubscription = displayNameControl.valueChanges.subscribe(value => {
         this.displayName = value;
       });
     }
-    this.avatarUrls = this.authService.user_images;
   }
 
 
@@ -73,26 +79,39 @@ export class SignUpComponent implements OnInit {
       console.error("Form is invalid, can't proceed with registration");
       return;
     }
+    this.authServiceCall();
+  }
 
+
+  authServiceCall() {
     const displayName = this.signupForm.value.displayName;
     const email = this.signupForm.value.email;
     const password = this.signupForm.value.password;
-
     this.authService.signUp(displayName, email, password, this.selectedAvatarURL)
       .then(() => {
-        this.userCreated = true;
-        setTimeout(() => {
-          this.router.navigate(['/main/channel/tcgLB0MdDpTD27cGTU95']);
-        }, 3000);
+        this.userCreatedFn();
       })
       .catch((error: { message: string; }) => {
-        console.log(error);
-        this.userExists = true;
-        this.signupForm.controls['email'].reset();
-        setTimeout(() => {
-          this.userExists = false;
-        }, 3000);
+        this.signUpFail(error);
       });
+  }
+
+
+  userCreatedFn() {
+    this.userCreated = true;
+    setTimeout(() => {
+      this.router.navigate(['/main/channel/tcgLB0MdDpTD27cGTU95']);
+    }, 3000);
+  }
+
+
+  signUpFail(error: any) {
+    console.log(error);
+    this.userExists = true;
+    this.signupForm.controls['email'].reset();
+    setTimeout(() => {
+      this.userExists = false;
+    }, 3000);
   }
 
 
@@ -118,4 +137,12 @@ export class SignUpComponent implements OnInit {
       console.error("Error uploading file: ", error);
     });
   }
+
+
+  ngOnDestroy(): void {
+    if (this.displayNameSubscription) {
+      this.displayNameSubscription.unsubscribe();
+    }
+  }
+
 }

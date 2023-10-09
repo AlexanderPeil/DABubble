@@ -14,7 +14,7 @@ import {
   arrayRemove,
   orderBy
 } from '@angular/fire/firestore';
-import { Observable, catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { AuthService } from './auth.service';
 import { ChannelService } from 'src/app/shared/services/channel.service';
@@ -30,6 +30,8 @@ export class MessageService {
   loggedInUser: User | null = null;
   currentReceiverId: string | null = null;
   usersInChat: { [userId: string]: boolean } = {};
+  private selectedMessageIdSubject = new BehaviorSubject<string | null>(null);
+  selectedMessageId = this.selectedMessageIdSubject.asObservable();
 
   constructor(
     private firestore: Firestore,
@@ -125,7 +127,7 @@ export class MessageService {
     } catch (error) {
       console.error("Error adding document: ", error);
     }
-}
+  }
 
 
 
@@ -313,7 +315,7 @@ export class MessageService {
           return collectionData(messagesRef, { idField: 'id' }).pipe(
             catchError(error => {
               console.error("Fehler beim Laden der Nachrichten für Channel:", channel.channelId, error);
-              return of([]); 
+              return of([]);
             }),
             map(docs => docs.map(doc => new MessageContent(doc)))
           );
@@ -369,6 +371,11 @@ export class MessageService {
         readBy: arrayUnion(userId)
       }).catch(error => console.error("Error updating document: ", error));
     }
+  }
+
+
+  setSelectedMessageId(id: string) {
+    this.selectedMessageIdSubject.next(id);
   }
   // Here ends the logic for channel-messages
 

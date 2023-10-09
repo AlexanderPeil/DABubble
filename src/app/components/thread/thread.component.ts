@@ -46,6 +46,11 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.checkURL();
+  }
+
+
+  checkURL() {
     combineLatest([
       this.loadLoggedInUser(),
       of(this.router.url)
@@ -106,43 +111,60 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
 
-  sendMessage() {
-    const urlSegments = this.router.url.split('/');
+  async sendMessage() {
+    if (!this.isValidMessage()) {
+      return;
+    }
 
-    if (this.messageContent && this.loggedInUser) {
+    if (this.loggedInUser) {
       const senderName = this.loggedInUser.displayName as string;
-      const messageId = this.selectedMessage?.id;
+
       const cleanedContent = this.messageService.removePTags(this.messageContent);
 
-      if (messageId) {
-        this.messageService
-          .createAndAddThreadMessage(
-            this.loggedInUser.uid,
-            senderName,
-            cleanedContent,
-            messageId
-          )
-          .then(() => {
-            if (urlSegments.includes('channel')) {
-              return this.messageService.updateHasThreadForChannelMessage(this.channelId!, messageId, true);
-            } else if (urlSegments.includes('direct-message') && this.selectedUser) {
-              return this.messageService.updateHasThreadForDirectMessage(this.loggedInUser!.uid, this.selectedUser.uid, messageId, true);
-            }
-            return Promise.resolve();
-          })
-          .then(() => {
-            this.messageContent = '';
-            this.scrollToBottom();
-          })
-          .catch((error: any) => {
-            console.error("Couldn't send a message:", error);
-          });
-      } else {
-        console.error('Please try again.');
+      try {
+        await this.sendThreadMessage(senderName, cleanedContent);
+        this.postMessageCleanup();
+      } catch (error) {
+        console.error("Couldn't send a message:", error);
       }
-    } else {
-      console.error('Either message content or loggedInUser was not found.');
     }
+  }
+
+
+  isValidMessage(): boolean {
+    if (!this.messageContent || !this.loggedInUser || !this.selectedMessage?.id) {
+      console.error('Invalid message parameters.');
+      return false;
+    }
+    return true;
+  }
+
+
+  async sendThreadMessage(senderName: string, cleanedContent: string) {
+    const messageId = this.selectedMessage?.id;
+    await this.messageService.createAndAddThreadMessage(
+      this.loggedInUser!.uid,
+      senderName,
+      cleanedContent,
+      messageId!
+    );
+    await this.updateHasThread(messageId!);
+  }
+
+
+  async updateHasThread(messageId: string) {
+    const urlSegments = this.router.url.split('/');
+    if (urlSegments.includes('channel')) {
+      await this.messageService.updateHasThreadForChannelMessage(this.channelId!, messageId, true);
+    } else if (urlSegments.includes('direct-message') && this.selectedUser) {
+      await this.messageService.updateHasThreadForDirectMessage(this.loggedInUser!.uid, this.selectedUser.uid, messageId, true);
+    }
+  }
+
+
+  postMessageCleanup() {
+    this.messageContent = '';
+    this.scrollToBottom();
   }
 
 

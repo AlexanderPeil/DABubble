@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -9,8 +8,6 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class ResetPasswordComponent implements OnInit {
   newPasswordForm!: FormGroup;
-
-  constructor(private authService: AuthService) { }
 
 
   ngOnInit() {

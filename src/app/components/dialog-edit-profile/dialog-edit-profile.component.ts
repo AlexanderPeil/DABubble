@@ -5,8 +5,6 @@ import { User } from 'src/app/shared/services/user';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
-import { updateEmail } from "firebase/auth";
-import { Auth } from 'firebase/auth';
 
 
 @Component({
@@ -64,7 +62,6 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
   }
 
 
-
   private initForm() {
     this.userForm = this.fb.group({
       displayName: ['', Validators.required],
@@ -74,14 +71,7 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
 
 
   async onSubmit() {
-
     if (this.userForm.valid && this.user) {
-      // This block is for the update-email method. 
-      //let shouldUpdateEmailInAuth = false;
-      //if (this.user.email !== this.userForm.value.email) {
-      //    shouldUpdateEmailInAuth = true;
-      //}
-
       const updatedUserData = {
         displayName: this.userForm.value.displayName,
         email: this.user.email
@@ -89,18 +79,6 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
 
       try {
         await this.authService.updateUser(this.user.uid, updatedUserData);
-        // This block is for the update-email method. 
-        /*
-        if (shouldUpdateEmailInAuth) {
-            const user = this.authService.auth.currentUser;
-            if (user) {
-                console.log("Attempting to update email");
-                await updateEmail(user, this.userForm.value.email);
-                console.log("Update email attempt complete");
-                this.user.email = this.userForm.value.email;
-            }
-        }
-        */
       } catch (error) {
         console.error("Error updating user data in component: ", error);
       }
