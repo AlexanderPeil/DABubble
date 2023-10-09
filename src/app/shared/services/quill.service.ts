@@ -6,6 +6,7 @@ import 'quill-mention';
 import * as Emoji from 'quill-emoji';
 import Quill from 'quill';
 import { AuthService } from './auth.service';
+import { BehaviorSubject } from 'rxjs';
 Quill.register('modules/emoji', Emoji);
 
 @Injectable({
@@ -13,6 +14,8 @@ Quill.register('modules/emoji', Emoji);
 })
 export class QuillService {
   quill: any;
+  selectedChannelIdSubject = new BehaviorSubject<string | null>(null);
+
 
 
   // public quillModules = {
@@ -139,7 +142,7 @@ export class QuillService {
       .getChannels(searchTerm)
       .subscribe((channels: Channel[]) => {
         const values = channels.map((channel) => ({
-          id: channel.channelName, // Stellen Sie sicher, dass Ihre Channels eine eindeutige ID haben
+          id: channel.channelId, // Stellen Sie sicher, dass Ihre Channels eine eindeutige ID haben
           value: channel.channelName,
           displayName: channel.channelName,
           type: 'channel',
@@ -232,8 +235,15 @@ export class QuillService {
 
       div.appendChild(dropdownDiv);
     } else if (item.type === 'channel') {
+      console.log(item);
+      
       const span = document.createElement('span');
       span.textContent = `#${item.displayName}`;
+      div.setAttribute('data-channel-id', item.id);  
+      div.addEventListener('mouseup', () => {
+        console.log('Channel selected:', item.id);
+        this.selectedChannelIdSubject.next(item.id);
+    });
       div.appendChild(span);
     }
 

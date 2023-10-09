@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
@@ -12,20 +12,24 @@ import { MessageService } from 'src/app/shared/services/message.service';
 // import { DocumentData } from '@angular/fire/firestore';
 // import { FormControl } from '@angular/forms';
 import { QuillService } from 'src/app/shared/services/quill.service';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-message',
   templateUrl: './new-message.component.html',
   styleUrls: ['./new-message.component.scss'],
 })
-export class NewMessageComponent implements OnInit {
+export class NewMessageComponent implements OnInit, OnDestroy {
   dropDownMenuChannelsIsOpen: boolean = false;
   dropDownMenuUserIsOpen: boolean = false;
   users: { user: any; unreadCount?: number }[] = [];
   isOnline?: boolean;
   foundUsers: any[] = [];
   messageContent: string = '';
+  selectedChannelId: string | null = null;
   quill: any;
+  selectedChannelIdSubscription!: Subscription;
 
   constructor(
     public dialog: MatDialog,
@@ -35,10 +39,12 @@ export class NewMessageComponent implements OnInit {
     public elementRef: ElementRef,
     private authService: AuthService,
     private messageService: MessageService,
-    public quillService: QuillService
-  ) {}
+    public quillService: QuillService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.setSelectedChannelId();
     // this.authService.getUsers().subscribe((usersData) => {
     //   this.users = usersData.map((user) => ({ user, unreadCount: 0 }));
     //   this.users.forEach((userWithCount, index) => {
@@ -98,4 +104,48 @@ export class NewMessageComponent implements OnInit {
   //     this.dropDownMenuUserIsOpen = false;
   //   }
   // }
+
+
+  setSelectedChannelId() {
+    this.selectedChannelIdSubscription = this.quillService.selectedChannelIdSubject.subscribe(channelId => {
+      if (channelId) {
+        this.selectedChannelId = channelId;
+      }
+    });
+  }
+
+
+  async sendMessage() {
+    console.log('Try to send a message:', this.selectedChannelId );
+    
+    if (!this.selectedChannelId) {
+      console.error('No channel selected.');
+      return;
+    }
+
+    const loggedInUser = this.authService.currentUserValue;
+    if (!loggedInUser) {
+      console.error('No user logged in.');
+      return;
+    }
+
+    try {
+      await this.messageService.createAndAddChannelMessage(
+        this.selectedChannelId,
+        loggedInUser.uid,
+        loggedInUser.displayName as string,
+        this.messageContent
+      );
+      this.messageContent = '';
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+    this.router.navigate(['/main/channel', this.selectedChannelId]);
+  }
+
+
+  ngOnDestroy() {
+    this.selectedChannelIdSubscription?.unsubscribe();
+  }
+
 }

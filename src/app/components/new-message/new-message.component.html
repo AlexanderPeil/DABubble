@@ -1,37 +1,20 @@
-<div
-  [ngClass]="{
+<div [ngClass]="{
     chatHistoryFullWidth: toggleWorspaceMenuService.workspaceMenuAreClosed
-  }"
-  class="chatHistoryMainContainer"
->
+  }" class="chatHistoryMainContainer">
   <div class="chatHistoryHeader">
     <p>New Message</p>
-    <quill-editor
-      class="quill-editor-new-message"
-      [(ngModel)]="messageContent"
-      (onEditorCreated)="this.quillService.setFocus($event)"
+    <quill-editor class="quill-editor-new-message" (onEditorCreated)="this.quillService.setFocus($event)"
       placeholder="At: #channel, or @someone or *Mail address"
-      [modules]="this.quillService.quillModulesWithAtAndHash"
-    ></quill-editor>
+      [modules]="this.quillService.quillModulesWithAtAndHash"></quill-editor>
 
-    <div
-      class="dropDownMenuUsers"
-      [ngStyle]="{ display: dropDownMenuUserIsOpen ? 'flex' : 'none' }"
-    >
+    <div class="dropDownMenuUsers" [ngStyle]="{ display: dropDownMenuUserIsOpen ? 'flex' : 'none' }">
       <div class="containerUser" *ngFor="let userWithCount of users">
         <img [src]="userWithCount.user.photoURL" />
 
-        <img
-          *ngIf="userWithCount.user?.isOnline"
-          class="statusIcon"
-          src="../../../assets/img/icons/user_online.svg"
-        />
+        <img *ngIf="userWithCount.user?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_online.svg" />
 
-        <img
-          *ngIf="!userWithCount.user?.isOnline"
-          class="statusIcon"
-          src="../../../assets/img/icons/user_offline.svg"
-        />
+        <img *ngIf="!userWithCount.user?.isOnline" class="statusIcon"
+          src="../../../assets/img/icons/user_offline.svg" />
 
         <p>{{ userWithCount.user.displayName }}</p>
       </div>
@@ -41,61 +24,34 @@
   <div class="scrolleableContainer"></div>
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor
-    class="quill-editor-textarea"
-    (onEditorCreated)="this.quillService.setFocus($event)"
-    [modules]="this.quillService.quillModules"
-    placeholder="Start a new Message"
-  >
+  <quill-editor class="quill-editor-textarea" [(ngModel)]="messageContent"
+    (onEditorCreated)="this.quillService.setFocus($event)" [modules]="this.quillService.quillModules"
+    placeholder="Start a new Message">
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
         <!--------------------------------------- Displays uploaded Images --------------------------------------->
-        <div
-          *ngFor="
+        <div *ngFor="
             let uploadedImage of storageService.uploadedImages;
             let i = index
-          "
-          class="containerUploadedImages"
-        >
-          <img
-            (click)="openDetailViewFromUploadedImage(uploadedImage)"
-            class="uploadedImage"
-            [src]="uploadedImage ? uploadedImage : null"
-          />
-          <img
-            matTooltipPosition="above"
-            matTooltip="Delete Data"
-            (click)="
+          " class="containerUploadedImages">
+          <img (click)="openDetailViewFromUploadedImage(uploadedImage)" class="uploadedImage"
+            [src]="uploadedImage ? uploadedImage : null" />
+          <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
               this.storageService.deleteUploadedDataService(uploadedImage, i)
-            "
-            class="closeIcon"
-            src="assets/img/icons/closeIcon.svg"
-          />
+            " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
         </div>
         <!--------------------------------------- Displays uploaded Images --------------------------------------->
 
         <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
-        <div
-          *ngFor="
+        <div *ngFor="
             let uploadedData of storageService.uploadedDatas;
             let i = index
-          "
-          class="containerUploadedDatas"
-        >
-          <iframe
-            class="uploadedData"
-            [src]="uploadedData ? uploadedData : null"
-          ></iframe>
-          <img
-            matTooltipPosition="above"
-            matTooltip="Delete Data"
-            (click)="
+          " class="containerUploadedDatas">
+          <iframe class="uploadedData" [src]="uploadedData ? uploadedData : null"></iframe>
+          <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
               this.storageService.deleteUploadedDataService(uploadedData, i)
-            "
-            class="closeIcon"
-            src="assets/img/icons/closeIcon.svg"
-          />
+            " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
         </div>
         <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
       </div>
@@ -103,12 +59,7 @@
       <div class="containerIcons">
         <label for="input" class="containerAddIcon">
           <img src="assets/img/icons/add.svg" />
-          <input
-            (change)="storageService.chooseFileSevice($event)"
-            id="input"
-            type="file"
-            hidden
-          />
+          <input (change)="storageService.chooseFileSevice($event)" id="input" type="file" hidden />
         </label>
 
         <hr class="verticalLine" />
@@ -120,7 +71,7 @@
         <div class="containerAtIcon">
           <img class="atIcon" src="assets/img/icons/@Icon.svg" />
         </div>
-        <img class="sendBtn" src="assets/img/icons/sendBtn.svg" />
+        <img class="sendBtn" src="assets/img/icons/sendBtn.svg"  (click)="sendMessage()"/>
       </div>
       <!--------------------------------------- Custom created Container --------------------------------------->
     </div>
