@@ -1,4 +1,53 @@
 <app-header></app-header>
+
+<div class="matDrawerMainContainer">
+  <app-sidenav
+    class="sidenav"
+    [ngClass]="{ hidden: !isSidenavOpen }"
+  ></app-sidenav>
+
+  <div class="routerContainer">
+    <router-outlet></router-outlet>
+  </div>
+  <app-thread *ngIf="threadService.threadAreClosed"></app-thread>
+</div>
+
+<!------------------------- Menu Button start here --------------------------->
+<div (click)="toggleSidenav()" class="containerMenuBtn">
+  <p
+    [ngClass]="{
+      'd-none': isSidenavOpen,
+      show: !isSidenavOpen
+    }"
+  >
+    open Workspace Menu
+  </p>
+  <img
+    [ngClass]="{
+      'd-none': isSidenavOpen,
+      show: !isSidenavOpen
+    }"
+    src="assets/img/icons/openWorkspaceMenuIcon.svg"
+  />
+
+  <p
+    [ngClass]="{
+      show: isSidenavOpen,
+      'd-none': !isSidenavOpen
+    }"
+  >
+    close Workspace Menu
+  </p>
+  <img
+    [ngClass]="{
+      show: isSidenavOpen,
+      'd-none': !isSidenavOpen
+    }"
+    src="assets/img/icons/closeWorkspaceMenuIcon.svg"
+  />
+</div>
+
+<!-- <app-header></app-header>
 <app-workspace-menu-btn></app-workspace-menu-btn>
 
 <div class="matDrawerMainContainer">
@@ -9,8 +58,8 @@
     <app-sidenav></app-sidenav>
   </div>
   <div class="router-container">
-    <!-- <app-channel></app-channel> -->
+   
     <router-outlet></router-outlet>
     <app-thread *ngIf="threadService.threadAreClosed"></app-thread>
   </div>
-</div>
+</div> -->

@@ -5,11 +5,10 @@ import { ThreadService } from 'src/app/shared/services/thread.service';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { User } from 'src/app/shared/services/user';
 
-
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnDestroy, OnInit {
   checkUserActivityInterval: any;
@@ -18,15 +17,13 @@ export class MainComponent implements OnDestroy, OnInit {
   lastUpdate: number = 0;
   updateUserActivityTimeout: any;
   inactiveGuestUserSubscription!: Subscription;
-
+  isSidenavOpen = true;
 
   constructor(
     public toggleWorspaceMenuService: ToggleWorkspaceMenuService,
     private authService: AuthService,
-    public threadService: ThreadService) {
-
-  }
-
+    public threadService: ThreadService
+  ) {}
 
   ngOnInit() {
     this.checkUserActivityInterval = setInterval(() => {
@@ -34,13 +31,15 @@ export class MainComponent implements OnDestroy, OnInit {
     }, 60 * 1000);
   }
 
-
   @HostListener('document:click', ['$event'])
   @HostListener('document:keyup', ['$event'])
   userActivity(event: Event) {
     this.debouncedUpdateUserActivity();
   }
 
+  toggleSidenav() {
+    this.isSidenavOpen = !this.isSidenavOpen;
+  }
 
   debouncedUpdateUserActivity() {
     const timeSinceLastUpdate = Date.now() - this.lastUpdate;
@@ -49,10 +48,9 @@ export class MainComponent implements OnDestroy, OnInit {
     } else if (!this.updateUserActivityTimeout) {
       this.updateUserActivityTimeout = setTimeout(() => {
         this.updateUserActivity();
-      }, (5 * 60 * 1000) - timeSinceLastUpdate);
+      }, 5 * 60 * 1000 - timeSinceLastUpdate);
     }
   }
-
 
   updateUserActivity() {
     if (this.authService.currentUser.value) {
@@ -63,23 +61,25 @@ export class MainComponent implements OnDestroy, OnInit {
     }
   }
 
-
   autoLogoutInactiveGuestUsers() {
     this.inactiveGuestUserSubscription?.unsubscribe();
-    this.inactiveGuestUserSubscription = this.authService.getInactiveGuestUsers().subscribe((users: User[]) => {
-      users.forEach((user: User) => {
-        if (user.lastActive && Date.now() - user.lastActive.toMillis() > 60 * 60 * 1000) {
-          this.authService.deleteGuestUser(user.uid);
-        }
+    this.inactiveGuestUserSubscription = this.authService
+      .getInactiveGuestUsers()
+      .subscribe((users: User[]) => {
+        users.forEach((user: User) => {
+          if (
+            user.lastActive &&
+            Date.now() - user.lastActive.toMillis() > 60 * 60 * 1000
+          ) {
+            this.authService.deleteGuestUser(user.uid);
+          }
+        });
       });
-    });
   }
-
 
   ngOnDestroy() {
     clearInterval(this.checkUserActivityInterval);
     this.userSubscription?.unsubscribe();
     this.inactiveGuestUserSubscription?.unsubscribe();
   }
-
 }

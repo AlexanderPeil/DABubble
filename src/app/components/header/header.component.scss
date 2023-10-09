@@ -1,176 +1,177 @@
 @import "../../shared/variables.scss";
 
 .headerContainer {
-    @include space_between_center;
-    position: relative;
-    padding: 10px 30px 0px 40px;
+  @include space_between_center;
+  position: relative;
+  padding: 10px 30px 0px 40px;
 }
 
 .inputContainer {
-    @include align_items_center;
-    @include width_height(55%, 70px);
-    @include margin_left_right(175px, auto);
-    position: relative;
-    left: -66px;
+  @include align_items_center;
+  @include width_height(55%, 70px);
+  @include margin_left_right(175px, auto);
+  position: relative;
+  left: -66px;
 
-    .inputContainerImg {
-        position: absolute;
-        right: 20px;
+  .inputContainerImg {
+    position: absolute;
+    right: 20px;
+  }
+
+  input {
+    @include width_height(100%, 14px);
+    border: 1px solid white;
+    background-color: white;
+    border-radius: 100px;
+    padding: 28px 0 28px 40px;
+    box-sizing: border-box;
+    transition: all 125ms ease-in-out;
+    font-weight: 400;
+    font-size: 24px;
+    color: #686868;
+
+    &:focus {
+      outline: 1px solid #444df2;
     }
 
-    input {
-        @include width_height(100%, 14px);
-        border: 1px solid white;
-        background-color: white;
-        border-radius: 100px;
-        padding: 28px 0 28px 40px;
-        box-sizing: border-box;
-        transition: all 125ms ease-in-out;
-        font-weight: 400;
-        font-size: 24px;
-        color: #686868;
-
-        &:focus {
-            outline: 1px solid #444df2;
-        }
-
-        &:hover {
-            border: 1px solid #686868;
-        }
-
-        ::placeholder {
-            @include font(24px, 400, 32.74px);
-        }
+    &:hover {
+      border: 1px solid #686868;
     }
+
+    ::placeholder {
+      @include font(24px, 400, 32.74px);
+    }
+  }
 }
 
 .headerProfileContent {
-    @include align_items_center;
-    @include font(32px, 700, 43.65px);
-    @include button_hover;
+  @include align_items_center;
+  @include font(32px, 700, 43.65px);
+  @include button_hover;
 
-    &:hover {
-        color: #444df2;
-
-        .arrowDown {
-            background: url("../../../assets/img/icons/arrow_down_hover.svg");
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-    }
+  &:hover {
+    color: #444df2;
 
     .arrowDown {
-        @include width_height(40px, 40px);
-        background: url("../../../assets/img/icons/arrow_down.svg");
-        background-repeat: no-repeat;
-        background-position: center;
+      background: url("../../../assets/img/icons/arrow_down_hover.svg");
+      background-repeat: no-repeat;
+      background-position: center;
     }
+  }
+
+  .arrowDown {
+    @include width_height(40px, 40px);
+    background: url("../../../assets/img/icons/arrow_down.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 }
 
 .userName {
-    padding-right: 15px;
+  padding-right: 15px;
+  text-align: right;
 }
 
 .userImg {
-    @include width_height(75px, 75px);
-    border-radius: 100%;
-    margin: 15px;
+  @include width_height(75px, 75px);
+  border-radius: 100%;
+  margin: 15px;
 }
 
 .userIconWrapper {
-    position: relative;
+  position: relative;
 }
 
 .statusIcon {
-    position: absolute;
-    bottom: 30px;
-    right: 17px;
-    height: 17px;
+  position: absolute;
+  bottom: 30px;
+  right: 17px;
+  height: 17px;
 }
 
 .dropdownMenu {
-    @include flex_column_center;
-    @include font(24px, 600, 32.74px);
-    background-color: white;
-    gap: 25px;
-    position: absolute;
-    top: 120px;
-    right: 38px;
-    min-width: 160px;
-    min-height: 150px;
-    padding: 25px 16px;
-    z-index: 3;
-    border-radius: 30px 0 30px 30px;
+  @include flex_column_center;
+  @include font(24px, 600, 32.74px);
+  background-color: white;
+  gap: 25px;
+  position: absolute;
+  top: 120px;
+  right: 38px;
+  min-width: 160px;
+  min-height: 150px;
+  padding: 25px 16px;
+  z-index: 3;
+  border-radius: 30px 0 30px 30px;
 
-    a {
-        color: black;
-        text-decoration: none;
-        display: block;
-        cursor: pointer;
-        border-radius: 30px;
-        transition: text-shadow 225ms ease;
-        padding: 10px 40px;
+  a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: text-shadow 225ms ease;
+    padding: 10px 40px;
 
-        &:hover {
-            font-size: 25px;
-            color: #444df2;
-            text-shadow: 0px 0px 1px black;
-            background-color: #eceefe;
-        }
+    &:hover {
+      font-size: 25px;
+      color: #444df2;
+      text-shadow: 0px 0px 1px black;
+      background-color: #eceefe;
     }
+  }
 }
 
 .menuBackground {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
 }
 
 .searchDropdown {
+  @include flex_column_center;
+  font-size: 18px;
+  font-weight: 400;
+  display: flex;
+  background-color: #eceefe;
+  gap: 40px;
+  position: absolute;
+  top: 65px;
+  min-width: 300px;
+  min-height: 500px;
+  padding: 10px;
+  z-index: 999;
+  border-radius: 10px;
+
+  .searchResult {
     @include flex_column_center;
-    font-size: 18px;
-    font-weight: 400;
+    gap: 25px;
+  }
+
+  .searchResultContent {
     display: flex;
-    background-color: #eceefe;
-    gap: 40px;
-    position: absolute;
-    top: 65px;
-    min-width: 300px;
-    min-height: 500px;
-    padding: 10px;
-    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 5px;
     border-radius: 10px;
+    width: 100%;
 
-    .searchResult {
-        @include flex_column_center;
-        gap: 25px;
+    &:hover {
+      background-color: #797ef3;
+      color: white;
+      transition: all 225ms ease-in-out;
+      padding: 5px;
+      cursor: pointer;
     }
 
-    .searchResultContent {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 5px;
-        border-radius: 10px;
-        width: 100%;
-
-        &:hover {
-            background-color: #797ef3;
-            color: white;
-            transition: all 225ms ease-in-out;
-            padding: 5px;
-            cursor: pointer;
-        }
-
-        .userSearchImg {
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-        }
+    .userSearchImg {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
     }
+  }
 }
