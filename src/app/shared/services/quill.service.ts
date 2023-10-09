@@ -14,96 +14,99 @@ Quill.register('modules/emoji', Emoji);
 export class QuillService {
   quill: any;
 
-  public quillModules = {
-    'emoji-toolbar': true,
-    'emoji-textarea': true,
-    'emoji-shortname': true,
-    mention: {
-      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      mentionDenotationChars: ['@'],
-      source: this.searchUsers.bind(this),
-      renderItem(item: any) {
-        const div = document.createElement('div');
-        const img = document.createElement('img');
-        const span = document.createElement('span');
 
-        img.src = item.photoURL;
-        img.classList.add('user-dropdown-image');
-        span.textContent = item.displayName;
+  // public quillModules = {
+  //   'emoji-toolbar': true,
+  //   'emoji-textarea': true,
+  //   'emoji-shortname': true,
+  //   mention: {
+  //     allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+  //     mentionDenotationChars: ['@'],
+  //     source: this.searchUsers.bind(this),
+  //     renderItem(item: any) {
+  //       const div = document.createElement('div');
+  //       const img = document.createElement('img');
+  //       const span = document.createElement('span');
 
-        div.appendChild(img);
-        div.appendChild(span);
+  //       img.src = item.photoURL;
+  //       img.classList.add('user-dropdown-image');
+  //       span.textContent = item.displayName;
 
-        return div;
-      },
-      onSelect: (item: any, insertItem: (arg0: any) => void) => {
-        insertItem(item);
-      },
-    },
-  };
+  //       img.onerror = () => this.setDefaultImageOnError(img);
 
-  public quillModulesWithAtAndHash = {
-    toolbar: false,
-    mention: {
-      allowedChars: /^[A-Za-z\sÅÄÖåäö.]*$/,
-      mentionDenotationChars: ['@', '#', '*'],
-      source: (
-        searchTerm: string,
-        renderList: Function,
-        mentionChar: string
-      ) => {
-        if (mentionChar === '@') {
-          this.searchUsers(searchTerm, renderList);
-        } else if (mentionChar === '#') {
-          this.searchChannels(searchTerm, renderList);
-        } else if (mentionChar === '*') {
-          this.searchEmails(searchTerm, renderList);
-        }
-      },
-      renderItem(item: any) {
-        const div = document.createElement('div');
+  //       div.appendChild(img);
+  //       div.appendChild(span);
 
-        if (item.type === 'user') {
-          const dropdownDiv = document.createElement('div');
-          const img = document.createElement('img');
-          const contentDiv = document.createElement('div');
-          const span = document.createElement('span');
-          const emailSpan = document.createElement('span');
+  //       return div;
+  //     },
+  //     onSelect: (item: any, insertItem: (arg0: any) => void) => {
+  //       insertItem(item);
+  //     },
+  //   },
+  // };
 
-          img.src = item.photoURL;
-          img.classList.add('user-dropdown-image');
-          span.textContent = item.displayName;
-          emailSpan.textContent = item.email;
+  // public quillModulesWithAtAndHash = {
+  //   toolbar: false,
+  //   mention: {
+  //     allowedChars: /^[A-Za-z\sÅÄÖåäö.]*$/,
+  //     mentionDenotationChars: ['@', '#', '*'],
+  //     source: (
+  //       searchTerm: string,
+  //       renderList: Function,
+  //       mentionChar: string
+  //     ) => {
+  //       if (mentionChar === '@') {
+  //         this.searchUsers(searchTerm, renderList);
+  //       } else if (mentionChar === '#') {
+  //         this.searchChannels(searchTerm, renderList);
+  //       } else if (mentionChar === '*') {
+  //         this.searchEmails(searchTerm, renderList);
+  //       }
+  //     },
+  //     renderItem(item: any) {
+  //       const div = document.createElement('div');
 
-          contentDiv.appendChild(span);
-          contentDiv.appendChild(emailSpan);
-          contentDiv.classList.add('user-dropdown-text');
+  //       if (item.type === 'user') {
+  //         const dropdownDiv = document.createElement('div');
+  //         const img = document.createElement('img');
+  //         const contentDiv = document.createElement('div');
+  //         const span = document.createElement('span');
+  //         const emailSpan = document.createElement('span');
 
-          dropdownDiv.appendChild(img);
-          dropdownDiv.appendChild(contentDiv);
-          dropdownDiv.classList.add('user-dropdown-container');
+  //         img.src = item.photoURL;
+  //         img.classList.add('user-dropdown-image');
+  //         span.textContent = item.displayName;
+  //         emailSpan.textContent = item.email;
 
-          div.appendChild(dropdownDiv);
-        } else if (item.type === 'channel') {
-          const span = document.createElement('span');
+  //         contentDiv.appendChild(span);
+  //         contentDiv.appendChild(emailSpan);
+  //         contentDiv.classList.add('user-dropdown-text');
 
-          span.textContent = `#${item.displayName}`;
+  //         dropdownDiv.appendChild(img);
+  //         dropdownDiv.appendChild(contentDiv);
+  //         dropdownDiv.classList.add('user-dropdown-container');
 
-          div.appendChild(span);
-        }
+  //         div.appendChild(dropdownDiv);
+  //       } else if (item.type === 'channel') {
+  //         const span = document.createElement('span');
 
-        return div;
-      },
-      onSelect: (item: any, insertItem: (arg0: any) => void) => {
-        insertItem(item);
-      },
-    },
-  };
+  //         span.textContent = `#${item.displayName}`;
+
+  //         div.appendChild(span);
+  //       }
+
+  //       return div;
+  //     },
+  //     onSelect: (item: any, insertItem: (arg0: any) => void) => {
+  //       insertItem(item);
+  //     },
+  //   },
+  // };
 
   constructor(
     private authService: AuthService,
     public channelService: ChannelService
-  ) {}
+  ) { }
 
   setFocus(editor: any): void {
     this.quill = editor;
@@ -168,6 +171,102 @@ export class QuillService {
       });
   }
 
+
+  renderItem = (item: any) => {
+    const div = document.createElement('div');
+    const img = document.createElement('img');
+    const span = document.createElement('span');
+
+    img.src = item.photoURL;
+    img.classList.add('user-dropdown-image');
+    span.textContent = item.displayName;
+
+    img.onerror = () => this.setDefaultImageOnError(img);
+
+    div.appendChild(img);
+    div.appendChild(span);
+
+    return div;
+  }
+
+
+  public quillModules = {
+    'emoji-toolbar': true,
+    'emoji-textarea': true,
+    'emoji-shortname': true,
+    mention: {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ['@'],
+      source: this.searchUsers.bind(this),
+      renderItem: this.renderItem,  // Verweis auf die außerhalb definierte Methode
+      onSelect: (item: any, insertItem: (arg0: any) => void) => {
+        insertItem(item);
+      },
+    },
+  };
+
+  renderItemWithAtAndHash = (item: any) => {
+    const div = document.createElement('div');
+
+    if (item.type === 'user') {
+      const dropdownDiv = document.createElement('div');
+      const img = document.createElement('img');
+      const contentDiv = document.createElement('div');
+      const span = document.createElement('span');
+      const emailSpan = document.createElement('span');
+
+      img.src = item.photoURL;
+      img.classList.add('user-dropdown-image');
+      span.textContent = item.displayName;
+      emailSpan.textContent = item.email;
+
+      img.onerror = () => this.setDefaultImageOnError(img);
+
+      contentDiv.appendChild(span);
+      contentDiv.appendChild(emailSpan);
+      contentDiv.classList.add('user-dropdown-text');
+
+      dropdownDiv.appendChild(img);
+      dropdownDiv.appendChild(contentDiv);
+      dropdownDiv.classList.add('user-dropdown-container');
+
+      div.appendChild(dropdownDiv);
+    } else if (item.type === 'channel') {
+      const span = document.createElement('span');
+      span.textContent = `#${item.displayName}`;
+      div.appendChild(span);
+    }
+
+    return div;
+  }
+
+
+  public quillModulesWithAtAndHash = {
+    toolbar: false,
+    mention: {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö.]*$/,
+      mentionDenotationChars: ['@', '#', '*'],
+      source: (
+        searchTerm: string,
+        renderList: Function,
+        mentionChar: string
+      ) => {
+        if (mentionChar === '@') {
+          this.searchUsers(searchTerm, renderList);
+        } else if (mentionChar === '#') {
+          this.searchChannels(searchTerm, renderList);
+        } else if (mentionChar === '*') {
+          this.searchEmails(searchTerm, renderList);
+        }
+      },
+      renderItem: this.renderItemWithAtAndHash,  // Verweis auf die außerhalb definierte Methode
+      onSelect: (item: any, insertItem: (arg0: any) => void) => {
+        insertItem(item);
+      },
+    },
+  };
+
+
   triggerAtSymbol() {
     this.quill.focus();
     setTimeout(() => {
@@ -175,5 +274,10 @@ export class QuillService {
       this.quill.insertText(currentPosition, '@ ');
       this.quill.setSelection(currentPosition + 1);
     }, 0);
+  }
+
+
+  setDefaultImageOnError(imgElement: HTMLImageElement) {
+    imgElement.src = '../assets/img/avatar1.svg';
   }
 }

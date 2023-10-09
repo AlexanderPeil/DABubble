@@ -4,14 +4,16 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
-  HostListener
+  HostListener,
+  QueryList,
+  ViewChildren
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
 import { DialogShowMembersInChannelComponent } from '../dialog-show-members-in-channel/dialog-show-members-in-channel.component';
 import { DialogAddMembersInChannelComponent } from '../dialog-add-members-in-channel/dialog-add-members-in-channel.component';
 import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Channel } from 'src/app/models/channel';
 import { StorageService } from 'src/app/shared/services/storage.service';
@@ -19,10 +21,11 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { User } from 'src/app/shared/services/user';
-import { Observable, Subject, combineLatest, filter, map, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, combineLatest, distinctUntilChanged, filter, map, merge, switchMap, takeUntil } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { ThreadService } from 'src/app/shared/services/thread.service';
 import { QuillService } from 'src/app/shared/services/quill.service';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-channel',
@@ -51,24 +54,21 @@ export class ChannelComponent implements OnInit, OnDestroy {
   showEditMenu: boolean = true;
   updatedMessageContent: string = '';
   private ngUnsubscribe = new Subject<void>();
+  @ViewChildren('messageElement') messageElements!: QueryList<ElementRef>;
+  shouldScrollToSpecificMessage = false;
+  messageIdSubscription!: Subscription;
 
 
   constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
     public channelService: ChannelService, public storageService: StorageService, public authService: AuthService, public messageService: MessageService,
-    public threadService: ThreadService, private elementRef: ElementRef, public quillService: QuillService) {
+    public threadService: ThreadService, private elementRef: ElementRef, public quillService: QuillService, private router: Router, private viewportScroller: ViewportScroller) {
   }
 
 
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
     this.fetchAndDisplayMessages();
-  }
-
-
-  processMessages(messages: MessageContent[]): void {
-    messages.sort((a, b) => a.timestamp - b.timestamp);
-    this.messages = messages;
-    this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
+    this.initMessageScrolling();
   }
 
 
@@ -240,8 +240,29 @@ export class ChannelComponent implements OnInit, OnDestroy {
         if (message.senderId !== this.loggedInUser?.uid) {
           this.messageService.markChannelMessageAsRead(this.channelId);
         }
-      }); setTimeout(() => this.scrollToBottom());
+      });
+      if (!this.shouldScrollToSpecificMessage) {
+        console.log('shouldScrollToSpecificMessage should be false:', this.shouldScrollToSpecificMessage);
+        this.executeScrollToBottom();
+      }
     });
+  }
+
+
+  processMessages(messages: MessageContent[]): void {
+    messages.sort((a, b) => a.timestamp - b.timestamp);
+    this.messages = messages;
+    this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
+  }
+
+
+  executeScrollToBottom() {
+    setTimeout(() => {
+      if (!this.shouldScrollToSpecificMessage) {
+        this.scrollToBottom();
+      }
+      this.shouldScrollToSpecificMessage = false;
+    }, 100);
   }
 
 
@@ -286,9 +307,37 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
+  initMessageScrolling() {
+    merge(
+      this.activatedRoute.queryParams.pipe(map(params => params['messageId'])),
+      this.messageService.selectedMessageId
+    ).pipe(
+      distinctUntilChanged()
+    ).subscribe(messageId => {
+      if (messageId) {
+        this.shouldScrollToSpecificMessage = true;
+        this.scrollToMessageById(messageId);
+        console.log('shouldScrollToSpecificMessage should be false:', this.shouldScrollToSpecificMessage);
+      }
+    });
+  }
+
+
+  scrollToMessageById(messageId: string): void {
+    console.log('Try to scroll to message');
+    console.log(messageId);
+    console.log('shouldScrollToSpecificMessage should be true:', this.shouldScrollToSpecificMessage);
+    setTimeout(() => {
+      this.viewportScroller.scrollToAnchor(messageId);
+    }, 2500);
+    this.shouldScrollToSpecificMessage = false;
+  }
+
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.messageIdSubscription?.unsubscribe();
   }
 
 }

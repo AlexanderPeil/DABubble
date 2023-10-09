@@ -29,7 +29,7 @@
       <div class="searchResult" *ngIf="searchResults.channelMessages && searchResults.channelMessages.length">
         <h2>Channel-Messages</h2>
         <div class="searchResultContent" *ngFor="let message of searchResults.channelMessages">
-          <span (click)="message.channelId && message.timestamp ? navigateToChannelMessage(message.channelId, message.timestamp) : null">* {{ message.content }}</span>
+          <span (click)="message.channelId && message.id ? navigateToChannelMessage(message.channelId, message.id) : null">* {{ message.content }}</span>
         </div>
       </div>
 

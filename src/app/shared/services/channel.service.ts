@@ -58,7 +58,7 @@ export class ChannelService {
     );
     this.channelData = collectionData(collectionInstance, {
       idField: 'id',
-    }).pipe();
+    }).pipe();    
   }
 
   updateChannelNameService(changedChannelName: any, channelId: string) {
@@ -117,8 +117,8 @@ export class ChannelService {
   }
 
   getSingleChannelService(channelId: string) {
-    const collectionInstance = collection(this.firestore, 'channels');
-    const docRef = doc(collectionInstance, channelId);
+    const collectionInstance = collection(this.firestore, 'channels');    
+    const docRef = doc(collectionInstance, channelId);    
     getDoc(docRef).then((doc) => {
       this.channel = doc.data();
     });

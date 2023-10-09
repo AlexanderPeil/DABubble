@@ -22,7 +22,7 @@
           <img
             class="userImg"
             [src]="selectedMessage.senderImage"
-            (error)="retryLoadImage(selectedMessage.senderImage)"
+            (error)="retryLoadImage(selectedMessage)"
           />
           <p class="userName">{{ selectedMessage.senderName }}</p>
           <p class="time">
@@ -47,7 +47,7 @@
             class="userImg"
             [src]="threadMessage.senderImage"
             alt="{{ threadMessage.senderName }}'s profile image"
-            (error)="retryLoadImage(threadMessage.senderImage)"
+            (error)="retryLoadThreadMessageSenderImage(threadMessage)"
           />
           <p class="userName">{{ threadMessage.senderName }}</p>
           <p class="time">

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
@@ -18,7 +18,6 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event'])
-  // @ViewChildren('messageElement') messagesElements!: QueryList<ElementRef>;
   user: User | null = null;
   userSubscription!: Subscription;
   showMenu = false;
@@ -151,10 +150,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
 
-  navigateToChannelMessage(channelId: string, timestamp: number): void {
+  navigateToChannelMessage(channelId: string, messageId: string): void {
     this.searchList = false;
     this.searchTerm = '';
-    this.router.navigate(['/main/channel', channelId], { queryParams: { timestamp } });
+    this.messageService.setSelectedMessageId(messageId);
+    this.router.navigate(['/main/channel', channelId]);
   }
 
 

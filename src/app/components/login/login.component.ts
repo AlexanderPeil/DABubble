@@ -13,11 +13,12 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  // Login animation desktop
   animations: [
     trigger('logoAnimationDesktop', [
       state('initial', style({ transform: 'translateX(30vw) scale(1)' })),
       state('middle', style({ transform: 'translateX(0) scale(1)' })),
-      state('final', style({ transform: 'translate(calc(-45vw + 75px), calc(-63vh + 25px)) scale(0.5)'})),
+      state('final', style({ transform: 'translate(calc(-45vw + 75px), calc(-63vh + 25px)) scale(0.5)' })),
       transition('initial => middle', animate('500ms ease-out')),
       transition('middle => final', animate('500ms ease-in-out')),
     ]),
@@ -26,6 +27,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
       state('visible', style({ transform: 'translateX(0)' })),
       transition('hidden => visible', animate('500ms ease-in')),
     ]),
+
+    // Login animation mobile
     trigger('logoAnimationMobile', [
       state('initial', style({ transform: 'translate(0, 0)' })),
       state('middle', style({ transform: 'translateX(-20vw' })),
@@ -50,7 +53,7 @@ export class LoginComponent implements OnInit {
   loginFailed = false;
   containerVisible = true;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.loginAnimation();
@@ -77,13 +80,16 @@ export class LoginComponent implements OnInit {
     }
   }
 
+
   onGuestLogin() {
     this.authService.signInAnonymously();
   }
 
+
   signInWithGoogle() {
-    this.authService.signInWithGoogle().catch((error) => {});
+    this.authService.signInWithGoogle().catch((error) => { });
   }
+
 
   loginAnimation() {
     setTimeout(() => {

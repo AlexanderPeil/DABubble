@@ -14,7 +14,7 @@
           alt="Online"
         />
         <img
-          *ngIf="messageService.selectedUser?.isOnline"
+          *ngIf="!messageService.selectedUser?.isOnline"
           class="statusIcon"
           src="../../../assets/img/icons/user_offline.svg"
           alt="Offline"
@@ -39,7 +39,10 @@
     />
     <p>
       This chat is only between
-      <span>@{{ messageService.selectedUser?.displayName }}</span> and you.
+      <span (click)="openDialog()"
+        >@{{ messageService.selectedUser?.displayName }}</span
+      >
+      and you.
     </p>
   </div>
 
