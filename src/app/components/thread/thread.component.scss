@@ -1,8 +1,8 @@
 @import "../../shared/variables.scss";
 
 .threadMainContainer {
-  width: 21vw;
-  height: 84vh;
+  width: 350px;
+  height: 82vh;
   border-radius: 30px;
   background-color: white;
   position: relative;
@@ -156,7 +156,7 @@
   }
 }
 
-.scrolleableContainer {
+.scrollableContainer {
   height: 55vh;
   overflow-x: hidden;
   overflow-y: auto;

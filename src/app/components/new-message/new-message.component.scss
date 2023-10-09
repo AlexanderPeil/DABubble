@@ -1,8 +1,7 @@
 @import "../../shared/variables.scss";
 
 .chatHistoryMainContainer {
-  width: 53vw;
-  height: 84vh;
+  height: 82vh;
   border-radius: 30px;
   background-color: #ffffff;
   position: relative;
@@ -149,7 +148,7 @@
   width: 75vw;
 }
 
-.scrolleableContainer {
+.scrollableContainer {
   height: 55vh;
   overflow-x: hidden;
   overflow-y: auto;

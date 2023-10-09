@@ -1,39 +1,109 @@
+@import "../../shared/variables.scss";
+
+// test////////////////////////////////////
 .matDrawerMainContainer {
   display: flex;
-  justify-content: center;
-  gap: 15px;
+  padding: 20px;
+  gap: 20px;
 }
 
-.matDrawerChildContainer {
+.sidenav {
   background-color: white;
   border-radius: 30px;
+  width: 300px;
+  transition: width 125ms ease;
 }
 
-.router-container {
+/* Class to hide the sidenav */
+.hidden {
+  width: 0;
+  overflow: hidden;
+}
+
+.routerContainer {
+  width: 100%;
+}
+
+/////////////////style for toggle Button///////////////////////////
+
+.containerMenuBtn {
   display: flex;
-  gap: 15px;
+  align-items: center;
+  gap: 10px;
+  width: 260px;
+  position: absolute;
+  top: 650px;
+  left: -130px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  transform: rotate(-90deg);
+  box-shadow: -4px 4px 7px 0px #00000033;
+  background-color: white;
+  padding: 15px;
+
+  &:hover {
+    @include button_hover;
+
+    p {
+      color: #535af1;
+    }
+
+    img {
+      filter: brightness(0) saturate(100%) invert(27%) sepia(65%)
+        saturate(4594%) hue-rotate(234deg) brightness(97%) contrast(96%);
+    }
+  }
+
+  p {
+    margin: 0;
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+  img {
+    transform: rotate(90deg);
+  }
 }
 
-.translateX {
-  transition: all 225ms ease-in-out;
-  transform: scaleX(0);
-  transform-origin: left;
-}
+///////////////////////////////////////////////////////////////////////////////////////
+// .matDrawerMainContainer {
+//   display: flex;
+//   padding: 20px;
+//   // justify-content: center;
+//   gap: 20px;
+// }
 
-.translateXBack {
-  transition: all 225ms ease-in-out;
-  transform: scale(1);
-  transform-origin: left;
-}
+// .sidenavContainer {
+//   background-color: white;
+//   border-radius: 30px;
+// }
 
-.translateXThread {
-  transition: all 225ms ease-in-out;
-  transform: scaleX(0);
-  transform-origin: right;
-}
+// // .router-container {
+// //   display: flex;
+// //   gap: 20px;
+// // }
 
-.translateXThreadBack {
-  transition: all 225ms ease-in-out;
-  transform: scaleX(1);
-  transform-origin: right;
-}
+// .translateX {
+//   transition: all 225ms ease-in-out;
+//   transform: scaleX(0);
+
+//   transform-origin: left;
+// }
+
+// .translateXBack {
+//   transition: all 225ms ease-in-out;
+//   transform: scale(1);
+//   transform-origin: left;
+// }
+
+// .translateXThread {
+//   transition: all 225ms ease-in-out;
+//   transform: scaleX(0);
+//   transform-origin: right;
+// }
+
+// .translateXThreadBack {
+//   transition: all 225ms ease-in-out;
+//   transform: scaleX(1);
+//   transform-origin: right;
+// }

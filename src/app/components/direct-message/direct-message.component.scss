@@ -12,10 +12,8 @@
 }
 
 .chatHistoryMainContainer {
-  width: 53vw;
-  height: 84vh;
+  height: 82vh;
   border-radius: 30px;
-  margin: 0 15px 0px 15px;
   background-color: #ffffff;
   position: relative;
   transition: all 225ms ease-in-out;
@@ -24,6 +22,7 @@
 .chatHistoryHeader {
   display: flex;
   justify-content: space-between;
+  height: 65px;
   padding: 25px;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
