@@ -118,14 +118,21 @@
 
   span {
     color: #535af1;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   img {
     width: 100px;
     border-radius: 100%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
-
 /* quill-editor Styles */
 
 /************************************ Styles for the texfield ************************************/
