@@ -16,8 +16,6 @@ export class QuillService {
   quill: any;
   selectedChannelIdSubject = new BehaviorSubject<string | null>(null);
 
-
-
   // public quillModules = {
   //   'emoji-toolbar': true,
   //   'emoji-textarea': true,
@@ -109,7 +107,7 @@ export class QuillService {
   constructor(
     private authService: AuthService,
     public channelService: ChannelService
-  ) { }
+  ) {}
 
   setFocus(editor: any): void {
     this.quill = editor;
@@ -174,7 +172,6 @@ export class QuillService {
       });
   }
 
-
   renderItem = (item: any) => {
     const div = document.createElement('div');
     const img = document.createElement('img');
@@ -190,8 +187,7 @@ export class QuillService {
     div.appendChild(span);
 
     return div;
-  }
-
+  };
 
   public quillModules = {
     'emoji-toolbar': true,
@@ -201,7 +197,7 @@ export class QuillService {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ['@'],
       source: this.searchUsers.bind(this),
-      renderItem: this.renderItem,  // Verweis auf die außerhalb definierte Methode
+      renderItem: this.renderItem, // Verweis auf die außerhalb definierte Methode
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
         insertItem(item);
       },
@@ -223,6 +219,8 @@ export class QuillService {
       span.textContent = item.displayName;
       emailSpan.textContent = item.email;
 
+      emailSpan.classList.add('blue-text');
+
       img.onerror = () => this.setDefaultImageOnError(img);
 
       contentDiv.appendChild(span);
@@ -236,20 +234,19 @@ export class QuillService {
       div.appendChild(dropdownDiv);
     } else if (item.type === 'channel') {
       console.log(item);
-      
+
       const span = document.createElement('span');
       span.textContent = `#${item.displayName}`;
-      div.setAttribute('data-channel-id', item.id);  
+      div.setAttribute('data-channel-id', item.id);
       div.addEventListener('mouseup', () => {
         console.log('Channel selected:', item.id);
         this.selectedChannelIdSubject.next(item.id);
-    });
+      });
       div.appendChild(span);
     }
 
     return div;
-  }
-
+  };
 
   public quillModulesWithAtAndHash = {
     toolbar: false,
@@ -269,13 +266,12 @@ export class QuillService {
           this.searchEmails(searchTerm, renderList);
         }
       },
-      renderItem: this.renderItemWithAtAndHash,  // Verweis auf die außerhalb definierte Methode
+      renderItem: this.renderItemWithAtAndHash, // Verweis auf die außerhalb definierte Methode
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
         insertItem(item);
       },
     },
   };
-
 
   triggerAtSymbol() {
     this.quill.focus();
@@ -285,7 +281,6 @@ export class QuillService {
       this.quill.setSelection(currentPosition + 1);
     }, 0);
   }
-
 
   setDefaultImageOnError(imgElement: HTMLImageElement) {
     imgElement.src = '../assets/img/avatar1.svg';

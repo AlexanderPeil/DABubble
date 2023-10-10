@@ -1,85 +1,85 @@
-@import '../../shared/variables.scss';
+@import "../../shared/variables.scss";
 
 .profileContainer {
-    @include profileContainer;
-    gap: 35px !important;
+  @include profileContainer;
+  gap: 35px !important;
 }
 
 .profileHeader {
-    @include profileHeader;
+  @include profileHeader;
 }
 
-.userImg {
-    @include userImg;
+.userImgProfile {
+  @include userImg;
 }
 
 .userNameEdit {
-    @include userNameEdit;
+  @include userNameEdit;
 
-    a{
-        border-radius: 30px;
-        transition: text-shadow 225ms ease;
-        padding: 10px 40px;
-        
-        &:hover {
-            font-size: 19px;
-            color: #444df2;
-            text-shadow: 0px 0px 1px black;
-            background-color: #eceefe;
-        }
+  a {
+    border-radius: 30px;
+    transition: text-shadow 225ms ease;
+    padding: 10px 40px;
+
+    &:hover {
+      font-size: 19px;
+      color: #444df2;
+      text-shadow: 0px 0px 1px black;
+      background-color: #eceefe;
     }
+  }
 }
 
 .status {
-    // @include status;
-    @include font(20px, 400, 27.28px);
-    margin-right: auto;
+  // @include status;
+  @include font(20px, 400, 27.28px);
+  margin-right: auto;
 
-    &.online {
-        color: #92C83E;
+  &.online {
+    color: #92c83e;
 
-        .circle {
-            background-color: #92C83E;
-        }
+    .circle {
+      background-color: #92c83e;
     }
+  }
 
-    &.away {
-        color: #686868;
+  &.away {
+    color: #686868;
 
-        .circle {
-            background-color: #686868;
-        }
+    .circle {
+      background-color: #686868;
     }
+  }
 }
 
 .circle {
-    @include circle;
+  @include circle;
 }
 
 .profileBottom {
-    @include profileBottom;
+  @include profileBottom;
 }
 
 .mailContainer {
-    @include profileIconsText;
+  @include profileIconsText;
 }
 
 .link-button {
-    @include font(18px, 700, 24.55px);
-    @include button_hover;
-    display: inline-block;
-    padding: 15px 25px;
-    background-color: #444df2;
-    border-radius: 50px;
-    text-decoration: none;
-    color: white;
-    
-    &:hover {
-        background-color: #797ef3;
-    }
+  @include font(18px, 700, 24.55px);
+  @include button_hover;
+  display: inline-block;
+  padding: 15px 25px;
+  background-color: #444df2;
+  border-radius: 50px;
+  text-decoration: none;
+  color: white;
+
+  &:hover {
+    background-color: #797ef3;
+  }
 }
 
 .link-button img {
-    padding-right: 10px;
-    vertical-align: middle;
+  padding-right: 10px;
+  vertical-align: middle;
 }

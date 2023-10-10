@@ -52,6 +52,10 @@ app-imprint {
   align-items: center;
 }
 
+.blue-text {
+  color: blue;
+}
+
 /************************************ Change Global Style from MatDialog ************************************/
 .mat-mdc-dialog-container .mdc-dialog__surface {
   border-top-left-radius: 30px !important;
