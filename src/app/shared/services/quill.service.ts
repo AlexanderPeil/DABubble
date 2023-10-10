@@ -292,7 +292,6 @@ export class QuillService {
           this.searchEmails(searchTerm, renderList);
         }
       },
-      renderItem: this.renderItemWithAtAndHash,
       renderItem: this.renderItemWithAtAndHash, // Verweis auf die außerhalb definierte Methode
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
         insertItem(item);
