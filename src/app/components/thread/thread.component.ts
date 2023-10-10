@@ -46,7 +46,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.checkURL();    
+    this.checkURL();
   }
 
 
@@ -106,7 +106,6 @@ export class ThreadComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((threadMessages: MessageContent[]) => {
           this.threadMessages = threadMessages;
-          console.log(this.threadMessages);
         });
     }
   }
@@ -198,7 +197,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   retryLoadImage(selectedMessage: MessageContent) {
     if (selectedMessage) {
       selectedMessage.senderImage = this.user_images;
-    }    
+    }
   }
 
 

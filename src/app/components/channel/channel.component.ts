@@ -338,6 +338,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this.messageIdSubscription?.unsubscribe();
+    this.quillService.cleanup();
   }
 
 }

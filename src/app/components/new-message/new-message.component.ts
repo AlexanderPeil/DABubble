@@ -21,6 +21,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./new-message.component.scss'],
 })
 export class NewMessageComponent implements OnInit, OnDestroy {
+  quill: any;
   dropDownMenuChannelsIsOpen: boolean = false;
   dropDownMenuUserIsOpen: boolean = false;
   users: { user: any; unreadCount?: number }[] = [];
@@ -28,8 +29,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   foundUsers: any[] = [];
   messageContent: string = '';
   selectedChannelId: string | null = null;
-  quill: any;
+  selectedUserId: string | null = null;
   selectedChannelIdSubscription!: Subscription;
+  selectedUserIdSubscription!: Subscription;
 
   constructor(
     public dialog: MatDialog,
@@ -45,6 +47,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setSelectedChannelId();
+    this.setSelectedUserId();
     // this.authService.getUsers().subscribe((usersData) => {
     //   this.users = usersData.map((user) => ({ user, unreadCount: 0 }));
     //   this.users.forEach((userWithCount, index) => {
@@ -108,44 +111,70 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
   setSelectedChannelId() {
     this.selectedChannelIdSubscription = this.quillService.selectedChannelIdSubject.subscribe(channelId => {
+      console.log('this channelid is:', channelId);
+      
       if (channelId) {
         this.selectedChannelId = channelId;
+        this.selectedUserId = null;
       }
     });
   }
 
 
-  async sendMessage() {
-    console.log('Try to send a message:', this.selectedChannelId );
-    
-    if (!this.selectedChannelId) {
-      console.error('No channel selected.');
-      return;
-    }
+  setSelectedUserId() {
+    this.selectedUserIdSubscription = this.quillService.selectedUserIdSubject.subscribe(userId => {
+      console.log('The userId is:' ,userId);
+      if (userId) {        
+        this.selectedUserId = userId;
+        this.selectedChannelId = null;
+      }
+    })
+  }
 
+
+  async sendMessage() {
     const loggedInUser = this.authService.currentUserValue;
     if (!loggedInUser) {
-      console.error('No user logged in.');
+      console.error('User is not logged in.');
       return;
     }
 
-    try {
-      await this.messageService.createAndAddChannelMessage(
-        this.selectedChannelId,
-        loggedInUser.uid,
-        loggedInUser.displayName as string,
-        this.messageContent
-      );
-      this.messageContent = '';
-    } catch (error) {
-      console.error('Error sending message:', error);
+    if (this.selectedChannelId) {
+      try {
+        await this.messageService.createAndAddChannelMessage(
+          this.selectedChannelId,
+          loggedInUser.uid,
+          loggedInUser.displayName as string,
+          this.messageService.removePTags(this.messageContent)
+        );
+        this.messageContent = '';
+        this.router.navigate(['/main/channel', this.selectedChannelId]);
+      } catch (error) {
+        console.error('Error sending channel message:', error);
+      }
+    } else if (this.selectedUserId) {
+      try {
+        await this.messageService.createAndAddMessage(
+          loggedInUser.uid,
+          this.selectedUserId,
+          loggedInUser.displayName as string,
+          this.messageService.removePTags(this.messageContent)
+        );
+        this.messageContent = '';
+        this.router.navigate(['/main/direct-message', this.selectedUserId]);
+      } catch (error) {
+        console.error('Error sending direct message:', error);
+      }
+    } else {
+      alert('Please select a channel or a user.');
     }
-    this.router.navigate(['/main/channel', this.selectedChannelId]);
   }
 
 
   ngOnDestroy() {
     this.selectedChannelIdSubscription?.unsubscribe();
+    this.selectedUserIdSubscription?.unsubscribe();
+    this.quillService.cleanup();
   }
 
 }

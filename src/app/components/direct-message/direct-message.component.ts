@@ -119,11 +119,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
 
 
-  sendMessage() {
+  async sendMessage() {
     if (this.messageContent && this.messageService.selectedUser && this.messageService.loggedInUser) {
       const senderName = this.messageService.loggedInUser.displayName as string;
       const cleanedContent = this.messageService.removePTags(this.messageContent);
-      this.messageService.createAndAddMessage(
+      await this.messageService.createAndAddMessage(
         this.messageService.loggedInUser.uid,
         this.messageService.selectedUser.uid,
         senderName,
@@ -274,6 +274,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this.messagesSubscription?.unsubscribe();
+    this.quillService.cleanup();
   }
 
 }

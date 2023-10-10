@@ -6,7 +6,7 @@ import 'quill-mention';
 import * as Emoji from 'quill-emoji';
 import Quill from 'quill';
 import { AuthService } from './auth.service';
-import { BehaviorSubject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 Quill.register('modules/emoji', Emoji);
 
 @Injectable({
@@ -14,7 +14,9 @@ Quill.register('modules/emoji', Emoji);
 })
 export class QuillService {
   quill: any;
-  selectedChannelIdSubject = new BehaviorSubject<string | null>(null);
+  selectedChannelIdSubject = new Subject<string | null>();
+  selectedUserIdSubject = new Subject<string | null>();
+  destroy$ = new Subject<void>();
 
 
 
@@ -117,32 +119,37 @@ export class QuillService {
   }
 
   searchUsers(searchTerm: string, renderList: Function) {
-    this.authService.getUsers(searchTerm).subscribe((users: User[]) => {
-      const user_images = '../assets/img/avatar1.svg';
-      const values = users.map((user) => {
-        let photoURL = user.photoURL;
-        if (!photoURL) {
-          photoURL = user_images;
-        }
-        return {
-          id: user.uid,
-          value: user.displayName,
-          photoURL: photoURL,
-          displayName: user.displayName,
-          email: user.email,
-          type: 'user',
-        };
+    this.authService.getUsers(searchTerm)
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe((users: User[]) => {
+        const user_images = '../assets/img/avatar1.svg';
+        const values = users.map((user) => {
+          let photoURL = user.photoURL;
+          if (!photoURL) {
+            photoURL = user_images;
+          }
+          return {
+            id: user.uid,
+            value: user.displayName,
+            photoURL: photoURL,
+            displayName: user.displayName,
+            email: user.email,
+            type: 'user',
+          };
+        });
+        renderList(values, searchTerm);
       });
-      renderList(values, searchTerm);
-    });
   }
 
   searchChannels(searchTerm: string, renderList: Function) {
     this.channelService
       .getChannels(searchTerm)
+      .pipe(takeUntil(this.destroy$)
+      )
       .subscribe((channels: Channel[]) => {
         const values = channels.map((channel) => ({
-          id: channel.channelId, // Stellen Sie sicher, dass Ihre Channels eine eindeutige ID haben
+          id: channel.channelId,
           value: channel.channelName,
           displayName: channel.channelName,
           type: 'channel',
@@ -154,6 +161,8 @@ export class QuillService {
   searchEmails(searchTerm: string, renderList: Function) {
     this.authService
       .getUsersWithEmail(searchTerm)
+      .pipe(takeUntil(this.destroy$)
+      )
       .subscribe((users: User[]) => {
         const user_images = '../assets/img/avatar1.svg';
         const values = users.map((user) => {
@@ -210,6 +219,8 @@ export class QuillService {
 
   renderItemWithAtAndHash = (item: any) => {
     const div = document.createElement('div');
+    div.dataset['type'] = item.type;
+    
 
     if (item.type === 'user') {
       const dropdownDiv = document.createElement('div');
@@ -233,17 +244,30 @@ export class QuillService {
       dropdownDiv.appendChild(contentDiv);
       dropdownDiv.classList.add('user-dropdown-container');
 
+      // div.setAttribute('data-user-id', item.id);
+      // div.addEventListener('mouseup', () => {
+      //   this.selectedUserIdSubject.next(item.id);
+      // });
+      // div.addEventListener('keydown', (event: KeyboardEvent) => {
+      //   if (event.key === 'Enter') {
+      //     this.selectedUserIdSubject.next(item.id);
+      //   }
+      // });
       div.appendChild(dropdownDiv);
+
     } else if (item.type === 'channel') {
-      console.log(item);
-      
+
       const span = document.createElement('span');
       span.textContent = `#${item.displayName}`;
-      div.setAttribute('data-channel-id', item.id);  
-      div.addEventListener('mouseup', () => {
-        console.log('Channel selected:', item.id);
-        this.selectedChannelIdSubject.next(item.id);
-    });
+      //   div.setAttribute('data-channel-id', item.id);
+      //   div.addEventListener('mouseup', () => {
+      //     this.selectedChannelIdSubject.next(item.id);
+      //   });
+      //   div.addEventListener('keydown', (event: KeyboardEvent) => {
+      //     if (event.key === 'Enter' || event.key === ' ') {  
+      //         this.selectedChannelIdSubject.next(item.id);
+      //     }
+      // });    
       div.appendChild(span);
     }
 
@@ -269,9 +293,16 @@ export class QuillService {
           this.searchEmails(searchTerm, renderList);
         }
       },
-      renderItem: this.renderItemWithAtAndHash,  // Verweis auf die außerhalb definierte Methode
+      renderItem: this.renderItemWithAtAndHash,
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
         insertItem(item);
+        console.log('Dataset in onSelect:', item.dataset);
+        const type = item.dataset && item.dataset.type;
+        if (type === 'user') {
+          this.selectedUserIdSubject.next(item.id);
+      } else if (type === 'channel') {
+          this.selectedChannelIdSubject.next(item.id);
+      }
       },
     },
   };
@@ -290,4 +321,10 @@ export class QuillService {
   setDefaultImageOnError(imgElement: HTMLImageElement) {
     imgElement.src = '../assets/img/avatar1.svg';
   }
+
+
+  cleanup() {
+    this.destroy$.next();
+  }
+
 }
