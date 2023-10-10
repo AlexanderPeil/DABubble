@@ -33,7 +33,6 @@ import { DialogCreateChannelComponent } from './components/dialog-create-channel
 import { DialogShowMembersInChannelComponent } from './components/dialog-show-members-in-channel/dialog-show-members-in-channel.component';
 import { MainComponent } from './components/main/main.component';
 import { DialogAddMembersInChannelComponent } from './components/dialog-add-members-in-channel/dialog-add-members-in-channel.component';
-import { WorkspaceMenuBtnComponent } from './components/workspace-menu-btn/workspace-menu-btn.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { DirectMessageComponent } from './components/direct-message/direct-message.component';
 import { DialogDirectMessageProfileComponent } from './components/dialog-direct-message-profile/dialog-direct-message-profile.component';
@@ -73,7 +72,6 @@ import { AuthGuard } from './shared/services/auth.guard';
     DialogShowMembersInChannelComponent,
     MainComponent,
     DialogAddMembersInChannelComponent,
-    WorkspaceMenuBtnComponent,
     DirectMessageComponent,
     DialogDirectMessageProfileComponent,
     ChannelComponent,

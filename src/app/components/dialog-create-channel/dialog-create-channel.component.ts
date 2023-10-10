@@ -135,17 +135,22 @@ export class DialogCreateChannelComponent implements OnInit {
 
   async onSubmitWithMembers(channel: any) {
     if (this.selectedRadioButtonValue == '1') {
-      await this.addAllMembers(); // Call addAllMembers only if radioSelected and user IDs are not defined
-
-      // Call the addChannelService method to create the channel
+      await this.addAllMembers();
       this.getValueForChannelNameAndConvertToLowerCase(channel.channelName);
+
+      const currentUser = this.authService.currentUserValue;
+
+      this.channel.channelCreatedBy = currentUser;
       this.channelService.addChannelService(this.channel);
     } else if (
       this.selectedRadioButtonValue == '2' &&
       this.channel.users.length > 0
     ) {
-      // Call the addChannelService method to create the channel without adding all members
       this.getValueForChannelNameAndConvertToLowerCase(channel.channelName);
+
+      const currentUser = this.authService.currentUserValue;
+
+      this.channel.channelCreatedBy = currentUser;
       this.channelService.addChannelService(this.channel);
     }
   }

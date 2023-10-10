@@ -6,13 +6,12 @@ import {
   ElementRef,
   HostListener,
   QueryList,
-  ViewChildren
+  ViewChildren,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
 import { DialogShowMembersInChannelComponent } from '../dialog-show-members-in-channel/dialog-show-members-in-channel.component';
 import { DialogAddMembersInChannelComponent } from '../dialog-add-members-in-channel/dialog-add-members-in-channel.component';
-import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { Channel } from 'src/app/models/channel';
@@ -21,7 +20,18 @@ import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-up
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { User } from 'src/app/shared/services/user';
-import { Observable, Subject, Subscription, combineLatest, distinctUntilChanged, filter, map, merge, switchMap, takeUntil } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  Subscription,
+  combineLatest,
+  distinctUntilChanged,
+  filter,
+  map,
+  merge,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { ThreadService } from 'src/app/shared/services/thread.service';
 import { QuillService } from 'src/app/shared/services/quill.service';
@@ -58,12 +68,19 @@ export class ChannelComponent implements OnInit, OnDestroy {
   shouldScrollToSpecificMessage = false;
   messageIdSubscription!: Subscription;
 
-
-  constructor(public dialog: MatDialog, public toggleWorspaceMenuService: ToggleWorkspaceMenuService, public activatedRoute: ActivatedRoute,
-    public channelService: ChannelService, public storageService: StorageService, public authService: AuthService, public messageService: MessageService,
-    public threadService: ThreadService, private elementRef: ElementRef, public quillService: QuillService, private router: Router, private viewportScroller: ViewportScroller) {
-  }
-
+  constructor(
+    public dialog: MatDialog,
+    public activatedRoute: ActivatedRoute,
+    public channelService: ChannelService,
+    public storageService: StorageService,
+    public authService: AuthService,
+    public messageService: MessageService,
+    public threadService: ThreadService,
+    private elementRef: ElementRef,
+    public quillService: QuillService,
+    private router: Router,
+    private viewportScroller: ViewportScroller
+  ) {}
 
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
@@ -71,14 +88,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.initMessageScrolling();
   }
 
-
   getCurrentChannelIdInUrl() {
     this.activatedRoute.paramMap.subscribe((params) => {
       this.channelId = String(params.get('id'));
       this.channelService.getSingleChannelService(this.channelId);
     });
   }
-
 
   openDialogToEditChannel() {
     this.dialog.open(DialogEditChannelComponent, {
@@ -90,7 +105,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
-
   openDialogToShowMembersInChannel() {
     this.dialog.open(DialogShowMembersInChannelComponent, {
       data: {
@@ -99,7 +113,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
     this.getCurrentChannelIdInUrl();
   }
-
 
   openDialogToAddMembersToChannel() {
     this.dialog.open(DialogAddMembersInChannelComponent, {
@@ -110,7 +123,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.getCurrentChannelIdInUrl();
   }
 
-
   openDetailViewFromUploadedImage(uploadedImageUrl: string) {
     this.dialog.open(DialogDetailViewUploadedDatasComponent, {
       data: {
@@ -119,11 +131,11 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
-
   sendMessage() {
     const { loggedInUser, messageContent, channelId, messageService } = this;
 
-    if (!loggedInUser || !messageContent) return console.error('Please try again.');
+    if (!loggedInUser || !messageContent)
+      return console.error('Please try again.');
 
     messageService
       .createAndAddChannelMessage(
@@ -132,10 +144,9 @@ export class ChannelComponent implements OnInit, OnDestroy {
         loggedInUser.displayName as string,
         messageService.removePTags(messageContent)
       )
-      .then(() => (this.messageContent = '', this.scrollToBottom()))
+      .then(() => ((this.messageContent = ''), this.scrollToBottom()))
       .catch((error: any) => console.error("Couldn't send a message:", error));
   }
-
 
   toggleEmojiPicker() {
     const realEmojiButton = document.querySelector(
@@ -146,7 +157,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-
   selectUser(user: User): void {
     this.messageContent = this.messageContent.replace(
       /@[^@]*$/,
@@ -154,28 +164,30 @@ export class ChannelComponent implements OnInit, OnDestroy {
     );
   }
 
-
   scrollToBottom(): void {
     this.messagesContainer.nativeElement.scrollTop =
       this.messagesContainer.nativeElement.scrollHeight;
   }
 
   onEmojiClick(messageId: string, emojiType: string): void {
-    this.messageService.setChannelMessageEmoji(this.channelId, messageId, emojiType);
+    this.messageService.setChannelMessageEmoji(
+      this.channelId,
+      messageId,
+      emojiType
+    );
   }
-
 
   openEmojiPopUp(messageId: string) {
-    this.selectedMessageId = this.selectedMessageId === messageId ? null : messageId;
+    this.selectedMessageId =
+      this.selectedMessageId === messageId ? null : messageId;
   }
-
 
   openPopUpEditMessage(message: MessageContent) {
     if (this.loggedInUser?.uid === message.senderId && message.id) {
-      this.currentlyEditingMessageId = this.currentlyEditingMessageId === message.id ? null : message.id;
+      this.currentlyEditingMessageId =
+        this.currentlyEditingMessageId === message.id ? null : message.id;
     }
   }
-
 
   @HostListener('document:click', ['$event'])
   onCloseEmojiPopUp($event: MouseEvent): void {
@@ -184,7 +196,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-
   @HostListener('document:click', ['$event'])
   onCloseEditMessagePopUp($event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains($event.target)) {
@@ -192,16 +203,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-
   onMessageHover(message: MessageContent) {
     this.showEditMessageButton = this.loggedInUser?.uid === message.senderId;
   }
 
-
   closeEditMenu() {
     this.currentlyEditingMessageId = null;
   }
-
 
   handleMouseLeave(messageId: string): void {
     if (this.selectedMessageId === messageId) {
@@ -210,51 +218,53 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
     if (this.isEditing) {
       return;
-
     } else if (!this.isMessageBeingEdited(messageId)) {
       this.showEditMessageButton = false;
       this.closeEditMenu();
     }
   }
 
-
   isMessageBeingEdited(messageId: string): boolean {
     return this.isEditing === messageId;
   }
-
 
   stopEvent(event: Event) {
     event.stopPropagation();
   }
 
-
   fetchAndDisplayMessages(): void {
-    this.getParamsAndUser().pipe(
-      switchMap(([channelId, user]) => {
-        this.loggedInUser = user;
-        return this.messageService.getChannelMessages(channelId);
-      }), takeUntil(this.ngUnsubscribe)
-    ).subscribe(messages => {
-      this.processMessages(messages);
-      messages.forEach(message => {
-        if (message.senderId !== this.loggedInUser?.uid) {
-          this.messageService.markChannelMessageAsRead(this.channelId);
+    this.getParamsAndUser()
+      .pipe(
+        switchMap(([channelId, user]) => {
+          this.loggedInUser = user;
+          return this.messageService.getChannelMessages(channelId);
+        }),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe((messages) => {
+        this.processMessages(messages);
+        messages.forEach((message) => {
+          if (message.senderId !== this.loggedInUser?.uid) {
+            this.messageService.markChannelMessageAsRead(this.channelId);
+          }
+        });
+        if (!this.shouldScrollToSpecificMessage) {
+          console.log(
+            'shouldScrollToSpecificMessage should be false:',
+            this.shouldScrollToSpecificMessage
+          );
+          this.executeScrollToBottom();
         }
       });
-      if (!this.shouldScrollToSpecificMessage) {
-        console.log('shouldScrollToSpecificMessage should be false:', this.shouldScrollToSpecificMessage);
-        this.executeScrollToBottom();
-      }
-    });
   }
-
 
   processMessages(messages: MessageContent[]): void {
     messages.sort((a, b) => a.timestamp - b.timestamp);
     this.messages = messages;
-    this.groupedMessages = this.messageService.groupMessagesByDate(this.messages);
+    this.groupedMessages = this.messageService.groupMessagesByDate(
+      this.messages
+    );
   }
-
 
   executeScrollToBottom() {
     setTimeout(() => {
@@ -265,30 +275,36 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-
   getParamsAndUser(): Observable<[string, User | null]> {
     return combineLatest([
       this.activatedRoute.params,
-      this.authService.user$
+      this.authService.user$,
     ]).pipe(
       map(([params, user]) => [params['id'], user] as [string, User | null]),
       filter(([channelId, user]) => !!channelId && !!user)
     );
   }
 
-
   saveEditedMessage(message: MessageContent) {
     const messageId = message.id;
     const channelId = this.channelId;
     const updatedMessageContent = this.updatedMessageContent;
 
-    if (messageId && channelId && this.updatedMessageContent && this.updatedMessageContent !== message.content) {
-      this.messageService.updateChannelMessage(channelId, messageId, updatedMessageContent);
+    if (
+      messageId &&
+      channelId &&
+      this.updatedMessageContent &&
+      this.updatedMessageContent !== message.content
+    ) {
+      this.messageService.updateChannelMessage(
+        channelId,
+        messageId,
+        updatedMessageContent
+      );
     }
     this.isEditing = null;
     this.showEditMenu = true;
   }
-
 
   editMessage(messageId: string, currentContent: string) {
     this.isEditing = messageId;
@@ -296,43 +312,46 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.showEditMenu = false;
   }
 
-
   retryLoadImage(user: User) {
     user.photoURL = this.user_images;
   }
-
 
   retryLoadSenderImage(message: MessageContent) {
     message.senderImage = this.user_images;
   }
 
-
   initMessageScrolling() {
     merge(
-      this.activatedRoute.queryParams.pipe(map(params => params['messageId'])),
+      this.activatedRoute.queryParams.pipe(
+        map((params) => params['messageId'])
+      ),
       this.messageService.selectedMessageId
-    ).pipe(
-      distinctUntilChanged()
-    ).subscribe(messageId => {
-      if (messageId) {
-        this.shouldScrollToSpecificMessage = true;
-        this.scrollToMessageById(messageId);
-        console.log('shouldScrollToSpecificMessage should be false:', this.shouldScrollToSpecificMessage);
-      }
-    });
+    )
+      .pipe(distinctUntilChanged())
+      .subscribe((messageId) => {
+        if (messageId) {
+          this.shouldScrollToSpecificMessage = true;
+          this.scrollToMessageById(messageId);
+          console.log(
+            'shouldScrollToSpecificMessage should be false:',
+            this.shouldScrollToSpecificMessage
+          );
+        }
+      });
   }
-
 
   scrollToMessageById(messageId: string): void {
     console.log('Try to scroll to message');
     console.log(messageId);
-    console.log('shouldScrollToSpecificMessage should be true:', this.shouldScrollToSpecificMessage);
+    console.log(
+      'shouldScrollToSpecificMessage should be true:',
+      this.shouldScrollToSpecificMessage
+    );
     setTimeout(() => {
       this.viewportScroller.scrollToAnchor(messageId);
     }, 2500);
     this.shouldScrollToSpecificMessage = false;
   }
-
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
@@ -340,5 +359,4 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.messageIdSubscription?.unsubscribe();
     this.quillService.cleanup();
   }
-
 }

@@ -5,6 +5,7 @@ export class Channel {
   users: any;
   channelId: string;
   readBy?: string[];
+  channelCreatedBy: any;
 
   constructor(object?: any) {
     this.channelName = object ? object.channelName : '';
@@ -13,6 +14,7 @@ export class Channel {
     this.users = object ? object.users : null;
     this.channelId = object ? object.channelId : null;
     this.readBy = object && object.readBy ? object.readBy : [];
+    this.channelCreatedBy = object ? object.channelCreatedBy : null;
   }
 
   toJSON() {
@@ -22,6 +24,7 @@ export class Channel {
       createDate: this.createDate,
       users: this.users,
       channelId: this.channelId,
+      channelCreatedBy: this.channelCreatedBy,
     };
 
     if (this.readBy) {

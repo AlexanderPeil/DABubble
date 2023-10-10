@@ -111,7 +111,7 @@ export class QuillService {
   constructor(
     private authService: AuthService,
     public channelService: ChannelService
-  ) { }
+  ) {}
 
   setFocus(editor: any): void {
     this.quill = editor;
@@ -183,7 +183,6 @@ export class QuillService {
       });
   }
 
-
   renderItem = (item: any) => {
     const div = document.createElement('div');
     const img = document.createElement('img');
@@ -199,8 +198,7 @@ export class QuillService {
     div.appendChild(span);
 
     return div;
-  }
-
+  };
 
   public quillModules = {
     'emoji-toolbar': true,
@@ -210,7 +208,7 @@ export class QuillService {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ['@'],
       source: this.searchUsers.bind(this),
-      renderItem: this.renderItem,  // Verweis auf die außerhalb definierte Methode
+      renderItem: this.renderItem, // Verweis auf die außerhalb definierte Methode
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
         insertItem(item);
       },
@@ -233,6 +231,8 @@ export class QuillService {
       img.classList.add('user-dropdown-image');
       span.textContent = item.displayName;
       emailSpan.textContent = item.email;
+
+      emailSpan.classList.add('blue-text');
 
       img.onerror = () => this.setDefaultImageOnError(img);
 
@@ -272,8 +272,7 @@ export class QuillService {
     }
 
     return div;
-  }
-
+  };
 
   public quillModulesWithAtAndHash = {
     toolbar: false,
@@ -294,6 +293,7 @@ export class QuillService {
         }
       },
       renderItem: this.renderItemWithAtAndHash,
+      renderItem: this.renderItemWithAtAndHash, // Verweis auf die außerhalb definierte Methode
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
         insertItem(item);
         console.log('Dataset in onSelect:', item.dataset);
@@ -307,7 +307,6 @@ export class QuillService {
     },
   };
 
-
   triggerAtSymbol() {
     this.quill.focus();
     setTimeout(() => {
@@ -316,7 +315,6 @@ export class QuillService {
       this.quill.setSelection(currentPosition + 1);
     }, 0);
   }
-
 
   setDefaultImageOnError(imgElement: HTMLImageElement) {
     imgElement.src = '../assets/img/avatar1.svg';
