@@ -3,7 +3,6 @@
     <p>New Message</p>
     <quill-editor
       class="quill-editor-new-message"
-      [(ngModel)]="messageContent"
       (onEditorCreated)="this.quillService.setFocus($event)"
       placeholder="At: #channel, or @someone or *Mail address"
       [modules]="this.quillService.quillModulesWithAtAndHash"
@@ -38,6 +37,7 @@
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
   <quill-editor
     class="quill-editor-textarea"
+    [(ngModel)]="messageContent"
     (onEditorCreated)="this.quillService.setFocus($event)"
     [modules]="this.quillService.quillModules"
     placeholder="Start a new Message"
@@ -115,7 +115,11 @@
         <div class="containerAtIcon">
           <img class="atIcon" src="assets/img/icons/@Icon.svg" />
         </div>
-        <img class="sendBtn" src="assets/img/icons/sendBtn.svg" />
+        <img
+          class="sendBtn"
+          src="assets/img/icons/sendBtn.svg"
+          (click)="sendMessage()"
+        />
       </div>
       <!--------------------------------------- Custom created Container --------------------------------------->
     </div>
