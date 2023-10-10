@@ -40,12 +40,14 @@ app-message {
   }
 }
 
-// app-workspace-menu-btn {
-//   position: relative;
-//   z-index: 3;
-// }
-
 app-imprint {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+app-data-protection {
   height: 100%;
   display: flex;
   justify-content: center;
