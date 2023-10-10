@@ -41,6 +41,8 @@ export class ChannelService {
         }
       }
     }
+
+
     addDoc(collectionInstance, channel.toJSON()).then((docRef) => {
       const channelId = docRef.id;
       const updatedData = { channelId };
@@ -51,6 +53,7 @@ export class ChannelService {
     });
   }
 
+
   getChannelService() {
     const collectionInstance = query(
       collection(this.firestore, 'channels'),
@@ -58,8 +61,9 @@ export class ChannelService {
     );
     this.channelData = collectionData(collectionInstance, {
       idField: 'id',
-    }).pipe();    
+    }).pipe();
   }
+
 
   updateChannelNameService(changedChannelName: any, channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
@@ -71,6 +75,7 @@ export class ChannelService {
       this.channel = doc.data();
     });
   }
+
 
   updateChannelDescriptionService(
     changedChannelDescription: string,
@@ -85,6 +90,7 @@ export class ChannelService {
       this.channel = doc.data();
     });
   }
+
 
   updateChannelMembersService(channelId: string, selectedUsers: User[]) {
     const docInstance = doc(this.firestore, 'channels', channelId);
@@ -102,6 +108,7 @@ export class ChannelService {
     this.navigateToOthersChannelAsSoonAsDeleteService();
   }
 
+
   navigateToOthersChannelAsSoonAsDeleteService() {
     const querie = query(
       collection(this.firestore, 'channels'),
@@ -116,29 +123,30 @@ export class ChannelService {
     });
   }
 
+
   getSingleChannelService(channelId: string) {
-    const collectionInstance = collection(this.firestore, 'channels');    
-    const docRef = doc(collectionInstance, channelId);    
+    const collectionInstance = collection(this.firestore, 'channels');
+    const docRef = doc(collectionInstance, channelId);
     getDoc(docRef).then((doc) => {
       this.channel = doc.data();
     });
   }
-  
+
 
   getChannels(searchTerm?: string): Observable<Channel[]> {
     let channelQuery;
     if (searchTerm) {
-        const lowerCaseTerm = searchTerm.toLowerCase();
-        channelQuery = query(
-            collection(this.firestore, 'channels'),
-            where('channelName', '>=', lowerCaseTerm),
-            where('channelName', '<=', lowerCaseTerm + '\uf8ff')
-        );
+      const lowerCaseTerm = searchTerm.toLowerCase();
+      channelQuery = query(
+        collection(this.firestore, 'channels'),
+        where('channelName', '>=', lowerCaseTerm),
+        where('channelName', '<=', lowerCaseTerm + '\uf8ff')
+      );
     } else {
-        channelQuery = collection(this.firestore, 'channels');
+      channelQuery = collection(this.firestore, 'channels');
     }
     return collectionData(channelQuery, { idField: 'channelId' }) as Observable<Channel[]>;
-}
+  }
 
 
   mapFirestoreDataToChannels(

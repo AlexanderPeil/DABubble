@@ -31,6 +31,9 @@ import {
   signOut,
   deleteUser,
   onAuthStateChanged,
+  getAuth,
+  updateEmail,
+  sendEmailVerification,
 } from '@angular/fire/auth';
 import { browserLocalPersistence } from 'firebase/auth';
 @Injectable({
@@ -431,4 +434,24 @@ export class AuthService {
       lastActive: Timestamp.now(),
     });
   }
+
+
+  async changeEmail(newEmail: string) {
+    const auth = getAuth();
+  
+    if (!auth.currentUser) {
+      console.error("No user is signed in!");
+      return;
+    }
+  
+    try {
+      await updateEmail(auth.currentUser, newEmail);
+      await sendEmailVerification(auth.currentUser);
+    } catch (error) {
+      console.error("An unexpected error occurred. Please try again", error);
+      throw error;
+    }
+  }
+  
+  
 }

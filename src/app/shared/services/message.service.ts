@@ -14,7 +14,7 @@ import {
   arrayRemove,
   orderBy
 } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable, catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, combineLatest, map, of, switchMap } from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { AuthService } from './auth.service';
 import { ChannelService } from 'src/app/shared/services/channel.service';

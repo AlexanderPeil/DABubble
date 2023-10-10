@@ -49,7 +49,6 @@ import { NewMessageComponent } from './components/new-message/new-message.compon
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
-import { AuthGuard } from './shared/services/auth.guard';
 
 @NgModule({
   declarations: [
@@ -111,7 +110,7 @@ import { AuthGuard } from './shared/services/auth.guard';
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
   ],
-  providers: [AuthGuard],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

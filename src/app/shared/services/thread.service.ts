@@ -3,8 +3,6 @@ import { ChannelService } from 'src/app/shared/services/channel.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/shared/services/user';
-// import { AuthService } from 'src/app/shared/services/auth.service';
-// import { ActivatedRoute } from '@angular/router';
 import { MessageContent } from 'src/app/models/message';
 import { Observable, of } from 'rxjs';
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Storage, getDownloadURL, ref, uploadBytesResumable, deleteObject, uploadBytes } from "@angular/fire/storage";
+import { Storage, getDownloadURL, ref, uploadBytesResumable, deleteObject } from "@angular/fire/storage";
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DialogDataUploadSuccessfulComponent } from 'src/app/components/dialog-data-upload-successful/dialog-data-upload-successful.component';

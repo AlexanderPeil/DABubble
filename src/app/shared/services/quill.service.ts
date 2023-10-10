@@ -17,7 +17,7 @@ export class QuillService {
   selectedChannelIdSubject = new Subject<string | null>();
   selectedUserIdSubject = new Subject<string | null>();
   destroy$ = new Subject<void>();
-
+  highlightedDropdownItem: HTMLElement | null = null;
 
 
   // public quillModules = {
@@ -111,7 +111,7 @@ export class QuillService {
   constructor(
     private authService: AuthService,
     public channelService: ChannelService
-  ) {}
+  ) { }
 
   setFocus(editor: any): void {
     this.quill = editor;
@@ -217,8 +217,14 @@ export class QuillService {
 
   renderItemWithAtAndHash = (item: any) => {
     const div = document.createElement('div');
-    div.dataset['type'] = item.type;
-    
+    div.setAttribute('tabindex', '0');
+
+    div.addEventListener('mouseover', () => {
+      this.highlightedDropdownItem = div;
+    });
+    div.addEventListener('mouseout', () => {
+      this.highlightedDropdownItem = null;
+    });
 
     if (item.type === 'user') {
       const dropdownDiv = document.createElement('div');
@@ -244,30 +250,30 @@ export class QuillService {
       dropdownDiv.appendChild(contentDiv);
       dropdownDiv.classList.add('user-dropdown-container');
 
-      // div.setAttribute('data-user-id', item.id);
-      // div.addEventListener('mouseup', () => {
-      //   this.selectedUserIdSubject.next(item.id);
-      // });
-      // div.addEventListener('keydown', (event: KeyboardEvent) => {
-      //   if (event.key === 'Enter') {
-      //     this.selectedUserIdSubject.next(item.id);
-      //   }
-      // });
+      div.setAttribute('data-user-id', item.id);
+      div.addEventListener('mouseup', () => {
+        this.selectedUserIdSubject.next(item.id);
+      });
+      div.addEventListener('keydown', (event: KeyboardEvent) => {
+        if (event.key === 'Enter') {
+          this.selectedUserIdSubject.next(item.id);
+        }
+      });
       div.appendChild(dropdownDiv);
 
     } else if (item.type === 'channel') {
 
       const span = document.createElement('span');
       span.textContent = `#${item.displayName}`;
-      //   div.setAttribute('data-channel-id', item.id);
-      //   div.addEventListener('mouseup', () => {
-      //     this.selectedChannelIdSubject.next(item.id);
-      //   });
-      //   div.addEventListener('keydown', (event: KeyboardEvent) => {
-      //     if (event.key === 'Enter' || event.key === ' ') {  
-      //         this.selectedChannelIdSubject.next(item.id);
-      //     }
-      // });    
+      div.setAttribute('data-channel-id', item.id);
+      div.addEventListener('mouseup', () => {
+        this.selectedChannelIdSubject.next(item.id);
+      });
+      div.addEventListener('keydown', (event: KeyboardEvent) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          this.selectedChannelIdSubject.next(item.id);
+        }
+      });
       div.appendChild(span);
     }
 
@@ -277,6 +283,14 @@ export class QuillService {
   public quillModulesWithAtAndHash = {
     toolbar: false,
     mention: {
+      keyboard: {
+        bindings: {
+          enter: {
+            key: 13,
+            handler: this.handleEnterKey.bind(this)
+          }
+        }
+      },
       allowedChars: /^[A-Za-z\sÅÄÖåäö.]*$/,
       mentionDenotationChars: ['@', '#', '*'],
       source: (
@@ -292,16 +306,9 @@ export class QuillService {
           this.searchEmails(searchTerm, renderList);
         }
       },
-      renderItem: this.renderItemWithAtAndHash, // Verweis auf die außerhalb definierte Methode
+      renderItem: this.renderItemWithAtAndHash,
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
         insertItem(item);
-        console.log('Dataset in onSelect:', item.dataset);
-        const type = item.dataset && item.dataset.type;
-        if (type === 'user') {
-          this.selectedUserIdSubject.next(item.id);
-      } else if (type === 'channel') {
-          this.selectedChannelIdSubject.next(item.id);
-      }
       },
     },
   };
@@ -318,6 +325,27 @@ export class QuillService {
   setDefaultImageOnError(imgElement: HTMLImageElement) {
     imgElement.src = '../assets/img/avatar1.svg';
   }
+
+
+  handleEnterKey(range: any, context: any): boolean {
+    if (this.highlightedDropdownItem) {
+      const userId = this.highlightedDropdownItem.getAttribute('data-user-id');
+      const channelId = this.highlightedDropdownItem.getAttribute('data-channel-id');
+      if (userId) {
+        this.selectedUserIdSubject.next(userId);
+        return false; // prevent Quill's default enter behavior
+      }
+      if (channelId) {
+        this.selectedChannelIdSubject.next(channelId);
+        return false; // prevent Quill's default enter behavior
+      }
+    }
+    return true; // allow Quill's default enter behavior
+  }
+  
+  
+
+
 
 
   cleanup() {

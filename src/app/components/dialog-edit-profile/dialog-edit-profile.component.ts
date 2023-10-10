@@ -76,7 +76,18 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
         displayName: this.userForm.value.displayName,
         email: this.user.email
       };
-
+  
+      const newEmail = this.userForm.value.email;
+  
+      if (this.user.email !== newEmail) {
+        try {
+          await this.authService.changeEmail(newEmail); 
+          updatedUserData.email = newEmail; 
+        } catch (error) {
+          console.error("Error updating email: ", error);
+        }
+      }
+  
       try {
         await this.authService.updateUser(this.user.uid, updatedUserData);
       } catch (error) {
@@ -85,6 +96,7 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
     }
     this.dialogRef.close();
   }
+  
 
 
 
