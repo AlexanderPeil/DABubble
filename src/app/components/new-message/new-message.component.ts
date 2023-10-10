@@ -1,7 +1,6 @@
 import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
-import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -29,7 +28,6 @@ export class NewMessageComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    public toggleWorspaceMenuService: ToggleWorkspaceMenuService,
     public storageService: StorageService,
     public channelService: ChannelService,
     public elementRef: ElementRef,

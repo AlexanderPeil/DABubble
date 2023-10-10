@@ -2,7 +2,6 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ThreadService } from 'src/app/shared/services/thread.service';
-import { ToggleWorkspaceMenuService } from 'src/app/shared/services/toggle-workspace-menu.service';
 import { User } from 'src/app/shared/services/user';
 
 @Component({
@@ -20,7 +19,6 @@ export class MainComponent implements OnDestroy, OnInit {
   isSidenavOpen = true;
 
   constructor(
-    public toggleWorspaceMenuService: ToggleWorkspaceMenuService,
     private authService: AuthService,
     public threadService: ThreadService
   ) {}
