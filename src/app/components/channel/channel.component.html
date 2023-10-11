@@ -44,7 +44,7 @@
         class="displayMessagesContainer"
         (mouseenter)="onMessageHover(message)"
         (mouseleave)="message.id ? handleMouseLeave(message.id) : null"
-        [id]="'message-' + message.id"
+        [id]="message.id"
         #messageElement
       >
         <div class="messageChildContainer">

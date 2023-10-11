@@ -4,8 +4,10 @@
     </div>
     <div class="signupContainer" *ngIf="!chooseAvatar">
         <form [formGroup]="signupForm">
-            <div class="goBackIcon" routerLink="/login"></div>
-            <h2>Create account</h2>
+            <div class="loginHeadline">
+                <div class="goBackIcon" routerLink="/login"></div>
+                <h1>Create account</h1>
+            </div>
             <span class="formHeaderText">With your name and email address, you've created your new DABubble
                 account.</span>
             <div class="inputContainer">
@@ -35,7 +37,7 @@
     </div>
     <div class="avatarContainer" *ngIf="chooseAvatar">
         <div class="goBackIcon" (click)="onbackClick()"></div>
-        <h2>Choose your avatar</h2>
+        <h1>Choose your avatar</h1>
         <img class="selectedAvatar" [src]="selectedAvatarURL || defaultAvatar" alt="User Avatar">
         <span class="userName">{{ signupForm.get('displayName')?.value }}</span>
         <span class="chooseAvatarText">Choose your avatar...</span>

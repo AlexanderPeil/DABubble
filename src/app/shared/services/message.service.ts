@@ -32,6 +32,7 @@ export class MessageService {
   usersInChat: { [userId: string]: boolean } = {};
   private selectedMessageIdSubject = new BehaviorSubject<string | null>(null);
   selectedMessageId = this.selectedMessageIdSubject.asObservable();
+  public shouldScrollToSpecificMessage = false;
 
   constructor(
     private firestore: Firestore,
@@ -376,6 +377,10 @@ export class MessageService {
 
   setSelectedMessageId(id: string) {
     this.selectedMessageIdSubject.next(id);
+    console.log(this.selectedMessageId);
+    console.log(this.selectedMessageIdSubject);
+    
+    
   }
   // Here ends the logic for channel-messages
 

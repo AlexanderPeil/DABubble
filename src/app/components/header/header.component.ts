@@ -154,6 +154,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.searchList = false;
     this.searchTerm = '';
     this.messageService.setSelectedMessageId(messageId);
+    this.messageService.shouldScrollToSpecificMessage = true;
     this.router.navigate(['/main/channel', channelId]);
   }
 
