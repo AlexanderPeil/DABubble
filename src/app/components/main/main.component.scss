@@ -1,6 +1,5 @@
 @import "../../shared/variables.scss";
 
-// test////////////////////////////////////
 .matDrawerMainContainer {
   display: flex;
   padding: 20px;
@@ -16,7 +15,7 @@
 
 /* Class to hide the sidenav */
 .hidden {
-  width: 0;
+  width: 0 !important;
   overflow: hidden;
 }
 
@@ -65,45 +64,10 @@
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////////////
-// .matDrawerMainContainer {
-//   display: flex;
-//   padding: 20px;
-//   // justify-content: center;
-//   gap: 20px;
-// }
+/////////////////////// responsive design start here ///////////////////////////
 
-// .sidenavContainer {
-//   background-color: white;
-//   border-radius: 30px;
-// }
-
-// // .router-container {
-// //   display: flex;
-// //   gap: 20px;
-// // }
-
-// .translateX {
-//   transition: all 225ms ease-in-out;
-//   transform: scaleX(0);
-
-//   transform-origin: left;
-// }
-
-// .translateXBack {
-//   transition: all 225ms ease-in-out;
-//   transform: scale(1);
-//   transform-origin: left;
-// }
-
-// .translateXThread {
-//   transition: all 225ms ease-in-out;
-//   transform: scaleX(0);
-//   transform-origin: right;
-// }
-
-// .translateXThreadBack {
-//   transition: all 225ms ease-in-out;
-//   transform: scaleX(1);
-//   transform-origin: right;
-// }
+@media (max-width: 1210px) {
+  .sidenav {
+    width: 250px;
+  }
+}

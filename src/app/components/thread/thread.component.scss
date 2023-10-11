@@ -318,3 +318,29 @@
 // }
 
 /************************************ Styles for the texfield ************************************/
+
+/////////////////////// responsive design start here ///////////////////////////
+
+@media (max-width: 1270px) {
+  .threadMainContainer {
+    width: 300px;
+  }
+}
+
+@media (max-width: 1210px) {
+  .threadMainContainer {
+    width: 250px;
+  }
+
+  .textInThreadHeader {
+    .threadText {
+      font-size: 20px;
+    }
+    img {
+      width: 12px;
+    }
+    p {
+      font-size: 13px;
+    }
+  }
+}

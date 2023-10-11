@@ -254,3 +254,42 @@ ul {
     hue-rotate(230deg) brightness(99%) contrast(91%);
   font-weight: 600;
 }
+
+/////////////////////// responsive design start here ///////////////////////////
+
+@media (max-width: 1210px) {
+  .padding {
+    padding: 20px 0 20px 0;
+  }
+
+  .head-of-sidenav {
+    .main-channel-img {
+      height: 48px;
+    }
+  }
+
+  .headName {
+    .firstImg {
+      margin-right: 18px;
+    }
+  }
+
+  .headMenu {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  #allChannels {
+    .channel {
+      padding-left: 25px;
+    }
+  }
+
+  .addChannel {
+    margin: 30px 0px 20px 45px;
+  }
+
+  .selectableUserChat {
+    padding: 5px 10px 5px 40px;
+  }
+}
