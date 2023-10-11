@@ -262,7 +262,10 @@ app-data-protection {
 
     .containerEmojis {
       display: flex !important;
-      position: relative;
+      // position: relative;
+      position: absolute;
+      top: 20px;
+      right: 20px;
     }
   }
 }
@@ -488,8 +491,9 @@ app-data-protection {
 
 .messageDisplayiconContainer {
   position: absolute;
-  top: 40px;
+  // top: 40px;
   right: 30px;
+  bottom: -15px;
   display: flex;
   gap: 5px;
 }
