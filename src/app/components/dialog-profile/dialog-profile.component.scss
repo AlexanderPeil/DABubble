@@ -44,3 +44,9 @@
 .mailContainer {
     @include profileIconsText;
 }
+
+@media (max-width: 400px) {
+    .profileBottom {
+        gap: 5px;
+    }
+}
