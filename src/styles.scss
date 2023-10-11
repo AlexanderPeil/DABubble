@@ -204,8 +204,11 @@ app-data-protection {
 }
 
 /************************************ Styles for the message container ************************************/
+// .messageMainContainer {
+//   height: 70vh !important;
+// }
 .messageMainContainer {
-  height: 70vh !important;
+  height: 53vh !important;
 }
 
 .scrollableContainer {
@@ -230,9 +233,9 @@ app-data-protection {
   }
 }
 
-.messageContainer:last-of-type {
-  margin-bottom: 130px;
-}
+// .messageContainer:last-of-type {
+//   margin-bottom: 130px;
+// }
 
 .displayMessagesContainer {
   display: flex;
