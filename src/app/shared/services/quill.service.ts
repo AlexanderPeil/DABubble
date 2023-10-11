@@ -18,6 +18,14 @@ export class QuillService {
   selectedUserIdSubject = new Subject<string | null>();
   destroy$ = new Subject<void>();
   highlightedDropdownItem: HTMLElement | null = null;
+  selectedItem?: {
+    denotationChar: string;
+    id: string;
+    index?: string;
+    value?: string;
+  } | null;
+  
+  
 
 
   // public quillModules = {
@@ -219,13 +227,6 @@ export class QuillService {
     const div = document.createElement('div');
     div.setAttribute('tabindex', '0');
 
-    div.addEventListener('mouseover', () => {
-      this.highlightedDropdownItem = div;
-    });
-    div.addEventListener('mouseout', () => {
-      this.highlightedDropdownItem = null;
-    });
-
     if (item.type === 'user') {
       const dropdownDiv = document.createElement('div');
       const img = document.createElement('img');
@@ -254,13 +255,8 @@ export class QuillService {
       div.addEventListener('mouseup', () => {
         this.selectedUserIdSubject.next(item.id);
       });
-      div.addEventListener('keydown', (event: KeyboardEvent) => {
-        if (event.key === 'Enter') {
-          this.selectedUserIdSubject.next(item.id);
-        }
-      });
       div.appendChild(dropdownDiv);
-
+      
     } else if (item.type === 'channel') {
 
       const span = document.createElement('span');
@@ -268,11 +264,6 @@ export class QuillService {
       div.setAttribute('data-channel-id', item.id);
       div.addEventListener('mouseup', () => {
         this.selectedChannelIdSubject.next(item.id);
-      });
-      div.addEventListener('keydown', (event: KeyboardEvent) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          this.selectedChannelIdSubject.next(item.id);
-        }
       });
       div.appendChild(span);
     }
@@ -283,14 +274,6 @@ export class QuillService {
   public quillModulesWithAtAndHash = {
     toolbar: false,
     mention: {
-      keyboard: {
-        bindings: {
-          enter: {
-            key: 13,
-            handler: this.handleEnterKey.bind(this)
-          }
-        }
-      },
       allowedChars: /^[A-Za-z\sÅÄÖåäö.]*$/,
       mentionDenotationChars: ['@', '#', '*'],
       source: (
@@ -309,9 +292,11 @@ export class QuillService {
       renderItem: this.renderItemWithAtAndHash,
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
         insertItem(item);
+        this.selectedItem = item;        
       },
     },
-  };
+  }
+
 
   triggerAtSymbol() {
     this.quill.focus();
@@ -322,30 +307,10 @@ export class QuillService {
     }, 0);
   }
 
+
   setDefaultImageOnError(imgElement: HTMLImageElement) {
     imgElement.src = '../assets/img/avatar1.svg';
   }
-
-
-  handleEnterKey(range: any, context: any): boolean {
-    if (this.highlightedDropdownItem) {
-      const userId = this.highlightedDropdownItem.getAttribute('data-user-id');
-      const channelId = this.highlightedDropdownItem.getAttribute('data-channel-id');
-      if (userId) {
-        this.selectedUserIdSubject.next(userId);
-        return false; // prevent Quill's default enter behavior
-      }
-      if (channelId) {
-        this.selectedChannelIdSubject.next(channelId);
-        return false; // prevent Quill's default enter behavior
-      }
-    }
-    return true; // allow Quill's default enter behavior
-  }
-  
-  
-
-
 
 
   cleanup() {

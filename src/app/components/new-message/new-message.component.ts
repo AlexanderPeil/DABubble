@@ -20,8 +20,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./new-message.component.scss'],
 })
 export class NewMessageComponent implements OnInit, OnDestroy {
-  quill: any;
-  dropDownMenuChannelsIsOpen: boolean = false;
+  // quill: any;
+  // dropDownMenuChannelsIsOpen: boolean = false;
   dropDownMenuUserIsOpen: boolean = false;
   users: { user: any; unreadCount?: number }[] = [];
   isOnline?: boolean;
@@ -110,7 +110,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   setSelectedChannelId() {
     this.selectedChannelIdSubscription = this.quillService.selectedChannelIdSubject.subscribe(channelId => {
       console.log('this channelid is:', channelId);
-      
+
       if (channelId) {
         this.selectedChannelId = channelId;
         this.selectedUserId = null;
@@ -121,8 +121,8 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
   setSelectedUserId() {
     this.selectedUserIdSubscription = this.quillService.selectedUserIdSubject.subscribe(userId => {
-      console.log('The userId is:' ,userId);
-      if (userId) {        
+      console.log('The userId is:', userId);
+      if (userId) {
         this.selectedUserId = userId;
         this.selectedChannelId = null;
       }
@@ -132,41 +132,60 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
   async sendMessage() {
     const loggedInUser = this.authService.currentUserValue;
+    const selectedItem = this.quillService.selectedItem;
+  
     if (!loggedInUser) {
       console.error('User is not logged in.');
       return;
     }
-
-    if (this.selectedChannelId) {
-      try {
-        await this.messageService.createAndAddChannelMessage(
-          this.selectedChannelId,
-          loggedInUser.uid,
-          loggedInUser.displayName as string,
-          this.messageService.removePTags(this.messageContent)
-        );
-        this.messageContent = '';
-        this.router.navigate(['/main/channel', this.selectedChannelId]);
-      } catch (error) {
-        console.error('Error sending channel message:', error);
-      }
-    } else if (this.selectedUserId) {
-      try {
-        await this.messageService.createAndAddMessage(
-          loggedInUser.uid,
-          this.selectedUserId,
-          loggedInUser.displayName as string,
-          this.messageService.removePTags(this.messageContent)
-        );
-        this.messageContent = '';
-        this.router.navigate(['/main/direct-message', this.selectedUserId]);
-      } catch (error) {
-        console.error('Error sending direct message:', error);
+  
+    if (selectedItem) {
+      switch (selectedItem.denotationChar) {
+        case '#': // Es handelt sich um einen Kanal
+          const channelId = selectedItem.id;
+          try {
+            await this.messageService.createAndAddChannelMessage(
+              channelId,
+              loggedInUser.uid,
+              loggedInUser.displayName as string,
+              this.messageService.removePTags(this.messageContent)
+            );
+            this.messageContent = '';
+            this.router.navigate(['/main/channel', channelId]);
+          } catch (error) {
+            console.error('Error sending channel message:', error);
+          }
+          break;
+  
+        case '@': // Es handelt sich um einen Benutzer
+        case '*': // Es handelt sich um einen Benutzer (abhängig von Ihrer Logik)
+          const userId = selectedItem.id;
+          try {
+            await this.messageService.createAndAddMessage(
+              loggedInUser.uid,
+              userId,
+              loggedInUser.displayName as string,
+              this.messageService.removePTags(this.messageContent)
+            );
+            this.messageContent = '';
+            this.router.navigate(['/main/direct-message', userId]);
+          } catch (error) {
+            console.error('Error sending direct message:', error);
+          }
+          break;
+  
+        default:
+          alert('The selected item does not match any valid criteria.');
+          break;
       }
     } else {
       alert('Please select a channel or a user.');
     }
+  
+    // Reset selectedItem
+    this.quillService.selectedItem = null;
   }
+  
 
 
   ngOnDestroy() {
