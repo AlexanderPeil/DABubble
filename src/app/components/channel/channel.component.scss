@@ -288,4 +288,17 @@
       width: 18px;
     }
   }
+  .containerIconAddUser {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .user {
+    display: none; /* Verstecke alle Bilder */
+  }
+
+  .user:first-child {
+    display: block; /* Zeige das erste Bild */
+  }
 }
