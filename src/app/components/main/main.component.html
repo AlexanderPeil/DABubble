@@ -6,7 +6,10 @@
     [ngClass]="{ hidden: !isSidenavOpen }"
   ></app-sidenav>
 
-  <div class="routerContainer">
+  <div
+    class="routerContainer"
+    [ngClass]="{ hideRouter: threadService.threadAreClosed }"
+  >
     <router-outlet></router-outlet>
   </div>
   <app-thread *ngIf="threadService.threadAreClosed"></app-thread>
