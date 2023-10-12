@@ -4,7 +4,6 @@
 .signUpContent {
     @include login_standard_container;
     align-items: center;
-    gap: 50px;
     overflow: hidden;
 }
 
@@ -188,5 +187,9 @@ button:disabled:hover {
     margin-left: auto;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 400px) and (max-height: 700px) {
+    .signUpContent {
+        height: unset;
+        gap: 25px;
+    }
 }

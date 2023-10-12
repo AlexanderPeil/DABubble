@@ -2,9 +2,6 @@
 .mainLogoContainer {
     width: 100%;
     margin-left: 75px;
-    padding-top: 25px;
-    position: relative;
-    top: 0;
 
     img {
         height: 75px;
@@ -17,27 +14,23 @@
     line-height: 21.6px;
     cursor: pointer;
     transition: all 225ms ease-in-out;
-    color: #797EF3;
+    color: #797ef3;
     text-decoration: none;
     border-radius: 30px;
     border: 1px solid #eceefe;
     transition: text-shadow 225ms ease;
 
     &:hover {
-        border: 1px solid #797EF3;
+        border: 1px solid #797ef3;
         text-shadow: 0px 0px 1px black;
     }
 }
 
 @mixin login_standard_container {
     @include colum_justify_center;
-    // height: 100vh
+    gap: 50px;
+    height: 100vh;
 }
-
-// h2 {
-//     @include font(46px, 700, 55.2px);
-//     color: #444df2;
-// }
 
 form {
     @include column_align_center;
@@ -55,19 +48,16 @@ form {
 }
 
 .goBackIcon {
-    // position: absolute;
-    // left: 35px;
-    // top: 50px;
     padding-left: 10px;
     background-repeat: no-repeat;
     width: 40px;
     height: 40px;
     cursor: pointer;
     transition: all 125ms ease-in-out;
-    background: url('../../assets/img/icons/arrow_back.svg');
+    background: url("../../assets/img/icons/arrow_back.svg");
 
     &:hover {
-        background: url('../../assets/img/icons/arrow_back_hover.svg');
+        background: url("../../assets/img/icons/arrow_back_hover.svg");
         background-repeat: no-repeat;
     }
 }
@@ -84,7 +74,7 @@ form {
     input {
         @include width_height(100%, 14px);
         border: 1px solid white;
-        background-color: #ECEEFE;
+        background-color: #eceefe;
         border-radius: 100px;
         padding: 28px 0 28px 60px;
         box-sizing: border-box;
@@ -165,9 +155,17 @@ button:disabled:hover {
     align-items: center;
 }
 
+@media (max-width: 600px) {
+    .mainLogoContainer {
+        margin: unset;
+        display: flex;
+        justify-content: center;
 
+        img {
+            height: 65px;
+        }
+    }
 
-@media(max-width:600px) {
     form {
         width: 80vw;
     }
@@ -185,17 +183,15 @@ button:disabled:hover {
     }
 }
 
-@media(max-width:500px) {
+@media (max-width: 500px) {
     form {
-        // width: 300px;
         padding: 35px 25px;
         gap: 25px;
     }
 }
 
-@media(max-width:360px) {
+@media (max-width: 360px) {
     form {
-        // width: 230px;
         padding: 20px 15px;
         gap: 15px;
     }
@@ -204,12 +200,6 @@ button:disabled:hover {
         font-size: 16px !important;
         height: 50px !important;
         padding: 0 19px !important;
-    }
-}
-
-@media (max-width: 400px) and (max-height: 700px) {
-    .loginContent {
-        height: unset;
     }
 }
 

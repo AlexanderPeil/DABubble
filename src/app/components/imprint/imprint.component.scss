@@ -57,3 +57,19 @@
         }
     }
 }
+
+@media(max-width: 600px) {
+    .daBubbleIcon {
+        position: unset;
+
+        img {
+            height: 65px;
+        }
+    }
+
+    .imprintAndDataProtectionContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

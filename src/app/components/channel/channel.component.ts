@@ -63,9 +63,9 @@ export class ChannelComponent implements OnInit, OnDestroy {
   selectedMessageId: string | null = null;
   showEditMenu: boolean = true;
   updatedMessageContent: string = '';
-  private ngUnsubscribe = new Subject<void>();
+  ngUnsubscribe = new Subject<void>();
   messageIdSubscription!: Subscription;
-  private retryCount = 0;
+  retryCount = 0;
 
   constructor(
     public dialog: MatDialog,
@@ -97,6 +97,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
+
   openDialogToEditChannel() {
     this.dialog.open(DialogEditChannelComponent, {
       data: {
@@ -107,6 +108,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
+
   openDialogToShowMembersInChannel() {
     this.dialog.open(DialogShowMembersInChannelComponent, {
       data: {
@@ -115,6 +117,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
     this.getCurrentChannelIdInUrl();
   }
+
 
   openDialogToAddMembersToChannel() {
     this.dialog.open(DialogAddMembersInChannelComponent, {
@@ -125,6 +128,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.getCurrentChannelIdInUrl();
   }
 
+
   openDetailViewFromUploadedImage(uploadedImageUrl: string) {
     this.dialog.open(DialogDetailViewUploadedDatasComponent, {
       data: {
@@ -132,6 +136,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
       },
     });
   }
+
 
   sendMessage() {
     const { loggedInUser, messageContent, channelId, messageService } = this;
@@ -145,10 +150,10 @@ export class ChannelComponent implements OnInit, OnDestroy {
         loggedInUser.uid,
         loggedInUser.displayName as string,
         messageService.removePTags(messageContent)
-      )
-      .then(() => ((this.messageContent = ''), this.scrollToBottom()))
+      ).then(() => ((this.messageContent = ''), this.scrollToBottom()))
       .catch((error: any) => console.error("Couldn't send a message:", error));
   }
+
 
   toggleEmojiPicker() {
     const realEmojiButton = document.querySelector(
@@ -158,6 +163,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
       realEmojiButton.click();
     }
   }
+
 
   selectUser(user: User): void {
     this.messageContent = this.messageContent.replace(
@@ -197,12 +203,14 @@ export class ChannelComponent implements OnInit, OnDestroy {
       this.selectedMessageId === messageId ? null : messageId;
   }
 
+
   openPopUpEditMessage(message: MessageContent) {
     if (this.loggedInUser?.uid === message.senderId && message.id) {
       this.currentlyEditingMessageId =
         this.currentlyEditingMessageId === message.id ? null : message.id;
     }
   }
+
 
   @HostListener('document:click', ['$event'])
   onCloseEmojiPopUp($event: MouseEvent): void {
@@ -211,6 +219,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
+
   @HostListener('document:click', ['$event'])
   onCloseEditMessagePopUp($event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains($event.target)) {
@@ -218,13 +227,16 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
+
   onMessageHover(message: MessageContent) {
     this.showEditMessageButton = this.loggedInUser?.uid === message.senderId;
   }
 
+
   closeEditMenu() {
     this.currentlyEditingMessageId = null;
   }
+
 
   handleMouseLeave(messageId: string): void {
     if (this.selectedMessageId === messageId) {
@@ -239,13 +251,16 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
+
   isMessageBeingEdited(messageId: string): boolean {
     return this.isEditing === messageId;
   }
 
+
   stopEvent(event: Event) {
     event.stopPropagation();
   }
+
 
   fetchAndDisplayMessages(): void {
     this.getParamsAndUser()
@@ -255,19 +270,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
           return this.messageService.getChannelMessages(channelId);
         }),
         takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe((messages) => {
+      ).subscribe((messages) => {
         this.processMessages(messages);
         messages.forEach((message) => {
           if (message.senderId !== this.loggedInUser?.uid) {
             this.messageService.markChannelMessageAsRead(this.channelId);
           }
-        });
-        console.log(this.messageService.shouldScrollToSpecificMessage);
-        this.executeScrollToBottom();
-        // if (!this.messageService.shouldScrollToSpecificMessage) {
-        //   this.scrollToBottom();
-        // }
+        }); this.executeScrollToBottom();
       });
   }
 
@@ -291,17 +300,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
     );
   }
 
+
   saveEditedMessage(message: MessageContent) {
     const messageId = message.id;
     const channelId = this.channelId;
     const updatedMessageContent = this.updatedMessageContent;
 
-    if (
-      messageId &&
-      channelId &&
-      this.updatedMessageContent &&
-      this.updatedMessageContent !== message.content
-    ) {
+    if (messageId && channelId && this.updatedMessageContent && this.updatedMessageContent !== message.content) {
       this.messageService.updateChannelMessage(
         channelId,
         messageId,
@@ -312,19 +317,23 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.showEditMenu = true;
   }
 
+
   editMessage(messageId: string, currentContent: string) {
     this.isEditing = messageId;
     this.updatedMessageContent = currentContent;
     this.showEditMenu = false;
   }
 
+
   retryLoadImage(user: User) {
     user.photoURL = this.user_images;
   }
 
+
   retryLoadSenderImage(message: MessageContent) {
     message.senderImage = this.user_images;
   }
+
 
   initMessageScrolling() {
     merge(
@@ -340,6 +349,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
         }
       });
   }
+
 
   scrollToMessageById(messageId: string): void {
     const messageElement = document.getElementById(messageId);

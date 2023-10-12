@@ -34,6 +34,7 @@ import {
   getAuth,
   updateEmail,
   sendEmailVerification,
+  confirmPasswordReset,
 } from '@angular/fire/auth';
 import { browserLocalPersistence } from 'firebase/auth';
 @Injectable({
@@ -446,12 +447,24 @@ export class AuthService {
   
     try {
       await updateEmail(auth.currentUser, newEmail);
-      await sendEmailVerification(auth.currentUser);
     } catch (error) {
       console.error("An unexpected error occurred. Please try again", error);
       throw error;
     }
   }
+
+
+  async confirmReset(oobCode: string, newPassword: string) {
+    console.log("Attempting to reset password with code:", oobCode);
+    try {
+      await confirmPasswordReset(this.auth, oobCode, newPassword);
+      console.log("Password reset successful");
+    } catch (error) {
+      console.log('Error during password reset', error);
+      throw error;
+    }
+  }
+
   
   
 }

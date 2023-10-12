@@ -31,8 +31,9 @@ export class ForgotPasswordComponent implements OnInit {
     this.authService.forgotPassword(email)
       .then(() => {
         this.emailSent = true;
+        this.sendMailForm.controls['email'].reset();
         setTimeout(() => {
-          this.router.navigate(['/login']);
+          this.emailSent = false;
         }, 3000);
       })
       .catch((error: { message: string; }) => {

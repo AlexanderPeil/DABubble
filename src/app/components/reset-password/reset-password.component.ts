@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -8,6 +10,18 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class ResetPasswordComponent implements OnInit {
   newPasswordForm!: FormGroup;
+  passwordResetSuccess: boolean = false;
+  oobCode: string | null = null;
+  newPassword = '';
+  repeatedPassword = '';
+
+  constructor(
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.oobCode = this.route.snapshot.queryParamMap.get('oobCode');
+  }
 
 
   ngOnInit() {
@@ -26,8 +40,21 @@ export class ResetPasswordComponent implements OnInit {
 
 
   onSubmit() {
+    if (this.newPasswordForm.valid && this.oobCode) {
+        const newPassword = this.newPasswordForm.get('password')?.value;
+        this.authService.confirmReset(this.oobCode, newPassword).then(() => {
+            this.passwordResetSuccess = true;
+            setTimeout(() => {
+                this.router.navigate(['/login']);
+                this.passwordResetSuccess = true;
+            }, 3000);
+        }).catch((error) => {
+            this.newPasswordForm.get('confirmPassword')?.setErrors({ notMatching: true });
+        });
+    }
+}
 
-  }
+
 
 
   checkPasswordsMatch() {

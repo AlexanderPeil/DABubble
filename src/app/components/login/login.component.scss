@@ -16,7 +16,6 @@
 
 .loginHeader {
     @include space_between_center;
-    padding-top: 25px;
 
     img {
         margin-left: 75px;
@@ -179,13 +178,6 @@
 }
 
 @media (max-width: 600px) {
-    .loginContent {
-        gap: 15px;
-    }
-
-    .loginContainer {
-        padding: unset;
-    }
 
     .loginHeader {
         justify-content: center;
@@ -214,6 +206,13 @@
         }
     }
 }
+
+@media (max-width: 400px) and (max-height: 700px) {
+    .loginContent {
+        height: unset;
+    }
+}
+
 
 @media (max-width: 500px) {
     .alternatively {
