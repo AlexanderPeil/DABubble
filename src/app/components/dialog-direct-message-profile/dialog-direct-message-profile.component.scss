@@ -31,30 +31,25 @@
 }
 
 .status {
-  // @include status;
   @include font(20px, 400, 27.28px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-right: auto;
 
-  &.online {
-    color: #92c83e;
-
-    .circle {
-      background-color: #92c83e;
-    }
+  .statusOnline {
+    color: #92C83E;
   }
 
-  &.away {
+  .statusOffline {
     color: #686868;
-
-    .circle {
-      background-color: #686868;
-    }
   }
+
 }
 
-.circle {
-  @include circle;
-}
+// .circle {
+//   @include circle;
+// }
 
 .profileBottom {
   @include profileBottom;

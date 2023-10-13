@@ -38,7 +38,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   messageContent: string = '';
   messages: MessageContent[] = [];
   groupedMessages: { date: string; messages: MessageContent[] }[] = [];
-  private ngUnsubscribe = new Subject<void>();
+  ngUnsubscribe = new Subject<void>();
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   user_images = '../assets/img/avatar1.svg';
   popUpToEditMessageIsOpen: boolean = false;

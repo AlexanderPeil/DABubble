@@ -33,7 +33,6 @@ import {
   onAuthStateChanged,
   getAuth,
   updateEmail,
-  sendEmailVerification,
   confirmPasswordReset,
 } from '@angular/fire/auth';
 import { browserLocalPersistence } from 'firebase/auth';
@@ -464,7 +463,5 @@ export class AuthService {
       throw error;
     }
   }
-
-  
   
 }

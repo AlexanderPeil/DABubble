@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
-import { Subscription, switchMap, tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
-import { MatDialogRef, MAT_DIALOG_DATA  } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
   selector: 'app-dialog-direct-message-profile',
@@ -18,29 +19,29 @@ export class DialogDirectMessageProfileComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private dialogRef: MatDialogRef<DialogDirectMessageProfileComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { 
-      this.selectedUser = data.selectedUser;
-    }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public messageService: MessageService,) {
+    this.selectedUser = data.selectedUser;
+  }
 
 
   ngOnInit() {
-    this.userSubscription = this.authService.user$
-      .pipe(
-        tap(firebaseUser => {
-          if (!firebaseUser?.uid) {
-            this.user = null;
-            this.isOnline = undefined;
-          }
-        }),
-        switchMap(firebaseUser =>
-          firebaseUser?.uid ? this.authService.getUserData(firebaseUser.uid) : []
-        )
-      )
-      .subscribe(userData => {
-        this.user = userData ?? null;
-        this.isOnline = userData?.isOnline ?? undefined;
-      });
+    this.initUser();
+    console.log('User status is:', this.user?.isOnline);
+
   }
+
+
+  initUser() {
+    this.userSubscription = this.authService.currentUser.subscribe(userData => {
+      this.user = userData;
+      if (userData) {
+        // this.isOnline = userData.isOnline ?? false;
+        console.log("User online status from subscription:", this.isOnline);
+      }
+    });
+  }
+
 
 
   ngOnDestroy() {
