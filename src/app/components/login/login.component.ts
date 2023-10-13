@@ -18,7 +18,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
     trigger('logoAnimationDesktop', [
       state('initial', style({ transform: 'translateX(30vw) scale(1)' })),
       state('middle', style({ transform: 'translateX(0) scale(1)' })),
-      state('final', style({ transform: 'translate(calc(-45vw + 75px), calc(-63vh + 25px)) scale(0.5)' })),
+      state('final', style({ transform: 'translate(calc(-41vw + 25px), calc(-60vh + 25px)) scale(0.5)' })),
       transition('initial => middle', animate('500ms ease-out')),
       transition('middle => final', animate('500ms ease-in-out')),
     ]),
