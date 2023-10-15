@@ -122,8 +122,8 @@
   <!-- <app-message></app-message> -->
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor class="quill-editor-textarea" [(ngModel)]="messageContent"
-    (onEditorCreated)="this.quillService.setFocus($event)"
+  <quill-editor #channelQuill class="quill-editor-textarea" [(ngModel)]="messageContent"
+    (onEditorCreated)="setFocus($event)"
     placeholder="Message to #{{ channelService.channel.channelName }}" [modules]="this.quillService.quillModules">
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
@@ -167,7 +167,7 @@
         </div>
 
         <div class="containerAtIcon">
-          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol()" title="Add user">
+          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol(this.channelQuillInstance)" title="Add user">
         </div>
 
         <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="sendMessage()" title="Send message">

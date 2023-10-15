@@ -24,8 +24,8 @@ export class QuillService {
     index?: string;
     value?: string;
   } | null;
-  
-  
+
+
 
 
   // public quillModules = {
@@ -256,7 +256,7 @@ export class QuillService {
         this.selectedUserIdSubject.next(item.id);
       });
       div.appendChild(dropdownDiv);
-      
+
     } else if (item.type === 'channel') {
 
       const span = document.createElement('span');
@@ -292,18 +292,18 @@ export class QuillService {
       renderItem: this.renderItemWithAtAndHash,
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
         insertItem(item);
-        this.selectedItem = item;        
+        this.selectedItem = item;
       },
     },
   }
 
 
-  triggerAtSymbol() {
-    this.quill.focus();
+  triggerAtSymbol(editorInstance: any) {
+    editorInstance.focus();
     setTimeout(() => {
-      const currentPosition = this.quill.getSelection()?.index || 0;
-      this.quill.insertText(currentPosition, '@ ');
-      this.quill.setSelection(currentPosition + 1);
+      const currentPosition = editorInstance.getSelection()?.index || 0;
+      editorInstance.insertText(currentPosition, '@ ');
+      editorInstance.setSelection(currentPosition + 1);
     }, 0);
   }
 

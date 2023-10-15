@@ -40,6 +40,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   groupedMessages: { date: string; messages: MessageContent[] }[] = [];
   ngUnsubscribe = new Subject<void>();
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+  @ViewChild('directMessageQuill') directMessageQuill: any;
+  directMessageQuillInstance: any;
   user_images = '../assets/img/avatar1.svg';
   popUpToEditMessageIsOpen: boolean = false;
   showEditMessageButton: boolean = false;
@@ -307,6 +309,13 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   retryLoadSenderImage(message: MessageContent) {
     message.senderImage = this.user_images;
   }
+
+
+  setFocus(event: any) {
+    this.directMessageQuillInstance = event;
+    this.quillService.setFocus(event)
+  }
+
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();

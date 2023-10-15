@@ -46,8 +46,8 @@
     <!------------------------ Answers to the messages from channels or direct-messages --------------------- -->
 
     <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-    <quill-editor class="quill-editor-textarea" [(ngModel)]="messageContent"
-      (onEditorCreated)="this.quillService.setFocus($event)" placeholder="Answer..."
+    <quill-editor #threadQuill class="quill-editor-textarea" [(ngModel)]="messageContent"
+      (onEditorCreated)="setFocus($event)" placeholder="Answer..."
       [modules]="this.quillService.quillModules">
       <div quill-editor-toolbar>
         <!--------------------------------------- Custom created Container --------------------------------------->
@@ -91,7 +91,8 @@
           </div>
 
           <div class="containerAtIcon">
-            <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol()" title="Add user">
+            <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol(this.threadQuillInstance)"
+              title="Add user">
           </div>
           <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="sendMessage()" title="Send message">
         </div>

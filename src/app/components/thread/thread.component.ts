@@ -11,12 +11,13 @@ import { MessageService } from 'src/app/shared/services/message.service';
 import { MessageContent } from 'src/app/models/message';
 import { QuillService } from 'src/app/shared/services/quill.service';
 import { Observable, Subject, combineLatest, of, takeUntil } from 'rxjs';
+import { QuillEditorComponent } from 'ngx-quill';
 
 
 @Component({
   selector: 'app-thread',
   templateUrl: './thread.component.html',
-  styleUrls: ['./thread.component.scss']
+  styleUrls: ['./thread.component.scss'],
 })
 
 
@@ -24,9 +25,12 @@ export class ThreadComponent implements OnInit, OnDestroy {
   isOnline?: boolean;
   messageContent: string = '';
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+  @ViewChild('threadQuill') threadQuill!: QuillEditorComponent;
+  threadQuillInstance: any;
   private unsubscribe: Subject<void> = new Subject<void>();
   user_images = '../assets/img/avatar1.svg';
   selectedMessage: MessageContent | null = null;
+  groupedMessages: { date: string; messages: MessageContent[] }[] = [];
   threadMessages: MessageContent[] = [];
   selectedUser: User | null = null;
   loggedInUser: User | null = null;
@@ -177,12 +181,15 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
 
-  toggleEmojiPicker() {    
-    const realEmojiButton = document.querySelector('.textarea-emoji-control') as HTMLElement;
-    if (realEmojiButton) {
-      realEmojiButton.click();
+  toggleEmojiPicker() {
+    if (this.threadQuill && this.threadQuill.editorElem) {
+      const realEmojiButton = this.threadQuill.editorElem.querySelector('.textarea-emoji-control') as HTMLElement;
+      if (realEmojiButton) {
+        realEmojiButton.click();
+      }
     }
   }
+  
 
   selectUser(user: User): void {
     this.messageContent = this.messageContent.replace(/@[^@]*$/, '@' + user.displayName + ' ');
@@ -206,6 +213,13 @@ export class ThreadComponent implements OnInit, OnDestroy {
       threadMessage.senderImage = this.user_images;
     }
   }
+
+
+  setFocus(event: any) {
+    this.threadQuillInstance = event;
+    this.quillService.setFocus(event)
+  }
+
 
 
   ngOnDestroy(): void {
