@@ -72,7 +72,7 @@
                 isEditing === message.id
               " class="editMessageContainer">
               <input [(ngModel)]="updatedMessageContent" />
-              <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)" />
+              <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)" title="Send message">
             </div>
             <!-- Edit message logic -->
           </div>
@@ -85,7 +85,7 @@
           <img *ngIf="message.id" (click)="onEmojiClick(message.id, 'handsUp')"
             src="assets/img/icons/handsUpEmoji.svg" />
           <div *ngIf="message.id" #popUp (click)="openEmojiPopUp(message.id)" class="containerAddEmojiIcon">
-            <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg" />
+            <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg" title="Show Emojis">
           </div>
           <div (click)="
               messageService.selectedUser &&
@@ -96,10 +96,10 @@
                   messageService.selectedUser.uid
                 )
             " class="containerAnswerOnThreadIcon">
-            <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg" />
+            <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg" title="Open Thread">
           </div>
           <div *ngIf="showEditMessageButton" (click)="openPopUpEditMessage(message)" class="containerThreePointsIcon">
-            <img src="assets/img/icons/threePointsIcon.svg" />
+            <img src="assets/img/icons/threePointsIcon.svg" title="Edit message">
           </div>
 
           <div *ngIf="selectedMessageId === message.id" class="containerPopUp">
@@ -182,20 +182,20 @@
 
       <div class="containerIcons">
         <label for="input" class="containerAddIcon">
-          <img src="assets/img/icons/add.svg" />
+          <img src="assets/img/icons/add.svg" title="Add file">
           <input (change)="chooseFiletoUpload($event)" id="input" type="file" hidden />
         </label>
 
         <hr class="verticalLine" />
 
         <div class="containerSmileyIcon">
-          <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker()" />
+          <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker()" title="Show Emojis">
         </div>
 
         <div class="containerAtIcon">
-          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol()" />
+          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol()" title="Add user">
         </div>
-        <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg" />
+        <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg" title="Send message">
       </div>
       <!--------------------------------------- Custom created Container --------------------------------------->
     </div>

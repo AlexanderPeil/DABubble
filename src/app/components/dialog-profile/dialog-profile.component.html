@@ -1,7 +1,7 @@
 <div class="profileContainer">
     <div class="profileHeader">
         <p>Profile</p>
-        <div mat-dialog-close></div>
+        <div mat-dialog-close title="Close window"></div>
     </div>
     <img *ngIf="user?.photoURL" class="userImgProfile" [src]="user?.photoURL" (error)="retryLoadImage()">
     <div class="userNameEdit">

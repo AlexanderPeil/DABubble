@@ -303,7 +303,16 @@
 .sendBtn {
   position: absolute;
   right: 20px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
+
+:host ::ng-deep #textarea-emoji {
+  right: -310px !important;
+}
+
 
 // .translateXThread {
 //   transition: all 225ms ease-in-out;

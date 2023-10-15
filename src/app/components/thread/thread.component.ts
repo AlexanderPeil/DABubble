@@ -177,7 +177,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
 
-  toggleEmojiPicker() {
+  toggleEmojiPicker() {    
     const realEmojiButton = document.querySelector('.textarea-emoji-control') as HTMLElement;
     if (realEmojiButton) {
       realEmojiButton.click();
