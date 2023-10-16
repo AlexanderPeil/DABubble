@@ -49,6 +49,7 @@ import { NewMessageComponent } from './components/new-message/new-message.compon
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
+import { SearchbarComponent } from './components/searchbar/searchbar.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { MatChipsModule } from '@angular/material/chips';
     DialogDataUploadSuccessfulComponent,
     DialogDetailViewUploadedDatasComponent,
     NewMessageComponent,
+    SearchbarComponent,
   ],
 
   imports: [

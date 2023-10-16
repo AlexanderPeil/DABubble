@@ -1,0 +1,127 @@
+@import "../../shared/variables.scss";
+
+.inputContainerImg {
+  position: absolute;
+  right: 20px;
+}
+
+.inputContainer {
+  @include align_items_center;
+  @include margin_left_right(55px, 70px);
+  height: 70px;
+  position: relative;
+
+  .inputContainerImg {
+    position: absolute;
+    right: 20px;
+  }
+
+  input {
+    @include width_height(100%, 14px);
+    border: 1px solid white;
+    background-color: white;
+    border-radius: 100px;
+    padding: 28px 0 28px 40px;
+    box-sizing: border-box;
+    transition: all 125ms ease-in-out;
+    font-weight: 400;
+    font-size: 24px;
+    color: #686868;
+
+    &:focus {
+      outline: 1px solid #444df2;
+    }
+
+    &:hover {
+      border: 1px solid #686868;
+    }
+
+    ::placeholder {
+      @include font(24px, 400, 32.74px);
+    }
+  }
+}
+
+.searchDropdown {
+  @include flex_column_center;
+  font-size: 18px;
+  font-weight: 400;
+  display: flex;
+  background-color: #eceefe;
+  gap: 40px;
+  position: absolute;
+  top: 65px;
+  min-width: 300px;
+  min-height: 300px;
+  // max-height: 500px;
+  padding: 10px;
+  z-index: 999;
+  border-radius: 10px;
+
+  .searchResult {
+    @include flex_column_center;
+    gap: 25px;
+  }
+
+  .searchResultContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 5px;
+    border-radius: 10px;
+    width: 100%;
+
+    &:hover {
+      background-color: #797ef3;
+      color: white;
+      transition: all 225ms ease-in-out;
+      padding: 5px;
+      cursor: pointer;
+    }
+
+    .userSearchImg {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+    }
+  }
+}
+
+/////////////////////// responsive design start here ///////////////////////////
+
+@media (max-width: 1210px) {
+  .inputContainer {
+    margin-left: 35px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .inputContainer {
+    input {
+      font-size: 18px;
+      padding: 28px 0 28px 20px;
+    }
+  }
+}
+
+@media (max-width: 825px) {
+  .inputContainer {
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 770px) {
+  .inputContainer {
+    margin-left: 75px;
+  }
+}
+
+@media (max-width: 720px) {
+  .inputContainer {
+    margin-left: 25px;
+  }
+  .inputContainer input::placeholder {
+    color: white;
+  }
+}
