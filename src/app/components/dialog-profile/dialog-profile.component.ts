@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogEditProfileComponent } from '../dialog-edit-profile/dialog-edit-profile.component';
+import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
   selector: 'app-dialog-profile',
@@ -13,24 +14,25 @@ import { DialogEditProfileComponent } from '../dialog-edit-profile/dialog-edit-p
 export class DialogProfileComponent implements OnInit, OnDestroy {
   user: User | null = null;
   isOnline?: boolean;
-  private userSubscription?: Subscription;
+  userSubscription?: Subscription;
   user_images = '../assets/img/avatar1.svg';
 
   constructor(
     private authService: AuthService,
     public dialog: MatDialog,
-    private dialogRef: MatDialogRef<DialogProfileComponent>) { }
+    private dialogRef: MatDialogRef<DialogProfileComponent>,
+    public messageService: MessageService) { }
 
 
   ngOnInit() {
-    const firebaseUser = this.authService.currentUserValue;
+    this.initUser();
+  }
 
-    if (firebaseUser) {
-      this.userSubscription = this.authService.getUserData(firebaseUser.uid).subscribe(userData => {
-        this.user = userData ?? null;
-        this.isOnline = userData?.isOnline ?? undefined;
-      });
-    }
+  initUser() {
+    this.userSubscription = this.authService.currentUser.subscribe(userData => {
+      this.user = userData;
+      this.isOnline = userData?.isOnline ?? undefined;
+    });
   }
 
 

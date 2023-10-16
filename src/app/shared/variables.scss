@@ -121,28 +121,24 @@
 
 @mixin focus_input_or_textarea {
     &:focus {
-        border: 1px solid #797EF3;
+        border: 1px solid #797ef3;
     }
 }
 
 @mixin hover_input_or_textarea {
     &:hover {
-        border: 1px solid #797EF3;
+        border: 1px solid #797ef3;
     }
 }
-
 
 /*********************** Style for the dialog-profile-components **********************/
 @mixin profileContainer {
     @include flex_column_center;
+    height: 100%;
     position: relative;
     z-index: 3;
-    gap: 38px;
-    // width: 500px;
-    // border-top-left-radius: 30px;
-    // border-bottom-left-radius: 30px;
-    // border-bottom-right-radius: 30px;
-    padding: 40px 40px;
+    gap: 40px;
+    padding: 0 40px;
 }
 
 @mixin profileHeader {
@@ -156,12 +152,12 @@
     div {
         @include button_hover;
         @include width_height(40px, 40px);
-        background: url('../../assets/img/icons/closeIcon.svg');
+        background: url("../../assets/img/icons/closeIcon.svg");
         background-repeat: no-repeat;
         background-position: center;
 
         &:hover {
-            background: url('../../assets/img/icons/close_icon_hover.svg');
+            background: url("../../assets/img/icons/close_icon_hover.svg");
             background-repeat: no-repeat;
             background-position: center;
         }
@@ -184,7 +180,7 @@
     a {
         @include font(18px, 600, 24.55px);
         @include button_hover;
-        color: #535AF1;
+        color: #535af1;
 
         &:hover {
             font-weight: 800;
@@ -194,13 +190,15 @@
 
 @mixin status {
     @include font(20px, 400, 27.28px);
+    display: flex;
+    align-items: center;
     margin-right: auto;
 
     &.online {
-        color: #92C83E;
+        color: #92c83e;
 
         .circle {
-            background-color: #92C83E;
+            background-color: #92c83e;
         }
     }
 
@@ -227,17 +225,24 @@
     gap: 20px;
     align-items: baseline;
     margin-right: auto;
+    width: 100%;
 }
 
 @mixin profileIconsText {
     @include font(20px, 700, 27.28px);
     @include flex_direction_column;
     gap: 15px;
+    width: 100%;
 
     a {
         @include font(19px, 500, 21.6px);
         @include button_hover;
-        color: #1381FF;
+        color: #1381ff;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: block;
+        max-width: 100%;
 
         &:hover {
             font-weight: 600;

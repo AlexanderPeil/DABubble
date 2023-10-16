@@ -2,23 +2,12 @@
   <div class="chatHistoryHeader">
     <div class="userName" (click)="openDialog()">
       <div class="userIconWrapper">
-        <img
-          class="userImg"
-          [src]="messageService.selectedUser?.photoURL"
-          (error)="retryLoadImage(messageService.selectedUser)"
-        />
-        <img
-          *ngIf="messageService.selectedUser?.isOnline"
-          class="statusIcon"
-          src="../../../assets/img/icons/user_online.svg"
-          alt="Online"
-        />
-        <img
-          *ngIf="!messageService.selectedUser?.isOnline"
-          class="statusIcon"
-          src="../../../assets/img/icons/user_offline.svg"
-          alt="Offline"
-        />
+        <img class="userImg" [src]="messageService.selectedUser?.photoURL"
+          (error)="retryLoadImage(messageService.selectedUser)" />
+        <img *ngIf="messageService.selectedUser?.isOnline" class="statusIcon"
+          src="../../../assets/img/icons/user_online.svg" alt="Online" />
+        <img *ngIf="!messageService.selectedUser?.isOnline" class="statusIcon"
+          src="../../../assets/img/icons/user_offline.svg" alt="Offline" />
       </div>
       <p>{{ messageService.selectedUser?.displayName }}</p>
     </div>
@@ -27,41 +16,25 @@
   <!-- Message container -->
   <div #messagesContainer class="messageMainContainer scrollableContainer">
     <!---------- only displays when the messageContainer is empty ---------->
-    <div
-      *ngIf="
+    <div *ngIf="
         !groupedMessages.length &&
         authService.currentUser.value?.uid !== messageService.selectedUser?.uid
-      "
-      class="emptyChatDiv"
-    >
-      <img
-        class="userImgEmptyChat"
-        [src]="messageService.selectedUser?.photoURL"
-        (error)="retryLoadImage(messageService.selectedUser)"
-        alt="Receiver Image"
-      />
+      " class="emptyChatDiv">
+      <img class="userImgEmptyChat" [src]="messageService.selectedUser?.photoURL"
+        (error)="retryLoadImage(messageService.selectedUser)" alt="Receiver Image" />
       <p>
         This chat is only between
-        <span (click)="openDialog()"
-          >@{{ messageService.selectedUser?.displayName }}</span
-        >
+        <span (click)="openDialog()">@{{ messageService.selectedUser?.displayName }}</span>
         and you.
       </p>
     </div>
 
-    <div
-      *ngIf="
+    <div *ngIf="
         !groupedMessages.length &&
         authService.currentUser.value?.uid === messageService.selectedUser?.uid
-      "
-      class="emptyChatDiv"
-    >
-      <img
-        class="userImgEmptyChat"
-        [src]="messageService.selectedUser?.photoURL"
-        (error)="retryLoadImage(messageService.selectedUser)"
-        alt="Receiver Image"
-      />
+      " class="emptyChatDiv">
+      <img class="userImgEmptyChat" [src]="messageService.selectedUser?.photoURL"
+        (error)="retryLoadImage(messageService.selectedUser)" alt="Receiver Image" />
       <p>
         This space is here for you. Make notes, list your to-dos, or keep links
         and files at hand. You can also discuss things with yourself here if
@@ -77,18 +50,10 @@
         <hr />
       </div>
 
-      <div
-        *ngFor="let message of group.messages"
-        class="displayMessagesContainer"
-        (mouseenter)="onMessageHover(message)"
-        (mouseleave)="message.id ? handleMouseLeave(message.id) : null"
-      >
+      <div *ngFor="let message of group.messages" class="displayMessagesContainer"
+        (mouseenter)="onMessageHover(message)" (mouseleave)="message.id ? handleMouseLeave(message.id) : null">
         <div class="messageChildContainer">
-          <img
-            class="userImg"
-            [src]="message.senderImage"
-            (error)="retryLoadSenderImage(message)"
-          />
+          <img class="userImg" [src]="message.senderImage" (error)="retryLoadSenderImage(message)" />
 
           <div class="containerUserNameAndTime">
             <div class="nameTimeContainer">
@@ -97,29 +62,18 @@
             </div>
 
             <!-- Edit message logic -->
-            <span
-              *ngIf="isEditing !== message.id"
-              class="message"
-              [ngClass]="{
+            <span *ngIf="isEditing !== message.id" class="message" [ngClass]="{
                 senderMessage:
                   message.senderId === authService.currentUser.value?.uid
-              }"
-              >{{ message.content }}</span
-            >
+              }">{{ message.content }}</span>
 
-            <div
-              *ngIf="
+            <div *ngIf="
                 currentlyEditingMessageId === message.id &&
                 isEditing === message.id
-              "
-              class="editMessageContainer"
-            >
+              " class="editMessageContainer">
               <input [(ngModel)]="updatedMessageContent" />
-              <img
-                class="sendBtn"
-                src="assets/img/icons/sendBtn.svg"
-                (click)="saveEditedMessage(message)"
-              />
+              <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)"
+                title="Send message">
             </div>
             <!-- Edit message logic -->
           </div>
@@ -127,26 +81,14 @@
 
         <!-- Emoji container -->
         <div class="containerEmojis d-none">
-          <img
-            *ngIf="message.id"
-            (click)="onEmojiClick(message.id, 'complete')"
-            src="assets/img/icons/completeEmoji.svg"
-          />
-          <img
-            *ngIf="message.id"
-            (click)="onEmojiClick(message.id, 'handsUp')"
-            src="assets/img/icons/handsUpEmoji.svg"
-          />
-          <div
-            *ngIf="message.id"
-            #popUp
-            (click)="openEmojiPopUp(message.id)"
-            class="containerAddEmojiIcon"
-          >
-            <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg" />
+          <img *ngIf="message.id" (click)="onEmojiClick(message.id, 'complete')"
+            src="assets/img/icons/completeEmoji.svg" />
+          <img *ngIf="message.id" (click)="onEmojiClick(message.id, 'handsUp')"
+            src="assets/img/icons/handsUpEmoji.svg" />
+          <div *ngIf="message.id" #popUp (click)="openEmojiPopUp(message.id)" class="containerAddEmojiIcon">
+            <img class="addEmojiIcon" src="assets/img/icons/addEmojiIcon.svg" title="Show Emojis">
           </div>
-          <div
-            (click)="
+          <div (click)="
               messageService.selectedUser &&
                 messageService.selectedUser.uid &&
                 message.id &&
@@ -154,55 +96,29 @@
                   message.id,
                   messageService.selectedUser.uid
                 )
-            "
-            class="containerAnswerOnThreadIcon"
-          >
-            <img
-              class="answerOnThreadIcon"
-              src="assets/img/icons/answerOnThreadIcon.svg"
-            />
+            " class="containerAnswerOnThreadIcon">
+            <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg" title="Open Thread">
           </div>
-          <div
-            *ngIf="showEditMessageButton"
-            (click)="openPopUpEditMessage(message)"
-            class="containerThreePointsIcon"
-          >
-            <img src="assets/img/icons/threePointsIcon.svg" />
+          <div *ngIf="showEditMessageButton" (click)="openPopUpEditMessage(message)" class="containerThreePointsIcon">
+            <img src="assets/img/icons/threePointsIcon.svg" title="Edit message">
           </div>
 
           <div *ngIf="selectedMessageId === message.id" class="containerPopUp">
-            <img
-              *ngIf="message.id"
-              src="assets/img/icons/completeEmoji.svg"
-              (click)="onEmojiClick(message.id, 'complete')"
-            />
-            <img
-              *ngIf="message.id"
-              src="assets/img/icons/handsUpEmoji.svg"
-              (click)="onEmojiClick(message.id, 'handsUp')"
-            />
-            <img
-              *ngIf="message.id"
-              src="assets/img/icons/rocket.svg"
-              (click)="onEmojiClick(message.id, 'rocket')"
-            />
-            <img
-              *ngIf="message.id"
-              src="assets/img/icons/nerdSmiley.svg"
-              (click)="onEmojiClick(message.id, 'nerdSmiley')"
-            />
+            <img *ngIf="message.id" src="assets/img/icons/completeEmoji.svg"
+              (click)="onEmojiClick(message.id, 'complete')" />
+            <img *ngIf="message.id" src="assets/img/icons/handsUpEmoji.svg"
+              (click)="onEmojiClick(message.id, 'handsUp')" />
+            <img *ngIf="message.id" src="assets/img/icons/rocket.svg" (click)="onEmojiClick(message.id, 'rocket')" />
+            <img *ngIf="message.id" src="assets/img/icons/nerdSmiley.svg"
+              (click)="onEmojiClick(message.id, 'nerdSmiley')" />
           </div>
         </div>
 
         <!-- Emoji container -->
 
         <!-- Pop Up to Edit Message -->
-        <div
-          *ngIf="showEditMenu && currentlyEditingMessageId === message.id"
-          class="popUpEditMessage"
-          (mouseover)="stopEvent($event)"
-          (click)="editMessage(message.id, message.content)"
-        >
+        <div *ngIf="showEditMenu && currentlyEditingMessageId === message.id" class="popUpEditMessage"
+          (mouseover)="stopEvent($event)" (click)="editMessage(message.id, message.content)">
           <p>Edit message</p>
         </div>
         <!-- Pop Up to Edit Message -->
@@ -235,98 +151,53 @@
   </div>
   <!-- Message container -->
 
-  <quill-editor
-    class="quill-editor-textarea"
-    [(ngModel)]="messageContent"
-    placeholder="Write a message"
-    (onEditorCreated)="this.quillService.setFocus($event)"
-    [modules]="this.quillService.quillModules"
-  >
+  <quill-editor #directMessageQuill class="quill-editor-textarea" [(ngModel)]="messageContent" placeholder="Write a message"
+    (onEditorCreated)="setFocus($event)" [modules]="this.quillService.quillModules">
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
         <!--------------------------------------- Displays uploaded Images --------------------------------------->
-        <div
-          *ngFor="
+        <div *ngFor="
             let uploadedImage of storageService?.uploadedImages;
             let i = index
-          "
-          class="containerUploadedImages"
-        >
-          <img
-            class="uploadedImage"
-            [src]="uploadedImage ? uploadedImage : null"
-          />
-          <img
-            matTooltipPosition="above"
-            matTooltip="Delete Data"
-            (click)="
+          " class="containerUploadedImages">
+          <img class="uploadedImage" [src]="uploadedImage ? uploadedImage : null" />
+          <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
               this.storageService.deleteUploadedDataService(uploadedImage, i)
-            "
-            class="closeIcon"
-            src="assets/img/icons/closeIcon.svg"
-          />
+            " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
         </div>
         <!--------------------------------------- Displays uploaded Images --------------------------------------->
 
         <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
-        <div
-          *ngFor="
+        <div *ngFor="
             let uploadedData of storageService.uploadedDatas;
             let i = index
-          "
-          class="containerUploadedDatas"
-        >
-          <iframe
-            class="uploadedData"
-            [src]="uploadedData ? uploadedData : null"
-          ></iframe>
-          <img
-            matTooltipPosition="above"
-            matTooltip="Delete Data"
-            (click)="
+          " class="containerUploadedDatas">
+          <iframe class="uploadedData" [src]="uploadedData ? uploadedData : null"></iframe>
+          <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
               this.storageService.deleteUploadedDataService(uploadedData, i)
-            "
-            class="closeIcon"
-            src="assets/img/icons/closeIcon.svg"
-          />
+            " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
         </div>
         <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
       </div>
 
       <div class="containerIcons">
         <label for="input" class="containerAddIcon">
-          <img src="assets/img/icons/add.svg" />
-          <input
-            (change)="chooseFiletoUpload($event)"
-            id="input"
-            type="file"
-            hidden
-          />
+          <img src="assets/img/icons/add.svg" title="Add file">
+          <input (change)="chooseFiletoUpload($event)" id="input" type="file" hidden />
         </label>
 
         <hr class="verticalLine" />
 
         <div class="containerSmileyIcon">
-          <img
-            class="smileyIcon"
-            src="assets/img/icons/smiley.svg"
-            (click)="toggleEmojiPicker()"
-          />
+          <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker()" title="Show Emojis">
         </div>
 
         <div class="containerAtIcon">
-          <img
-            class="atIcon"
-            src="assets/img/icons/@Icon.svg"
-            (click)="this.quillService.triggerAtSymbol()"
-          />
+          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol(this.directMessageQuillInstance)"
+            title="Add user">
         </div>
-        <img
-          (click)="sendMessage()"
-          class="sendBtn"
-          src="assets/img/icons/sendBtn.svg"
-        />
+        <img (click)="sendMessage()" class="sendBtn" src="assets/img/icons/sendBtn.svg" title="Send message">
       </div>
       <!--------------------------------------- Custom created Container --------------------------------------->
     </div>

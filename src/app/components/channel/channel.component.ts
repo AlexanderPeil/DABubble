@@ -48,6 +48,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
   url: string = '';
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   @ViewChildren('messageElement') messageElements!: QueryList<ElementRef>;
+  @ViewChild('channelQuill') channelQuill: any;
+  channelQuillInstance: any;
   messages: MessageContent[] = [];
   groupedMessages: { date: string; messages: MessageContent[] }[] = [];
   messageContent: string = '';
@@ -366,6 +368,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
     } else {
       console.log('Element not found after maximum retries.');
     }
+  }
+
+
+  setFocus(event: any) {
+    this.channelQuillInstance = event;
+    this.quillService.setFocus(event)
   }
 
 

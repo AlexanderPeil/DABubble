@@ -303,6 +303,10 @@
 .sendBtn {
   position: absolute;
   right: 20px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 // .translateXThread {
