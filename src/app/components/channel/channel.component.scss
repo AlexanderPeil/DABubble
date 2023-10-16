@@ -288,9 +288,6 @@
       width: 18px;
     }
   }
-  .containerIconAddUser {
-    display: none;
-  }
 }
 
 @media (max-width: 1000px) {
@@ -300,5 +297,11 @@
 
   .user:first-child {
     display: block; /* Zeige das erste Bild */
+  }
+}
+
+@media (max-width: 720px) {
+  .childContainerUserInChatHistory {
+    display: none;
   }
 }

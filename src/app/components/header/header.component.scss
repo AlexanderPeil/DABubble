@@ -176,3 +176,63 @@
     }
   }
 }
+
+/////////////////////// responsive design start here ///////////////////////////
+
+@media (max-width: 1210px) {
+  .inputContainer {
+    margin-left: 120px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .headerContainer {
+    .logoImg {
+      width: 210px;
+    }
+    input {
+      font-size: 18px;
+      padding: 28px 0 28px 20px;
+    }
+  }
+  .headerProfileContent {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 960px) {
+  .userName {
+    display: none;
+  }
+}
+
+@media (max-width: 825px) {
+  .inputContainer {
+    margin-left: 55px;
+    margin-right: 10px;
+    width: 100%;
+    left: unset;
+  }
+}
+
+@media (max-width: 770px) {
+  .headerContainer {
+    .logoImg {
+      width: 170px;
+    }
+  }
+  .inputContainer {
+    margin-left: 25px;
+  }
+
+  .userImg {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 675px) {
+  .inputContainer input::placeholder {
+    color: white;
+  }
+}

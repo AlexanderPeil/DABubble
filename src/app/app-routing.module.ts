@@ -17,7 +17,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
 
   {
-    path: 'main', component: MainComponent,
+    path: 'main',
+    component: MainComponent,
     children: [
       {
         path: '',
@@ -50,4 +51,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled' })],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
