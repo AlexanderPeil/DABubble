@@ -6,8 +6,11 @@
       <p class="channelName">Developerteam</p>
     </div>
 
-    <div (click)="threadService.closeThreadService()" class="containerCloseIcon">
-      <img src="assets/img/icons/closeIcon.svg" title="Close Thread">
+    <div
+      (click)="threadService.closeThreadService()"
+      class="containerCloseIcon"
+    >
+      <img src="assets/img/icons/closeIcon.svg" title="Close Thread" />
     </div>
   </div>
 
@@ -16,7 +19,11 @@
     <div *ngIf="selectedMessage" class="threadMessageMainContainer">
       <div class="messageChildContainer">
         <div class="containerUserNameAndTime">
-          <img class="userImg" [src]="selectedMessage.senderImage" (error)="retryLoadImage(selectedMessage)" />
+          <img
+            class="userImg"
+            [src]="selectedMessage.senderImage"
+            (error)="retryLoadImage(selectedMessage)"
+          />
           <p class="userName">{{ selectedMessage.senderName }}</p>
           <p class="time">
             {{ this.messageService.formatTime(selectedMessage.timestamp) }}
@@ -31,10 +38,17 @@
     <div class="answersInThreadContainer">
       <p>{{ threadMessages.length }} Answers</p>
       <hr />
-      <div *ngFor="let threadMessage of threadMessages" class="messageChildContainer">
+      <div
+        *ngFor="let threadMessage of threadMessages"
+        class="messageChildContainer"
+      >
         <div class="containerUserNameAndTime">
-          <img class="userImg" [src]="threadMessage.senderImage" alt="{{ threadMessage.senderName }}'s profile image"
-            (error)="retryLoadThreadMessageSenderImage(threadMessage)" />
+          <img
+            class="userImg"
+            [src]="threadMessage.senderImage"
+            alt="{{ threadMessage.senderName }}'s profile image"
+            (error)="retryLoadThreadMessageSenderImage(threadMessage)"
+          />
           <p class="userName">{{ threadMessage.senderName }}</p>
           <p class="time">
             {{ messageService.formatTime(threadMessage.timestamp) }}
@@ -46,55 +60,105 @@
     <!------------------------ Answers to the messages from channels or direct-messages --------------------- -->
 
     <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-    <quill-editor #threadQuill class="quill-editor-textarea" [(ngModel)]="messageContent"
-      (onEditorCreated)="setFocus($event)" placeholder="Answer..."
-      [modules]="this.quillService.quillModules">
+    <quill-editor
+      #threadQuill
+      class="quill-editor-textarea"
+      [(ngModel)]="messageContent"
+      (onEditorCreated)="setFocus($event)"
+      placeholder="Answer..."
+      [modules]="this.quillService.quillModules"
+    >
       <div quill-editor-toolbar>
         <!--------------------------------------- Custom created Container --------------------------------------->
         <div class="mainContainerUploadedDatas">
           <!--------------------------------------- Displays uploaded Images --------------------------------------->
-          <div *ngFor="
+          <div
+            *ngFor="
               let uploadedImage of storageService.uploadedImages;
               let i = index
-            " class="containerUploadedImages">
-            <img (click)="openDetailViewFromUploadedImage(uploadedImage)" class="uploadedImage"
-              [src]="uploadedImage ? uploadedImage : null" />
-            <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
+            "
+            class="containerUploadedImages"
+          >
+            <img
+              (click)="openDetailViewFromUploadedImage(uploadedImage)"
+              class="uploadedImage"
+              [src]="uploadedImage ? uploadedImage : null"
+            />
+            <img
+              matTooltipPosition="above"
+              matTooltip="Delete Data"
+              (click)="
                 this.storageService.deleteUploadedDataService(uploadedImage, i)
-              " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
+              "
+              class="closeIcon"
+              src="assets/img/icons/closeIcon.svg"
+            />
           </div>
           <!--------------------------------------- Displays uploaded Images --------------------------------------->
 
           <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
-          <div *ngFor="
+          <div
+            *ngFor="
               let uploadedData of storageService.uploadedDatas;
               let i = index
-            " class="containerUploadedDatas">
-            <iframe class="uploadedData" [src]="uploadedData ? uploadedData : null"></iframe>
-            <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
+            "
+            class="containerUploadedDatas"
+          >
+            <iframe
+              class="uploadedData"
+              [src]="uploadedData ? uploadedData : null"
+            ></iframe>
+            <img
+              matTooltipPosition="above"
+              matTooltip="Delete Data"
+              (click)="
                 this.storageService.deleteUploadedDataService(uploadedData, i)
-              " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
+              "
+              class="closeIcon"
+              src="assets/img/icons/closeIcon.svg"
+            />
           </div>
           <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
         </div>
 
         <div class="containerIcons">
           <label for="input" class="containerAddIcon">
-            <img src="assets/img/icons/add.svg" title="Add file">
-            <input (change)="storageService.chooseFileSevice($event)" id="input" type="file" hidden />
+            <img src="assets/img/icons/add.svg" title="Add file" />
+            <input
+              (change)="storageService.chooseFileSevice($event)"
+              id="input"
+              type="file"
+              hidden
+            />
           </label>
 
           <hr class="verticalLine" />
 
           <div class="containerSmileyIcon">
-            <img class="smileyIcon" src="assets/img/icons/smiley.svg" (click)="toggleEmojiPicker()" title="Show Emojis">
+            <img
+              class="smileyIcon"
+              src="assets/img/icons/smiley.svg"
+              (click)="toggleEmojiPicker()"
+              title="Show Emojis"
+            />
           </div>
 
           <div class="containerAtIcon">
-            <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol(this.threadQuillInstance)"
-              title="Add user">
+            <img
+              class="atIcon"
+              src="assets/img/icons/@Icon.svg"
+              (click)="
+                this.quillService.triggerAtSymbol(this.threadQuillInstance)
+              "
+              title="Add user"
+            />
           </div>
-          <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="sendMessage()" title="Send message">
+          <img
+            class="sendBtn"
+            src="assets/img/icons/sendBtn.svg"
+            (click)="sendMessage()"
+            title="Send message"
+          />
         </div>
         <!--------------------------------------- Custom created Container --------------------------------------->
       </div>

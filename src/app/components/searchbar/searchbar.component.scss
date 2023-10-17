@@ -121,7 +121,21 @@
   .inputContainer {
     margin-left: 25px;
   }
+}
+
+@media (max-width: 670px) {
   .inputContainer input::placeholder {
     color: white;
+  }
+}
+
+@media (max-width: 630px) {
+  .inputContainer {
+    input {
+      border: 1px solid #686868;
+    }
+  }
+  .inputContainer input::placeholder {
+    color: unset;
   }
 }

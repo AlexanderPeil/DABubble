@@ -235,8 +235,8 @@ app-searchbar {
   }
 }
 
-// @media (max-width: 675px) {
-//   .inputContainer input::placeholder {
-//     color: white;
-//   }
-// }
+@media (max-width: 630px) {
+  .headerContainer {
+    height: 70px;
+  }
+}

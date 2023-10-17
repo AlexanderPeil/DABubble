@@ -293,3 +293,51 @@ ul {
     padding: 5px 10px 5px 40px;
   }
 }
+
+//////////////////////start media design here/////////////////////
+
+@media (max-width: 630px) {
+  .scrollableContainer {
+    height: 77vh;
+  }
+  .headMenu {
+    p {
+      font-size: 24px;
+    }
+  }
+  #allChannels {
+    .channel {
+      p {
+        font-size: 20px;
+        overflow: unset;
+      }
+    }
+  }
+  .selectableUserChat {
+    p {
+      font-size: 20px;
+    }
+  }
+  .head-of-sidenav {
+    .icon-div {
+      position: absolute;
+      bottom: 80px;
+      right: 45px;
+      height: 60px;
+      width: 60px;
+      background-color: #555cf1;
+      border-radius: 100%;
+      img {
+        filter: invert(100%);
+      }
+      &:hover {
+        transition: all 225ms ease-in-out;
+        background-color: #555cf1;
+        img {
+          transform: scale(1.1);
+          filter: invert(100%);
+        }
+      }
+    }
+  }
+}

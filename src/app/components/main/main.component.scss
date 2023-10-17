@@ -80,3 +80,17 @@
     display: none;
   }
 }
+
+//////////////////////start media design here/////////////////////
+@media (max-width: 630px) {
+  .matDrawerMainContainer {
+    height: calc(100vh - 80px);
+    padding: 0;
+    gap: 0;
+  }
+
+  .sidenav {
+    width: 100%;
+    border-radius: unset;
+  }
+}
