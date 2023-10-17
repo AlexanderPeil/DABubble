@@ -2,8 +2,16 @@
   <div class="threadHeader">
     <div class="textInThreadHeader">
       <p class="threadText">Thread</p>
-      <img src="assets/img/icons/hashtag.svg" />
-      <p class="channelName">Developerteam</p>
+      <div
+        *ngIf="threadService.currentChannelName"
+        class="channelNameContainer"
+      >
+        <img src="assets/img/icons/hashtag.svg" />
+        <p class="channelName">{{ threadService.currentChannelName }}</p>
+      </div>
+      <div>
+        <p *ngIf="!threadService.currentChannelName"></p>
+      </div>
     </div>
 
     <div

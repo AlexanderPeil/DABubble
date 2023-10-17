@@ -50,7 +50,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.checkURL();
+    this.checkURL();    
   }
 
 
