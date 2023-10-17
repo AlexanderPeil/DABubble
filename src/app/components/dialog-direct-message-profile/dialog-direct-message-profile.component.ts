@@ -15,6 +15,7 @@ export class DialogDirectMessageProfileComponent implements OnInit, OnDestroy {
   isOnline?: boolean;
   selectedUser: User | null = null;
   private userSubscription?: Subscription;
+  user_images_default = '../assets/img/avatar1.svg';
 
   constructor(
     private authService: AuthService,
@@ -27,21 +28,21 @@ export class DialogDirectMessageProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initUser();
-    console.log('User status is:', this.user?.isOnline);
-
   }
 
 
   initUser() {
     this.userSubscription = this.authService.currentUser.subscribe(userData => {
       this.user = userData;
-      if (userData) {
-        // this.isOnline = userData.isOnline ?? false;
-        console.log("User online status from subscription:", this.isOnline);
-      }
     });
   }
 
+
+  retryLoadImage() {
+    if (this.user) {
+      this.user.photoURL = this.user_images_default;
+    }
+  }
 
 
   ngOnDestroy() {

@@ -64,7 +64,7 @@
           </div>
           <div (click)="
               message.id &&
-                threadService.openChannelThread(message.id, channelId)
+                threadService.openChannelThread(message.id, channelId, channelService.channel.channelName)
             " class="containerAnswerOnThreadIcon">
             <img class="answerOnThreadIcon" src="assets/img/icons/answerOnThreadIcon.svg" title="Open Thread">
           </div>

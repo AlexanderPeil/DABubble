@@ -16,6 +16,7 @@ import { Observable, of } from 'rxjs';
 export class ThreadService {
   threadAreClosed: boolean = false;
   loggedInUser: User | null = null;
+  currentChannelName!: string;
 
 
   constructor(
@@ -26,14 +27,26 @@ export class ThreadService {
   }
 
 
+  setChannelName(name: string): void {
+    this.currentChannelName = name;
+  }
+
+
+  resetChannelName(): void {
+    this.currentChannelName = "";
+  }
+
+
   openDirectMessageThread(messageId: string, selectedUserId: string) {
     this.threadAreClosed = true;
+    this.resetChannelName();
     this.router.navigate(['/main', 'direct-message', selectedUserId, 'thread', messageId]);
   }
 
 
-  openChannelThread(messageId: string, channelId: string) {
+  openChannelThread(messageId: string, channelId: string, channelName: string) {
     this.threadAreClosed = true;
+    this.setChannelName(channelName);
     this.router.navigate(['/main', 'channel', channelId, 'thread', messageId, channelId]);
   }
 

@@ -36,6 +36,11 @@
   color: black;
 }
 
+.channelNameContainer {
+  display: flex;
+  gap: 5px;
+}
+
 .channelName {
   margin: 0;
   font-weight: 400;

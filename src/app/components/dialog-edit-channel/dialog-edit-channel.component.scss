@@ -203,3 +203,10 @@
         transform: unset;
     }
 }
+
+@media(max-width: 820px) {
+
+    .dialogMainContainer {
+        width: unset;
+    }
+}

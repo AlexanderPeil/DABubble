@@ -15,6 +15,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class DialogEditProfileComponent implements OnInit, OnDestroy {
   user?: User | null;
   userForm!: FormGroup;
+  user_images_default = '../assets/img/avatar1.svg';
   private userSubscription?: Subscription;
 
   constructor(
@@ -95,6 +96,13 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
       }
     }
     this.dialogRef.close();
+  }
+
+
+  retryLoadImage() {
+    if (this.user) {
+      this.user.photoURL = this.user_images_default;
+    }
   }
   
 

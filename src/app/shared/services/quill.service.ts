@@ -127,6 +127,8 @@ export class QuillService {
   }
 
   searchUsers(searchTerm: string, renderList: Function) {
+    console.log('quill service user');
+    
     this.authService.getUsers(searchTerm)
       .pipe(
         takeUntil(this.destroy$)
@@ -151,6 +153,7 @@ export class QuillService {
   }
 
   searchChannels(searchTerm: string, renderList: Function) {
+    console.log('quill service channels');
     this.channelService
       .getChannels(searchTerm)
       .pipe(takeUntil(this.destroy$)
@@ -167,6 +170,7 @@ export class QuillService {
   }
 
   searchEmails(searchTerm: string, renderList: Function) {
+    console.log('quill service emails');
     this.authService
       .getUsersWithEmail(searchTerm)
       .pipe(takeUntil(this.destroy$)
@@ -192,6 +196,8 @@ export class QuillService {
   }
 
   renderItem = (item: any) => {
+    console.log('quil renderList');
+    
     const div = document.createElement('div');
     const img = document.createElement('img');
     const span = document.createElement('span');
@@ -224,6 +230,7 @@ export class QuillService {
   };
 
   renderItemWithAtAndHash = (item: any) => {
+    console.log('quill render item with hash');
     const div = document.createElement('div');
     div.setAttribute('tabindex', '0');
 
@@ -271,7 +278,7 @@ export class QuillService {
     return div;
   };
 
-  public quillModulesWithAtAndHash = {
+  public quillModulesWithAtAndHash = {    
     toolbar: false,
     mention: {
       allowedChars: /^[A-Za-z\sÅÄÖåäö.]*$/,
@@ -299,6 +306,8 @@ export class QuillService {
 
 
   triggerAtSymbol(editorInstance: any) {
+    console.log('triger quill at symbol');
+    
     editorInstance.focus();
     setTimeout(() => {
       const currentPosition = editorInstance.getSelection()?.index || 0;

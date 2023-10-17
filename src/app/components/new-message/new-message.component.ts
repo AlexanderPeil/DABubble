@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
@@ -31,6 +31,8 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   selectedUserId: string | null = null;
   selectedChannelIdSubscription!: Subscription;
   selectedUserIdSubscription!: Subscription;
+  newMessageQuillInstance: any;
+  @ViewChild('newMessagQuill') newMessagQuill: any;
 
   constructor(
     public dialog: MatDialog,
@@ -133,12 +135,12 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   async sendMessage() {
     const loggedInUser = this.authService.currentUserValue;
     const selectedItem = this.quillService.selectedItem;
-  
+
     if (!loggedInUser) {
       console.error('User is not logged in.');
       return;
     }
-  
+
     if (selectedItem) {
       switch (selectedItem.denotationChar) {
         case '#': // Es handelt sich um einen Kanal
@@ -156,7 +158,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
             console.error('Error sending channel message:', error);
           }
           break;
-  
+
         case '@': // Es handelt sich um einen Benutzer
         case '*': // Es handelt sich um einen Benutzer (abhängig von Ihrer Logik)
           const userId = selectedItem.id;
@@ -173,7 +175,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
             console.error('Error sending direct message:', error);
           }
           break;
-  
+
         default:
           alert('The selected item does not match any valid criteria.');
           break;
@@ -181,11 +183,27 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     } else {
       alert('Please select a channel or a user.');
     }
-  
+
     // Reset selectedItem
     this.quillService.selectedItem = null;
   }
-  
+
+
+  setFocus(event: any) {
+    this.newMessageQuillInstance = event;
+    this.quillService.setFocus(event)
+  }
+
+
+  toggleEmojiPicker() {
+    const realEmojiButton = document.querySelector(
+      '.textarea-emoji-control'
+    ) as HTMLElement;
+    if (realEmojiButton) {
+      realEmojiButton.click();
+    }
+  }
+
 
 
   ngOnDestroy() {
