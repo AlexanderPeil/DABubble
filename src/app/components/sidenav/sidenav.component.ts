@@ -14,7 +14,7 @@ import { MessageService } from 'src/app/shared/services/message.service';
   styleUrls: ['./sidenav.component.scss'],
 })
 export class SidenavComponent implements OnInit, OnDestroy {
-  @HostListener('document:click', ['$event'])
+  @HostListener('window:resize', ['$event'])
   channelsVisible: boolean = true;
   chatsVisible: boolean = true;
   arrowImageRotatedChannel: boolean = false;
