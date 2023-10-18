@@ -113,9 +113,9 @@ export class AuthService {
   }
 
 
-  getCurrentUser(): User | null {
-    return this.auth.currentUser;  // Checks if a user is authenticated (set in the elocal sotrage last time) to show the loading screen or not
-  }
+  // getCurrentUser(): User | null {
+  //   return this.auth.currentUser;  // Checks if a user is authenticated (set in the elocal sotrage last time) to show the loading screen or not
+  // }
 
 
   get currentUserValue(): User | null {
@@ -438,12 +438,12 @@ export class AuthService {
 
   async changeEmail(newEmail: string) {
     const auth = getAuth();
-  
+
     if (!auth.currentUser) {
       console.error("No user is signed in!");
       return;
     }
-  
+
     try {
       await updateEmail(auth.currentUser, newEmail);
     } catch (error) {
@@ -463,5 +463,5 @@ export class AuthService {
       throw error;
     }
   }
-  
+
 }

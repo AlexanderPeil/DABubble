@@ -372,6 +372,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
 
   setFocus(event: any) {
+    console.log('Focus on channel-quill');
+    
     this.channelQuillInstance = event;
     this.quillService.setFocus(event)
   }

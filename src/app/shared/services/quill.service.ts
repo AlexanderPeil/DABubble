@@ -6,7 +6,7 @@ import 'quill-mention';
 import * as Emoji from 'quill-emoji';
 import Quill from 'quill';
 import { AuthService } from './auth.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, timestamp } from 'rxjs';
 Quill.register('modules/emoji', Emoji);
 
 @Injectable({
@@ -153,7 +153,6 @@ export class QuillService {
   }
 
   searchChannels(searchTerm: string, renderList: Function) {
-    console.log('quill service channels');
     this.channelService
       .getChannels(searchTerm)
       .pipe(takeUntil(this.destroy$)
@@ -170,7 +169,6 @@ export class QuillService {
   }
 
   searchEmails(searchTerm: string, renderList: Function) {
-    console.log('quill service emails');
     this.authService
       .getUsersWithEmail(searchTerm)
       .pipe(takeUntil(this.destroy$)
@@ -196,7 +194,7 @@ export class QuillService {
   }
 
   renderItem = (item: any) => {
-    console.log('quil renderList');
+    console.log('quil renderList', new Date().toISOString()); // I got this log 
     
     const div = document.createElement('div');
     const img = document.createElement('img');
@@ -222,7 +220,7 @@ export class QuillService {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ['@'],
       source: this.searchUsers.bind(this),
-      renderItem: this.renderItem, // Verweis auf die außerhalb definierte Methode
+      renderItem: this.renderItem, 
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
         insertItem(item);
       },
@@ -306,14 +304,14 @@ export class QuillService {
 
 
   triggerAtSymbol(editorInstance: any) {
-    console.log('triger quill at symbol');
+    console.log('triger quill at symbol',  new Date().toISOString());
     
     editorInstance.focus();
-    setTimeout(() => {
+    // setTimeout(() => {
       const currentPosition = editorInstance.getSelection()?.index || 0;
       editorInstance.insertText(currentPosition, '@ ');
       editorInstance.setSelection(currentPosition + 1);
-    }, 0);
+    // }, 500);
   }
 
 
