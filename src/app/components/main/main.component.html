@@ -1,15 +1,9 @@
 <app-header></app-header>
 
 <div class="matDrawerMainContainer">
-  <app-sidenav
-    class="sidenav"
-    [ngClass]="{ hidden: !isSidenavOpen }"
-  ></app-sidenav>
+  <app-sidenav class="sidenav" [ngClass]="{ hidden: !isSidenavOpen }"></app-sidenav>
 
-  <div
-    class="routerContainer"
-    [ngClass]="{ hideRouter: threadService.threadAreClosed }"
-  >
+  <div class="routerContainer" [ngClass]="{ hideRouter: threadService.threadAreClosed }">
     <router-outlet></router-outlet>
   </div>
   <app-thread *ngIf="threadService.threadAreClosed"></app-thread>
@@ -17,35 +11,25 @@
 
 <!------------------------- Menu Button start here --------------------------->
 <div (click)="toggleSidenav()" class="containerMenuBtn">
-  <p
-    [ngClass]="{
+  <p [ngClass]="{
       'd-none': isSidenavOpen,
       show: !isSidenavOpen
-    }"
-  >
+    }">
     open Workspace Menu
   </p>
-  <img
-    [ngClass]="{
+  <img [ngClass]="{
       'd-none': isSidenavOpen,
       show: !isSidenavOpen
-    }"
-    src="assets/img/icons/openWorkspaceMenuIcon.svg"
-  />
+    }" src="assets/img/icons/openWorkspaceMenuIcon.svg" />
 
-  <p
-    [ngClass]="{
+  <p [ngClass]="{
       show: isSidenavOpen,
       'd-none': !isSidenavOpen
-    }"
-  >
+    }">
     close Workspace Menu
   </p>
-  <img
-    [ngClass]="{
+  <img [ngClass]="{
       show: isSidenavOpen,
       'd-none': !isSidenavOpen
-    }"
-    src="assets/img/icons/closeWorkspaceMenuIcon.svg"
-  />
+    }" src="assets/img/icons/closeWorkspaceMenuIcon.svg" />
 </div>

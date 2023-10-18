@@ -33,7 +33,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     public channelService: ChannelService,
     private router: Router,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.userSubscription = this.authService

@@ -50,7 +50,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.checkURL();    
+    this.checkURL();
   }
 
 
@@ -80,7 +80,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(message => {
         this.selectedMessage = message;
-        this.fetchThreadMessages(messageId);
+        this.fetchThreadMessages(messageId);  
       });
   }
 
@@ -109,7 +109,9 @@ export class ThreadComponent implements OnInit, OnDestroy {
       this.messageService.getThreadMessagesForMessageId(messageId)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((threadMessages: MessageContent[]) => {
-          this.threadMessages = threadMessages;
+          console.log("Received threadMessages:", threadMessages);
+          const groupedAndSortedMessages = this.messageService.groupMessagesByDate(threadMessages);
+          this.groupedMessages = groupedAndSortedMessages;
         });
     }
   }
@@ -189,7 +191,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
 
   selectUser(user: User): void {
     this.messageContent = this.messageContent.replace(/@[^@]*$/, '@' + user.displayName + ' ');
