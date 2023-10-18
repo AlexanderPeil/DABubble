@@ -309,3 +309,15 @@
     display: none;
   }
 }
+
+//////////////////////start media design here/////////////////////
+@media (max-width: 630px) {
+  .chatHistoryMainContainer {
+    height: 100%;
+    border-radius: unset;
+  }
+  .chatHistoryHeader {
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+  }
+}
