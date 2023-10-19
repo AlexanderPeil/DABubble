@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _eref: ElementRef,
     public dialog: MatDialog,
     public quillService: QuillService,
-    private messageService: MessageService,
+    public messageService: MessageService,
     private channelService: ChannelService,
     private router: Router
   ) {}

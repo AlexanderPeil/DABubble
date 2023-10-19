@@ -1,6 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { MessageService } from 'src/app/shared/services/message.service';
 import { ThreadService } from 'src/app/shared/services/thread.service';
 import { User } from 'src/app/shared/services/user';
 
@@ -10,23 +11,26 @@ import { User } from 'src/app/shared/services/user';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnDestroy, OnInit {
+  @HostListener('window:resize') onResize() { this.checkMobileView(); }
   checkUserActivityInterval: any;
   logoutInterval!: number;
   userSubscription!: Subscription;
   lastUpdate: number = 0;
   updateUserActivityTimeout: any;
   inactiveGuestUserSubscription!: Subscription;
-  isSidenavOpen = true;
+
 
   constructor(
     private authService: AuthService,
-    public threadService: ThreadService
+    public threadService: ThreadService,
+    public messageService: MessageService
   ) { }
 
   ngOnInit() {
+    this.checkMobileView();
     this.checkUserActivityInterval = setInterval(() => {
       this.autoLogoutInactiveGuestUsers();
-      console.log('Check User activity',  new Date().toISOString());
+      console.log('Check User activity', new Date().toISOString());
     }, 60 * 10 * 1000);
   }
 
@@ -36,9 +40,7 @@ export class MainComponent implements OnDestroy, OnInit {
   //   this.debouncedUpdateUserActivity();
   // }
 
-  toggleSidenav() {
-    this.isSidenavOpen = !this.isSidenavOpen;
-  }
+
 
   debouncedUpdateUserActivity() {
     const timeSinceLastUpdate = Date.now() - this.lastUpdate;
@@ -75,6 +77,16 @@ export class MainComponent implements OnDestroy, OnInit {
         });
       });
   }
+
+
+  checkMobileView() {
+    if (window.innerWidth <= 630) {
+      this.messageService.chatOpen = false;
+    } else {
+      this.messageService.chatOpen = true;
+    }
+  }
+
 
   ngOnDestroy() {
     clearInterval(this.checkUserActivityInterval);

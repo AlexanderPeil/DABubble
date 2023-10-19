@@ -1,13 +1,13 @@
 <div class="headerContainer">
   <img class="logoImg" src="./assets/img/logo.svg" alt="" />
-  <!-- <div>
+  <div *ngIf="this.messageService.headerChatMobile && screenWidth <= 630">
     <img
       class="backArrow"
       src="./assets/img/icons/arrow_back_responsive.svg"
       alt=""
     />
     <img class="logoImg" src="./assets/img/codelearning.svg" alt="" />
-  </div> -->
+  </div>
 
   <app-searchbar *ngIf="screenWidth > 630"></app-searchbar>
 

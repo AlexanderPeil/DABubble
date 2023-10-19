@@ -46,24 +46,28 @@
     <div class="answersInThreadContainer">
       <p>{{ threadMessages.length }} Answers</p>
       <hr />
-      <div
-        *ngFor="let threadMessage of threadMessages"
-        class="messageChildContainer"
-      >
-        <div class="containerUserNameAndTime">
-          <img
-            class="userImg"
-            [src]="threadMessage.senderImage"
-            alt="{{ threadMessage.senderName }}'s profile image"
-            (error)="retryLoadThreadMessageSenderImage(threadMessage)"
-          />
-          <p class="userName">{{ threadMessage.senderName }}</p>
-          <p class="time">
-            {{ messageService.formatTime(threadMessage.timestamp) }}
-          </p>
+      <div *ngFor="let group of groupedMessages">
+        <div class="messageDate">{{ group.date }}</div>
+        <div
+          *ngFor="let threadMessage of group.messages"
+          class="messageChildContainer"
+        >
+          <div class="containerUserNameAndTime">
+            <img
+              class="userImg"
+              [src]="threadMessage.senderImage"
+              alt="{{ threadMessage.senderName }}'s profile image"
+              (error)="retryLoadThreadMessageSenderImage(threadMessage)"
+            />
+            <p class="userName">{{ threadMessage.senderName }}</p>
+            <p class="time">
+              {{ messageService.formatTime(threadMessage.timestamp) }}
+            </p>
+          </div>
+          <span class="messageText">{{ threadMessage.content }}</span>
         </div>
-        <span class="messageText">{{ threadMessage.content }}</span>
       </div>
+      
     </div>
     <!------------------------ Answers to the messages from channels or direct-messages --------------------- -->
 

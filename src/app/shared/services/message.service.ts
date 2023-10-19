@@ -32,12 +32,18 @@ export class MessageService {
   usersInChat: { [userId: string]: boolean } = {};
   private selectedMessageIdSubject = new BehaviorSubject<string | null>(null);
   selectedMessageId = this.selectedMessageIdSubject.asObservable();
-  public shouldScrollToSpecificMessage = false;
+  public shouldScrollToSpecificMessage:boolean = false;
+  chatOpen:boolean = true;
+  isSidenavOpen:boolean = true;
+  isMobile!: boolean;
+  headerChatMobile: boolean = false;
 
   constructor(
     private firestore: Firestore,
     private authService: AuthService,
-    public channelService: ChannelService) { }
+    public channelService: ChannelService) { 
+      window.addEventListener('resize', this.checkMobileView.bind(this));
+    }
 
 
   // Here begins the logic for all messages
@@ -439,4 +445,15 @@ export class MessageService {
     }
   }
   // Here ends the logic for the thread-messages  
+
+
+  toggleSidenav() {
+    this.isSidenavOpen = !this.isSidenavOpen;
+  }
+
+
+  checkMobileView() {
+    this.isMobile = window.innerWidth <= 630;
+  }
+
 }

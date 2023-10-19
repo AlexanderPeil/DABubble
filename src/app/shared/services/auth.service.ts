@@ -40,13 +40,7 @@ import { browserLocalPersistence } from 'firebase/auth';
   providedIn: 'root',
 })
 
-/**
- * `AuthService` is a service class responsible for handling user authentication.
- * It observes the user's authentication state and logs relevant information.
- *
- * @property {Observable<User | null>} user$ - Observable representing the current user. Emits either the user data or null if not authenticated.
- * @property {Subscription} userSubscription - Subscription to the user$ observable to handle user state changes.
- */
+
 export class AuthService {
   public user$: Observable<User | null>;
   private userSubscription?: Subscription;
@@ -54,12 +48,7 @@ export class AuthService {
     null
   );
 
-  /**
-   * Constructs an instance of the AuthService.
-   * @param {Auth} auth - The authentication service dependency provided by Firebase.
-   * @param {Router} router - The Angular Router for navigating between routes.
-   * @param {Firestore} firestore - The Firestore database service provided by Firebase.
-   */
+
   constructor(
     public auth: Auth,
     public router: Router,
@@ -123,14 +112,6 @@ export class AuthService {
   }
 
 
-  /**
-   * Sign in using email and password.
-   * @async
-   * @param {string} email - The email address of the user.
-   * @param {string} password - The password of the user.
-   * @throws Will throw an error if the sign-in process fails.
-   * @returns {Promise<void>} Returns a promise that resolves when the sign-in process is complete.
-   */
   async signIn(email: string, password: string) {
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -153,16 +134,6 @@ export class AuthService {
   }
 
 
-  /**
-   * Sign up using display name, email, and password.
-   * After successful sign-up, updates the user profile with the display name, sets user data, and navigates to the login page.
-   * @async
-   * @param {string} displayName - The display name of the user.
-   * @param {string} email - The email address of the user.
-   * @param {string} password - The password of the user.
-   * @throws Will throw an error if the sign-up process fails.
-   * @returns {Promise<void>} Returns a promise that resolves when the sign-up process is complete.
-   */
   async signUp(
     displayName: string,
     email: string,
@@ -190,13 +161,6 @@ export class AuthService {
   }
 
 
-  /**
-   * Signs in the user anonymously.
-   * After a successful sign-in, updates the user profile to set the display name as 'Guest', sets user data, updates user's online status and navigates to chat history.<------ Maybe I have to change the route later.
-   * @async
-   * @throws {Error} Will log and rethrow the error if the sign-in process fails.
-   * @returns {Promise<void>} Returns a promise that resolves when the anonymous sign-in process is complete.
-   */
   async signInAnonymously() {
     try {
       const userCredential = await signInAnonymously(this.auth);
@@ -219,13 +183,6 @@ export class AuthService {
   }
 
 
-  /**
-   * Signs in the user using Google authentication.
-   * After successful sign-in, sets user data, updates user's online status and navigates to chat history.<------ Maybe I have to change the route later.
-   * @async
-   * @throws {Error} Will log and rethrow the error if the Google sign-in process fails.
-   * @returns {Promise<void>} Returns a promise that resolves when the Google sign-in process is complete.
-   */
   async signInWithGoogle() {
     const provider = new GoogleAuthProvider();
     try {
@@ -245,12 +202,6 @@ export class AuthService {
   }
 
 
-  /**
-   * Sends a password reset email to the specified email address.
-   * @async
-   * @param {string} passwordResetEmail - The email address where the password reset link should be sent.
-   * @throws Will throw an error if the email sending process fails.
-   */
   async forgotPassword(passwordResetEmail: string) {
     try {
       await sendPasswordResetEmail(this.auth, passwordResetEmail);
@@ -261,12 +212,6 @@ export class AuthService {
   }
 
 
-  /**
-   * Signs out the currently authenticated user. If the user is logged in, updates
-   * their online status to 'false' before signing out and then redirects to the login page.
-   * @async
-   * @throws Will throw an error if the sign-out process fails.
-   */
   async signOut() {
     const currentUser = this.auth.currentUser;
     if (currentUser) {
@@ -321,11 +266,6 @@ export class AuthService {
   }
 
 
-  /**
-   * Fetches the online status of a user from Firestore based on their UID.
-   * @param {string} uid - The UID of the user.
-   * @returns {Observable<boolean>} Observable that emits the online status of the user.
-   */
   getUserData(uid: string): Observable<User | null> {
     const userDocRef = doc(this.firestore, `users/${uid}`);
     return docData(userDocRef).pipe(
@@ -412,13 +352,6 @@ export class AuthService {
   }
 
 
-  /**
-   * Sets or updates the online status of the user in Firestore.
-   * @async
-   * @param {FirebaseUser} user - The user object from Firebase Authentication.
-   * @param {boolean} isOnline - The online status to be set for the user.
-   * @returns {User} The data structure that was set in Firestore.
-   */
   async setUserOnlineStatus(uid: string, isOnline: boolean) {
     const userRef = doc(this.firestore, `users/${uid}`);
     await updateDoc(userRef, {
