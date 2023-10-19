@@ -42,6 +42,11 @@
   }
 }
 
+.scrollableContainer {
+  height: unset;
+  max-height: 330px;
+}
+
 .searchDropdown {
   @include flex_column_center;
   font-size: 18px;
@@ -52,7 +57,7 @@
   position: absolute;
   top: 65px;
   min-width: 300px;
-  min-height: 300px;
+  // min-height: 300px;
   // max-height: 500px;
   padding: 10px;
   z-index: 999;

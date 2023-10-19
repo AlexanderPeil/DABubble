@@ -89,7 +89,9 @@
     padding: 0;
     gap: 0;
   }
-
+  .containerMenuBtn {
+    display: none;
+  }
   .sidenav {
     width: 100%;
     border-radius: unset;

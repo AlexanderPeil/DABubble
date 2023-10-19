@@ -14,61 +14,66 @@
 
   <!-- Search dropdown list -->
   <div *ngIf="searchList" class="searchDropdown">
-    <!-- Users section -->
-    <div
-      class="searchResult"
-      *ngIf="searchResults.users && searchResults.users.length"
-    >
-      <h2>Users</h2>
-      <div class="searchResultContent" *ngFor="let user of searchResults.users">
-        <img
-          class="userSearchImg"
-          [src]="user.photoURL"
-          alt="{{ user.displayName }}"
-          (error)="retryLoadImage(user)"
-        />
-        <span (click)="navigateToDirectMessage(user.uid)">{{
-          user.displayName
-        }}</span>
-      </div>
-    </div>
-
-    <!-- Channels section -->
-    <div
-      class="searchResult"
-      *ngIf="searchResults.channels && searchResults.channels.length"
-    >
-      <h2>Channels</h2>
+    <div class="scrollableContainer">
+      <!-- Users section -->
       <div
-        class="searchResultContent"
-        *ngFor="let channel of searchResults.channels"
+        class="searchResult"
+        *ngIf="searchResults.users && searchResults.users.length"
       >
-        <span (click)="navigateToChannel(channel.channelId)"
-          ># {{ channel.channelName }}</span
+        <h2>Users</h2>
+        <div
+          class="searchResultContent"
+          *ngFor="let user of searchResults.users"
         >
+          <img
+            class="userSearchImg"
+            [src]="user.photoURL"
+            alt="{{ user.displayName }}"
+            (error)="retryLoadImage(user)"
+          />
+          <span (click)="navigateToDirectMessage(user.uid)">{{
+            user.displayName
+          }}</span>
+        </div>
       </div>
-    </div>
 
-    <!-- Channel-messages section -->
-    <div
-      class="searchResult"
-      *ngIf="
-        searchResults.channelMessages && searchResults.channelMessages.length
-      "
-    >
-      <h2>Channel-Messages</h2>
+      <!-- Channels section -->
       <div
-        class="searchResultContent"
-        *ngFor="let message of searchResults.channelMessages"
+        class="searchResult"
+        *ngIf="searchResults.channels && searchResults.channels.length"
       >
-        <span
-          (click)="
-            message.channelId && message.id
-              ? navigateToChannelMessage(message.channelId, message.id)
-              : null
-          "
-          >* {{ message.content }}</span
+        <h2>Channels</h2>
+        <div
+          class="searchResultContent"
+          *ngFor="let channel of searchResults.channels"
         >
+          <span (click)="navigateToChannel(channel.channelId)"
+            ># {{ channel.channelName }}</span
+          >
+        </div>
+      </div>
+
+      <!-- Channel-messages section -->
+      <div
+        class="searchResult"
+        *ngIf="
+          searchResults.channelMessages && searchResults.channelMessages.length
+        "
+      >
+        <h2>Channel-Messages</h2>
+        <div
+          class="searchResultContent"
+          *ngFor="let message of searchResults.channelMessages"
+        >
+          <span
+            (click)="
+              message.channelId && message.id
+                ? navigateToChannelMessage(message.channelId, message.id)
+                : null
+            "
+            >* {{ message.content }}</span
+          >
+        </div>
       </div>
     </div>
   </div>
