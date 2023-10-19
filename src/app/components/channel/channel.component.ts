@@ -358,7 +358,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
     if (messageElement) {
       messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      console.log('Element found and scrolled to.');
       this.retryCount = 0;
     } else if (this.retryCount < 5) {
       this.retryCount++;
@@ -372,8 +371,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
 
   setFocus(event: any) {
-    console.log('Focus on channel-quill');
-
     this.channelQuillInstance = event;
     this.quillService.setFocus(event)
   }
