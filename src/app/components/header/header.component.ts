@@ -159,6 +159,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   //   this.router.navigate(['/main/channel', channelId]);
   // }
 
+
+  navigateToSidenavMobile() {
+    this.messageService.chatOpen = false;
+    this.messageService.isSidenavOpen = true;
+    this.messageService.headerChatMobile = false;
+  }
+
+
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();
     // this.searchSub?.unsubscribe();
