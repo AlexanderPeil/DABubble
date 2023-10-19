@@ -282,3 +282,16 @@
 }
 
 /************************************ Styles for the texfield ************************************/
+
+/////////////////////// responsive design start here ///////////////////////////
+
+@media (max-width: 630px) {
+  .chatHistoryHeader {
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+  }
+  .chatHistoryMainContainer {
+    height: 100%;
+    border-radius: unset;
+  }
+}

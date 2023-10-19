@@ -1,6 +1,16 @@
 <div class="headerContainer">
-  <img *ngIf="!this.messageService.headerChatMobile" class="logoImg" src="./assets/img/logo.svg" alt="" >
-  <div *ngIf="this.messageService.headerChatMobile && screenWidth <= 630" class="headerChatMobile" (click)="navigateToSidenavMobile()">
+  <img
+    *ngIf="!this.messageService.headerChatMobile"
+    class="logoImg"
+    src="./assets/img/logo.svg"
+    alt=""
+  />
+  <div
+    ngClass="backArrowDiv"
+    *ngIf="this.messageService.headerChatMobile && screenWidth <= 630"
+    class="headerChatMobile"
+    (click)="navigateToSidenavMobile()"
+  >
     <img
       class="backArrow"
       src="./assets/img/icons/arrow_back_responsive.svg"
