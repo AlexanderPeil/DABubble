@@ -144,3 +144,16 @@
     color: unset;
   }
 }
+@media (max-width: 345px) {
+  .searchDropdown {
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 340px) {
+  .inputContainer {
+    input {
+      font-size: 15px;
+    }
+  }
+}
