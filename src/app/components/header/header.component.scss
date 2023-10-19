@@ -253,3 +253,9 @@ app-searchbar {
     height: 70px;
   }
 }
+
+@media (max-width: 410px) {
+  .arrowDown {
+    display: none;
+  }
+}
