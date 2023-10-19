@@ -86,21 +86,19 @@ export class SidenavComponent implements OnInit, OnDestroy {
       .subscribe();
     this.router.navigate(['main', 'direct-message', clickedUser.uid]);
 
-    if (this.messageService.isMobile) {
-      this.messageService.chatOpen = true;
-      this.messageService.isSidenavOpen = false;
-      this.messageService.headerChatMobile = true;
-    }
+    this.messageService.openChatMobile();
   }
 
   onChannelClick(channelId: string) {
     this.messageService.markChannelMessageAsRead(channelId);
-    if (this.messageService.isMobile) {
-      this.messageService.chatOpen = true;
-      this.messageService.isSidenavOpen = false;
-      this.messageService.headerChatMobile = true;
-    }
+    this.messageService.openChatMobile();
   }
+
+
+  openNewMessageMobile() {
+    this.messageService.openChatMobile();
+  }
+
 
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();

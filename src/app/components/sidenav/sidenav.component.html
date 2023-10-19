@@ -1,6 +1,6 @@
 <div class="head-of-sidenav padding">
   <img *ngIf="screenWidth > 631" class="main-channel-img" src="./assets/img/codelearning.svg" alt="" />
-  <div [routerLink]="['/main/new-message']" class="icon-div">
+  <div [routerLink]="['/main/new-message']" class="icon-div" (click)="openNewMessageMobile()">
     <img src="./assets/img/icons/edit_square.svg" alt="" title="New message" />
   </div>
 </div>

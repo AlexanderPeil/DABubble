@@ -80,12 +80,14 @@ export class SearchbarComponent implements OnDestroy {
     this.searchList = false;
     this.searchTerm = '';
     this.router.navigate(['/main/channel', channelId]);
+    this.messageService.openChatMobile();
   }
 
   navigateToDirectMessage(uid: string) {
     this.searchList = false;
     this.searchTerm = '';
     this.router.navigate(['/main/direct-message', uid]);
+    this.messageService.openChatMobile();
   }
 
   loadAllMessages(): void {
@@ -106,6 +108,7 @@ export class SearchbarComponent implements OnDestroy {
     this.messageService.setSelectedMessageId(messageId);
     this.messageService.shouldScrollToSpecificMessage = true;
     this.router.navigate(['/main/channel', channelId]);
+    this.messageService.openChatMobile();
   }
 
   ngOnDestroy() {

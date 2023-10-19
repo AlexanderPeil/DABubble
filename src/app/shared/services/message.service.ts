@@ -32,18 +32,19 @@ export class MessageService {
   usersInChat: { [userId: string]: boolean } = {};
   private selectedMessageIdSubject = new BehaviorSubject<string | null>(null);
   selectedMessageId = this.selectedMessageIdSubject.asObservable();
-  public shouldScrollToSpecificMessage:boolean = false;
-  chatOpen:boolean = true;
-  isSidenavOpen:boolean = true;
+  public shouldScrollToSpecificMessage: boolean = false;
+  chatOpen: boolean = true;
+  isSidenavOpen: boolean = true;
   isMobile!: boolean;
   headerChatMobile: boolean = false;
 
   constructor(
     private firestore: Firestore,
     private authService: AuthService,
-    public channelService: ChannelService) { 
-      window.addEventListener('resize', this.checkMobileView.bind(this));
-    }
+    public channelService: ChannelService) {
+    window.addEventListener('resize', this.checkMobileView.bind(this));
+    this.checkMobileView();
+  }
 
 
   // Here begins the logic for all messages
@@ -385,8 +386,8 @@ export class MessageService {
     this.selectedMessageIdSubject.next(id);
     console.log(this.selectedMessageId);
     console.log(this.selectedMessageIdSubject);
-    
-    
+
+
   }
   // Here ends the logic for channel-messages
 
@@ -454,6 +455,15 @@ export class MessageService {
 
   checkMobileView() {
     this.isMobile = window.innerWidth <= 630;
+  }
+
+
+  openChatMobile() {
+    if (this.isMobile) {
+      this.chatOpen = true;
+      this.isSidenavOpen = false;
+      this.headerChatMobile = true;
+    }
   }
 
 }
