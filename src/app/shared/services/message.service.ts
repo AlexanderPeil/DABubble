@@ -450,8 +450,6 @@ export class MessageService {
 
   setSelectedMessageId(id: string) {
     this.selectedMessageIdSubject.next(id);
-    console.log(this.selectedMessageId);
-    console.log(this.selectedMessageIdSubject);
   }
   // Here ends the logic for channel-messages
 
@@ -541,6 +539,12 @@ export class MessageService {
 
   checkMobileView() {
     this.isMobile = window.innerWidth <= 630;
+    if (window.innerWidth > 630) {
+      this.isMobile = false;
+      this.chatOpen = false;
+      this.isSidenavOpen = true;
+      this.headerChatMobile = false;
+    }
   }
 
   openChatMobile() {
