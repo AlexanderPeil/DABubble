@@ -539,12 +539,12 @@ export class MessageService {
 
   checkMobileView() {
     this.isMobile = window.innerWidth <= 630;
-    if (window.innerWidth > 630) {
-      this.isMobile = false;
-      this.chatOpen = false;
-      this.isSidenavOpen = true;
-      this.headerChatMobile = false;
-    }
+    // if (window.innerWidth > 630) {
+    //   this.isMobile = false;
+    //   this.chatOpen = false;
+    //   this.isSidenavOpen = true;
+    //   this.headerChatMobile = false;
+    // }
   }
 
   openChatMobile() {

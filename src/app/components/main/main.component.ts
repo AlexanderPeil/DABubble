@@ -11,7 +11,9 @@ import { User } from 'src/app/shared/services/user';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnDestroy, OnInit {
-  @HostListener('window:resize') onResize() { this.checkMobileView(); }
+  @HostListener('window:resize') onResize() {
+    this.checkMobileView();
+  }
   checkUserActivityInterval: any;
   logoutInterval!: number;
   userSubscription!: Subscription;
@@ -19,12 +21,11 @@ export class MainComponent implements OnDestroy, OnInit {
   updateUserActivityTimeout: any;
   inactiveGuestUserSubscription!: Subscription;
 
-
   constructor(
     private authService: AuthService,
     public threadService: ThreadService,
     public messageService: MessageService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.checkMobileView();
@@ -39,8 +40,6 @@ export class MainComponent implements OnDestroy, OnInit {
   // userActivity(event: Event) {
   //   this.debouncedUpdateUserActivity();
   // }
-
-
 
   debouncedUpdateUserActivity() {
     const timeSinceLastUpdate = Date.now() - this.lastUpdate;
@@ -78,7 +77,6 @@ export class MainComponent implements OnDestroy, OnInit {
       });
   }
 
-
   checkMobileView() {
     if (window.innerWidth <= 630) {
       this.messageService.chatOpen = false;
@@ -86,7 +84,6 @@ export class MainComponent implements OnDestroy, OnInit {
       this.messageService.chatOpen = true;
     }
   }
-
 
   ngOnDestroy() {
     clearInterval(this.checkUserActivityInterval);
