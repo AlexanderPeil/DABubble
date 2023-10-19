@@ -12,18 +12,25 @@ import {
   getDoc,
   arrayUnion,
   arrayRemove,
-  orderBy
+  orderBy,
 } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable, catchError, combineLatest, map, of, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  combineLatest,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
 import { MessageContent } from 'src/app/models/message';
 import { AuthService } from './auth.service';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { User } from 'src/app/shared/services/user';
 import { Channel } from 'src/app/models/channel';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MessageService {
   selectedUser: User | null = null;
@@ -49,13 +56,12 @@ export class MessageService {
     this.handleResize();
   }
 
-
   // Here begins the logic for all messages
   removePTags(htmlContent: string) {
     const div = document.createElement('div');
     div.innerHTML = htmlContent;
 
-    div.querySelectorAll('p').forEach(p => {
+    div.querySelectorAll('p').forEach((p) => {
       const text = p.innerText;
       const textNode = document.createTextNode(text);
       p.replaceWith(textNode);
@@ -64,25 +70,27 @@ export class MessageService {
     return div.innerHTML;
   }
 
-
   getLoggedInUser(loggedInUserId: string): Observable<User | null> {
     return this.authService.getUserData(loggedInUserId);
   }
 
-
-  groupMessagesByDate(messages: MessageContent[]): { date: string, messages: MessageContent[] }[] {
-    return messages.reduce<{ date: string, messages: MessageContent[] }[]>((grouped, message) => {
-      const dateStr = this.formatDate(message.timestamp);
-      const foundGroup = grouped.find(group => group.date === dateStr);
-      if (foundGroup) {
-        foundGroup.messages.push(message);
-      } else {
-        grouped.push({ date: dateStr, messages: [message] });
-      }
-      return grouped;
-    }, []);
+  groupMessagesByDate(
+    messages: MessageContent[]
+  ): { date: string; messages: MessageContent[] }[] {
+    return messages.reduce<{ date: string; messages: MessageContent[] }[]>(
+      (grouped, message) => {
+        const dateStr = this.formatDate(message.timestamp);
+        const foundGroup = grouped.find((group) => group.date === dateStr);
+        if (foundGroup) {
+          foundGroup.messages.push(message);
+        } else {
+          grouped.push({ date: dateStr, messages: [message] });
+        }
+        return grouped;
+      },
+      []
+    );
   }
-
 
   formatDate(timestamp: number): string {
     const date = this.stripTime(new Date(timestamp));
@@ -92,27 +100,36 @@ export class MessageService {
     if (date.getTime() === today.getTime()) return 'Today';
     if (date.getTime() === yesterday.getTime()) return 'Yesterday';
 
-    const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: '2-digit', month: 'long' };
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      day: '2-digit',
+      month: 'long',
+    };
     return date.toLocaleDateString('en-US', options);
   }
-
 
   stripTime(date: Date): Date {
     date.setHours(0, 0, 0, 0);
     return date;
   }
 
-
   formatTime(timestamp: number): string {
     const date = new Date(timestamp);
-    const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
+    const options: Intl.DateTimeFormatOptions = {
+      hour: '2-digit',
+      minute: '2-digit',
+    };
     return date.toLocaleTimeString('de-DE', options);
   }
   // Here ends the logic for all messages
 
-
   // Here begins the logic for the direct-messages
-  async createAndAddMessage(senderId: string, receiverId: string, senderName: string, content: string): Promise<void> {
+  async createAndAddMessage(
+    senderId: string,
+    receiverId: string,
+    senderName: string,
+    content: string
+  ): Promise<void> {
     const loggedInUser = this.authService.currentUserValue;
     const message = new MessageContent({
       senderId: senderId,
@@ -123,50 +140,59 @@ export class MessageService {
       senderName: senderName,
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: false,
-      channelId: null
+      channelId: null,
     });
 
-    const messageCollection = this.getDirectMessageCollection(senderId, receiverId);
+    const messageCollection = this.getDirectMessageCollection(
+      senderId,
+      receiverId
+    );
     try {
       await addDoc(messageCollection, message.toJSON());
 
       if (senderId !== receiverId) {
         const receiverRef = doc(this.firestore, 'users', receiverId);
-        await updateDoc(receiverRef, { hasUnreadMessages: arrayUnion(senderId) });
+        await updateDoc(receiverRef, {
+          hasUnreadMessages: arrayUnion(senderId),
+        });
       }
-
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error('Error adding document: ', error);
     }
   }
 
-
-
   getDirectMessageCollection(userId1: string, userId2: string) {
     const chatId = this.generateChatId(userId1, userId2);
-    return collection(doc(this.firestore, `directMessage/${chatId}`), 'messages');
+    return collection(
+      doc(this.firestore, `directMessage/${chatId}`),
+      'messages'
+    );
   }
-
 
   generateChatId(userId1: string, userId2: string): string {
     return [userId1, userId2].sort().join('_');
   }
 
-
-  getDirectMessages(userId1: string, userId2: string): Observable<MessageContent[]> {
+  getDirectMessages(
+    userId1: string,
+    userId2: string
+  ): Observable<MessageContent[]> {
     const messageCollection = this.getDirectMessageCollection(userId1, userId2);
     return collectionData(messageCollection, { idField: 'id' }).pipe(
-      map(docs => docs.map(doc => new MessageContent(doc)))
+      map((docs) => docs.map((doc) => new MessageContent(doc)))
     );
   }
 
-
-  getDirectMessageById(userId1: string, userId2: string, messageId: string): Observable<MessageContent | null> {
+  getDirectMessageById(
+    userId1: string,
+    userId2: string,
+    messageId: string
+  ): Observable<MessageContent | null> {
     const messageCollection = this.getDirectMessageCollection(userId1, userId2);
     const messageRef = doc(messageCollection, messageId);
 
     return docData(messageRef, { idField: 'id' }).pipe(
-      map(data => {
+      map((data) => {
         if (data) {
           return new MessageContent({ ...data });
         } else {
@@ -176,72 +202,89 @@ export class MessageService {
     );
   }
 
-
-  async updateDirectMessage(userId1: string, userId2: string, messageId: string, updatedContent: string): Promise<void> {
+  async updateDirectMessage(
+    userId1: string,
+    userId2: string,
+    messageId: string,
+    updatedContent: string
+  ): Promise<void> {
     const messageCollection = this.getDirectMessageCollection(userId1, userId2);
     const messageRef = doc(messageCollection, messageId);
 
     try {
       await updateDoc(messageRef, {
         content: updatedContent,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       });
       const receiverRef = doc(this.firestore, 'users', userId2);
       await updateDoc(receiverRef, { hasUnreadMessages: arrayUnion(userId1) });
     } catch (error) {
-      console.error("Error updating document: ", error);
+      console.error('Error updating document: ', error);
     }
   }
 
-
-  hasUnreadMessages(userId1: string, userId2: string, currentUser: string): Observable<boolean> {
+  hasUnreadMessages(
+    userId1: string,
+    userId2: string,
+    currentUser: string
+  ): Observable<boolean> {
     const messageCollection = this.getDirectMessageCollection(userId1, userId2);
     return collectionData(messageCollection, { idField: 'id' }).pipe(
-      map(messages => messages.some(message => !message['read'] && message['receiverId'] === currentUser))
+      map((messages) =>
+        messages.some(
+          (message) => !message['read'] && message['receiverId'] === currentUser
+        )
+      )
     );
   }
 
-
-  async setEmoji(userId1: string, userId2: string, messageId: string, emojiType: string): Promise<void> {
+  async setEmoji(
+    userId1: string,
+    userId2: string,
+    messageId: string,
+    emojiType: string
+  ): Promise<void> {
     const messageCollection = this.getDirectMessageCollection(userId1, userId2);
     const messageRef = doc(messageCollection, messageId);
 
     try {
       const messageDoc = await getDoc(messageRef);
       if (messageDoc.exists()) {
-        const currentEmojis = messageDoc.data() ? messageDoc.data()['emojis'] || {} : {};
+        const currentEmojis = messageDoc.data()
+          ? messageDoc.data()['emojis'] || {}
+          : {};
         const currentCount = currentEmojis[emojiType] || 0;
         await updateDoc(messageRef, {
-          [`emojis.${emojiType}`]: currentCount + 1
+          [`emojis.${emojiType}`]: currentCount + 1,
         });
       }
     } catch (error) {
-      console.error("Error updating document: ", error);
+      console.error('Error updating document: ', error);
     }
   }
-
 
   async markMessagesAsRead(senderId: string, receiverId: string) {
     const receiverRef = doc(this.firestore, 'users', receiverId);
     await updateDoc(receiverRef, { hasUnreadMessages: arrayRemove(senderId) });
   }
 
-
   selectReceiver(userId: string) {
     this.currentReceiverId = userId;
   }
 
-
   markAsReadIfCurrentReceiver(senderId: string) {
     if (this.currentReceiverId === senderId) {
-
     }
   }
   // Here ends the logic for the direct-messages
 
-
   // Here begins the logic for channel-messages
-  async createAndAddChannelMessage(channelId: string, senderId: string, senderName: string, content: string) {
+  async createAndAddChannelMessage(
+    channelId: string,
+    senderId: string,
+    senderName: string,
+    content: string
+  ) {
     const loggedInUser = this.authService.currentUserValue;
     const message = new MessageContent({
       senderId: senderId,
@@ -252,10 +295,15 @@ export class MessageService {
       senderName: senderName,
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: false,
-      channelId: channelId
+      channelId: channelId,
     });
 
-    const messageCollection = collection(this.firestore, 'channels', channelId, 'messages');
+    const messageCollection = collection(
+      this.firestore,
+      'channels',
+      channelId,
+      'messages'
+    );
     try {
       const docRef = await addDoc(messageCollection, message.toJSON());
       const generatedId = docRef.id;
@@ -266,34 +314,39 @@ export class MessageService {
       if (channelSnap.exists()) {
         await updateDoc(channelRef, { readBy: [senderId] });
       }
-
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error('Error adding document: ', error);
     }
   }
-
 
   getChannelMessageCollection(channelID: string) {
     return collection(this.firestore, 'channels', channelID, 'messages');
   }
 
-
   getChannelMessages(channelID: string): Observable<MessageContent[]> {
     const messageCollection = this.getChannelMessageCollection(channelID);
     return collectionData(messageCollection, { idField: 'id' }).pipe(
-      map(docs => docs.map(doc => new MessageContent(doc))),
-      catchError(error => {
-        console.error(`Fehler beim Abrufen der Nachrichten für den Kanal ${channelID}:`, error);
+      map((docs) => docs.map((doc) => new MessageContent(doc))),
+      catchError((error) => {
+        console.error(
+          `Fehler beim Abrufen der Nachrichten für den Kanal ${channelID}:`,
+          error
+        );
         return of([]);
       })
     );
   }
 
-
-  getChannelMessageById(channelID: string, messageId: string): Observable<MessageContent | null> {
-    const messageRef = doc(this.getChannelMessageCollection(channelID), messageId);
+  getChannelMessageById(
+    channelID: string,
+    messageId: string
+  ): Observable<MessageContent | null> {
+    const messageRef = doc(
+      this.getChannelMessageCollection(channelID),
+      messageId
+    );
     return docData(messageRef, { idField: 'id' }).pipe(
-      map(data => {
+      map((data) => {
         if (data) {
           return new MessageContent({ ...data });
         } else {
@@ -303,7 +356,6 @@ export class MessageService {
     );
   }
 
-
   getChannels(): Observable<Channel[]> {
     const collectionInstance = query(
       collection(this.firestore, 'channels'),
@@ -312,23 +364,27 @@ export class MessageService {
 
     return collectionData(collectionInstance, {
       idField: 'id',
-    }).pipe(
-      map((docs: any[]) => docs.map(doc => new Channel(doc)))
-    );
+    }).pipe(map((docs: any[]) => docs.map((doc) => new Channel(doc))));
   }
-
 
   fetchAllChannelMessages(): Observable<MessageContent[]> {
     return this.getChannels().pipe(
-      switchMap(channels => {
-        const messageObservables = channels.map(channel => {
-          const messagesRef = collection(this.firestore, `channels/${channel.channelId}/messages`);
+      switchMap((channels) => {
+        const messageObservables = channels.map((channel) => {
+          const messagesRef = collection(
+            this.firestore,
+            `channels/${channel.channelId}/messages`
+          );
           return collectionData(messagesRef, { idField: 'id' }).pipe(
-            catchError(error => {
-              console.error("Fehler beim Laden der Nachrichten für Channel:", channel.channelId, error);
+            catchError((error) => {
+              console.error(
+                'Fehler beim Laden der Nachrichten für Channel:',
+                channel.channelId,
+                error
+              );
               return of([]);
             }),
-            map(docs => docs.map(doc => new MessageContent(doc)))
+            map((docs) => docs.map((doc) => new MessageContent(doc)))
           );
         });
         return combineLatest(messageObservables).pipe(
@@ -340,59 +396,72 @@ export class MessageService {
     );
   }
 
-
-  async updateChannelMessage(channelID: string, messageId: string, updatedContent: string) {
-    const messageRef = doc(this.getChannelMessageCollection(channelID), messageId);
+  async updateChannelMessage(
+    channelID: string,
+    messageId: string,
+    updatedContent: string
+  ) {
+    const messageRef = doc(
+      this.getChannelMessageCollection(channelID),
+      messageId
+    );
 
     try {
       await updateDoc(messageRef, {
         content: updatedContent,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       });
     } catch (error) {
-      console.error("Error updating document: ", error);
+      console.error('Error updating document: ', error);
     }
   }
 
-
-  async setChannelMessageEmoji(channelID: string, messageId: string, emojiType: string): Promise<void> {
+  async setChannelMessageEmoji(
+    channelID: string,
+    messageId: string,
+    emojiType: string
+  ): Promise<void> {
     const messageCollection = this.getChannelMessageCollection(channelID);
     const messageRef = doc(messageCollection, messageId);
 
     try {
       const messageDoc = await getDoc(messageRef);
       if (messageDoc.exists()) {
-        const currentEmojis = messageDoc.data() ? messageDoc.data()['emojis'] || {} : {};
+        const currentEmojis = messageDoc.data()
+          ? messageDoc.data()['emojis'] || {}
+          : {};
         const currentCount = currentEmojis[emojiType] || 0;
         await updateDoc(messageRef, {
-          [`emojis.${emojiType}`]: currentCount + 1
+          [`emojis.${emojiType}`]: currentCount + 1,
         });
       }
     } catch (error) {
-      console.error("Error updating document: ", error);
+      console.error('Error updating document: ', error);
     }
   }
-
 
   markChannelMessageAsRead(channelId: string) {
     const userId = this.authService.currentUserValue?.uid;
     if (userId) {
       const channelRef = doc(this.firestore, 'channels', channelId);
       updateDoc(channelRef, {
-        readBy: arrayUnion(userId)
-      }).catch(error => console.error("Error updating document: ", error));
+        readBy: arrayUnion(userId),
+      }).catch((error) => console.error('Error updating document: ', error));
     }
   }
-
 
   setSelectedMessageId(id: string) {
     this.selectedMessageIdSubject.next(id);
   }
   // Here ends the logic for channel-messages
 
-
-  // Here begins the logic for the thread-messages  
-  async createAndAddThreadMessage(senderId: string, senderName: string, content: string, messageId: string): Promise<string | null> {
+  // Here begins the logic for the thread-messages
+  async createAndAddThreadMessage(
+    senderId: string,
+    senderName: string,
+    content: string,
+    messageId: string
+  ): Promise<string | null> {
     const loggedInUser = this.authService.currentUserValue;
     const message = new MessageContent({
       senderId: senderId,
@@ -403,49 +472,68 @@ export class MessageService {
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: true,
       messageId: messageId,
-      channelId: null
+      channelId: null,
     });
     const messageCollection = collection(this.firestore, 'thread-messages');
     try {
       const docRef = await addDoc(messageCollection, message.toJSON());
       return docRef.id;
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error('Error adding document: ', error);
       return null;
     }
   }
 
-
-  getThreadMessagesForMessageId(messageId: string): Observable<MessageContent[]> {
-    const threadMessageCollection = collection(this.firestore, 'thread-messages');
-    const threadQuery = query(threadMessageCollection, where("messageId", "==", messageId));
+  getThreadMessagesForMessageId(
+    messageId: string
+  ): Observable<MessageContent[]> {
+    const threadMessageCollection = collection(
+      this.firestore,
+      'thread-messages'
+    );
+    const threadQuery = query(
+      threadMessageCollection,
+      where('messageId', '==', messageId)
+    );
 
     return collectionData(threadQuery, { idField: 'id' }).pipe(
-      map(docs => docs.map(doc => new MessageContent(doc)))
+      map((docs) => docs.map((doc) => new MessageContent(doc)))
     );
   }
 
-
-  updateHasThreadForChannelMessage(channelId: string, messageId: string, hasThread: boolean): Promise<void> {
-    const messageDocRef = doc(this.firestore, 'channels', channelId, 'messages', messageId);
+  updateHasThreadForChannelMessage(
+    channelId: string,
+    messageId: string,
+    hasThread: boolean
+  ): Promise<void> {
+    const messageDocRef = doc(
+      this.firestore,
+      'channels',
+      channelId,
+      'messages',
+      messageId
+    );
     return updateDoc(messageDocRef, { hasThread: hasThread });
   }
 
-
-  async updateHasThreadForDirectMessage(userId1: string, userId2: string, messageId: string, hasThread: boolean): Promise<void> {
+  async updateHasThreadForDirectMessage(
+    userId1: string,
+    userId2: string,
+    messageId: string,
+    hasThread: boolean
+  ): Promise<void> {
     const messageCollection = this.getDirectMessageCollection(userId1, userId2);
     const messageRef = doc(messageCollection, messageId);
 
     try {
       await updateDoc(messageRef, {
-        hasThread: hasThread
+        hasThread: hasThread,
       });
     } catch (error) {
-      console.error("Error updating document:", error);
+      console.error('Error updating document:', error);
     }
   }
-  // Here ends the logic for the thread-messages  
-
+  // Here ends the logic for the thread-messages
 
   handleResize() {
     this.isMobile = window.innerWidth <= 630;
@@ -474,5 +562,4 @@ export class MessageService {
       this.headerChatMobile = true;
     }
   }
-
 }
