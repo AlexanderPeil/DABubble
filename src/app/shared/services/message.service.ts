@@ -44,14 +44,17 @@ export class MessageService {
   isSidenavOpen: boolean = true;
   isMobile!: boolean;
   headerChatMobile: boolean = false;
+  resizeTimeout: any;
+  lastScreenStatus: 'mobile' | 'desktop' =
+    window.innerWidth <= 630 ? 'mobile' : 'desktop';
 
   constructor(
     private firestore: Firestore,
     private authService: AuthService,
     public channelService: ChannelService
   ) {
-    window.addEventListener('resize', this.checkMobileView.bind(this));
-    this.checkMobileView();
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
   }
 
   // Here begins the logic for all messages
@@ -533,18 +536,22 @@ export class MessageService {
   }
   // Here ends the logic for the thread-messages
 
-  toggleSidenav() {
-    this.isSidenavOpen = !this.isSidenavOpen;
+  handleResize() {
+    this.isMobile = window.innerWidth <= 630;
+
+    if (window.innerWidth <= 630 && this.lastScreenStatus === 'desktop') {
+      this.chatOpen = false;
+      this.lastScreenStatus = 'mobile';
+      this.isSidenavOpen = true;
+    } else if (window.innerWidth > 630 && this.lastScreenStatus === 'mobile') {
+      this.chatOpen = true;
+      this.headerChatMobile = false;
+      this.lastScreenStatus = 'desktop';
+    }
   }
 
-  checkMobileView() {
-    this.isMobile = window.innerWidth <= 630;
-    // if (window.innerWidth > 630) {
-    //   this.isMobile = false;
-    //   this.chatOpen = false;
-    //   this.isSidenavOpen = true;
-    //   this.headerChatMobile = false;
-    // }
+  toggleSidenav() {
+    this.isSidenavOpen = !this.isSidenavOpen;
   }
 
   openChatMobile() {
