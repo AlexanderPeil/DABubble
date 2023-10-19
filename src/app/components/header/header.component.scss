@@ -6,8 +6,13 @@
   padding: 10px 30px 0px 40px;
 }
 
+.backArrowDiv {
+  display: flex;
+  align-items: center;
+}
+
 .backArrow {
-  height: 35px;
+  height: 25px;
 }
 
 app-searchbar {
