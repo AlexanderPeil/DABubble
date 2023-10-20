@@ -13,6 +13,10 @@ export class ForgotPasswordComponent implements OnInit {
   emailSent = false;
   emailSendFailed = false;
   errorMessage!: string;
+  inputBlurred: { [key: string]: boolean } = {
+    email: false,
+    password: false
+  };
 
   constructor(
     private authService: AuthService,
@@ -31,19 +35,29 @@ export class ForgotPasswordComponent implements OnInit {
     this.authService.forgotPassword(email)
       .then(() => {
         this.emailSent = true;
-        this.sendMailForm.controls['email'].reset();
         setTimeout(() => {
           this.emailSent = false;
+          this.sendMailForm.controls['email'].reset();
         }, 3000);
       })
       .catch((error: { message: string; }) => {
-        console.log(error); 
+        console.log(error);
         this.emailSendFailed = true;
-        this.sendMailForm.controls['email'].reset();
         setTimeout(() => {
           this.emailSendFailed = false;
+          this.sendMailForm.controls['email'].reset();
         }, 3000);
       });
+  }
+
+
+  onBlur(controlName: string): void {
+    this.inputBlurred[controlName] = true;
+  }
+
+  shouldShowError(controlName: string): boolean {
+    const control = this.sendMailForm.get(controlName);
+    return (control?.touched || this.inputBlurred[controlName] === true) && control?.invalid === true;
   }
 
 }

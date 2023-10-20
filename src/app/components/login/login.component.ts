@@ -6,7 +6,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   loginFailed = false;
   containerVisible = true;
+  hasUserInteracted = false;
 
   constructor(private authService: AuthService) { }
 
@@ -78,6 +79,20 @@ export class LoginComponent implements OnInit {
           console.log(error);
         });
     }
+  }
+
+  
+  markAllAsTouched(control: AbstractControl) {
+    this.hasUserInteracted = true;
+    if (control instanceof FormGroup) {
+      for (const key in control.controls) {
+        const innerControl = control.get(key);
+        if (innerControl) {
+          this.markAllAsTouched(innerControl);
+        }
+      }
+    }
+    control.markAsTouched();
   }
 
 

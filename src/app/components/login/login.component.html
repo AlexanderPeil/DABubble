@@ -21,18 +21,36 @@
         </div>
     </div>
 
+    <!-- Login form container -->
     <div class="loginContainer">
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <h1>Log in</h1>
             <span class="formHeaderText">We recommend you use the same email you use at work.</span>
+
             <div class="inputContainer">
                 <img class="mailImg" src="../../../assets/img/icons/mail_icon.svg" alt="Email icon">
-                <input type="email" placeholder="examplename@email.com" formControlName="email">
+                <input type="email" placeholder="examplename@email.com" formControlName="email"
+                    (blur)="markAllAsTouched(loginForm)">
+                <div *ngIf="loginForm.get('email')?.hasError('required') && hasUserInteracted"
+                    class="notification warning">
+                    Email is required.
+                </div>
+                <div *ngIf="loginForm.get('email')?.hasError('email') && hasUserInteracted"
+                    class="notification warning">
+                    Please include an '@' and a domain (e.g., '.com') in the email address.
+                </div>
             </div>
+
             <div class="inputContainer">
                 <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
-                <input type="password" placeholder="Password" formControlName="password">
+                <input type="password" placeholder="Password" formControlName="password"
+                    (blur)="markAllAsTouched(loginForm)">
+                <div *ngIf="loginForm.get('password')?.hasError('required') && hasUserInteracted"
+                    class="notification warning">
+                    Password is required.
+                </div>
             </div>
+
             <a class="forgotPasswordLink" routerLink="/forgot-password">Forgot password?</a>
             <div class="alternatively">
                 <div></div>
@@ -50,6 +68,7 @@
             </div>
         </form>
     </div>
+    <!-- Login form container -->
 
     <div class="loginContainerLinks hideContentMobile">
         <a class="loginLinks" routerLink="/imprint">Imprint</a>

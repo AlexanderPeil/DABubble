@@ -2,44 +2,82 @@
     <div class="mainLogoContainer">
         <img class="mainLogo" src="../../../assets/img/logo_animation.svg">
     </div>
+
+    <!-- Sign-up form container -->
     <div class="signupContainer" *ngIf="!chooseAvatar">
-        <form [formGroup]="signupForm">
+        <form [formGroup]="signUpForm">
             <div class="loginHeadline">
                 <div class="goBackIcon" routerLink="/login" title="Return to login"></div>
                 <h1>Create account</h1>
             </div>
+
             <span class="formHeaderText">With your name and email address, you've created your new DABubble
                 account.</span>
             <div class="inputContainer">
                 <img class="userImg" src="../../../assets/img/icons/user_icon.svg" alt="User icon">
-                <input type="text" placeholder="Firsname and Lastname" formControlName="displayName">
+                <input type="text" placeholder="Firsname and Lastname" formControlName="displayName"
+                    (blur)="markAllAsTouched(signUpForm)">
+                <div *ngIf="signUpForm.get('displayName')?.hasError('fullNameValidator') && hasUserInteracted"
+                    class="notification warning">
+                    Firstname and Lastname are required.
+                </div>
             </div>
+
             <div class="inputContainer">
                 <img class="mailImg" src="../../../assets/img/icons/mail_icon.svg" alt="Email icon">
-                <input type="email" placeholder="examplename@email.com" formControlName="email">
+                <input type="email" placeholder="examplename@email.com" formControlName="email"
+                    (blur)="markAllAsTouched(signUpForm)">
+                <div *ngIf="signUpForm.get('email')?.hasError('required') && hasUserInteracted"
+                    class="notification warning">
+                    Email is required.
+                </div>
+                <div *ngIf="signUpForm.get('email')?.hasError('email')" class="notification warning">
+                    Please include an '@' and a domain (e.g., '.com') in the email address.
+                </div>
             </div>
+
             <div class="inputContainer">
                 <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
-                <input type="password" placeholder="Password" formControlName="password">
+                <input type="password" placeholder="Password" formControlName="password"
+                    (blur)="markAllAsTouched(signUpForm)">
+                <div *ngIf="signUpForm.get('password')?.hasError('required') && hasUserInteracted"
+                    class="notification warning">
+                    Password is required.
+                </div>
             </div>
+
             <div class="inputContainer">
                 <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
-                <input type="password" placeholder="Confirm Password" formControlName="passwordConfirm">
+                <input type="password" placeholder="Confirm Password" formControlName="passwordConfirm"
+                    (blur)="markAllAsTouched(signUpForm)">
+                <div *ngIf="signUpForm.get('passwordConfirm')?.hasError('required') && hasUserInteracted"
+                    class="notification warning">
+                    Confirm Password is required.
+                </div>
+                <div *ngIf="signUpForm.get('passwordConfirm')?.hasError('passwordMismatch')"
+                    class="notification warning">
+                    Passwords do not match.
+                </div>
             </div>
+
+
             <label class="checkboxContent">
                 <input type="checkbox" [formControl]="checked">
                 <span class="checkmark"></span>
                 I agree to the <a routerLink="/data-protection">data protection</a>.
             </label>
-            <div class="notification warning" *ngIf="signupForm.hasError('passwordsMismatch')">Passwords do not match.</div>
-            <button type="button" class="nextBtn" (click)="onNextClick()" [disabled]="!signupForm.valid">Next</button>
+            <div class="notification warning" *ngIf="signUpForm.hasError('passwordsMismatch')">Passwords do not match.
+            </div>
+            <button type="button" class="nextBtn" (click)="onNextClick()" [disabled]="!signUpForm.valid">Next</button>
         </form>
     </div>
+    <!-- Sign-up form container -->
+
     <div class="avatarContainer" *ngIf="chooseAvatar">
         <div class="goBackIcon" (click)="onbackClick()" title="Return to enter data"></div>
         <h1>Choose your avatar</h1>
         <img class="selectedAvatar" [src]="selectedAvatarURL || defaultAvatar" alt="User Avatar">
-        <span class="userName">{{ signupForm.get('displayName')?.value }}</span>
+        <span class="userName">{{ signUpForm.get('displayName')?.value }}</span>
         <span class="chooseAvatarText">Choose your avatar...</span>
         <div class="avatarSelectionContainer">
             <div *ngFor="let avatarUrl of avatarUrls" class="avatarSelection">

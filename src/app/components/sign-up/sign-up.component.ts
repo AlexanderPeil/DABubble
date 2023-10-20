@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit, OnDestroy {
-  signupForm!: FormGroup;
+  signUpForm!: FormGroup;
   displayName!: string;
   userCreated = false;
   userExists = false;
@@ -22,6 +22,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   avatarUrls: string[] = [];
   defaultAvatar: string = '../../assets/img/default_avatar.svg';
   private displayNameSubscription?: Subscription;
+  hasUserInteracted = false;
 
 
   constructor(
@@ -32,7 +33,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.checked = new FormControl(false, Validators.requiredTrue);
-    this.signupForm = new FormGroup({
+    this.signUpForm = new FormGroup({
       displayName: new FormControl(null, [Validators.required, this.fullNameValidator]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, Validators.required),
@@ -45,7 +46,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 
   subscribeDisplayName() {
-    const displayNameControl = this.signupForm.get('displayName');
+    const displayNameControl = this.signUpForm.get('displayName');
     if (displayNameControl) {
       this.displayNameSubscription = displayNameControl.valueChanges.subscribe(value => {
         this.displayName = value;
@@ -55,12 +56,14 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 
   fullNameValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const words = control.value ? control.value.split(' ') : [];
-    if (words.length < 2 || words[words.length - 1] === '') {
-      return { 'invalidFullName': true };
+    const nameParts = (control.value || '').trim().split(' ');
+
+    if (nameParts.length < 2 || nameParts.some((part: any) => !part)) {
+      return { 'fullNameValidator': true };
     }
     return null;
   }
+
 
 
   passwordsMatchValidator(formGroup: AbstractControl): ValidationErrors | null {
@@ -75,7 +78,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 
   onSubmit() {
-    if (this.signupForm.invalid) {
+    if (this.signUpForm.invalid) {
       console.error("Form is invalid, can't proceed with registration");
       return;
     }
@@ -84,9 +87,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 
   authServiceCall() {
-    const displayName = this.signupForm.value.displayName;
-    const email = this.signupForm.value.email;
-    const password = this.signupForm.value.password;
+    const displayName = this.signUpForm.value.displayName;
+    const email = this.signUpForm.value.email;
+    const password = this.signUpForm.value.password;
     this.authService.signUp(displayName, email, password, this.selectedAvatarURL)
       .then(() => {
         this.userCreatedFn();
@@ -108,9 +111,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
   signUpFail(error: any) {
     console.log(error);
     this.userExists = true;
-    this.signupForm.controls['email'].reset();
     setTimeout(() => {
       this.userExists = false;
+      this.signUpForm.controls['email'].reset();
     }, 3000);
   }
 
@@ -137,6 +140,21 @@ export class SignUpComponent implements OnInit, OnDestroy {
       console.error("Error uploading file: ", error);
     });
   }
+
+
+  markAllAsTouched(control: AbstractControl) {
+    this.hasUserInteracted = true;
+    if (control instanceof FormGroup) {
+      for (const key in control.controls) {
+        const innerControl = control.get(key);
+        if (innerControl) {
+          this.markAllAsTouched(innerControl);
+        }
+      }
+    }
+    control.markAsTouched();
+  }
+
 
 
   ngOnDestroy(): void {

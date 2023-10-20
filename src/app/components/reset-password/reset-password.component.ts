@@ -14,6 +14,9 @@ export class ResetPasswordComponent implements OnInit {
   oobCode: string | null = null;
   newPassword = '';
   repeatedPassword = '';
+  inputBlurred: { [key: string]: boolean } = {
+    password: false
+  };
 
   constructor(
     private route: ActivatedRoute,
