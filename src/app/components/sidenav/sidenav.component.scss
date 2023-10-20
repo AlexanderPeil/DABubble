@@ -341,3 +341,24 @@ ul {
     }
   }
 }
+
+@media (max-width: 340px) {
+  .headMenu {
+    p {
+      font-size: 20px;
+    }
+  }
+  #allChannels {
+    .channel {
+      p {
+        font-size: 18px;
+        overflow: unset;
+      }
+    }
+  }
+  .selectableUserChat {
+    p {
+      font-size: 18px;
+    }
+  }
+}

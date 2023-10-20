@@ -18,12 +18,11 @@ export class MainComponent implements OnDestroy, OnInit {
   updateUserActivityTimeout: any;
   inactiveGuestUserSubscription!: Subscription;
 
-
   constructor(
     private authService: AuthService,
     public threadService: ThreadService,
     public messageService: MessageService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.checkUserActivityInterval = setInterval(() => {
@@ -37,8 +36,6 @@ export class MainComponent implements OnDestroy, OnInit {
   // userActivity(event: Event) {
   //   this.debouncedUpdateUserActivity();
   // }
-
-
 
   debouncedUpdateUserActivity() {
     const timeSinceLastUpdate = Date.now() - this.lastUpdate;
@@ -75,7 +72,6 @@ export class MainComponent implements OnDestroy, OnInit {
         });
       });
   }
-
 
   ngOnDestroy() {
     clearInterval(this.checkUserActivityInterval);

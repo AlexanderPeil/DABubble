@@ -45,13 +45,14 @@ export class MessageService {
   isMobile!: boolean;
   headerChatMobile: boolean = false;
   resizeTimeout: any;
-  lastScreenStatus: 'mobile' | 'desktop' = window.innerWidth <= 630 ? 'mobile' : 'desktop';
-
+  lastScreenStatus: 'mobile' | 'desktop' =
+    window.innerWidth <= 630 ? 'mobile' : 'desktop';
 
   constructor(
     private firestore: Firestore,
     private authService: AuthService,
-    public channelService: ChannelService) {
+    public channelService: ChannelService
+  ) {
     window.addEventListener('resize', this.handleResize.bind(this));
     this.handleResize();
   }
@@ -549,11 +550,9 @@ export class MessageService {
     }
   }
 
-
   toggleSidenav() {
     this.isSidenavOpen = !this.isSidenavOpen;
   }
-
 
   openChatMobile() {
     if (this.isMobile) {

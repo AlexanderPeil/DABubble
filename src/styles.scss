@@ -526,6 +526,19 @@ mat-chip-row {
   align-items: center;
 }
 
+/////////////////////// responsive design start here ///////////////////////////
+
+@media (max-width: 462px) {
+  .ql-editor.ql-blank::before {
+    font-size: 15px;
+  }
+}
+@media (max-width: 405px) {
+  .ql-editor.ql-blank::before {
+    font-size: 12px;
+  }
+}
+
 .editMessageContainer {
   input {
     padding: 10px;
