@@ -25,10 +25,6 @@ export class MainComponent implements OnDestroy, OnInit {
   ) {}
 
   ngOnInit() {
-    this.checkUserActivityInterval = setInterval(() => {
-      this.autoLogoutInactiveGuestUsers();
-      console.log('Check User activity', new Date().toISOString());
-    }, 60 * 10 * 1000);
   }
 
   // @HostListener('document:click', ['$event'])

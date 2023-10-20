@@ -126,9 +126,7 @@ export class QuillService {
     editor.focus();
   }
 
-  searchUsers(searchTerm: string, renderList: Function) {
-    console.log('quill service user');
-    
+  searchUsers(searchTerm: string, renderList: Function) {    
     this.authService.getUsers(searchTerm)
       .pipe(
         takeUntil(this.destroy$)
@@ -193,9 +191,7 @@ export class QuillService {
       });
   }
 
-  renderItem = (item: any) => {
-    console.log('quil renderList', new Date().toISOString()); // I got this log 
-    
+  renderItem = (item: any) => {    
     const div = document.createElement('div');
     const img = document.createElement('img');
     const span = document.createElement('span');
@@ -228,7 +224,6 @@ export class QuillService {
   };
 
   renderItemWithAtAndHash = (item: any) => {
-    console.log('quill render item with hash');
     const div = document.createElement('div');
     div.setAttribute('tabindex', '0');
 
@@ -303,9 +298,7 @@ export class QuillService {
   }
 
 
-  triggerAtSymbol(editorInstance: any) {
-    console.log('triger quill at symbol',  new Date().toISOString());
-    
+  triggerAtSymbol(editorInstance: any) {    
     editorInstance.focus();
     // setTimeout(() => {
       const currentPosition = editorInstance.getSelection()?.index || 0;
