@@ -9,7 +9,7 @@
     ngClass="backArrowDiv"
     *ngIf="this.messageService.headerChatMobile && screenWidth <= 630"
     class="headerChatMobile"
-    (click)="navigateToSidenavMobile()"
+    (click)="navigateToSidenavMobile(); threadService.closeThreadService()"
   >
     <img
       class="backArrow"

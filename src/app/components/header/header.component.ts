@@ -5,7 +5,7 @@ import {
   HostListener,
   ElementRef,
 } from '@angular/core';
-import { Observable, Subscription, combineLatest } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/services/user';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,6 +16,7 @@ import { MessageService } from 'src/app/shared/services/message.service';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { QuillService } from 'src/app/shared/services/quill.service';
 import { Router } from '@angular/router';
+import { ThreadService } from 'src/app/shared/services/thread.service';
 
 @Component({
   selector: 'app-header',
@@ -49,6 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public quillService: QuillService,
     public messageService: MessageService,
+    public threadService: ThreadService,
     private channelService: ChannelService,
     private router: Router
   ) {}
