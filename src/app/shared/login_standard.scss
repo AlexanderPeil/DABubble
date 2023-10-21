@@ -203,4 +203,26 @@ button:disabled:hover {
     }
 }
 
+@media(max-height: 500px) {
+
+    .mainLogoContainer {
+        margin: unset;
+        display: flex;
+        justify-content: center;
+
+        img {
+            height: 65px;
+        }
+    }
+    
+    .loginContainerLinks {
+        position: relative;
+        bottom: 10px;
+    }
+
+    .mainLogoContainer {
+        margin-top: 25px;
+    }
+}
+
 /***** Style for the login, signup, forgot-password and reset-password components *****/

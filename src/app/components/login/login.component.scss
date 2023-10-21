@@ -178,6 +178,9 @@
 }
 
 @media (max-width: 600px) {
+    .loginContent {
+        gap: 10px;
+    }
 
     .loginHeader {
         justify-content: center;
@@ -243,3 +246,13 @@
         padding: unset;
     }
 }
+
+@media (max-height: 500px) {
+    .loginContent {
+        height: unset;
+    }
+
+    .loginHeader {
+        margin-top: 25px;
+    }
+} 

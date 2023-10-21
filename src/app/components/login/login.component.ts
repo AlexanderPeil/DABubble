@@ -32,7 +32,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
     trigger('logoAnimationMobile', [
       state('initial', style({ transform: 'translate(0, 0)' })),
       state('middle', style({ transform: 'translateX(-20vw' })),
-      state('final', style({ transform: 'translate(-20vw, -45vh)' })),
+      state('final', style({ transform: 'translate(-20vw, -43vh)' })),
       transition('initial => middle', animate('500ms ease-out')),
       transition('middle => final', animate('500ms ease-in-out')),
     ]),
