@@ -94,11 +94,27 @@ export class ChannelService {
 
   updateChannelMembersService(channelId: string, selectedUsers: User[]) {
     const docInstance = doc(this.firestore, 'channels', channelId);
-    const updateData = [...this.channel.users, ...selectedUsers];
+
+    const cleanedSelectedUsers = selectedUsers.map(user => this.removeUndefinedFields(user));
+
+    const updateData = [...this.channel.users, ...cleanedSelectedUsers];
+    console.log('Selecetd User is:', cleanedSelectedUsers);
+
     return updateDoc(docInstance, {
       users: updateData,
     });
   }
+
+  removeUndefinedFields(obj: any): any {
+    const cleaned = { ...obj };
+    for (const key in cleaned) {
+      if (cleaned[key] === undefined) {
+        delete cleaned[key];
+      }
+    }
+    return cleaned;
+  }
+
 
   deleteChannelService(channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
