@@ -321,3 +321,9 @@
     border-top-right-radius: unset;
   }
 }
+
+@media (max-width: 340px) {
+  .amountOfUserInChannel {
+    display: none;
+  }
+}
