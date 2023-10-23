@@ -34,7 +34,7 @@ export class DialogCreateChannelComponent implements OnInit {
   selectedUsers: User[] = [];
   inputValue: string = '';
   selectedRadioButtonValue!: string;
-  @ViewChild('input') input!: ElementRef;
+  @ViewChild('input', { static: false }) input!: ElementRef | undefined;
   userAlreadyExists: boolean = false;
 
   constructor(
@@ -81,7 +81,11 @@ export class DialogCreateChannelComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
-    if (!this.input.nativeElement.contains(event.target)) {
+    if (
+      this.input &&
+      this.input.nativeElement &&
+      !this.input.nativeElement.contains(event.target)
+    ) {
       this.showUserDropdown = false;
     }
   }

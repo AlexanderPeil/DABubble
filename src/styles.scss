@@ -200,7 +200,8 @@ app-data-protection {
 }
 
 .ql-mention-list-container {
-  width: 280px !important;
+  width: unset;
+  max-width: 280px !important;
 }
 
 /************************************ Styles for the message container ************************************/
@@ -344,8 +345,8 @@ app-data-protection {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
-        contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 
@@ -366,8 +367,8 @@ app-data-protection {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
-        contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 
@@ -437,8 +438,8 @@ app-data-protection {
 
   img {
     &:hover {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
-        contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -528,6 +529,23 @@ mat-chip-row {
 
 /////////////////////// responsive design start here ///////////////////////////
 
+@media (max-width: 782px) {
+  .ql-editor.ql-blank::before {
+    font-size: 15px;
+  }
+}
+@media (max-width: 713px) {
+  .ql-editor.ql-blank::before {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 630px) {
+  .ql-editor.ql-blank::before {
+    font-size: 18px;
+  }
+}
+
 @media (max-width: 462px) {
   .ql-editor.ql-blank::before {
     font-size: 15px;
@@ -543,5 +561,17 @@ mat-chip-row {
   input {
     padding: 10px;
     border-radius: 10px;
+  }
+}
+
+@media (max-width: 340px) {
+  .ql-mention-list-container {
+    max-width: 250px !important;
+  }
+}
+
+@media (max-width: 300px) {
+  .ql-mention-list-container {
+    max-width: 220px !important;
   }
 }
