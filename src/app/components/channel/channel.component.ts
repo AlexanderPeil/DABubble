@@ -6,7 +6,7 @@ import {
   ElementRef,
   HostListener,
   QueryList,
-  ViewChildren,
+  ViewChildren
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
@@ -68,6 +68,9 @@ export class ChannelComponent implements OnInit, OnDestroy {
   ngUnsubscribe = new Subject<void>();
   messageIdSubscription!: Subscription;
   retryCount = 0;
+  uploadedFiles: { url: string; type: 'image' | 'data'; }[] = [];
+  subscription!: Subscription;
+
 
   constructor(
     public dialog: MatDialog,
@@ -81,9 +84,14 @@ export class ChannelComponent implements OnInit, OnDestroy {
     public quillService: QuillService
   ) { }
 
+
+
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
     this.fetchAndDisplayMessages();
+    this.subscription = this.storageService.uploadedFileURL.subscribe((fileData) => {
+      this.uploadedFiles.push(fileData);
+    });
   }
 
 
@@ -140,19 +148,28 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
-  sendMessage() {
-    const { loggedInUser, messageContent, channelId, messageService } = this;
+  openDetailViewForAttachedFile(fileUrl: string) {
+    this.dialog.open(DialogDetailViewUploadedDatasComponent, {
+      data: {
+        uploadedImageUrl: fileUrl,
+      },
+    });
+  }
+
+
+  async sendMessage() {
+    const { loggedInUser, messageContent, channelId, messageService, uploadedFiles } = this;
 
     if (!loggedInUser || !messageContent)
       return console.error('Please try again.');
-
     messageService
       .createAndAddChannelMessage(
         channelId,
         loggedInUser.uid,
         loggedInUser.displayName as string,
-        messageService.removePTags(messageContent)
-      ).then(() => ((this.messageContent = ''), this.scrollToBottom()))
+        messageService.removePTags(messageContent),
+        uploadedFiles
+      ).then(() => ((this.messageContent = ''), this.clearQuillContentWithDeleteText(), this.uploadedFiles = [], this.scrollToBottom()))
       .catch((error: any) => console.error("Couldn't send a message:", error));
   }
 
@@ -376,10 +393,36 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
+  clearQuillContentWithDeleteText(): void {
+    this.messageContent = '';
+    if (this.channelQuillInstance) {
+      console.log('Try to reset quill');
+      this.channelQuillInstance.deleteText(0, this.channelQuillInstance.getLength());
+    }
+  }
+
+
+  deleteFile(message: MessageContent, file: any, index: number) {
+    const messageId = message.id;
+    const channelId = this.channelId;
+    this.storageService.deleteFileFromStorage(file.url)
+      .then(() => {
+        if (message.attachedFiles && messageId) {
+          message.attachedFiles.splice(index, 1);
+          this.messageService.updateAttachedFilesInChannelMessage(channelId, messageId, message.attachedFiles);
+        }
+      })
+      .catch(err => {
+        console.error('Error deleting file from storage:', err);
+      });
+  }
+
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this.messageIdSubscription?.unsubscribe();
     this.quillService.cleanup();
+    this.subscription.unsubscribe();
   }
 }

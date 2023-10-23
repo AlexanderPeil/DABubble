@@ -129,7 +129,9 @@ export class MessageService {
     senderId: string,
     receiverId: string,
     senderName: string,
-    content: string
+    content: string,
+    uploadedFiles?: { url: string; type: 'image' | 'data'; }[]
+
   ): Promise<void> {
     const loggedInUser = this.authService.currentUserValue;
     const message = new MessageContent({
@@ -142,6 +144,7 @@ export class MessageService {
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: false,
       channelId: null,
+      attachedFiles: uploadedFiles
     });
 
     const messageCollection = this.getDirectMessageCollection(
@@ -277,6 +280,21 @@ export class MessageService {
     if (this.currentReceiverId === senderId) {
     }
   }
+
+
+  async updateAttachedFilesInDirectMessage(userId1: string, userId2: string, messageId: string, updatedFiles: { url: string; type: 'image' | 'data'; }[]) {
+    const messageCollection = this.getDirectMessageCollection(userId1, userId2);
+    const messageRef = doc(messageCollection, messageId);
+
+    try {
+      await updateDoc(messageRef, {
+        attachedFiles: updatedFiles,
+        timestamp: Date.now(),
+      });
+    } catch (error) {
+      console.error('Error updating document: ', error);
+    }
+  }
   // Here ends the logic for the direct-messages
 
   // Here begins the logic for channel-messages
@@ -284,7 +302,8 @@ export class MessageService {
     channelId: string,
     senderId: string,
     senderName: string,
-    content: string
+    content: string,
+    uploadedFiles?: { url: string; type: 'image' | 'data'; }[]
   ) {
     const loggedInUser = this.authService.currentUserValue;
     const message = new MessageContent({
@@ -297,6 +316,7 @@ export class MessageService {
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: false,
       channelId: channelId,
+      attachedFiles: uploadedFiles
     });
 
     const messageCollection = collection(
@@ -454,6 +474,21 @@ export class MessageService {
   setSelectedMessageId(id: string) {
     this.selectedMessageIdSubject.next(id);
   }
+
+
+  async updateAttachedFilesInChannelMessage(channelID: string, messageId: string, updatedFiles: { url: string; type: 'image' | 'data'; }[]) {
+    const messageRef = doc(this.getChannelMessageCollection(channelID), messageId);
+
+    try {
+      await updateDoc(messageRef, {
+        attachedFiles: updatedFiles,
+        timestamp: Date.now(),
+      });
+    } catch (error) {
+      console.error('Error updating document: ', error);
+    }
+  }
+
   // Here ends the logic for channel-messages
 
   // Here begins the logic for the thread-messages

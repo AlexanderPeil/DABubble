@@ -51,6 +51,9 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   messagesSubscription: Subscription | null = null;
   selectedMessageId: string | null = null;
   showEditMenu: boolean = true;
+  uploadedFiles: { url: string; type: 'image' | 'data'; }[] = [];
+  subscription!: Subscription;
+
 
   constructor(
     public authService: AuthService,
@@ -64,6 +67,9 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initUsers();
+    this.subscription = this.storageService.uploadedFileURL.subscribe((fileData) => {
+      this.uploadedFiles.push(fileData);
+    });
   }
 
   initUsers() {
@@ -160,11 +166,13 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
           this.messageService.loggedInUser.uid,
           this.messageService.selectedUser.uid,
           senderName,
-          cleanedContent
+          cleanedContent,
+          this.uploadedFiles
         )
         .then(() => {
           this.messageContent = '';
           this.scrollToBottom();
+          this.uploadedFiles = [];
         })
         .catch((error: any) => {
           console.error("Couldn't send a message:", error);
@@ -317,10 +325,37 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
+  openDetailViewForAttachedFile(fileUrl: string) {
+    this.dialog.open(DialogDetailViewUploadedDatasComponent, {
+      data: {
+        uploadedImageUrl: fileUrl,
+      },
+    });
+  }
+
+
+  deleteFile(message: MessageContent, file: any, index: number) {
+    const messageId = message.id;
+    const loggedInUserId = this.messageService.loggedInUser?.uid as string;
+    const receiverUserId = this.messageService.selectedUser?.uid as string;
+    this.storageService.deleteFileFromStorage(file.url)
+      .then(() => {
+        if (message.attachedFiles && messageId) {
+          message.attachedFiles.splice(index, 1);
+          this.messageService.updateAttachedFilesInDirectMessage(loggedInUserId, receiverUserId,  messageId, message.attachedFiles);
+        }
+      })
+      .catch(err => {
+        console.error('Error deleting file from storage:', err);
+      });
+  }
+
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this.messagesSubscription?.unsubscribe();
     this.quillService.cleanup();
+    this.subscription.unsubscribe();
   }
 }

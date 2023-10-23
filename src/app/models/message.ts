@@ -15,7 +15,12 @@ export class MessageContent {
     handsUp?: number;
     rocket?: number;
     nerdSmiley?: number;
-  }
+  };
+  attachedFiles?: {
+    url: string; 
+    type: 'image' | 'data'; 
+  }[];
+  
 
   constructor(object?: any) {
     this.id = object ? object.id : undefined;
@@ -30,6 +35,7 @@ export class MessageContent {
     this.messageId = object ? object.messageId : '';
     this.channelId = object ? object.channelId : '';
     this.emojis = object ? object.emojis || {} : {};
+    this.attachedFiles = object ? object.attachedFiles  : undefined;
   }
 
   public toJSON(): any {
@@ -54,6 +60,10 @@ export class MessageContent {
 
     if (this.channelId) {
       json.channelId = this.channelId;
+    }
+
+    if (this.attachedFiles) {
+      json.attachedFiles  = this.attachedFiles;
     }
 
     return json;

@@ -43,12 +43,32 @@
                 senderMessage:
                   message.senderId === authService.currentUser.value?.uid
               }">{{ message.content }}</span>
+
+            <!-- Loop for all attached files in storage -->
+            <div *ngFor="let file of message.attachedFiles;  let i = index" class="attachedFile">
+              <!-- Show attached images -->
+              <ng-container *ngIf="file.type === 'image'">
+                <img [src]="file.url" class="uploadedImageInMessage" (click)="openDetailViewForAttachedFile(file.url)" />
+                <img matTooltipPosition="above" matTooltip="Delete Data" (click)="deleteFile(message, file, i)"
+                  class="deleteFileInMessage" src="assets/img/icons/closeIcon.svg" />
+              </ng-container>
+
+              <!-- Show attached files (like PDF) -->
+              <ng-container *ngIf="file.type === 'data'">
+                <img [src]="file.url" class="uploadedImageInMessage" (click)="openDetailViewForAttachedFile(file.url)" />
+                <img matTooltipPosition="above" matTooltip="Delete Data" (click)="deleteFile(message, file, i)"
+                  class="deleteFileInMessage" src="assets/img/icons/closeIcon.svg" />
+              </ng-container>
+            </div>
+            <!-- Loop for all attached files in storage -->
+
             <div *ngIf="
                 currentlyEditingMessageId === message.id &&
                 isEditing === message.id
               " class="editMessageContainer">
               <input [(ngModel)]="updatedMessageContent" />
-              <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)" title="Send message">
+              <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)"
+                title="Send message">
             </div>
           </div>
         </div>
@@ -123,8 +143,8 @@
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
   <quill-editor #channelQuill class="quill-editor-textarea" [(ngModel)]="messageContent"
-    (onEditorCreated)="setFocus($event)"
-    placeholder="Message to #{{ channelService.channel.channelName }}" [modules]="this.quillService.quillModules">
+    (onEditorCreated)="setFocus($event)" placeholder="Message to #{{ channelService.channel.channelName }}"
+    [modules]="this.quillService.quillModules">
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
@@ -167,7 +187,8 @@
         </div>
 
         <div class="containerAtIcon">
-          <img class="atIcon" src="assets/img/icons/@Icon.svg" (click)="this.quillService.triggerAtSymbol(this.channelQuillInstance)" title="Add user">
+          <img class="atIcon" src="assets/img/icons/@Icon.svg"
+            (click)="this.quillService.triggerAtSymbol(this.channelQuillInstance)" title="Add user">
         </div>
 
         <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="sendMessage()" title="Send message">
