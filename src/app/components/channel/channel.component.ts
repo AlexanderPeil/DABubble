@@ -169,7 +169,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
         loggedInUser.displayName as string,
         messageService.removePTags(messageContent),
         uploadedFiles
-      ).then(() => ((this.messageContent = ''), this.clearQuillContentWithDeleteText(), this.uploadedFiles = [], this.scrollToBottom()))
+      ).then(() => ((this.messageContent = ''), this.storageService.clearUploadedFiles(), this.uploadedFiles = [], this.scrollToBottom()))
       .catch((error: any) => console.error("Couldn't send a message:", error));
   }
 
@@ -390,15 +390,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
   setFocus(event: any) {
     this.channelQuillInstance = event;
     this.quillService.setFocus(event)
-  }
-
-
-  clearQuillContentWithDeleteText(): void {
-    this.messageContent = '';
-    if (this.channelQuillInstance) {
-      console.log('Try to reset quill');
-      this.channelQuillInstance.deleteText(0, this.channelQuillInstance.getLength());
-    }
   }
 
 

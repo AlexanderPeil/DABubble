@@ -146,9 +146,16 @@ export class StorageService {
         this.uploadedDatas.push(this.sanitizer.bypassSecurityTrustResourceUrl(downloadURL));
       }
       this.dialog.open(DialogDataUploadSuccessfulComponent);
+      console.log('Array of uplodaded data', this.uploadedDatas, this.uploadedImages);
       return downloadURL;
-    });
+    });    
   }
+
+
+  clearUploadedFiles() {
+    this.uploadedImages = [];
+    this.uploadedDatas = [];
+  }  
 
 
   deleteUploadedDataService(uploadedDataUrl: string, index: number) {
