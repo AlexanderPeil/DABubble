@@ -300,11 +300,9 @@ export class QuillService {
 
   triggerAtSymbol(editorInstance: any) {    
     editorInstance.focus();
-    // setTimeout(() => {
       const currentPosition = editorInstance.getSelection()?.index || 0;
       editorInstance.insertText(currentPosition, '@ ');
       editorInstance.setSelection(currentPosition + 1);
-    // }, 500);
   }
 
 
