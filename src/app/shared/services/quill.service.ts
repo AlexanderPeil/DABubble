@@ -6,7 +6,7 @@ import 'quill-mention';
 import * as Emoji from 'quill-emoji';
 import Quill from 'quill';
 import { AuthService } from './auth.service';
-import { Subject, takeUntil, timestamp } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 Quill.register('modules/emoji', Emoji);
 
 @Injectable({
@@ -14,6 +14,8 @@ Quill.register('modules/emoji', Emoji);
 })
 export class QuillService {
   quill: any;
+  bottomQuillElement!: HTMLElement;
+  topQuillElement!: HTMLElement;
   selectedChannelIdSubject = new Subject<string | null>();
   selectedUserIdSubject = new Subject<string | null>();
   destroy$ = new Subject<void>();
@@ -24,7 +26,6 @@ export class QuillService {
     index?: string;
     value?: string;
   } | null;
-
 
 
 
@@ -116,17 +117,18 @@ export class QuillService {
   //   },
   // };
 
+
   constructor(
     private authService: AuthService,
     public channelService: ChannelService
   ) { }
 
-  setFocus(editor: any): void {
+  setFocus(editor: any): void {    
     this.quill = editor;
     editor.focus();
   }
 
-  searchUsers(searchTerm: string, renderList: Function) {    
+  searchUsers(searchTerm: string, renderList: Function) {
     this.authService.getUsers(searchTerm)
       .pipe(
         takeUntil(this.destroy$)
@@ -191,7 +193,7 @@ export class QuillService {
       });
   }
 
-  renderItem = (item: any) => {    
+  renderItem = (item: any) => {
     const div = document.createElement('div');
     const img = document.createElement('img');
     const span = document.createElement('span');
@@ -216,7 +218,7 @@ export class QuillService {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ['@'],
       source: this.searchUsers.bind(this),
-      renderItem: this.renderItem, 
+      renderItem: this.renderItem,
       onSelect: (item: any, insertItem: (arg0: any) => void) => {
         insertItem(item);
       },
@@ -267,11 +269,10 @@ export class QuillService {
       });
       div.appendChild(span);
     }
-
     return div;
   };
 
-  public quillModulesWithAtAndHash = {    
+  public quillModulesWithAtAndHash = {
     toolbar: false,
     mention: {
       allowedChars: /^[A-Za-z\sÅÄÖåäö.]*$/,
@@ -300,9 +301,9 @@ export class QuillService {
 
   triggerAtSymbol(editorInstance: any) {    
     editorInstance.focus();
-      const currentPosition = editorInstance.getSelection()?.index || 0;
-      editorInstance.insertText(currentPosition, '@ ');
-      editorInstance.setSelection(currentPosition + 1);
+    const currentPosition = editorInstance.getSelection()?.index || 0;
+    editorInstance.insertText(currentPosition, '@ ');
+    editorInstance.setSelection(currentPosition + 1);
   }
 
 

@@ -48,7 +48,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   url: string = '';
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   @ViewChildren('messageElement') messageElements!: QueryList<ElementRef>;
-  @ViewChild('channelQuill') channelQuill: any;
+  @ViewChild('channelQuill', { static: false, read: ElementRef }) channelQuill!: ElementRef;
   channelQuillInstance: any;
   messages: MessageContent[] = [];
   groupedMessages: { date: string; messages: MessageContent[] }[] = [];
@@ -97,6 +97,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.initMessageScrolling();
+    this.checkWindowSize();
+    window.addEventListener('resize', this.checkWindowSize.bind(this));
   }
 
 
@@ -409,11 +411,21 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
+  checkWindowSize() {
+    if (window.innerHeight <= 500) {
+      this.channelQuill.nativeElement.classList.add('new-message-bottom');
+    } else {
+      this.channelQuill.nativeElement.classList.remove('new-message-bottom');
+    }
+  }
+
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this.messageIdSubscription?.unsubscribe();
     this.quillService.cleanup();
     this.subscription.unsubscribe();
+    window.removeEventListener('resize', this.checkWindowSize.bind(this));
   }
 }

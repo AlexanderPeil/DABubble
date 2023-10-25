@@ -40,7 +40,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   groupedMessages: { date: string; messages: MessageContent[] }[] = [];
   ngUnsubscribe = new Subject<void>();
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
-  @ViewChild('directMessageQuill') directMessageQuill: any;
+  @ViewChild('directMessageQuill', { static: false, read: ElementRef }) directMessageQuill!: ElementRef;
   directMessageQuillInstance: any;
   user_images = '../assets/img/avatar1.svg';
   popUpToEditMessageIsOpen: boolean = false;
@@ -63,7 +63,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     public storageService: StorageService,
     public threadService: ThreadService,
     public quillService: QuillService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initUsers();
@@ -342,12 +342,27 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       .then(() => {
         if (message.attachedFiles && messageId) {
           message.attachedFiles.splice(index, 1);
-          this.messageService.updateAttachedFilesInDirectMessage(loggedInUserId, receiverUserId,  messageId, message.attachedFiles);
+          this.messageService.updateAttachedFilesInDirectMessage(loggedInUserId, receiverUserId, messageId, message.attachedFiles);
         }
       })
       .catch(err => {
         console.error('Error deleting file from storage:', err);
       });
+  }
+
+
+  ngAfterViewInit() {
+    this.checkWindowSize();
+    window.addEventListener('resize', this.checkWindowSize.bind(this));
+  }
+
+
+  checkWindowSize() {
+    if (window.innerHeight <= 500) {
+      this.directMessageQuill.nativeElement.classList.add('new-message-bottom');
+    } else {
+      this.directMessageQuill.nativeElement.classList.remove('new-message-bottom');
+    }
   }
 
 
@@ -357,5 +372,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     this.messagesSubscription?.unsubscribe();
     this.quillService.cleanup();
     this.subscription.unsubscribe();
+    window.removeEventListener('resize', this.checkWindowSize.bind(this));
   }
 }

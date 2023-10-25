@@ -1,7 +1,7 @@
 <div class="chatHistoryMainContainer">
   <div class="chatHistoryHeader">
     <p>New Message</p>
-    <quill-editor class="quill-editor-new-message" (onEditorCreated)="this.quillService.setFocus($event)"
+    <quill-editor #newMessageDropdownAbove (onFocus)="onEditorFocus('top')" class="quill-editor-new-message" (onEditorCreated)="this.quillService.setFocus($event)"
       placeholder="At: #channel, or @someone or *Mail address"
       [modules]="this.quillService.quillModulesWithAtAndHash"></quill-editor>
 
@@ -22,7 +22,7 @@
   <div class="scrollableContainer"></div>
 
   <!-------------------------------------------------- Textfield begins here  -------------------------------------------------->
-  <quill-editor #newMessagQuill class="quill-editor-textarea" [(ngModel)]="messageContent"
+  <quill-editor #newMessagQuill (onFocus)="onEditorFocus('bottom')" class="quill-editor-textarea" [(ngModel)]="messageContent"
     (onEditorCreated)="setFocus($event)" [modules]="this.quillService.quillModules" placeholder="Start a new Message">
     <div quill-editor-toolbar>
       <!--------------------------------------- Custom created Container --------------------------------------->

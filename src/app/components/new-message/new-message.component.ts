@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
@@ -32,7 +32,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   selectedChannelIdSubscription!: Subscription;
   selectedUserIdSubscription!: Subscription;
   newMessageQuillInstance: any;
-  @ViewChild('newMessagQuill') newMessagQuill: any;
+  @ViewChild('newMessagQuill', { static: false, read: ElementRef }) newMessagQuill!: ElementRef;
+  @ViewChild('newMessageDropdownAbove', { static: false, read: ElementRef }) newMessageDropdownAbove!: ElementRef;
+
 
   constructor(
     public dialog: MatDialog,
@@ -84,6 +86,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   //   $event.focus();
   // }
 
+
   openDetailViewFromUploadedImage(uploadedImageUrl: string) {
     this.dialog.open(DialogDetailViewUploadedDatasComponent, {
       data: {
@@ -107,6 +110,22 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   //     this.dropDownMenuUserIsOpen = false;
   //   }
   // }
+
+
+  onEditorFocus(editorType: 'top' | 'bottom') {
+    if (editorType === 'top') {
+      this.newMessageDropdownAbove.nativeElement.classList.add('new-message-top');
+      this.newMessagQuill.nativeElement.classList.remove('new-message-bottom');
+
+      if (window.innerHeight <= 500) {
+        this.newMessageDropdownAbove.nativeElement.classList.add('new-message-top-max-height');
+      }
+
+    } else if (editorType === 'bottom' && window.innerHeight <= 500) {
+      this.newMessagQuill.nativeElement.classList.add('new-message-bottom');
+      this.newMessageDropdownAbove.nativeElement.classList.remove('new-message-top');
+    }
+  }
 
 
   setSelectedChannelId() {
@@ -191,6 +210,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
   setFocus(event: any) {
     this.newMessageQuillInstance = event;
+    // if (this.newMessageDropdownAbove) {
+    //   this.renderer.addClass(this.newMessageDropdownAbove.elementRef.nativeElement, 'new-message-focused');
+    // }
     this.quillService.setFocus(event)
   }
 
