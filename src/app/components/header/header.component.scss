@@ -273,3 +273,11 @@ app-searchbar {
     height: 50px;
   }
 }
+
+/////////////////////// landscape design start here ///////////////////////////
+
+@media (orientation: landscape) {
+  .headerContainer {
+    height: 75px;
+  }
+}

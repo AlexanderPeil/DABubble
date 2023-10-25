@@ -100,3 +100,20 @@
     margin-left: unset;
   }
 }
+
+/////////////////////// landscape design start here ///////////////////////////
+
+@media (orientation: landscape) {
+  .matDrawerMainContainer {
+    padding: 10px;
+  }
+  .containerMenuBtn {
+    top: 430px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 640px) {
+  .containerMenuBtn {
+    top: 330px;
+  }
+}

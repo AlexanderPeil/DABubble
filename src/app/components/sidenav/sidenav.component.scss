@@ -372,3 +372,38 @@ ul {
     height: 70vh;
   }
 }
+
+/////////////////////// landscape design start here ///////////////////////////
+
+@media (orientation: landscape) {
+  .headMenu {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .padding {
+    padding: 10px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 420px) {
+  .scrollableContainer {
+    height: 62vh;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 400px) {
+  .scrollableContainer {
+    height: 60vh;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 380px) {
+  .scrollableContainer {
+    height: 58vh;
+  }
+}
+@media (orientation: landscape) and (max-height: 350px) {
+  .scrollableContainer {
+    height: 56vh;
+  }
+}

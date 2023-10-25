@@ -13,7 +13,9 @@
   >
     <router-outlet></router-outlet>
   </div>
-  <app-thread *ngIf="threadService.threadAreClosed && this.messageService.chatOpen"></app-thread>
+  <app-thread
+    *ngIf="threadService.threadAreClosed && this.messageService.chatOpen"
+  ></app-thread>
 </div>
 
 <!------------------------- Menu Button start here --------------------------->

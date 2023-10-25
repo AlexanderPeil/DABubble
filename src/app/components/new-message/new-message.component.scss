@@ -330,3 +330,12 @@
     border-radius: unset;
   }
 }
+
+/////////////////////// landscape design start here ///////////////////////////
+
+@media (orientation: landscape) {
+  .chatHistoryHeader {
+    padding: 10px 15px;
+    gap: unset;
+  }
+}

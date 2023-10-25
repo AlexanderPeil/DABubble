@@ -366,3 +366,12 @@
     border-radius: unset;
   }
 }
+
+/////////////////////// landscape design start here ///////////////////////////
+
+@media (orientation: landscape) {
+  .threadHeader {
+    height: 50px;
+    padding: 5px 15px;
+  }
+}
