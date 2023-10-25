@@ -65,6 +65,36 @@
     transform: rotate(90deg);
   }
 }
+.containerMenuBtnResponsive {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  bottom: 90px;
+  left: 0px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  transform: rotate(-90deg);
+  box-shadow: -4px 4px 7px 0px #00000033;
+  background-color: #eceefe;
+  border: 1px solid lightgray;
+  padding: 15px;
+
+  &:hover {
+    @include button_hover;
+
+    img {
+      filter: brightness(0) saturate(100%) invert(27%) sepia(65%)
+        saturate(4594%) hue-rotate(234deg) brightness(97%) contrast(96%);
+    }
+  }
+
+  img {
+    transform: rotate(90deg);
+  }
+}
 
 /////////////////////// responsive design start here ///////////////////////////
 
@@ -115,5 +145,13 @@
 @media (orientation: landscape) and (max-height: 640px) {
   .containerMenuBtn {
     top: 330px;
+  }
+}
+@media (orientation: landscape) and (max-height: 585px) {
+  .containerMenuBtn {
+    display: none;
+  }
+  .containerMenuBtnResponsive {
+    display: flex;
   }
 }

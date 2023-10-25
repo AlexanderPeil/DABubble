@@ -52,3 +52,24 @@
     src="assets/img/icons/closeWorkspaceMenuIcon.svg"
   />
 </div>
+
+<!------------------------- Menu Button resposive landscape start here --------------------------->
+<div
+  (click)="this.messageService.toggleSidenav()"
+  class="containerMenuBtnResponsive"
+>
+  <img
+    [ngClass]="{
+      'd-none': this.messageService.isSidenavOpen,
+      show: !this.messageService.isSidenavOpen
+    }"
+    src="assets/img/icons/openWorkspaceMenuIcon.svg"
+  />
+  <img
+    [ngClass]="{
+      show: this.messageService.isSidenavOpen,
+      'd-none': !this.messageService.isSidenavOpen
+    }"
+    src="assets/img/icons/closeWorkspaceMenuIcon.svg"
+  />
+</div>
