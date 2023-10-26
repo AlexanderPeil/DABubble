@@ -227,8 +227,26 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
 
+  ngAfterViewInit() {
+    this.checkWindowSize();
+    window.addEventListener('resize', this.checkWindowSize.bind(this));
+  }
+
+
+  checkWindowSize() {
+    if (this.threadQuill && this.threadQuill.editorElem) {
+      if (window.innerHeight <= 500) {
+        this.threadQuill.editorElem.classList.add('new-message-bottom');
+      } else {
+        this.threadQuill.editorElem.classList.remove('new-message-bottom');
+      }
+    }
+  }
+
+
   ngOnDestroy(): void {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+    window.removeEventListener('resize', this.checkWindowSize.bind(this));
   }
 }

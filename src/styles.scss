@@ -209,7 +209,26 @@ app-data-protection {
 .ql-mention-list-container {
   width: unset;
   max-width: 280px !important;
-  z-index: 9999 !important;
+  max-height: 480px;
+}
+
+.new-message-top {
+  .ql-mention-list-container {
+    top: 0 !important;
+  }
+}
+
+.new-message-top-max-height {
+  .ql-mention-list-container {
+    max-height: 250px !important;
+  }
+}
+
+.new-message-bottom {
+  .ql-mention-list-container {
+    top: -240px !important;
+    max-height: 250px !important;
+  }
 }
 
 /************************************ Styles for the message container ************************************/
@@ -353,8 +372,8 @@ app-data-protection {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
     }
   }
 
@@ -375,8 +394,8 @@ app-data-protection {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
     }
   }
 
@@ -446,8 +465,8 @@ app-data-protection {
 
   img {
     &:hover {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
     }
   }
 }
