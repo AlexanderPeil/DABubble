@@ -375,3 +375,8 @@
     padding: 5px 15px;
   }
 }
+@media (orientation: landscape) and (max-height: 450px) {
+  .threadMainContainer {
+    height: 72vh;
+  }
+}

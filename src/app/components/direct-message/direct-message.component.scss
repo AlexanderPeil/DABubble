@@ -326,3 +326,24 @@
     border-radius: unset;
   }
 }
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .chatHistoryHeader {
+    height: 50px;
+    padding: 5px 15px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 450px) {
+  .chatHistoryMainContainer {
+    height: 72vh;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 450px) {
+  .emptyChatDiv {
+    img {
+      width: 70px;
+    }
+  }
+}

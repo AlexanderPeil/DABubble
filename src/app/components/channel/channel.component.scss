@@ -367,3 +367,9 @@
     padding: 5px 15px;
   }
 }
+
+@media (orientation: landscape) and (max-height: 450px) {
+  .chatHistoryMainContainer {
+    height: 72vh;
+  }
+}

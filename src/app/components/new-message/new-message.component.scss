@@ -330,7 +330,6 @@
     border-top-right-radius: unset;
   }
   .chatHistoryMainContainer {
-    // height: 100%;
     border-radius: unset;
   }
 }
@@ -341,5 +340,11 @@
   .chatHistoryHeader {
     padding: 10px 15px;
     gap: unset;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 450px) {
+  .chatHistoryMainContainer {
+    height: 72vh;
   }
 }
