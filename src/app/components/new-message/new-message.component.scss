@@ -228,6 +228,10 @@
   background-color: white;
   display: flex;
   flex-direction: column;
+  .ql-mention-list-container {
+    top: 38px !important;
+    left: 15px !important;
+  }
 
   &:hover {
     @include hover_input_or_textarea;
@@ -333,7 +337,7 @@
 
 /////////////////////// landscape design start here ///////////////////////////
 
-@media (orientation: landscape) {
+@media (orientation: landscape) and (max-height: 600px) {
   .chatHistoryHeader {
     padding: 10px 15px;
     gap: unset;

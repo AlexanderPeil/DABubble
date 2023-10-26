@@ -176,8 +176,8 @@ app-data-protection {
   line-height: 25px;
 
   span {
-    white-space: nowrap; 
-    width: 220px; 
+    white-space: nowrap;
+    width: 220px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -581,5 +581,13 @@ mat-chip-row {
 @media (max-width: 300px) {
   .ql-mention-list-container {
     max-width: 220px !important;
+  }
+}
+
+/////////////////////// landscape design start here ///////////////////////////
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .quill-editor-textarea {
+    height: 100px;
   }
 }

@@ -33,7 +33,7 @@
   gap: 10px;
   width: 260px;
   position: absolute;
-  top: 600px;
+  bottom: 200px;
   left: -130px;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
@@ -133,20 +133,12 @@
 
 /////////////////////// landscape design start here ///////////////////////////
 
-@media (orientation: landscape) {
+@media (orientation: landscape) and (max-height: 1050px) {
   .matDrawerMainContainer {
     padding: 10px;
   }
-  .containerMenuBtn {
-    top: 430px;
-  }
 }
 
-@media (orientation: landscape) and (max-height: 640px) {
-  .containerMenuBtn {
-    top: 330px;
-  }
-}
 @media (orientation: landscape) and (max-height: 585px) {
   .containerMenuBtn {
     display: none;

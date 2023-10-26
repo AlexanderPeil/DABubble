@@ -375,7 +375,7 @@ ul {
 
 /////////////////////// landscape design start here ///////////////////////////
 
-@media (orientation: landscape) {
+@media (orientation: landscape) and (max-height: 600px) {
   .headMenu {
     padding-top: 10px;
     padding-bottom: 10px;
