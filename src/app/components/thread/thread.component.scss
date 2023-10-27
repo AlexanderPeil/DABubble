@@ -369,9 +369,14 @@
 
 /////////////////////// landscape design start here ///////////////////////////
 
-@media (orientation: landscape) {
+@media (orientation: landscape) and (max-height: 600px) {
   .threadHeader {
     height: 50px;
     padding: 5px 15px;
+  }
+}
+@media (orientation: landscape) and (max-height: 450px) {
+  .threadMainContainer {
+    height: 72vh;
   }
 }

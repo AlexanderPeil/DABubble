@@ -602,3 +602,11 @@ mat-chip-row {
     max-width: 220px !important;
   }
 }
+
+/////////////////////// landscape design start here ///////////////////////////
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .quill-editor-textarea {
+    height: 100px;
+  }
+}

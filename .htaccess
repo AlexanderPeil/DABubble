@@ -1,2 +1,13 @@
 Header add Access-Control-Allow-Origin "*"
 Header add Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
+
+RewriteEngine on
+RewriteBase /
+
+# Weiterleitung für den Pfad /login zu /index.html
+RewriteRule ^login$ index.html [L,QSA]
+
+# Wenn die angeforderte Ressource keine Datei oder kein Verzeichnis ist, übergib sie an index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.html [L,QSA]

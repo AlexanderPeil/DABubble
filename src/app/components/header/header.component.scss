@@ -276,7 +276,7 @@ app-searchbar {
 
 /////////////////////// landscape design start here ///////////////////////////
 
-@media (orientation: landscape) {
+@media (orientation: landscape) and (max-height: 600px) {
   .headerContainer {
     height: 75px;
   }
