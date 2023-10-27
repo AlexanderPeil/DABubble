@@ -162,8 +162,16 @@ export class ChannelComponent implements OnInit, OnDestroy {
   async sendMessage() {
     const { loggedInUser, messageContent, channelId, messageService, uploadedFiles } = this;
 
-    if (!loggedInUser || !messageContent)
-      return console.error('Please try again.');
+    if (!loggedInUser) {
+      console.error('Please log in.');
+      return;
+    }
+
+    if (!messageContent && uploadedFiles.length === 0) {
+      console.error('Please enter a message or attach files.');
+      return;
+    }
+
     messageService
       .createAndAddChannelMessage(
         channelId,
