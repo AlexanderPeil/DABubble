@@ -53,6 +53,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   showEditMenu: boolean = true;
   uploadedFiles: { url: string; type: 'image' | 'data'; }[] = [];
   subscription!: Subscription;
+  messageContainerError: boolean = false;
 
 
   constructor(
@@ -152,34 +153,37 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
-    if (
-      this.messageContent &&
-      this.messageService.selectedUser &&
-      this.messageService.loggedInUser
-    ) {
-      const senderName = this.messageService.loggedInUser.displayName as string;
-      const cleanedContent = this.messageService.removePTags(
-        this.messageContent
-      );
-      this.messageService
-        .createAndAddMessage(
-          this.messageService.loggedInUser.uid,
-          this.messageService.selectedUser.uid,
-          senderName,
-          cleanedContent,
-          this.uploadedFiles
-        )
-        .then(() => {
-          this.messageContent = '';
-          this.scrollToBottom();
-          this.uploadedFiles = [];
-        })
-        .catch((error: any) => {
-          console.error("Couldn't send a message:", error);
-        });
-    } else {
-      console.error('Please try again.');
+
+    if (!this.messageContent && this.uploadedFiles.length === 0) {
+      this.messageContainerError = true;
+      setTimeout(() => {
+        this.messageContainerError = false;
+      }, 3000);
+      return;
     }
+
+    const senderName = this.messageService.loggedInUser!.displayName as string;
+    const cleanedContent = this.messageService.removePTags(
+      this.messageContent
+    );
+    this.messageService
+      .createAndAddMessage(
+        this.messageService.loggedInUser!.uid,
+        this.messageService.selectedUser!.uid,
+        senderName,
+        cleanedContent,
+        this.uploadedFiles
+      )
+      .then(() => {
+        this.messageContent = '';
+        this.scrollToBottom();
+        this.uploadedFiles = [];
+        this.storageService.clearUploadedFiles()
+      })
+      .catch((error: any) => {
+        console.error("Couldn't send a message:", error);
+      });
+
   }
 
   openDialog(): void {

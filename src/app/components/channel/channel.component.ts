@@ -70,6 +70,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   retryCount = 0;
   uploadedFiles: { url: string; type: 'image' | 'data'; }[] = [];
   subscription!: Subscription;
+  messageContainerError: boolean = false;
 
 
   constructor(
@@ -162,21 +163,19 @@ export class ChannelComponent implements OnInit, OnDestroy {
   async sendMessage() {
     const { loggedInUser, messageContent, channelId, messageService, uploadedFiles } = this;
 
-    if (!loggedInUser) {
-      console.error('Please log in.');
-      return;
-    }
-
     if (!messageContent && uploadedFiles.length === 0) {
-      console.error('Please enter a message or attach files.');
+      this.messageContainerError = true;
+      setTimeout(() => {
+        this.messageContainerError = false;
+      }, 3000);
       return;
     }
 
     messageService
       .createAndAddChannelMessage(
         channelId,
-        loggedInUser.uid,
-        loggedInUser.displayName as string,
+        loggedInUser!.uid,
+        loggedInUser!.displayName as string,
         messageService.removePTags(messageContent),
         uploadedFiles
       ).then(() => ((this.messageContent = ''), this.storageService.clearUploadedFiles(), this.uploadedFiles = [], this.scrollToBottom()))

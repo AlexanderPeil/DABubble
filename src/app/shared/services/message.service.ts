@@ -574,11 +574,11 @@ export class MessageService {
   handleResize() {
     this.isMobile = window.innerWidth <= 630;
 
-    if (window.innerWidth <= 630 && this.lastScreenStatus === 'desktop') {
+    if (window.innerWidth <= 630) {
       this.chatOpen = false;
       this.lastScreenStatus = 'mobile';
       this.isSidenavOpen = true;
-    } else if (window.innerWidth > 630 && this.lastScreenStatus === 'mobile') {
+    } else if (window.innerWidth > 630) {
       this.chatOpen = true;
       this.headerChatMobile = false;
       this.lastScreenStatus = 'desktop';

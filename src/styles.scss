@@ -261,9 +261,11 @@ app-data-protection {
   }
 }
 
-// .messageContainer:last-of-type {
-//   margin-bottom: 130px;
-// }
+.messageContainerError {
+  color: red;
+  position: absolute;
+  top: -25px;
+}
 
 .displayMessagesContainer {
   display: flex;

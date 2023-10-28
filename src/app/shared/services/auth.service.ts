@@ -55,7 +55,6 @@ export class AuthService {
     public storageService: StorageService,
     private firestore: Firestore) {
     this.user$ = new Observable<User | null>(subscriber => {
-      console.log("Constructor start");
       return onAuthStateChanged(this.auth, subscriber);
     }).pipe(shareReplay(1));
     this.initCurrentUser();
@@ -76,7 +75,6 @@ export class AuthService {
   async setPersistence() {
     try {
       await this.auth.setPersistence(browserLocalPersistence);
-      console.log("Set standard persistence!");
     } catch (error) {
       console.error("Couldn't set persistence", error);
     }
