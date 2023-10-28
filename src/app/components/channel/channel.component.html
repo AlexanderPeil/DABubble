@@ -180,7 +180,7 @@
       <div class="containerIcons">
         <label for="input" class="containerAddIcon">
           <img src="assets/img/icons/add.svg" title="Add file">
-          <input (change)="storageService.chooseFileSevice($event)" id="input" type="file" hidden />
+          <input (change)="storageService.chooseFileSevice($event); checkUploadedFiles()" id="input" type="file" hidden />
         </label>
 
         <hr class="verticalLine" />

@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Storage, getDownloadURL, ref, uploadBytesResumable, deleteObject, getStorage } from "@angular/fire/storage";
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -20,7 +20,7 @@ export class StorageService {
   pattern: RegExp = /.pdf/;
   urlContainsPdfEnding: boolean = false;
   filteredUrlToString: string = '';
-  uploadedFile$ = new Subject<{ url: string; type: 'image' | 'data'; }>();
+  // uploadedFile$ = new Subject<{ url: string; type: 'image' | 'data'; }>();
   uploadedFileURL = new Subject<{ url: string; type: 'image' | 'data'; }>();
 
 
@@ -134,6 +134,8 @@ export class StorageService {
         });
       }
     );
+    console.log(this.uploadedFileURL);
+    
   }
 
 

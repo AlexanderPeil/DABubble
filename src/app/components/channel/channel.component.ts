@@ -427,6 +427,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
 
+  checkUploadedFiles() {
+    console.log(this.uploadedFiles);
+    
+  }
+
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

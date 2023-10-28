@@ -20,8 +20,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./new-message.component.scss'],
 })
 export class NewMessageComponent implements OnInit, OnDestroy {
-  // quill: any;
-  // dropDownMenuChannelsIsOpen: boolean = false;
   dropDownMenuUserIsOpen: boolean = false;
   users: { user: any; unreadCount?: number }[] = [];
   isOnline?: boolean;
@@ -153,10 +151,10 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  async sendMessage() {
+  async sendMessage() {    
     const loggedInUser = this.authService.currentUserValue;
     const selectedItem = this.quillService.selectedItem;
-
+  
     if (!selectedItem) {
       this.messageContainerError = true;
       setTimeout(() => {
@@ -164,65 +162,44 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       }, 3000);
       return;
     }
-
-    if (selectedItem) {
-      switch (selectedItem.denotationChar) {
-        case '#':
-          const channelId = selectedItem.id;
-          try {
-            await this.messageService.createAndAddChannelMessage(
-              channelId,
-              loggedInUser!.uid,
-              loggedInUser!.displayName as string,
-              this.messageService.removePTags(this.messageContent),
-              this.uploadedFiles
-            )
-              .then(() => {
-                this.messageContent = '';
-                this.uploadedFiles = [];
-                this.storageService.clearUploadedFiles();
-                this.router.navigate(['/main/channel', channelId]);
-              })
-          } catch (error) {
-            console.error('Error sending channel message:', error);
-          }
-          break;
-
-        case '@':
-        case '*':
-          const userId = selectedItem.id;
-          try {
-            await this.messageService.createAndAddMessage(
-              loggedInUser!.uid,
-              userId,
-              loggedInUser!.displayName as string,
-              this.messageService.removePTags(this.messageContent),
-              this.uploadedFiles
-            )
-              .then(() => {
-                this.uploadedFiles = [];
-                this.storageService.clearUploadedFiles();
-                this.messageContent = '';
-                this.router.navigate(['/main/direct-message', userId]);
-              })
-          } catch (error) {
-            console.error('Error sending direct message:', error);
-          }
-          break;
-
-        default:
-          alert('The selected item does not match any valid criteria.');
-          break;
-      }
-    } else {
-      alert('Please select a channel or a user.');
+  
+    if (!this.messageContent && this.uploadedFiles.length === 0) {
+      alert('Please enter a message or attach a file.');
+      return;
     }
-
-    // Reset selectedItem
-    this.quillService.selectedItem = null;
+  
+    try {
+      const messageContent = this.messageService.removePTags(this.messageContent);
+  
+      if (selectedItem.denotationChar === '#') {
+        await this.messageService.createAndAddChannelMessage(
+          selectedItem.id,
+          loggedInUser!.uid,
+          loggedInUser!.displayName as string,
+          messageContent,
+          this.uploadedFiles
+        );
+        this.router.navigate(['/main/channel', selectedItem.id]);
+      } else if (selectedItem.denotationChar === '@' || selectedItem.denotationChar === '*') {
+        await this.messageService.createAndAddMessage(
+          loggedInUser!.uid,
+          selectedItem.id,
+          loggedInUser!.displayName as string,
+          messageContent,
+          this.uploadedFiles
+        );
+        this.router.navigate(['/main/direct-message', selectedItem.id]);
+      }
+  
+      this.messageContent = '';
+      this.uploadedFiles = [];
+      this.storageService.clearUploadedFiles();
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
   }
-
-
+  
+  
   setFocus(event: any) {
     this.newMessageQuillInstance = event;
     this.quillService.setFocus(event)
@@ -238,6 +215,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     }
   }
 
+  checkUploadedFiles() {
+    console.log(this.uploadedFiles);    
+  }
 
 
   ngOnDestroy() {
