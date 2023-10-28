@@ -505,7 +505,9 @@ export class MessageService {
     senderId: string,
     senderName: string,
     content: string,
-    messageId: string
+    messageId: string,
+    uploadedFiles?: { url: string; type: 'image' | 'data' }[]
+
   ): Promise<string | null> {
     const loggedInUser = this.authService.currentUserValue;
     const message = new MessageContent({
@@ -518,6 +520,7 @@ export class MessageService {
       hasThread: true,
       messageId: messageId,
       channelId: null,
+      attachedFiles: uploadedFiles,
     });
     const messageCollection = collection(this.firestore, 'thread-messages');
     try {
@@ -605,4 +608,25 @@ export class MessageService {
       this.headerChatMobile = true;
     }
   }
+
+
+  async updateAttachedFilesInThreadMessage(
+    userId1: string,
+    userId2: string,
+    messageId: string,
+    updatedFiles: { url: string; type: 'image' | 'data' }[]
+  ): Promise<void> {
+    const messageCollection = this.getDirectMessageCollection(userId1, userId2);
+    const messageRef = doc(messageCollection, messageId);
+
+    try {
+      await updateDoc(messageRef, {
+        attachedFiles: updatedFiles,
+        timestamp: Date.now(),
+      });
+    } catch (error) {
+      console.error('Error updating document:', error);
+    }
+  }
+
 }

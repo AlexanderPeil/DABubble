@@ -24,8 +24,8 @@
 
   img {
     width: 15px;
-    filter: brightness(0) saturate(100%) invert(52%) sepia(87%) saturate(2210%)
-      hue-rotate(211deg) brightness(97%) contrast(97%);
+    filter: brightness(0) saturate(100%) invert(52%) sepia(87%) saturate(2210%) hue-rotate(211deg) brightness(97%)
+      contrast(97%);
   }
 }
 
@@ -64,8 +64,8 @@
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
     }
   }
 }
@@ -167,6 +167,12 @@
   overflow-y: auto;
 }
 
+.uploadedImageInMessage {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
 /************************************ Styles for the texfield ************************************/
 .mainContainerUploadedDatas {
   display: flex;
@@ -257,8 +263,8 @@
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
     }
   }
 }
@@ -278,8 +284,8 @@
     &:hover {
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
     }
   }
 }
@@ -299,8 +305,8 @@
     &:hover {
       transform: scale(1.05);
       transition: all 225ms ease-in-out;
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
     }
   }
 }

@@ -528,6 +528,37 @@ app-data-protection {
   gap: 5px;
 }
 
+.attachedFile {
+  position: relative;
+}
+
+.uploadedImageInMessage {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+
+  &:hover + .deleteFileInMessage {
+    display: flex;
+  }
+}
+
+.deleteFileInMessage {
+  display: none;
+  width: 20px;
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  z-index: 1;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid lightgray;
+
+  &:hover {
+    @include button_hover;
+    display: flex;
+  }
+}
+
 /************************************ Styles for the message container ************************************/
 
 .d-none {

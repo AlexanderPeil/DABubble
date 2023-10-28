@@ -48,6 +48,26 @@
             </p>
           </div>
           <span class="messageText">{{ threadMessage.content }}</span>
+
+
+          <!-- Loop for all attached files in storage -->
+          <div *ngFor="let file of threadMessage.attachedFiles;  let i = index" class="attachedFile">
+            <!-- Show attached images -->
+            <ng-container *ngIf="file.type === 'image'">
+              <img [src]="file.url" class="uploadedImageInMessage" (click)="openDetailViewForAttachedFile(file.url)" />
+              <img matTooltipPosition="above" matTooltip="Delete Data" (click)="deleteFile(threadMessage, file, i)"
+                class="deleteFileInMessage" src="assets/img/icons/closeIcon.svg" />
+            </ng-container>
+
+            <!-- Show attached files (like PDF) -->
+            <ng-container *ngIf="file.type === 'data'">
+              <img [src]="file.url" class="uploadedImageInMessage" (click)="openDetailViewForAttachedFile(file.url)" />
+              <img matTooltipPosition="above" matTooltip="Delete Data" (click)="deleteFile(threadMessage, file, i)"
+                class="deleteFileInMessage" src="assets/img/icons/closeIcon.svg" />
+            </ng-container>
+          </div>
+          <!-- Loop for all attached files in storage -->
+
         </div>
       </div>
 
@@ -58,38 +78,39 @@
     <quill-editor #threadQuill class="quill-editor-textarea" [(ngModel)]="messageContent"
       (onEditorCreated)="setFocus($event)" placeholder="Answer..." [modules]="this.quillService.quillModules">
       <div quill-editor-toolbar>
+        <span *ngIf="messageContainerError" class="messageContainerError">Please enter a message or attach files.</span>
         <!--------------------------------------- Custom created Container --------------------------------------->
         <div class="mainContainerUploadedDatas">
           <!--------------------------------------- Displays uploaded Images --------------------------------------->
           <div *ngFor="
-              let uploadedImage of storageService.uploadedImages;
+              let uploadedImage of threadService.uploadedImages;
               let i = index
             " class="containerUploadedImages">
             <img (click)="openDetailViewFromUploadedImage(uploadedImage)" class="uploadedImage"
               [src]="uploadedImage ? uploadedImage : null" />
             <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
-                this.storageService.deleteUploadedDataService(uploadedImage, i)
+                this.threadService.deleteUploadedDataService(uploadedImage, i)
               " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
           </div>
           <!--------------------------------------- Displays uploaded Images --------------------------------------->
 
           <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
           <div *ngFor="
-              let uploadedData of storageService.uploadedDatas;
+              let uploadedData of threadService.uploadedDatas;
               let i = index
             " class="containerUploadedDatas">
             <iframe class="uploadedData" [src]="uploadedData ? uploadedData : null"></iframe>
             <img matTooltipPosition="above" matTooltip="Delete Data" (click)="
-                this.storageService.deleteUploadedDataService(uploadedData, i)
+                this.threadService.deleteUploadedDataService(uploadedData, i)
               " class="closeIcon" src="assets/img/icons/closeIcon.svg" />
           </div>
           <!--------------------------------------- Displays uploaded Datas, like PDF --------------------------------------->
         </div>
 
         <div class="containerIcons">
-          <label for="input" class="containerAddIcon">
+          <label for="threadInput" class="containerAddIcon">
             <img src="assets/img/icons/add.svg" title="Add file" />
-            <input (change)="storageService.chooseFileSevice($event)" id="input" type="file" hidden />
+            <input (change)="threadService.chooseThreadFileSevice($event)" id="threadInput" type="file" hidden />
           </label>
 
           <hr class="verticalLine" />

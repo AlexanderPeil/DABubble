@@ -5,7 +5,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { DialogDataUploadSuccessfulComponent } from 'src/app/components/dialog-data-upload-successful/dialog-data-upload-successful.component';
 import { DialogUploadedDataErrorComponent } from 'src/app/components/dialog-uploaded-data-error/dialog-uploaded-data-error.component';
-import { MessageContent } from 'src/app/models/message';
 
 
 @Injectable({
@@ -30,7 +29,13 @@ export class StorageService {
 
 
   chooseFileSevice($event: any) {
-    this.file = $event.target.files[0];
+    this.file = $event.target.files[0];  
+    this.uploadDataService();
+  }
+
+
+  chooseThreadFileSevice($event: any) {
+    this.file = $event.target.files[0];  
     this.uploadDataService();
   }
 
@@ -133,16 +138,13 @@ export class StorageService {
           this.uploadedFileURL.next({ url, type: fileType });
         });
       }
-    );
-    console.log(this.uploadedFileURL);
-    
+    );    
   }
 
 
-  getTheDownloadUrlService(uploadTask: any): Promise<string> {
-    return getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      console.log('File available at', downloadURL);
-      if (this.file.type == 'image/jpeg' || this.file.type == 'image/png') {
+  getTheDownloadUrlService(uploadTask: any): Promise<string> { 
+     return getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+      if (this.file.type == 'image/jpeg' || this.file.type == 'image/png') {        
         this.uploadedImages.push(downloadURL);
       } else {
         this.uploadedDatas.push(this.sanitizer.bypassSecurityTrustResourceUrl(downloadURL));

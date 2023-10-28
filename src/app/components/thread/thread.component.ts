@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { StorageService } from 'src/app/shared/services/storage.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
 import { ThreadService } from 'src/app/shared/services/thread.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -10,7 +9,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { MessageContent } from 'src/app/models/message';
 import { QuillService } from 'src/app/shared/services/quill.service';
-import { Observable, Subject, combineLatest, of, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, combineLatest, of, takeUntil } from 'rxjs';
 import { QuillEditorComponent } from 'ngx-quill';
 
 
@@ -35,9 +34,12 @@ export class ThreadComponent implements OnInit, OnDestroy {
   selectedUser: User | null = null;
   loggedInUser: User | null = null;
   channelId: string | null = null;
+  uploadedFiles: { url: string; type: 'image' | 'data'; }[] = [];
+  subscription!: Subscription;
+  messageContainerError: boolean = false;
 
 
-  constructor(public storageService: StorageService,
+  constructor(
     public dialog: MatDialog,
     public threadService: ThreadService,
     private authService: AuthService,
@@ -51,6 +53,9 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.checkURL();
+    this.subscription = this.threadService.uploadedFileURL.subscribe((fileData) => {
+      this.uploadedFiles.push(fileData);
+    });
   }
 
 
@@ -118,6 +123,10 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
   async sendMessage() {
     if (!this.isValidMessage()) {
+      this.messageContainerError = true;
+      setTimeout(() => {
+        this.messageContainerError = false;
+      }, 3000);
       return;
     }
 
@@ -137,7 +146,11 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
 
   isValidMessage(): boolean {
-    if (!this.messageContent || !this.loggedInUser || !this.selectedMessage?.id) {
+    if (
+      (!this.messageContent && this.uploadedFiles.length === 0) ||
+      !this.loggedInUser ||
+      !this.selectedMessage?.id
+    ) {
       console.error('Invalid message parameters.');
       return false;
     }
@@ -151,9 +164,12 @@ export class ThreadComponent implements OnInit, OnDestroy {
       this.loggedInUser!.uid,
       senderName,
       cleanedContent,
-      messageId!
-    );
+      messageId!,
+      this.uploadedFiles
+    )
     await this.updateHasThread(messageId!);
+    this.threadService.clearUploadedFiles();
+    this.uploadedFiles = []
   }
 
 
@@ -244,9 +260,34 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
 
+  openDetailViewForAttachedFile(fileUrl: string) {
+    this.dialog.open(DialogDetailViewUploadedDatasComponent, {
+      data: {
+        uploadedImageUrl: fileUrl,
+      },
+    });
+  }
+
+
+  deleteFile(message: MessageContent, file: any, index: number) {
+    const messageId = this.selectedMessage?.id;
+    this.threadService.deleteFileFromStorage(file.url)
+      .then(() => {
+        if (message.attachedFiles && messageId && this.selectedUser?.uid) {
+          message.attachedFiles.splice(index, 1);
+          this.messageService.updateAttachedFilesInThreadMessage(this.loggedInUser!.uid, this.selectedUser.uid, messageId,  message.attachedFiles);
+        }
+      })
+      .catch(err => {
+        console.error('Error deleting file from storage:', err);
+      });
+  }
+
+
   ngOnDestroy(): void {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+    this.subscription.unsubscribe();
     window.removeEventListener('resize', this.checkWindowSize.bind(this));
   }
 }

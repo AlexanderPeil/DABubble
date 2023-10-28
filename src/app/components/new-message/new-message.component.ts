@@ -32,6 +32,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   newMessageQuillInstance: any;
   uploadedFiles: { url: string; type: 'image' | 'data'; }[] = [];
   messageContainerError: boolean = false;
+  subscription!: Subscription;
   @ViewChild('newMessagQuill', { static: false, read: ElementRef }) newMessagQuill!: ElementRef;
   @ViewChild('newMessageDropdownAbove', { static: false, read: ElementRef }) newMessageDropdownAbove!: ElementRef;
 
@@ -50,6 +51,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setSelectedChannelId();
     this.setSelectedUserId();
+    this.subscription = this.storageService.uploadedFileURL.subscribe((fileData) => {
+      this.uploadedFiles.push(fileData);
+    });
     // this.authService.getUsers().subscribe((usersData) => {
     //   this.users = usersData.map((user) => ({ user, unreadCount: 0 }));
     //   this.users.forEach((userWithCount, index) => {
@@ -224,6 +228,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     this.selectedChannelIdSubscription?.unsubscribe();
     this.selectedUserIdSubscription?.unsubscribe();
     this.quillService.cleanup();
+    this.subscription.unsubscribe();
   }
 
 }
