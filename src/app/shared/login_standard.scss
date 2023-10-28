@@ -2,6 +2,7 @@
 .mainLogoContainer {
   width: 100%;
   margin-left: 75px;
+  margin-top: 20px;
 
   img {
     height: 75px;
@@ -27,8 +28,8 @@
 }
 
 @mixin login_standard_container {
-  @include colum_justify_center;
-  gap: 50px;
+  @include justify_space_between_column;
+  // gap: 50px;
   height: 100vh;
 }
 

@@ -48,14 +48,16 @@
             <div *ngFor="let file of message.attachedFiles;  let i = index" class="attachedFile">
               <!-- Show attached images -->
               <ng-container *ngIf="file.type === 'image'">
-                <img [src]="file.url" class="uploadedImageInMessage" (click)="openDetailViewForAttachedFile(file.url)" />
+                <img [src]="file.url" class="uploadedImageInMessage"
+                  (click)="openDetailViewForAttachedFile(file.url)" />
                 <img matTooltipPosition="above" matTooltip="Delete Data" (click)="deleteFile(message, file, i)"
                   class="deleteFileInMessage" src="assets/img/icons/closeIcon.svg" />
               </ng-container>
 
               <!-- Show attached files (like PDF) -->
               <ng-container *ngIf="file.type === 'data'">
-                <img [src]="file.url" class="uploadedImageInMessage" (click)="openDetailViewForAttachedFile(file.url)" />
+                <img [src]="file.url" class="uploadedImageInMessage"
+                  (click)="openDetailViewForAttachedFile(file.url)" />
                 <img matTooltipPosition="above" matTooltip="Delete Data" (click)="deleteFile(message, file, i)"
                   class="deleteFileInMessage" src="assets/img/icons/closeIcon.svg" />
               </ng-container>
@@ -146,6 +148,7 @@
     (onEditorCreated)="setFocus($event)" placeholder="Message to #{{ channelService.channel.channelName }}"
     [modules]="this.quillService.quillModules">
     <div quill-editor-toolbar>
+      <span *ngIf="messageContainerError" class="messageContainerError">Please enter a message or attach files.</span>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
         <!--------------------------------------- Displays uploaded Images --------------------------------------->

@@ -70,6 +70,10 @@
             </div>
             <button type="button" class="nextBtn" (click)="onNextClick()" [disabled]="!signUpForm.valid">Next</button>
         </form>
+        <div class="loginContainerLinks hideContentMobile">
+            <a class="loginLinks" routerLink="/imprint">Imprint</a>
+            <a class="loginLinks" routerLink="/data-protection">Data protection</a>
+        </div>
     </div>
     <!-- Sign-up form container -->
 
@@ -99,8 +103,7 @@
         </div>
         <button class="btnNext" (click)="onSubmit()" [disabled]="!selectedAvatarURL">Next</button>
     </div>
-    <div class="loginContainerLinks hideContentMobile">
-        <a class="loginLinks" routerLink="/imprint">Imprint</a>
-        <a class="loginLinks" routerLink="/data-protection">Data protection</a>
-    </div>
+
+        <!-- Div to center the main container -->
+        <div></div>
 </div>

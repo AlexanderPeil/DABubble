@@ -32,6 +32,8 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   selectedChannelIdSubscription!: Subscription;
   selectedUserIdSubscription!: Subscription;
   newMessageQuillInstance: any;
+  uploadedFiles: { url: string; type: 'image' | 'data'; }[] = [];
+  messageContainerError: boolean = false;
   @ViewChild('newMessagQuill', { static: false, read: ElementRef }) newMessagQuill!: ElementRef;
   @ViewChild('newMessageDropdownAbove', { static: false, read: ElementRef }) newMessageDropdownAbove!: ElementRef;
 
@@ -155,41 +157,54 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     const loggedInUser = this.authService.currentUserValue;
     const selectedItem = this.quillService.selectedItem;
 
-    if (!loggedInUser) {
-      console.error('User is not logged in.');
+    if (!selectedItem) {
+      this.messageContainerError = true;
+      setTimeout(() => {
+        this.messageContainerError = false;
+      }, 3000);
       return;
     }
 
     if (selectedItem) {
       switch (selectedItem.denotationChar) {
-        case '#': // Es handelt sich um einen Kanal
+        case '#':
           const channelId = selectedItem.id;
           try {
             await this.messageService.createAndAddChannelMessage(
               channelId,
-              loggedInUser.uid,
-              loggedInUser.displayName as string,
-              this.messageService.removePTags(this.messageContent)
-            );
-            this.messageContent = '';
-            this.router.navigate(['/main/channel', channelId]);
+              loggedInUser!.uid,
+              loggedInUser!.displayName as string,
+              this.messageService.removePTags(this.messageContent),
+              this.uploadedFiles
+            )
+              .then(() => {
+                this.messageContent = '';
+                this.uploadedFiles = [];
+                this.storageService.clearUploadedFiles();
+                this.router.navigate(['/main/channel', channelId]);
+              })
           } catch (error) {
             console.error('Error sending channel message:', error);
           }
           break;
 
-        case '@': // Es handelt sich um einen Benutzer
-        case '*': // Es handelt sich um einen Benutzer (abhängig von Ihrer Logik)
+        case '@':
+        case '*':
           const userId = selectedItem.id;
           try {
             await this.messageService.createAndAddMessage(
-              loggedInUser.uid,
+              loggedInUser!.uid,
               userId,
-              loggedInUser.displayName as string,
-              this.messageService.removePTags(this.messageContent)
-            );
-            this.messageContent = '';
-            this.router.navigate(['/main/direct-message', userId]);
+              loggedInUser!.displayName as string,
+              this.messageService.removePTags(this.messageContent),
+              this.uploadedFiles
+            )
+              .then(() => {
+                this.uploadedFiles = [];
+                this.storageService.clearUploadedFiles();
+                this.messageContent = '';
+                this.router.navigate(['/main/direct-message', userId]);
+              })
           } catch (error) {
             console.error('Error sending direct message:', error);
           }
@@ -210,9 +225,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
   setFocus(event: any) {
     this.newMessageQuillInstance = event;
-    // if (this.newMessageDropdownAbove) {
-    //   this.renderer.addClass(this.newMessageDropdownAbove.elementRef.nativeElement, 'new-message-focused');
-    // }
     this.quillService.setFocus(event)
   }
 

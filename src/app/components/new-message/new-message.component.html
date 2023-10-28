@@ -25,6 +25,7 @@
   <quill-editor #newMessagQuill (onFocus)="onEditorFocus('bottom')" class="quill-editor-textarea" [(ngModel)]="messageContent"
     (onEditorCreated)="setFocus($event)" [modules]="this.quillService.quillModules" placeholder="Start a new Message">
     <div quill-editor-toolbar>
+      <span *ngIf="messageContainerError" class="messageContainerError">Please enter a message or attach files.</span>
       <!--------------------------------------- Custom created Container --------------------------------------->
       <div class="mainContainerUploadedDatas">
         <!--------------------------------------- Displays uploaded Images --------------------------------------->
