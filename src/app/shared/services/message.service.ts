@@ -130,8 +130,7 @@ export class MessageService {
     receiverId: string,
     senderName: string,
     content: string,
-    uploadedFiles?: { url: string; type: 'image' | 'data'; }[]
-
+    uploadedFiles?: { url: string; type: 'image' | 'data' }[]
   ): Promise<void> {
     const loggedInUser = this.authService.currentUserValue;
     const message = new MessageContent({
@@ -144,7 +143,7 @@ export class MessageService {
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: false,
       channelId: null,
-      attachedFiles: uploadedFiles
+      attachedFiles: uploadedFiles,
     });
 
     const messageCollection = this.getDirectMessageCollection(
@@ -281,8 +280,12 @@ export class MessageService {
     }
   }
 
-
-  async updateAttachedFilesInDirectMessage(userId1: string, userId2: string, messageId: string, updatedFiles: { url: string; type: 'image' | 'data'; }[]) {
+  async updateAttachedFilesInDirectMessage(
+    userId1: string,
+    userId2: string,
+    messageId: string,
+    updatedFiles: { url: string; type: 'image' | 'data' }[]
+  ) {
     const messageCollection = this.getDirectMessageCollection(userId1, userId2);
     const messageRef = doc(messageCollection, messageId);
 
@@ -303,7 +306,7 @@ export class MessageService {
     senderId: string,
     senderName: string,
     content: string,
-    uploadedFiles?: { url: string; type: 'image' | 'data'; }[]
+    uploadedFiles?: { url: string; type: 'image' | 'data' }[]
   ) {
     const loggedInUser = this.authService.currentUserValue;
     const message = new MessageContent({
@@ -316,7 +319,7 @@ export class MessageService {
       senderImage: loggedInUser?.photoURL ?? '',
       hasThread: false,
       channelId: channelId,
-      attachedFiles: uploadedFiles
+      attachedFiles: uploadedFiles,
     });
 
     const messageCollection = collection(
@@ -475,9 +478,15 @@ export class MessageService {
     this.selectedMessageIdSubject.next(id);
   }
 
-
-  async updateAttachedFilesInChannelMessage(channelID: string, messageId: string, updatedFiles: { url: string; type: 'image' | 'data'; }[]) {
-    const messageRef = doc(this.getChannelMessageCollection(channelID), messageId);
+  async updateAttachedFilesInChannelMessage(
+    channelID: string,
+    messageId: string,
+    updatedFiles: { url: string; type: 'image' | 'data' }[]
+  ) {
+    const messageRef = doc(
+      this.getChannelMessageCollection(channelID),
+      messageId
+    );
 
     try {
       await updateDoc(messageRef, {
@@ -574,11 +583,11 @@ export class MessageService {
   handleResize() {
     this.isMobile = window.innerWidth <= 630;
 
-    if (window.innerWidth <= 630 && this.lastScreenStatus === 'desktop') {
+    if (window.innerWidth <= 630) {
       this.chatOpen = false;
       this.lastScreenStatus = 'mobile';
       this.isSidenavOpen = true;
-    } else if (window.innerWidth > 630 && this.lastScreenStatus === 'mobile') {
+    } else if (window.innerWidth > 630) {
       this.chatOpen = true;
       this.headerChatMobile = false;
       this.lastScreenStatus = 'desktop';
