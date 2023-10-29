@@ -1,8 +1,8 @@
 import { Component, NgZone, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription, timer } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { filter, tap } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 
 @Component({

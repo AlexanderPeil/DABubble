@@ -9,8 +9,7 @@
 }
 
 .chatHistoryHeader {
-  display: flex;
-  justify-content: space-between;
+  @include flex_center;
   height: 65px;
   padding: 25px;
   border-top-left-radius: 30px;
@@ -19,22 +18,19 @@
 }
 
 .channelName {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex_center;
   gap: 10px;
   min-width: 270px;
 
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
     background-color: #eceefe;
     border-radius: 20px;
 
     img,
     p {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
     }
   }
 
@@ -46,35 +42,30 @@
 }
 
 .containerUserInChatHistory {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   gap: 10px;
 }
 
 .childContainerUserInChatHistory {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
+  @include padding_left_right(30px, 10px);
   gap: 10px;
   height: 50px;
-  padding-left: 30px;
-  padding-right: 10px;
 
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
     background-color: #eceefe;
     border-radius: 20px;
 
     .amountOfUserInChannel {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
     }
   }
 }
 
 .containerEmojis {
   gap: 10px;
-  // margin: -40px 30px 0px 0px;
   padding: 5px 20px 5px 20px;
   border-bottom-left-radius: 25px;
   border-top-left-radius: 25px;
@@ -112,41 +103,26 @@
 
 .iconAddUser {
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
     transform: scale(1.1);
-    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%)
-      hue-rotate(230deg) brightness(99%) contrast(91%);
+    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+      contrast(91%);
   }
 }
-
-// .chatHistoryFullWidth {
-//   transition: all 225ms ease-in-out;
-//   width: 75vw;
-// }
-
-// .scrollableContainer {
-//   height: 55vh;
-//   overflow-x: hidden;
-//   overflow-y: auto;
-// }
 
 /************************************ Styles for the texfield ************************************/
 .mainContainerUploadedDatas {
   display: flex;
   gap: 15px;
-  // padding-bottom: 8px;
 }
 
 .containerUploadedImages {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   position: relative;
 }
 
 .uploadedImage {
-  width: 40px;
-  height: 40px;
+  @include width_height(40px, 40px);
   border-radius: 8px;
 
   &:hover + .closeIcon {
@@ -160,13 +136,11 @@
 }
 
 .containerUploadedDatas {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   position: relative;
 
   iframe {
-    width: 40px;
-    height: 40px;
+    @include width_height(40px, 40px);
     border-radius: 8px;
     border: unset;
 
@@ -194,8 +168,7 @@
 }
 
 .containerIcons {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
 }
 
 .verticalLine {
@@ -205,68 +178,17 @@
 }
 
 .containerAddIcon {
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
+  @include chatIconStandard;
   left: 35px;
   bottom: 35px;
-
-  &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
-    background-color: #eceefe;
-  }
-
-  img {
-    &:hover {
-      transition: all 225ms ease-in-out;
-      transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-    }
-  }
 }
 
 .containerSmileyIcon {
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
-
-  &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
-    background-color: #eceefe;
-  }
-
-  img {
-    &:hover {
-      transition: all 225ms ease-in-out;
-      transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-    }
-  }
+  @include chatIconStandard;
 }
 
 .containerAtIcon {
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
-
-  &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
-    background-color: #eceefe;
-  }
-
-  img {
-    &:hover {
-      transform: scale(1.05);
-      transition: all 225ms ease-in-out;
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-    }
-  }
+  @include chatIconStandard;
 }
 
 .sendBtn {
@@ -283,8 +205,7 @@
 }
 
 .uploadedImageInMessage {
-  width: 40px;
-  height: 40px;
+  @include width_height(40px, 40px);
   border-radius: 8px;
 
   &:hover + .deleteFileInMessage {

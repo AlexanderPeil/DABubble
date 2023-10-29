@@ -55,9 +55,9 @@ export class ChannelComponent implements OnInit, OnDestroy {
   messageContent: string = '';
   user_images = '../assets/img/avatar1.svg';
   loggedInUser: User | null = null;
-  displayCheckedIcon: boolean = false;
-  displayHandsUpIcon: boolean = false;
-  emojiPopUpIsOopen: boolean = false;
+  // displayCheckedIcon: boolean = false;
+  // displayHandsUpIcon: boolean = false;
+  emojiPopUpIsOpen: boolean = false;
   popUpToEditMessageIsOpen: boolean = false;
   showEditMessageButton: boolean = false;
   currentlyEditingMessageId: string | null = null;
@@ -90,9 +90,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
     this.fetchAndDisplayMessages();
-    this.subscription = this.storageService.uploadedFileURL.subscribe((fileData) => {
-      this.uploadedFiles.push(fileData);
-    });
+    this.handleStorageFiles();
   }
 
 
@@ -100,6 +98,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.initMessageScrolling();
     this.checkWindowSize();
     window.addEventListener('resize', this.checkWindowSize.bind(this));
+  }
+
+
+  handleStorageFiles() {
+    this.subscription = this.storageService.uploadedFileURL.subscribe((fileData) => {
+      this.uploadedFiles.push(fileData);
+    });
   }
 
 
@@ -162,24 +167,29 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
   async sendMessage() {
     const { loggedInUser, messageContent, channelId, messageService, uploadedFiles } = this;
-
-    if (!messageContent && uploadedFiles.length === 0) {
-      this.messageContainerError = true;
-      setTimeout(() => {
-        this.messageContainerError = false;
-      }, 3000);
+    if (!messageContent && !uploadedFiles.length) {
+      this.showError();
       return;
     }
+    messageService.createAndAddChannelMessage(
+      channelId, loggedInUser!.uid, loggedInUser!.displayName as string,
+      messageService.removePTags(messageContent), uploadedFiles
+    ).then(() => this.resetMessage())
+      .catch(err => console.error("Couldn't send message:", err));
+  }
 
-    messageService
-      .createAndAddChannelMessage(
-        channelId,
-        loggedInUser!.uid,
-        loggedInUser!.displayName as string,
-        messageService.removePTags(messageContent),
-        uploadedFiles
-      ).then(() => ((this.messageContent = ''), this.storageService.clearUploadedFiles(), this.uploadedFiles = [], this.scrollToBottom()))
-      .catch((error: any) => console.error("Couldn't send a message:", error));
+
+  showError() {
+    this.messageContainerError = true;
+    setTimeout(() => this.messageContainerError = false, 3000);
+  }
+
+
+  resetMessage() {
+    this.messageContent = '';
+    this.storageService.clearUploadedFiles();
+    this.uploadedFiles = [];
+    this.executeScrollToBottom();
   }
 
 
@@ -243,7 +253,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event'])
   onCloseEmojiPopUp($event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains($event.target)) {
-      this.emojiPopUpIsOopen = false;
+      this.emojiPopUpIsOpen = false;
     }
   }
 
@@ -300,12 +310,18 @@ export class ChannelComponent implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe)
       ).subscribe((messages) => {
         this.processMessages(messages);
-        messages.forEach((message) => {
-          if (message.senderId !== this.loggedInUser?.uid) {
-            this.messageService.markChannelMessageAsRead(this.channelId);
-          }
-        }); this.executeScrollToBottom();
+        this.markMessagesAsRead(messages);
+        this.executeScrollToBottom();
       });
+  }
+
+
+  markMessagesAsRead(messages: MessageContent[]): void {
+    messages.forEach((message) => {
+      if (message.senderId !== this.loggedInUser?.uid) {
+        this.messageService.markChannelMessageAsRead(this.channelId);
+      }
+    });
   }
 
 
@@ -429,7 +445,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
   checkUploadedFiles() {
     console.log(this.uploadedFiles);
-    
+
   }
 
 
