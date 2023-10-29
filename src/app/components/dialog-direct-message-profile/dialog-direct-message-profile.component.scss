@@ -32,8 +32,7 @@
 
 .status {
   @include font(20px, 400, 27.28px);
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   gap: 10px;
   margin-right: auto;
 
@@ -46,10 +45,6 @@
   }
 
 }
-
-// .circle {
-//   @include circle;
-// }
 
 .profileBottom {
   @include profileBottom;

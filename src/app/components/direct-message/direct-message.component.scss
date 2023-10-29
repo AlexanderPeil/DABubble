@@ -20,8 +20,7 @@
 }
 
 .chatHistoryHeader {
-  display: flex;
-  justify-content: space-between;
+  @include space_between;
   height: 65px;
   padding: 25px;
   border-top-left-radius: 30px;
@@ -30,15 +29,12 @@
 }
 
 .userName {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex_center;
   gap: 10px;
   padding: 5px;
 
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
     background-color: #eceefe;
     border-radius: 20px;
   }
@@ -75,8 +71,7 @@
 }
 
 .user-dropdown {
-  display: flex;
-  flex-direction: column;
+  @include flex_direction_column;
   gap: 10px;
   position: relative;
   background: white;
@@ -92,8 +87,7 @@
   padding: 10px;
 
   div {
-    display: flex;
-    align-items: center;
+    @include align_items_center;
     gap: 10px;
 
     &:hover {
@@ -138,18 +132,15 @@
 .mainContainerUploadedDatas {
   display: flex;
   gap: 15px;
-  // padding-bottom: 8px;
 }
 
 .containerUploadedImages {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   position: relative;
 }
 
 .uploadedImage {
-  width: 40px;
-  height: 40px;
+  @include width_height(40px, 40px);
   border-radius: 8px;
 
   &:hover + .closeIcon {
@@ -163,13 +154,11 @@
 }
 
 .containerUploadedDatas {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   position: relative;
 
   iframe {
-    width: 40px;
-    height: 40px;
+    @include width_height(40px, 40px);
     border-radius: 8px;
     border: unset;
 
@@ -197,8 +186,7 @@
 }
 
 .containerIcons {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
 }
 
 .verticalLine {
@@ -215,8 +203,7 @@
   bottom: 35px;
 
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
     background-color: #eceefe;
   }
 
@@ -236,8 +223,7 @@
   display: flex;
 
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
     background-color: #eceefe;
   }
 
@@ -257,8 +243,7 @@
   display: flex;
 
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
     background-color: #eceefe;
   }
 
@@ -286,8 +271,7 @@
 }
 
 .uploadedImageInMessage {
-  width: 40px;
-  height: 40px;
+  @include width_height(40px, 40px);
   border-radius: 8px;
 
   &:hover + .deleteFileInMessage {

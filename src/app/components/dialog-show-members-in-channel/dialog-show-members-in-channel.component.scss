@@ -6,9 +6,7 @@
 }
 
 .topContainerShowUser {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @include space_between_center;
 
   p {
     margin: 0;
@@ -36,12 +34,11 @@
 }
 
 .scrollableContainerForUsers {
+  @include flex_direction_column;
   max-height: 300px;
   overflow-x: hidden;
   overflow-y: auto;
   gap: 10px;
-  display: flex;
-  flex-direction: column;
   margin-top: 25px;
   margin-bottom: 25px;
 
@@ -53,8 +50,7 @@
 }
 
 .unserContainer {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   gap: 15px;
   border-radius: 20px;
   padding: 5px 100px 5px 10px;
@@ -77,8 +73,7 @@
 }
 
 .addUserIconMainContainer {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   gap: 15px;
   border-radius: 20px;
   padding: 5px 100px 5px 10px;

@@ -11,8 +11,7 @@
 }
 
 .dialogTopChildContainer {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   gap: 10px;
 
   p {
@@ -28,15 +27,13 @@
   border-radius: 50%;
 
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
     background-color: #eceefe;
   }
 
   img {
     &:hover {
-      cursor: pointer;
-      transition: all 225ms ease-in-out;
+      @include button_hover;
       transform: scale(1.1);
       filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
         saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
@@ -101,8 +98,7 @@
   margin: 0;
 
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
     font-weight: 700;
     transform: scale(1.05);
     color: #444df2;
@@ -110,8 +106,7 @@
 }
 
 .channelNameAndHashtagIconContainer {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   gap: 10px;
 
   img {

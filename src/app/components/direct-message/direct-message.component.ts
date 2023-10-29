@@ -68,9 +68,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initUsers();
-    this.subscription = this.storageService.uploadedFileURL.subscribe((fileData) => {
-      this.uploadedFiles.push(fileData);
-    });
+    this.handleStorageFiles();
   }
 
   initUsers() {
@@ -86,6 +84,14 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+
+  handleStorageFiles() {
+    this.subscription = this.storageService.uploadedFileURL.subscribe((fileData) => {
+      this.uploadedFiles.push(fileData);
+    });
+  }
+
 
   loadChatParticipants(): Observable<[User | null, User | null]> {
     return combineLatest([

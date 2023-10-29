@@ -48,6 +48,11 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initForm();
+    this.checkUser();
+  }
+
+
+  checkUser() {
     const firebaseUser = this.authService.currentUserValue;
 
     if (firebaseUser) {
@@ -77,18 +82,18 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
         displayName: this.userForm.value.displayName,
         email: this.user.email
       };
-  
+
       const newEmail = this.userForm.value.email;
-  
+
       if (this.user.email !== newEmail) {
         try {
-          await this.authService.changeEmail(newEmail); 
-          updatedUserData.email = newEmail; 
+          await this.authService.changeEmail(newEmail);
+          updatedUserData.email = newEmail;
         } catch (error) {
           console.error("Error updating email: ", error);
         }
       }
-  
+
       try {
         await this.authService.updateUser(this.user.uid, updatedUserData);
       } catch (error) {
@@ -97,6 +102,7 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
     }
     this.dialogRef.close();
   }
+  
 
 
   retryLoadImage() {
@@ -104,7 +110,7 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
       this.user.photoURL = this.user_images_default;
     }
   }
-  
+
 
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();

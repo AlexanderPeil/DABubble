@@ -2,17 +2,13 @@
 
 
 .dialogMainContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex_center;
+    @include width_height(60vw, 80vh);
     position: relative;
-    width: 60vw;
-    height: 80vh;
 }
 
 .uploadedImage {
-    width: 45vw;
-    height: 55vh;
+    @include width_height(45vw, 55vh);
 }
 
 .containerCloseIcon {

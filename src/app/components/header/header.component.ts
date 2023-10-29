@@ -50,18 +50,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public quillService: QuillService,
     public messageService: MessageService,
-    public threadService: ThreadService,
-    private channelService: ChannelService,
-    private router: Router
+    public threadService: ThreadService
   ) {}
 
   ngOnInit() {
+    this.userSubscriptionAndOnlineStatus();
+    this.screenWidth = window.innerWidth;
+  }
+
+
+  userSubscriptionAndOnlineStatus() {
     this.userSubscription = this.authService.currentUser.subscribe((user) => {
       this.user = user;
       this.isOnline = user?.isOnline ?? undefined;
     });
-    this.screenWidth = window.innerWidth;
   }
+
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -98,69 +102,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.showMenu = false;
   }
 
-  // onSearchChange(term: string): void {
-  //   this.searchList = term.length > 0;
-  //   if (this.searchSub) {
-  //     this.searchSub.unsubscribe();
-  //   }
-  //   this.searchSub = combineLatest([
-  //     this.authService.getUsers(term),
-  //     this.channelService.getChannels(term),
-  //     this.filterMessages(term),
-  //   ]).subscribe(([users, channels, channelMessages]) => {
-  //     this.searchResults.users = users;
-  //     this.searchResults.channels = channels;
-  //     this.searchResults.channelMessages = channelMessages;
-  //   });
-  // }
-
-  // filterMessages(term: string): Observable<MessageContent[]> {
-  //   return new Observable((observer) => {
-  //     if (term) {
-  //       const filtered = this.messages.filter((message) =>
-  //         message.contentLowerCase.includes(term.toLowerCase())
-  //       );
-  //       observer.next(filtered);
-  //       observer.complete();
-  //     } else {
-  //       observer.next([...this.messages]);
-  //       observer.complete();
-  //     }
-  //   });
-  // }
-
-  // navigateToChannel(channelId: string): void {
-  //   this.searchList = false;
-  //   this.searchTerm = '';
-  //   this.router.navigate(['/main/channel', channelId]);
-  // }
-
-  // navigateToDirectMessage(uid: string) {
-  //   this.searchList = false;
-  //   this.searchTerm = '';
-  //   this.router.navigate(['/main/direct-message', uid]);
-  // }
-
-  // loadAllMessages(): void {
-  //   this.messagesSubscription?.unsubscribe();
-  //   this.messageService.fetchAllChannelMessages().subscribe({
-  //     next: (messages) => {
-  //       this.messages = messages;
-  //     },
-  //     error: (error) => {
-  //       console.error('Fehler beim Laden der Nachrichten:', error);
-  //     },
-  //   });
-  // }
-
-  // navigateToChannelMessage(channelId: string, messageId: string): void {
-  //   this.searchList = false;
-  //   this.searchTerm = '';
-  //   this.messageService.setSelectedMessageId(messageId);
-  //   this.messageService.shouldScrollToSpecificMessage = true;
-  //   this.router.navigate(['/main/channel', channelId]);
-  // }
-
 
   navigateToSidenavMobile() {
     this.messageService.chatOpen = false;
@@ -171,7 +112,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();
-    // this.searchSub?.unsubscribe();
-    // this.messagesSubscription?.unsubscribe();
   }
 }
