@@ -1,13 +1,9 @@
 @import '../../shared/variables.scss';
 
 .dialogMainContainer {
+    @include width_height(450px, 200px);
+    @include flex_column_center;
     padding: 25px;
-    width: 450px;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 
     p {
         margin: 0;
@@ -17,13 +13,11 @@
 }
 
 .btnContainer {
-    display: flex;
-    justify-content: center;
+    @include justify_content_center;
     margin-top: 50px;
 
     button {
-        width: 150px;
-        height: 60px;
+        @include width_height(150px, 60px);
         font-size: 18px;
         font-weight: 700;
         border-radius: 25px;

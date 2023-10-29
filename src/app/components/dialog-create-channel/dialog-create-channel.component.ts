@@ -5,13 +5,6 @@ import {
   HostListener,
   ViewChild,
 } from '@angular/core';
-import {
-  Firestore,
-  collectionData,
-  collection,
-  addDoc,
-} from '@angular/fire/firestore';
-import { Observable, map, switchMap } from 'rxjs';
 import { Channel } from 'src/app/models/channel';
 import { MatDialog } from '@angular/material/dialog';
 import { ChannelService } from 'src/app/shared/services/channel.service';
