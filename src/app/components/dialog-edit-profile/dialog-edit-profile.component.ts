@@ -15,7 +15,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class DialogEditProfileComponent implements OnInit, OnDestroy {
   user?: User | null;
   userForm!: FormGroup;
-  user_images_default = '../assets/img/avatar1.svg';
+  user_images_default = 'assets/img/avatar1.svg';
   private userSubscription?: Subscription;
 
   constructor(
@@ -26,12 +26,12 @@ export class DialogEditProfileComponent implements OnInit, OnDestroy {
 
 
   user_images: string[] = [
-    '../assets/img/avatar1.svg',
-    '../assets/img/avatar2.svg',
-    '../assets/img/avatar3.svg',
-    '../assets/img/avatar4.svg',
-    '../assets/img/avatar5.svg',
-    '../assets/img/avatar6.svg',
+    'assets/img/avatar1.svg',
+    'assets/img/avatar2.svg',
+    'assets/img/avatar3.svg',
+    'assets/img/avatar4.svg',
+    'assets/img/avatar5.svg',
+    'assets/img/avatar6.svg',
   ]
 
 

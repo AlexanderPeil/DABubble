@@ -22,7 +22,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   users: User[] = [];
   userSubscription!: Subscription;
   isOnline?: boolean;
-  user_images = '../assets/img/avatar1.svg';
+  user_images = 'assets/img/avatar1.svg';
   screenWidth!: number;
 
   loggedInUser: Observable<User | null> =

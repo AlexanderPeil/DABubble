@@ -53,10 +53,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
   messages: MessageContent[] = [];
   groupedMessages: { date: string; messages: MessageContent[] }[] = [];
   messageContent: string = '';
-  user_images = '../assets/img/avatar1.svg';
+  user_images = 'assets/img/avatar1.svg';
   loggedInUser: User | null = null;
-  // displayCheckedIcon: boolean = false;
-  // displayHandsUpIcon: boolean = false;
   emojiPopUpIsOpen: boolean = false;
   popUpToEditMessageIsOpen: boolean = false;
   showEditMessageButton: boolean = false;

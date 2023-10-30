@@ -42,7 +42,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   @ViewChild('directMessageQuill', { static: false, read: ElementRef }) directMessageQuill!: ElementRef;
   directMessageQuillInstance: any;
-  user_images = '../assets/img/avatar1.svg';
+  user_images = 'assets/img/avatar1.svg';
   popUpToEditMessageIsOpen: boolean = false;
   showEditMessageButton: boolean = false;
   currentlyEditingMessageId: string | null = null;

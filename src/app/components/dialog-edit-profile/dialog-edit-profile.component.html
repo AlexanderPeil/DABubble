@@ -3,7 +3,6 @@
         <p>Edit your profile</p>
         <div mat-dialog-close title="Close window"></div>
     </div>
-    <!-- <img class="userImg" src="assets/img/avatar1.svg"> -->
     <img *ngIf="user?.photoURL" class="userImgEditProfile" [src]="user?.photoURL" [matMenuTriggerFor]="imageMenu" (error)="retryLoadImage()">
     <mat-menu #imageMenu="matMenu">
         <div *ngFor="let imageUrl of user_images">

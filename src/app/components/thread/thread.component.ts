@@ -27,7 +27,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   @ViewChild('threadQuill') threadQuill!: QuillEditorComponent;
   threadQuillInstance: any;
   private unsubscribe: Subject<void> = new Subject<void>();
-  user_images = '../assets/img/avatar1.svg';
+  user_images = 'assets/img/avatar1.svg';
   selectedMessage: MessageContent | null = null;
   groupedMessages: { date: string; messages: MessageContent[] }[] = [];
   threadMessages: MessageContent[] = [];

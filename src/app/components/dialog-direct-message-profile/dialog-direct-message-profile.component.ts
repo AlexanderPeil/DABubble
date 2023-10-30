@@ -15,7 +15,7 @@ export class DialogDirectMessageProfileComponent implements OnInit, OnDestroy {
   isOnline?: boolean;
   selectedUser: User | null = null;
   private userSubscription?: Subscription;
-  user_images_default = '../assets/img/avatar1.svg';
+  user_images_default = 'assets/img/avatar1.svg';
 
   constructor(
     private authService: AuthService,

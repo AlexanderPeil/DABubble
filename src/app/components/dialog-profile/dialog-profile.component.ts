@@ -15,7 +15,7 @@ export class DialogProfileComponent implements OnInit, OnDestroy {
   user: User | null = null;
   isOnline?: boolean;
   userSubscription?: Subscription;
-  user_images = '../assets/img/avatar1.svg';
+  user_images = 'assets/img/avatar1.svg';
 
   constructor(
     private authService: AuthService,

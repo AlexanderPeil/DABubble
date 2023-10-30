@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   showMenu = false;
   isOnline?: boolean;
-  user_images = '../assets/img/avatar1.svg';
+  user_images = 'assets/img/avatar1.svg';
   searchTerm: string = '';
   searchList?: boolean;
   searchSub?: Subscription;

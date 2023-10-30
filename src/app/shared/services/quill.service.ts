@@ -133,7 +133,7 @@ export class QuillService {
       .pipe(
         takeUntil(this.destroy$)
       ).subscribe((users: User[]) => {
-        const user_images = '../assets/img/avatar1.svg';
+        const user_images = 'assets/img/avatar1.svg';
         const values = users.map((user) => {
           let photoURL = user.photoURL;
           if (!photoURL) {
@@ -174,7 +174,7 @@ export class QuillService {
       .pipe(takeUntil(this.destroy$)
       )
       .subscribe((users: User[]) => {
-        const user_images = '../assets/img/avatar1.svg';
+        const user_images = 'assets/img/avatar1.svg';
         const values = users.map((user) => {
           let photoURL = user.photoURL;
           if (!photoURL) {
@@ -308,7 +308,7 @@ export class QuillService {
 
 
   setDefaultImageOnError(imgElement: HTMLImageElement) {
-    imgElement.src = '../assets/img/avatar1.svg';
+    imgElement.src = 'assets/img/avatar1.svg';
   }
 
 
