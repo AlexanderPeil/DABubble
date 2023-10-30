@@ -91,7 +91,7 @@ export class DialogAddMembersInChannelComponent implements OnInit, OnDestroy {
       this.data.channelId,
       this.selectedUsers
     );
-    this.channelService.channel.users.push(this.selectedUsers);    
+    this.channelService.channel.users.push(this.selectedUsers);
   }
 
   checkForDropdown(event: any): void {

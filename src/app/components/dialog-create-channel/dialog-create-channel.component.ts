@@ -55,8 +55,6 @@ export class DialogCreateChannelComponent implements OnInit {
   }
 
   async addAllMembers() {
-    console.log(this.foundUsers);
-    
     this.channel.users = this.foundUsers;
   }
 
