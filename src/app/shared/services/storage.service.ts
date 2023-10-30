@@ -93,27 +93,6 @@ export class StorageService {
   }
 
 
-  //   async uploadGooglePhotoToFirebaseStorage(photoURL: string, uid: string): Promise<string> {
-  //     const response = await fetch(photoURL);
-  //     if (!response.ok) {
-  //         throw new Error('Fehler beim Herunterladen des Google-Bildes');
-  //     }
-  //     const blob: any = await response.blob();
-  //     blob.type = response.headers.get("Content-Type");  
-  //     this.file = blob;  
-  //     if (!this.dataSizeIsRightService() || !this.dataFormatIsRightService()) {
-  //         throw new Error('Ungültige Dateigröße oder Dateityp');
-  //     }
-
-  //     const storageRef = ref(this.storage, `avatars/${uid}`);
-  //     await uploadBytes(storageRef, blob);
-
-  //     const downloadURL = await getDownloadURL(storageRef);
-  //     return downloadURL;
-  // }
-
-
-
   dataSizeIsRightService() {
     return this.file.size <= 500000;
   }

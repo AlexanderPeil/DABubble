@@ -20,7 +20,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   chooseAvatar: boolean = false;
   selectedAvatarURL!: string;
   avatarUrls: string[] = [];
-  defaultAvatar: string = '../../assets/img/default_avatar.svg';
+  defaultAvatar: string = 'assets/img/avatar1.svg';
   private displayNameSubscription?: Subscription;
   hasUserInteracted = false;
 

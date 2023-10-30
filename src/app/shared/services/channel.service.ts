@@ -12,7 +12,6 @@ import {
   deleteDoc,
   onSnapshot,
   where,
-  limit,
   getDocs,
   DocumentData,
   Query,
