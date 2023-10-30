@@ -5,9 +5,9 @@
         <img class="userImg" [src]="messageService.selectedUser?.photoURL"
           (error)="retryLoadImage(messageService.selectedUser)" />
         <img *ngIf="messageService.selectedUser?.isOnline" class="statusIcon"
-          src="../../../assets/img/icons/user_online.svg" alt="Online" />
+          src="assets/img/icons/user_online.svg" alt="Online" />
         <img *ngIf="!messageService.selectedUser?.isOnline" class="statusIcon"
-          src="../../../assets/img/icons/user_offline.svg" alt="Offline" />
+          src="assets/img/icons/user_offline.svg" alt="Offline" />
       </div>
       <p>{{ messageService.selectedUser?.displayName }}</p>
     </div>

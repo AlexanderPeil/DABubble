@@ -62,8 +62,8 @@
     <li class="selectableUserChat" (click)="onUserClick(user)">
       <div class="userIconWrapper">
         <img class="userImg" [src]="user.photoURL" (error)="retryLoadImage(user)" />
-        <img *ngIf="user?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_online.svg" alt="Online" />
-        <img *ngIf="!user?.isOnline" class="statusIcon" src="../../../assets/img/icons/user_offline.svg"
+        <img *ngIf="user?.isOnline" class="statusIcon" src="assets/img/icons/user_online.svg" alt="Online" />
+        <img *ngIf="!user?.isOnline" class="statusIcon" src="assets/img/icons/user_offline.svg"
           alt="Offline" />
       </div>
       <p>{{ user.displayName }}</p>

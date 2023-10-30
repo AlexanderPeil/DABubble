@@ -188,11 +188,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       realEmojiButton.click();
     }
   }
-
-  checkUploadedFiles() {
-    console.log(this.uploadedFiles);
-  }
-
+  
 
   ngOnDestroy() {
     this.selectedChannelIdSubscription?.unsubscribe();

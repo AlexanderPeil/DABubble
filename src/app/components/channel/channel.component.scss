@@ -9,7 +9,7 @@
 }
 
 .chatHistoryHeader {
-  @include flex_center;
+  @include space_between;
   height: 65px;
   padding: 25px;
   border-top-left-radius: 30px;

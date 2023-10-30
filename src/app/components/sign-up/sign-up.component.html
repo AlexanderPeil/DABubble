@@ -1,6 +1,6 @@
 <div class="signUpContent">
     <div class="mainLogoContainer">
-        <img class="mainLogo" src="../../../assets/img/logo_animation.svg">
+        <img class="mainLogo" src="assets/img/logo_animation.svg">
     </div>
 
     <!-- Sign-up form container -->
@@ -14,7 +14,7 @@
             <span class="formHeaderText">With your name and email address, you've created your new DABubble
                 account.</span>
             <div class="inputContainer">
-                <img class="userImg" src="../../../assets/img/icons/user_icon.svg" alt="User icon">
+                <img class="userImg" src="assets/img/icons/user_icon.svg" alt="User icon">
                 <input type="text" placeholder="Firsname and Lastname" formControlName="displayName"
                     (blur)="markAllAsTouched(signUpForm)">
                 <div *ngIf="signUpForm.get('displayName')?.hasError('fullNameValidator') && hasUserInteracted"
@@ -24,7 +24,7 @@
             </div>
 
             <div class="inputContainer">
-                <img class="mailImg" src="../../../assets/img/icons/mail_icon.svg" alt="Email icon">
+                <img class="mailImg" src="assets/img/icons/mail_icon.svg" alt="Email icon">
                 <input type="email" placeholder="examplename@email.com" formControlName="email"
                     (blur)="markAllAsTouched(signUpForm)">
                 <div *ngIf="signUpForm.get('email')?.hasError('required') && hasUserInteracted"
@@ -37,7 +37,7 @@
             </div>
 
             <div class="inputContainer">
-                <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
+                <img class="passwordImg" src="assets/img/icons/lock_icon.svg" alt="Lock icon">
                 <input type="password" placeholder="Password" formControlName="password"
                     (blur)="markAllAsTouched(signUpForm)">
                 <div *ngIf="signUpForm.get('password')?.hasError('required') && hasUserInteracted"
@@ -47,7 +47,7 @@
             </div>
 
             <div class="inputContainer">
-                <img class="passwordImg" src="../../../assets/img/icons/lock_icon.svg" alt="Lock icon">
+                <img class="passwordImg" src="assets/img/icons/lock_icon.svg" alt="Lock icon">
                 <input type="password" placeholder="Confirm Password" formControlName="passwordConfirm"
                     (blur)="markAllAsTouched(signUpForm)">
                 <div *ngIf="signUpForm.get('passwordConfirm')?.hasError('required') && hasUserInteracted"
