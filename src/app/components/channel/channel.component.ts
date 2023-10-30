@@ -55,6 +55,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
   messageContent: string = '';
   user_images = 'assets/img/avatar1.svg';
   loggedInUser: User | null = null;
+  currentUserId: string | null = null;
   emojiPopUpIsOpen: boolean = false;
   popUpToEditMessageIsOpen: boolean = false;
   showEditMessageButton: boolean = false;
@@ -89,6 +90,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.getCurrentChannelIdInUrl();
     this.fetchAndDisplayMessages();
     this.handleStorageFiles();
+    this.currentUserId = this.authService.currentUser.value?.uid || null;
   }
 
 
@@ -424,6 +426,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
         if (message.attachedFiles && messageId) {
           message.attachedFiles.splice(index, 1);
           this.messageService.updateAttachedFilesInChannelMessage(channelId, messageId, message.attachedFiles);
+          this.messageService.deleteChannelMessage(channelId, messageId)
         }
       })
       .catch(err => {
@@ -443,6 +446,19 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
   checkUploadedFiles() {
     console.log(this.uploadedFiles);
+
+  }
+
+
+  runChannelMessage(messageId: string) {
+    this.messageService.deleteChannelMessage(this.channelId, messageId)
+      .then(() => {
+        this.isEditing = null;
+        this.showEditMenu = true;
+      })
+      .catch(error => {
+        console.error('Error while deleting message:', error);
+      });
 
   }
 

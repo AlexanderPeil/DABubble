@@ -100,11 +100,6 @@ export class AuthService {
   }
 
 
-  // getCurrentUser(): User | null {
-  //   return this.auth.currentUser;  // Checks if a user is authenticated (set in the elocal sotrage last time) to show the loading screen or not
-  // }
-
-
   get currentUserValue(): User | null {
     return this.currentUser.value;
   }

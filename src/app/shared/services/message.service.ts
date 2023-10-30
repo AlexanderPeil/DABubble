@@ -13,6 +13,7 @@ import {
   arrayUnion,
   arrayRemove,
   orderBy,
+  deleteDoc,
 } from '@angular/fire/firestore';
 import {
   BehaviorSubject,
@@ -298,6 +299,20 @@ export class MessageService {
       console.error('Error updating document: ', error);
     }
   }
+
+
+  async deleteDirectMessage(userId1: string, userId2: string, messageId: string): Promise<void> {
+    const messageCollection = this.getDirectMessageCollection(userId1, userId2);
+    const messageRef = doc(messageCollection, messageId);
+
+    try {
+      await deleteDoc(messageRef);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+
   // Here ends the logic for the direct-messages
 
   // Here begins the logic for channel-messages
@@ -497,6 +512,19 @@ export class MessageService {
       console.error('Error updating document: ', error);
     }
   }
+
+
+  async deleteChannelMessage(channelID: string, messageId: string): Promise<void> {
+    const messageRef = doc(this.getChannelMessageCollection(channelID), messageId);
+
+    try {
+      await deleteDoc(messageRef);
+    } catch (err) {
+      console.error('Error deleting channel message: ', err);
+      throw err;
+    }
+  }
+
 
   // Here ends the logic for channel-messages
 

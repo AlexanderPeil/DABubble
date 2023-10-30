@@ -39,7 +39,7 @@
               <p>{{ message.senderName }}</p>
               <p>{{ this.messageService.formatTime(message.timestamp) }}</p>
             </div>
-            <span *ngIf="isEditing !== message.id" class="message" [ngClass]="{
+            <span *ngIf="isEditing !== message.id && message.content" class="message" [ngClass]="{
                 senderMessage:
                   message.senderId === authService.currentUser.value?.uid
               }">{{ message.content }}</span>
@@ -50,7 +50,8 @@
               <ng-container *ngIf="file.type === 'image'">
                 <img [src]="file.url" class="uploadedImageInMessage"
                   (click)="openDetailViewForAttachedFile(file.url)" />
-                <img matTooltipPosition="above" matTooltip="Delete Data" (click)="deleteFile(message, file, i)"
+                <img matTooltipPosition="above" matTooltip="Delete Data" *ngIf="message.senderId === currentUserId"  
+                (click)="deleteFile(message, file, i)"
                   class="deleteFileInMessage" src="assets/img/icons/closeIcon.svg" />
               </ng-container>
 
@@ -58,7 +59,8 @@
               <ng-container *ngIf="file.type === 'data'">
                 <img [src]="file.url" class="uploadedImageInMessage"
                   (click)="openDetailViewForAttachedFile(file.url)" />
-                <img matTooltipPosition="above" matTooltip="Delete Data" (click)="deleteFile(message, file, i)"
+                <img matTooltipPosition="above" matTooltip="Delete Data" *ngIf="message.senderId === currentUserId"  
+                 (click)="deleteFile(message, file, i)"
                   class="deleteFileInMessage" src="assets/img/icons/closeIcon.svg" />
               </ng-container>
             </div>
@@ -69,6 +71,7 @@
                 isEditing === message.id
               " class="editMessageContainer">
               <input [(ngModel)]="updatedMessageContent" />
+              <img src="assets/img/icons/closeIcon.svg" (click)="runChannelMessage(message.id)">
               <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)"
                 title="Send message">
             </div>

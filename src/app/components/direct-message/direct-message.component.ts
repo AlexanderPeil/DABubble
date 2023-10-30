@@ -54,6 +54,9 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   uploadedFiles: { url: string; type: 'image' | 'data'; }[] = [];
   subscription!: Subscription;
   messageContainerError: boolean = false;
+  messageId: string | null = null;
+  currentUserId: string | null = null;
+  messageContentEmpty: boolean = false;
 
 
   constructor(
@@ -69,6 +72,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initUsers();
     this.handleStorageFiles();
+    this.currentUserId = this.authService.currentUser.value?.uid || null;
   }
 
   initUsers() {
@@ -159,7 +163,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
-
     if (!this.messageContent && this.uploadedFiles.length === 0) {
       this.messageContainerError = true;
       setTimeout(() => {
@@ -350,14 +353,33 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     const receiverUserId = this.messageService.selectedUser?.uid as string;
     this.storageService.deleteFileFromStorage(file.url)
       .then(() => {
-        if (message.attachedFiles && messageId) {
+        if (message.attachedFiles && messageId && loggedInUserId && receiverUserId) {
           message.attachedFiles.splice(index, 1);
           this.messageService.updateAttachedFilesInDirectMessage(loggedInUserId, receiverUserId, messageId, message.attachedFiles);
+          this.messageService.deleteDirectMessage(loggedInUserId, receiverUserId, messageId);
         }
       })
       .catch(err => {
         console.error('Error deleting file from storage:', err);
       });
+  }
+
+
+  runDeleteDirectMessage(messageId: string) {    
+    const loggedInUserId = this.messageService.loggedInUser?.uid as string;
+    const receiverUserId = this.messageService.selectedUser?.uid as string;
+    if (loggedInUserId && receiverUserId && messageId) {
+      console.log('Try to delete direct-message', loggedInUserId, receiverUserId, messageId);
+      this.messageService.deleteDirectMessage(loggedInUserId, receiverUserId, messageId)
+        .then(() => {
+          console.log('reset edit menu');          
+          this.isEditing = null;
+          this.showEditMenu = true;
+        })
+        .catch(error => {
+          console.error('Error while deleting message:', error);
+        });
+    }
   }
 
 

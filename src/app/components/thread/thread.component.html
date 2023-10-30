@@ -55,7 +55,8 @@
             <!-- Show attached images -->
             <ng-container *ngIf="file.type === 'image'">
               <img [src]="file.url" class="uploadedImageInMessage" (click)="openDetailViewForAttachedFile(file.url)" />
-              <img matTooltipPosition="above" matTooltip="Delete Data" (click)="deleteFile(threadMessage, file, i)"
+              <img matTooltipPosition="above" matTooltip="Delete Data" *ngIf="threadMessage.senderId === currentUserId"
+               (click)="deleteFile(threadMessage, file, i)"
                 class="deleteFileInMessage" src="assets/img/icons/closeIcon.svg" />
             </ng-container>
 

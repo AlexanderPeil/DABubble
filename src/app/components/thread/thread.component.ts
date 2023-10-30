@@ -37,6 +37,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   uploadedFiles: { url: string; type: 'image' | 'data'; }[] = [];
   subscription!: Subscription;
   messageContainerError: boolean = false;
+  currentUserId: string | null = null;
 
 
   constructor(
@@ -54,6 +55,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.checkURL();
     this.handleStorageFiles();
+    this.currentUserId = this.authService.currentUser.value?.uid || null;
   }
 
 
