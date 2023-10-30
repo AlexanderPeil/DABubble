@@ -40,8 +40,7 @@
   }
 
   p {
-    font-weight: 700;
-    font-size: 24px;
+    @include font_size_weight(24px, 700);
     margin: 0;
   }
 }

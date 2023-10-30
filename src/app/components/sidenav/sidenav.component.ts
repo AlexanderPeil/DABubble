@@ -22,10 +22,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
   users: User[] = [];
   userSubscription!: Subscription;
   isOnline?: boolean;
-  loggedInUser: Observable<User | null> =
-    this.authService.currentUser.asObservable();
   user_images = '../assets/img/avatar1.svg';
   screenWidth!: number;
+
+  loggedInUser: Observable<User | null> =
+  this.authService.currentUser.asObservable();
 
   constructor(
     public dialog: MatDialog,
@@ -36,11 +37,15 @@ export class SidenavComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.getUsers();
+    this.channelService.getChannelService();
+    this.screenWidth = window.innerWidth;
+  }
+
+  getUsers() {
     this.userSubscription = this.authService
       .getUsers()
       .subscribe((users) => (this.users = users));
-    this.channelService.getChannelService();
-    this.screenWidth = window.innerWidth;
   }
 
   @HostListener('window:resize', ['$event'])

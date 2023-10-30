@@ -1,3 +1,5 @@
+@import "../../shared/variables.scss";
+
 .messageMainContainer {
     display: flex;
     align-items: flex-start;
@@ -6,9 +8,8 @@
     margin-top: 20px;
 
     &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
+        @include button_hover;
+        background-color: #eceefe;
 
         .messageText {
             background-color: white;
@@ -21,8 +22,7 @@
 }
 
 .messageChildContainer {
-    display: flex;
-    flex-direction: column;
+    @include flex_direction_column;
     gap: 10px;
 }
 
@@ -31,39 +31,35 @@
 }
 
 .containerUserNameAndTime {
-    display: flex;
-    align-items: center;
+    @include flex_direction_column;
     gap: 20px;
 }
 
 .userName {
-    font-weight: 700;
-    font-size: 18px;
+    @include font_size_weight(18px, 700);
     margin: 0;
 
     &:hover {
         transition: all 225ms ease-in-out;
-        color: #444DF2;
+        color: #444df2;
         font-weight: bolder;
     }
 }
 
 .time {
-    font-weight: 400;
-    font-size: 14px;
+    @include font_size_weight(14px, 400);
     margin: 0;
     color: #686868;
 }
 
 .messageText {
-    font-weight: 400;
-    font-size: 18px;
+    @include font_size_weight(14px, 400);
     padding: 15px;
     margin: 0;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
     border-top-right-radius: 30px;
-    background-color: #ECEEFE;
+    background-color: #eceefe;
 }
 
 .containerAmountOfAnswers {
@@ -72,21 +68,19 @@
 }
 
 .answers {
-    font-weight: 400;
-    font-size: 18px;
+    @include font_size_weight(18px, 400);
     margin: 0;
-    color: #535AF1;
+    color: #535af1;
 
     &:hover {
         transition: all 225ms ease-in-out;
-        color: #444DF2;
+        color: #444df2;
         font-weight: bolder;
     }
 }
 
 .lastAnswer {
-    font-weight: 400;
-    font-size: 14px;
+    @include font_size_weight(14px, 400);
     margin: 0;
     color: #686868;
 }
@@ -101,77 +95,38 @@
     border-bottom-left-radius: 25px;
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
-    border: 1px solid #ADB0D9;
+    border: 1px solid #adb0d9;
     background-color: white;
 
     &:hover {
-
         .messageMainContainer {
-            background-color: #ECEEFE;
+            background-color: #eceefe;
         }
     }
 }
 
 .completeEmoji {
-    padding: 8px;
-    border-radius: 50%;
-
-    &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
-    }
+    @include messageEmojis;
 }
 
 .handsUpEmoji {
-    padding: 8px;
-    border-radius: 50%;
-
-    &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
-    }
+    @include messageEmojis;
 }
 
 .containerAddEmojiIcon {
     display: flex;
-    padding: 8px;
-    border-radius: 50%;
+    @include messageEmojis;
 
     img {
-        &:hover {
-            cursor: pointer;
-            transition: all 225ms ease-in-out;
-            transform: scale(1.05);
-            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-        }
-    }
-
-    &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
+        @include messageContainerImg;
     }
 }
 
 .containerAnswerOnThreadIcon {
     display: flex;
-    padding: 8px;
-    border-radius: 50%;
+    @include messageEmojis;
 
     img {
-        &:hover {
-            cursor: pointer;
-            transition: all 225ms ease-in-out;
-            transform: scale(1.05);
-            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-        }
-    }
-
-    &:hover {
-        cursor: pointer;
-        transition: all 225ms ease-in-out;
-        background-color: #ECEEFE;
+        @include messageContainerImg;
     }
 }

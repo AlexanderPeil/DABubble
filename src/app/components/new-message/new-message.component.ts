@@ -1,15 +1,10 @@
-import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
 import { ChannelService } from 'src/app/shared/services/channel.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MessageService } from 'src/app/shared/services/message.service';
-// import { startWith, map, Observable, of, BehaviorSubject, filter } from 'rxjs';
-// import { User } from 'src/app/shared/services/user';
-// import { Channel } from 'src/app/models/channel';
-// import { DocumentData } from '@angular/fire/firestore';
-// import { FormControl } from '@angular/forms';
 import { QuillService } from 'src/app/shared/services/quill.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -54,41 +49,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     this.subscription = this.storageService.uploadedFileURL.subscribe((fileData) => {
       this.uploadedFiles.push(fileData);
     });
-    // this.authService.getUsers().subscribe((usersData) => {
-    //   this.users = usersData.map((user) => ({ user, unreadCount: 0 }));
-    //   this.users.forEach((userWithCount, index) => {
-    //     const loggedInUid = this.authService.currentUserValue?.uid;
-    //     if (userWithCount.user && loggedInUid) {
-    //       this.messageService
-    //         .getUnreadMessagesCount(loggedInUid, userWithCount.user.uid)
-    //         .subscribe((unreadCount) => {
-    //           if (this.users[index]) {
-    //             this.users[index].unreadCount = unreadCount;
-    //           }
-    //         });
-    //     }
-    //   });
-    // });
   }
-
-  // getInputValue($event: any) {
-  //   this.channelService.channelData = of(this.channels); // Start with all items
-  //   // RxJS operators for filtering based on search query
-  //   this.channelService.channelData = this.channelService.channelData.pipe(
-  //     startWith($event.target.value),
-  //    filter(($event.target.value),  => {})
-  //   );
-  // }
-
-  // filterItems(value: string): Observable<string[]> {
-  //   return of(this.channels.filter(channel =>
-  //     channel.toLowerCase().startsWith(value.toLowerCase()) ? this.dropDownMenuChannelsIsOpen : !this.dropDownMenuChannelsIsOpen
-  //   ));
-  // }
-
-  // setFocus($event: any) {
-  //   $event.focus();
-  // }
 
 
   openDetailViewFromUploadedImage(uploadedImageUrl: string) {
@@ -98,22 +59,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       },
     });
   }
-
-  // filterUsers(query?: string): void {
-  //   this.authService.getUsers(query).subscribe((users) => {
-  //     this.foundUsers = users;
-  //   });
-  // }
-
-  // @HostListener('document: click', ['$event.target'])
-  // closeDropdownIfClickingOutside($event: MouseEvent) {
-  //   if (!this.elementRef.nativeElement.contains($event.target)) {
-  //     this.dropDownMenuChannelsIsOpen = false;
-  //   }
-  //   if (!this.elementRef.nativeElement.contains($event.target)) {
-  //     this.dropDownMenuUserIsOpen = false;
-  //   }
-  // }
 
 
   onEditorFocus(editorType: 'top' | 'bottom') {
@@ -155,55 +100,80 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  async sendMessage() {    
+  async sendMessage() {
     const loggedInUser = this.authService.currentUserValue;
     const selectedItem = this.quillService.selectedItem;
-  
+
     if (!selectedItem) {
-      this.messageContainerError = true;
-      setTimeout(() => {
-        this.messageContainerError = false;
-      }, 3000);
+      this.displayMessageContainerError();
       return;
     }
-  
-    if (!this.messageContent && this.uploadedFiles.length === 0) {
+
+    if (this.isMessageEmpty()) {
       alert('Please enter a message or attach a file.');
       return;
     }
-  
+
+    this.processMessageContent(loggedInUser, selectedItem);
+  }
+
+  displayMessageContainerError() {
+    this.messageContainerError = true;
+    setTimeout(() => {
+      this.messageContainerError = false;
+    }, 3000);
+  }
+
+  isMessageEmpty() {
+    return !this.messageContent && this.uploadedFiles.length === 0;
+  }
+
+  async processMessageContent(loggedInUser: any, selectedItem: any) {
     try {
       const messageContent = this.messageService.removePTags(this.messageContent);
-  
+
       if (selectedItem.denotationChar === '#') {
-        await this.messageService.createAndAddChannelMessage(
-          selectedItem.id,
-          loggedInUser!.uid,
-          loggedInUser!.displayName as string,
-          messageContent,
-          this.uploadedFiles
-        );
+        await this.sendChannelMessage(loggedInUser, selectedItem, messageContent);
         this.router.navigate(['/main/channel', selectedItem.id]);
-      } else if (selectedItem.denotationChar === '@' || selectedItem.denotationChar === '*') {
-        await this.messageService.createAndAddMessage(
-          loggedInUser!.uid,
-          selectedItem.id,
-          loggedInUser!.displayName as string,
-          messageContent,
-          this.uploadedFiles
-        );
+      } else if (['@', '*'].includes(selectedItem.denotationChar)) {
+        await this.sendDirectMessage(loggedInUser, selectedItem, messageContent);
         this.router.navigate(['/main/direct-message', selectedItem.id]);
       }
-  
-      this.messageContent = '';
-      this.uploadedFiles = [];
-      this.storageService.clearUploadedFiles();
+
+      this.clearMessageContent();
     } catch (error) {
       console.error('Error sending message:', error);
     }
   }
-  
-  
+
+  async sendChannelMessage(loggedInUser: any, selectedItem: any, messageContent: string) {
+    await this.messageService.createAndAddChannelMessage(
+      selectedItem.id,
+      loggedInUser!.uid,
+      loggedInUser!.displayName as string,
+      messageContent,
+      this.uploadedFiles
+    );
+  }
+
+  async sendDirectMessage(loggedInUser: any, selectedItem: any, messageContent: string) {
+    await this.messageService.createAndAddMessage(
+      loggedInUser!.uid,
+      selectedItem.id,
+      loggedInUser!.displayName as string,
+      messageContent,
+      this.uploadedFiles
+    );
+  }
+
+  clearMessageContent() {
+    this.messageContent = '';
+    this.uploadedFiles = [];
+    this.storageService.clearUploadedFiles();
+  }
+
+
+
   setFocus(event: any) {
     this.newMessageQuillInstance = event;
     this.quillService.setFocus(event)
@@ -220,7 +190,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   }
 
   checkUploadedFiles() {
-    console.log(this.uploadedFiles);    
+    console.log(this.uploadedFiles);
   }
 
 

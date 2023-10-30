@@ -11,9 +11,8 @@
   @include space_between_center;
 
   p {
+    @include font_size_weight(24px, 700);
     margin: 0;
-    font-weight: 700;
-    font-size: 24px;
   }
 }
 
@@ -38,8 +37,7 @@
 }
 
 .textContainer {
-  font-size: 18px;
-  font-weight: 400;
+  @include font_size_weight(18px, 400);
   margin: 25px 0 25px 0;
 }
 
@@ -47,8 +45,7 @@
   padding-bottom: 20px;
 
   p {
-    font-size: 18px;
-    font-weight: 700;
+    @include font_size_weight(18px, 700);
   }
 }
 
@@ -66,14 +63,13 @@
 
   input {
     @include width_height(100%, 14px);
+    @include font_size_weight(18px, 400);
     border: 1px solid #adb0d9;
     background-color: white;
     border-radius: 100px;
     padding: 28px 0 28px 40px;
     box-sizing: border-box;
     transition: all 125ms ease-in-out;
-    font-weight: 400;
-    font-size: 18px;
     color: #686868;
 
     &:focus {
@@ -95,10 +91,9 @@
   justify-content: flex-end;
 
   button {
+    @include font_size_weight(18px, 700);
     background-color: #444df2;
     color: white !important;
-    font-weight: 700;
-    font-size: 18px;
     border-radius: 25px;
     padding: 25px;
     font-family: Nunito, sans-serif !important;
@@ -125,9 +120,8 @@
   @include space_between_center;
 
   p {
+    @include font_size_weight(24px, 700);
     margin: 0;
-    font-weight: 700;
-    font-size: 24px;
   }
 }
 
@@ -142,10 +136,9 @@
   justify-content: flex-end;
 
   button {
+    @include font_size_weight(18px, 700);
     background-color: #444df2;
     color: white !important;
-    font-weight: 700;
-    font-size: 18px;
     border-radius: 25px;
     padding: 25px;
     font-family: Nunito, sans-serif !important;
@@ -167,6 +160,7 @@
   margin-bottom: 10px;
 
   input {
+    @include font_size_weight(18px, 400);
     border: 1px solid #adb0d9;
     min-width: 100%;
     height: 14px;
@@ -175,8 +169,6 @@
     padding: 28px 0 28px 20px;
     box-sizing: border-box;
     transition: all 125ms ease-in-out;
-    font-weight: 400;
-    font-size: 18px;
     color: #686868;
 
     &:focus {
@@ -252,6 +244,7 @@
 }
 
 .popUp {
+  @include font_size_weight(18px, 400);
   position: fixed;
   top: 50%;
   left: 50%;
@@ -261,8 +254,6 @@
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 999;
-  font-weight: 400;
-  font-size: 18px;
 }
 
 @media (max-width: 700px) {

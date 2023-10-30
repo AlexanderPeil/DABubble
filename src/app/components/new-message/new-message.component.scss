@@ -8,8 +8,7 @@
 }
 
 .chatHistoryHeader {
-  display: flex;
-  flex-direction: column;
+  @include flex_direction_column;
   gap: 30px;
   padding: 30px;
   border-top-left-radius: 30px;
@@ -17,29 +16,26 @@
   box-shadow: 0 2px 10px 0 #00000014;
 
   p {
+    @include font_size_weight(24px, 700);
     font-family: Nunito, sans-serif;
-    font-weight: 700;
-    font-size: 24px;
     margin: 0;
   }
 
   input {
+    @include font_size_weight(18px, 400);
+    @include hover_input_or_textarea;
+    @include focus_input_or_textarea;
     outline: none;
     border: 1px solid #adb0d9;
     color: #686868;
     font-family: Nunito, sans-serif;
     padding: 15px 20px 15px 20px;
     border-radius: 30px;
-    font-weight: 400;
-    font-size: 18px;
-    @include hover_input_or_textarea;
-    @include focus_input_or_textarea;
   }
 }
 
 .dropDownMenuChannels {
-  width: 250px;
-  height: 200px;
+  @include width_height(250px, 200px);
   margin: -40px 0px 0px 25px;
   padding: 10px;
   gap: 10px;
@@ -53,9 +49,8 @@
   overflow-y: scroll;
 
   p {
+    @include font_size_weight(18px, 400);
     padding: 10px;
-    font-size: 18px;
-    font-weight: 400;
     border-radius: 20px;
 
     &:hover {
@@ -66,8 +61,7 @@
 }
 
 .dropDownMenuUsers {
-  width: 250px;
-  height: 200px;
+  @include width_height(250px, 200px);
   margin: -40px 0px 0px 25px;
   padding: 10px;
   flex-direction: column;
@@ -82,8 +76,7 @@
 }
 
 .containerUser {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   border-radius: 20px;
   padding-left: 5px;
 
@@ -93,15 +86,13 @@
   }
 
   p {
+    @include font_size_weight(18px, 400);
     padding: 10px;
-    font-size: 18px;
-    font-weight: 400;
     border-radius: 20px;
   }
 
   img {
-    width: 35px;
-    height: 35px;
+    @include width_height(35px, 35px);
     border-radius: 50%;
   }
 }
@@ -112,23 +103,19 @@
 
 .iconAddUser {
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
     transform: scale(1.1);
-    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%)
-      hue-rotate(230deg) brightness(99%) contrast(91%);
+    filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+      contrast(91%);
   }
 }
 
 .date {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex_center;
   margin: 80px 35px 0px 35px;
 
   p {
-    font-weight: 400;
-    font-size: 18px;
+    @include font_size_weight(18px, 400);
     border-radius: 30px;
     padding: 10px;
     margin: 0;
@@ -158,18 +145,15 @@
 .mainContainerUploadedDatas {
   display: flex;
   gap: 15px;
-  // padding-bottom: 8px;
 }
 
 .containerUploadedImages {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   position: relative;
 }
 
 .uploadedImage {
-  width: 40px;
-  height: 40px;
+  @include width_height(40px, 40px);
   border-radius: 8px;
 
   &:hover + .closeIcon {
@@ -183,13 +167,11 @@
 }
 
 .containerUploadedDatas {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   position: relative;
 
   iframe {
-    width: 40px;
-    height: 40px;
+    @include width_height(40px, 40px);
     border-radius: 8px;
     border: unset;
 
@@ -217,17 +199,15 @@
 }
 
 .containerIcons {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
 }
 
 .quill-editor-new-message {
+  @include flex_direction_column;
   margin-top: 20px;
   border: 1px solid #adb0d9 !important;
   border-radius: 30px;
   background-color: white;
-  display: flex;
-  flex-direction: column;
   .ql-mention-list-container {
     top: 38px !important;
     left: 15px !important;
@@ -245,68 +225,17 @@
 }
 
 .containerAddIcon {
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
   left: 35px;
   bottom: 35px;
-
-  &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
-    background-color: #eceefe;
-  }
-
-  img {
-    &:hover {
-      transition: all 225ms ease-in-out;
-      transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-    }
-  }
+  @include newMessageEmojis;
 }
 
 .containerSmileyIcon {
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
-
-  &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
-    background-color: #eceefe;
-  }
-
-  img {
-    &:hover {
-      transition: all 225ms ease-in-out;
-      transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-    }
-  }
+  @include newMessageEmojis;
 }
 
 .containerAtIcon {
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
-
-  &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
-    background-color: #eceefe;
-  }
-
-  img {
-    &:hover {
-      transform: scale(1.05);
-      transition: all 225ms ease-in-out;
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-    }
-  }
+  @include newMessageEmojis;
 }
 
 .sendBtn {

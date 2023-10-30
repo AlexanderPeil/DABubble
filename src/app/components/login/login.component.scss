@@ -114,24 +114,21 @@
 
 /****************** Style for Login-Animation   *******************/
 .animationContainer {
+    @include justify_content_center;
+    @include width_height(100vw, 100vh);
     background: transparent;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
     align-items: flex-end;
-    justify-content: center;
     transition: background 500ms ease-in-out;
     z-index: 1;
     overflow: hidden;
 }
 
 .animationLogoName {
+    @include align_items_center;
     position: relative;
-    display: flex;
-    align-items: center;
     margin-bottom: 250px;
 
     .animationLogo {
@@ -145,10 +142,9 @@
     }
 
     .animationAppName {
+        @include font_size_weight(60px, 700);
         white-space: nowrap;
         color: white;
-        font-size: 60px;
-        font-weight: 700;
     }
 }
 /****************** Style for Login-Animation   *******************/
@@ -172,8 +168,7 @@
         }
 
         .animationAppName {
-            font-size: 35px;
-            font-weight: 600;
+            @include font_size_weight(35px, 600);
         }
     }
 }

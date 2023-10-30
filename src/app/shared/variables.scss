@@ -104,6 +104,11 @@
     line-height: $line;
 }
 
+@mixin font_size_weight($size, $weight) {
+    font-size: $size;
+    font-weight: $weight;
+}
+
 @mixin width_height($width, $height) {
     width: $width;
     height: $height;
@@ -257,21 +262,71 @@
     padding: 8px;
     border-radius: 50%;
     display: flex;
-  
+
     &:hover {
-      cursor: pointer;
-      transition: all 225ms ease-in-out;
-      background-color: #eceefe;
-    }
-  
-    img {
-      &:hover {
+        cursor: pointer;
         transition: all 225ms ease-in-out;
-        transform: scale(1.05);
-        filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-          saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
-      }
+        background-color: #eceefe;
+    }
+
+    img {
+        &:hover {
+            transition: all 225ms ease-in-out;
+            transform: scale(1.05);
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg)
+                brightness(99%) contrast(91%);
+        }
     }
 }
 
 /*********************** Style for icons in chat **********************/
+
+/*********************** Style for message component **********************/
+@mixin messageEmojis {
+    padding: 8px;
+    border-radius: 50%;
+
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        background-color: #eceefe;
+    }
+}
+
+@mixin messageContainerImg {
+    
+    &:hover {
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        transform: scale(1.05);
+        filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+            contrast(91%);
+    }
+}
+
+/*********************** Style for message component **********************/
+
+
+/*********************** Style for new-message component **********************/
+    @mixin newMessageEmojis {
+        padding: 8px;
+        border-radius: 50%;
+        display: flex;
+      
+        &:hover {
+          cursor: pointer;
+          transition: all 225ms ease-in-out;
+          background-color: #eceefe;
+        }
+      
+        img {
+          &:hover {
+            transition: all 225ms ease-in-out;
+            transform: scale(1.05);
+            filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+              contrast(91%);
+          }
+        }
+    }
+
+/*********************** Style for new-message component **********************/

@@ -1,4 +1,4 @@
-@import '../../shared/variables.scss';
+@import "../../shared/variables.scss";
 
 .daBubbleIcon {
     position: absolute;
@@ -7,9 +7,8 @@
 }
 
 .containerImprint {
+    @include flex_direction_column;
     position: relative;
-    display: flex;
-    flex-direction: column;
     align-items: flex-start;
     background-color: white;
     gap: 20px;
@@ -17,27 +16,24 @@
     padding: 40px;
 
     h1 {
+        @include font_size_weight(46px, 700);
         font-family: Nunito, sans-serif;
-        font-weight: 700;
-        font-size: 46px;
-        color: #444DF2;
+        color: #444df2;
     }
 
     h2 {
+        @include font_size_weight(32px, 700);
         font-family: Nunito, sans-serif;
-        font-weight: 700;
-        font-size: 32px;
-        color: #444DF2;
+        color: #444df2;
     }
 
     p {
+        @include font_size_weight(20px, 400);
         font-family: Nunito, sans-serif;
-        font-weight: 400;
-        font-size: 20px;
     }
 
     a {
-        color: #444DF2;
+        color: #444df2;
     }
 }
 
@@ -46,19 +42,20 @@
     display: flex;
 
     &:hover {
-        background-color: #ECEEFE;
+        background-color: #eceefe;
         @include button_hover;
     }
 
     img {
         &:hover {
             @include button_hover;
-            filter: brightness(0) saturate(100%) invert(32%) sepia(83%) saturate(2459%) hue-rotate(227deg) brightness(94%) contrast(102%);
+            filter: brightness(0) saturate(100%) invert(32%) sepia(83%) saturate(2459%) hue-rotate(227deg)
+                brightness(94%) contrast(102%);
         }
     }
 }
 
-@media(max-width: 600px) {
+@media (max-width: 600px) {
     .daBubbleIcon {
         position: unset;
 
@@ -68,21 +65,16 @@
     }
 
     .imprintAndDataProtectionContainer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        @include column_align_center;
     }
 
     .containerImprint {
-        
-        h1{
-            font-size: 38px;
-            font-weight: 600;
+        h1 {
+            @include font_size_weight(38px, 600);
         }
 
         h2 {
-            font-size: 28px;
-            font-weight: 600;
+            @include font_size_weight(28px, 600);
         }
 
         p {

@@ -35,8 +35,7 @@
   }
 
   p {
-    font-weight: 700;
-    font-size: 24px;
+    @include font_size_weight(24px, 700);
     margin: 0;
   }
 }
@@ -89,8 +88,7 @@
 }
 
 .amountOfUserInChannel {
-  font-weight: 600;
-  font-size: 20px;
+  @include font_size_weight(20px, 600);
   margin: 0;
 }
 

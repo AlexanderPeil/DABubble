@@ -18,14 +18,13 @@
 
   input {
     @include width_height(100%, 14px);
+    @include font_size_weight(24px, 400);
     border: 1px solid white;
     background-color: white;
     border-radius: 100px;
     padding: 28px 0 28px 40px;
     box-sizing: border-box;
     transition: all 125ms ease-in-out;
-    font-weight: 400;
-    font-size: 24px;
     color: #686868;
 
     &:focus {
@@ -49,16 +48,13 @@
 
 .searchDropdown {
   @include flex_column_center;
-  font-size: 18px;
-  font-weight: 400;
+  @include font_size_weight(18px, 400);
   display: flex;
   background-color: #eceefe;
   gap: 40px;
   position: absolute;
   top: 65px;
   min-width: 300px;
-  // min-height: 300px;
-  // max-height: 500px;
   padding: 10px;
   z-index: 999;
   border-radius: 10px;
@@ -69,25 +65,21 @@
   }
 
   .searchResultContent {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex_center;
     gap: 10px;
     padding: 5px;
     border-radius: 10px;
     width: 100%;
 
     &:hover {
+      @include button_hover;
       background-color: #797ef3;
       color: white;
-      transition: all 225ms ease-in-out;
       padding: 5px;
-      cursor: pointer;
     }
 
     .userSearchImg {
-      width: 40px;
-      height: 40px;
+      @include width_height(40px, 40px);
       border-radius: 100%;
     }
   }

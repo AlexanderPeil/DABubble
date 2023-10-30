@@ -15,9 +15,8 @@
   gap: 10px;
 
   p {
+    @include font_size_weight(24px, 700);
     margin: 0;
-    font-weight: 700;
-    font-size: 24px;
   }
 }
 
@@ -35,8 +34,8 @@
     &:hover {
       @include button_hover;
       transform: scale(1.1);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
-        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
+        contrast(91%);
     }
   }
 }
@@ -53,10 +52,9 @@
   position: relative;
 
   input {
+    @include font_size_weight(18px, 400);
     width: 500px;
     padding: 13px 50px 13px 50px;
-    font-weight: 400;
-    font-size: 18px;
     resize: none;
     color: #686868;
     border: 1px solid #adb0d9;
@@ -83,18 +81,16 @@
 }
 
 .textChannelName {
+  @include font_size_weight(18px, 700);
   color: #000000;
-  font-weight: 700;
-  font-size: 18px;
   margin: 0;
 }
 
 .textEdit {
+  @include font_size_weight(18px, 600);
   background-color: white;
   border: unset;
   color: #535af1;
-  font-weight: 600;
-  font-size: 18px;
   margin: 0;
 
   &:hover {
@@ -114,9 +110,8 @@
   }
 
   p {
+    @include font_size_weight(18px, 400);
     color: #000000;
-    font-weight: 400;
-    font-size: 18px;
     margin: 0;
   }
 }
@@ -135,16 +130,14 @@
 }
 
 .textCreatedBy {
+  @include font_size_weight(18px, 700);
   color: #000000;
-  font-weight: 700;
-  font-size: 18px;
   margin-bottom: 20px;
 }
 
 .userName {
+  @include font_size_weight(24px, 400);
   color: #535af1;
-  font-weight: 400;
-  font-size: 24px;
 }
 
 .btnContainer {
@@ -154,8 +147,7 @@
 
   button {
     @include button_primary;
-    font-weight: 700;
-    font-size: 18px;
+    @include font_size_weight(18px, 700);
     border-radius: 25px;
     padding: 25px;
     font-family: Nunito, sans-serif !important;

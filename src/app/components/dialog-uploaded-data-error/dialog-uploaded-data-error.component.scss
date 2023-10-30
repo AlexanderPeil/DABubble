@@ -5,18 +5,16 @@
 }
 
 .topContainerErrorMessage {
+    @include font_size_weight(24px, 700);
     margin: 0;
-    font-weight: 700;
-    font-size: 24px;
 }
 
 .middleContainerErrorMessage {
     margin-top: 50px;
 
     p {
+        @include font_size_weight(18px, 400);
         margin-bottom: 15px;
-        font-weight: 400;
-        font-size: 18px;
     }
 }
 
@@ -25,9 +23,8 @@
     margin-top: 50px;
 
     button {
+        @include font_size_weight(18px, 700);
         @include width_height(150px, 60px);
-        font-size: 18px;
-        font-weight: 700;
         border-radius: 25px;
         @include button_primary;
     }

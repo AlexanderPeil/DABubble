@@ -32,7 +32,19 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.checkBox();
+    this.generateNewFormGroup();
+    this.subscribeDisplayName();
+    this.avatarUrls = this.authService.user_images;
+  }
+
+
+  checkBox() {
     this.checked = new FormControl(false, Validators.requiredTrue);
+  }
+
+
+  generateNewFormGroup() {
     this.signUpForm = new FormGroup({
       displayName: new FormControl(null, [Validators.required, this.fullNameValidator]),
       email: new FormControl(null, [Validators.required, Validators.email]),
@@ -40,8 +52,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
       passwordConfirm: new FormControl(null, Validators.required),
       checked: this.checked
     }, { validators: Validators.compose([this.passwordsMatchValidator.bind(this)]) });
-    this.subscribeDisplayName();
-    this.avatarUrls = this.authService.user_images;
   }
 
 

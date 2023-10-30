@@ -20,23 +20,20 @@
   width: 80vw;
 
   h1 {
+    @include font_size_weight(46px, 700);
     font-family: Nunito, sans-serif;
-    font-weight: 700;
-    font-size: 46px;
     color: #444df2;
   }
 
   h2 {
+    @include font_size_weight(32px, 700);
     font-family: Nunito, sans-serif;
-    font-weight: 700;
-    font-size: 32px;
     color: #444df2;
   }
 
   p {
+    @include font_size_weight(20px, 400);
     font-family: Nunito, sans-serif;
-    font-weight: 400;
-    font-size: 20px;
   }
 
   a {
@@ -79,8 +76,7 @@
     }
 
     h2 {
-      font-size: 28px;
-      font-weight: 600;
+      @include font_size_weight(28px, 600);
     }
 
     p {

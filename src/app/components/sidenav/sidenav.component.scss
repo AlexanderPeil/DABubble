@@ -1,3 +1,5 @@
+@import "../../shared/variables.scss";
+
 //////////////////////general styles//////////////////////////
 .padding {
   padding: 25px;
@@ -9,35 +11,23 @@
 
 /////////////////////specific styles///////////////////////////
 
-// .mat-drawer-container {
-//   width: 100%;
-//   height: 88vh;
-//   background-color: #eceefe;
-// }
-
 .head-of-sidenav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex_center;
 
   .main-channel-img {
     height: 52px;
   }
 
   .icon-div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 35px;
-    width: 35px;
+    @include flex_center;
+    @include width_height(35px, 35px);
 
     img {
       height: 20px;
     }
 
     &:hover {
-      cursor: pointer;
-      transition: all 225ms ease-in-out;
+      @include button_hover;
       border-radius: 100%;
       background-color: #eceefe;
 
@@ -51,26 +41,20 @@
 }
 
 .headMenu {
+  @include space_between_center;
   padding-top: 20px;
   padding-bottom: 20px;
   padding-left: 35px;
   padding-right: 35px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
   p {
-    font-weight: 700;
-    font-size: 20px;
+    @include font_size_weight(20px, 700);
     margin: 0;
   }
 
   .icon-div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 25px;
-    width: 25px;
+    @include flex_center;
+    @include width_height(25px, 25px);
     padding: 5px;
 
     img {
@@ -78,8 +62,7 @@
     }
 
     &:hover {
-      cursor: pointer;
-      transition: all 225ms ease-in-out;
+      @include button_hover;
       border-radius: 100%;
       background-color: #eceefe;
 
@@ -116,8 +99,7 @@
 
 #allChannels {
   .channel {
-    display: flex;
-    align-items: center;
+    @include align_items_center;
     padding-left: 40px;
     margin-bottom: 12px;
     height: 30px;
@@ -138,8 +120,7 @@
     }
 
     &:hover {
-      cursor: pointer;
-      transition: all 225ms ease-in-out;
+      @include button_hover;
       background-color: #eceefe;
       border-radius: 20px;
 
@@ -154,8 +135,7 @@
 }
 
 .addChannel {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   margin: 30px 0px 20px 63px;
 
   img {
@@ -169,8 +149,7 @@
   }
 
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
 
     img,
     p {
@@ -185,8 +164,7 @@ ul {
 }
 
 .selectableUserChat {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   padding: 5px 10px 5px 55px;
   margin: 5px 0 5px 0;
 
@@ -201,8 +179,7 @@ ul {
   }
 
   &:hover {
-    cursor: pointer;
-    transition: all 225ms ease-in-out;
+    @include button_hover;
     background-color: #eceefe;
     border-radius: 20px;
 
@@ -236,12 +213,11 @@ ul {
 }
 
 .unreadCount {
+  @include width_height(10px, 10px);
   background-color: #797ef3;
   border-radius: 100%;
   margin-left: 5px;
   margin-top: 10px;
-  width: 10px;
-  height: 10px;
 }
 
 .activeChannelLiElement {
@@ -275,8 +251,7 @@ ul {
   }
 
   .headMenu {
-    padding-left: 25px;
-    padding-right: 25px;
+    @include padding_left_right(25px, 25px);
   }
 
   #allChannels {
@@ -320,11 +295,10 @@ ul {
   }
   .head-of-sidenav {
     .icon-div {
+      @include width_height(60px, 60px);
       position: absolute;
       bottom: 50px;
       right: 45px;
-      height: 60px;
-      width: 60px;
       background-color: #555cf1;
       border-radius: 100%;
       img {

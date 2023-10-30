@@ -28,8 +28,7 @@
 /////////////////style for toggle Button///////////////////////////
 
 .containerMenuBtn {
-  display: flex;
-  align-items: center;
+  @include align_items_center;
   gap: 10px;
   width: 260px;
   position: absolute;
@@ -56,9 +55,8 @@
   }
 
   p {
+    @include font_size_weight(20px, 500);
     margin: 0;
-    font-weight: 500;
-    font-size: 20px;
   }
 
   img {
@@ -66,11 +64,10 @@
   }
 }
 .containerMenuBtnResponsive {
+  @include width_height(25px, 25px);
   display: none;
   align-items: center;
   justify-content: center;
-  width: 25px;
-  height: 25px;
   position: absolute;
   bottom: 90px;
   left: 0px;

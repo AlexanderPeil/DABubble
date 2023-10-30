@@ -53,6 +53,11 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.checkURL();
+    this.handleStorageFiles();
+  }
+
+
+  handleStorageFiles() {
     this.subscription = this.threadService.uploadedFileURL.subscribe((fileData) => {
       this.uploadedFiles.push(fileData);
     });
@@ -275,7 +280,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
       .then(() => {
         if (message.attachedFiles && messageId && this.selectedUser?.uid) {
           message.attachedFiles.splice(index, 1);
-          this.messageService.updateAttachedFilesInThreadMessage(this.loggedInUser!.uid, this.selectedUser.uid, messageId,  message.attachedFiles);
+          this.messageService.updateAttachedFilesInThreadMessage(this.loggedInUser!.uid, this.selectedUser.uid, messageId, message.attachedFiles);
         }
       })
       .catch(err => {
