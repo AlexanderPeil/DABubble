@@ -374,8 +374,8 @@ app-data-protection {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
-        contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 
@@ -396,8 +396,8 @@ app-data-protection {
       cursor: pointer;
       transition: all 225ms ease-in-out;
       transform: scale(1.05);
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
-        contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 
@@ -467,8 +467,8 @@ app-data-protection {
 
   img {
     &:hover {
-      filter: brightness(0) saturate(100%) invert(30%) sepia(99%) saturate(2764%) hue-rotate(230deg) brightness(99%)
-        contrast(91%);
+      filter: brightness(0) saturate(100%) invert(30%) sepia(99%)
+        saturate(2764%) hue-rotate(230deg) brightness(99%) contrast(91%);
     }
   }
 }
@@ -618,6 +618,7 @@ mat-chip-row {
 }
 
 .editMessageContainer {
+  display: flex;
   input {
     padding: 10px;
     border-radius: 10px;

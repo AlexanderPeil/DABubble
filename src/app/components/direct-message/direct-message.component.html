@@ -92,7 +92,7 @@
                 isEditing === message.id
               " class="editMessageContainer">
               <input [(ngModel)]="updatedMessageContent" />
-              <img src="assets/img/icons/closeIcon.svg" (click)="runDeleteDirectMessage(message.id)">
+              <img src="assets/img/icons/closeIcon.svg" (click)="runDeleteDirectMessage(message.id)" title="delete message">
               <img class="sendBtn" src="assets/img/icons/sendBtn.svg" (click)="saveEditedMessage(message)"
                 title="Send message">
             </div>
