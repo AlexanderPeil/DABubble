@@ -6,7 +6,7 @@ import {
   ElementRef,
   HostListener,
   QueryList,
-  ViewChildren
+  ViewChildren,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
@@ -48,7 +48,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
   url: string = '';
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   @ViewChildren('messageElement') messageElements!: QueryList<ElementRef>;
-  @ViewChild('channelQuill', { static: false, read: ElementRef }) channelQuill!: ElementRef;
+  @ViewChild('channelQuill', { static: false, read: ElementRef })
+  channelQuill!: ElementRef;
   channelQuillInstance: any;
   messages: MessageContent[] = [];
   groupedMessages: { date: string; messages: MessageContent[] }[] = [];
@@ -67,10 +68,9 @@ export class ChannelComponent implements OnInit, OnDestroy {
   ngUnsubscribe = new Subject<void>();
   messageIdSubscription!: Subscription;
   retryCount = 0;
-  uploadedFiles: { url: string; type: 'image' | 'data'; }[] = [];
+  uploadedFiles: { url: string; type: 'image' | 'data' }[] = [];
   subscription!: Subscription;
   messageContainerError: boolean = false;
-
 
   constructor(
     public dialog: MatDialog,
@@ -82,9 +82,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     public threadService: ThreadService,
     private elementRef: ElementRef,
     public quillService: QuillService
-  ) { }
-
-
+  ) {}
 
   ngOnInit(): void {
     this.getCurrentChannelIdInUrl();
@@ -93,20 +91,19 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.currentUserId = this.authService.currentUser.value?.uid || null;
   }
 
-
   ngAfterViewInit(): void {
     this.initMessageScrolling();
     this.checkWindowSize();
     window.addEventListener('resize', this.checkWindowSize.bind(this));
   }
 
-
   handleStorageFiles() {
-    this.subscription = this.storageService.uploadedFileURL.subscribe((fileData) => {
-      this.uploadedFiles.push(fileData);
-    });
+    this.subscription = this.storageService.uploadedFileURL.subscribe(
+      (fileData) => {
+        this.uploadedFiles.push(fileData);
+      }
+    );
   }
-
 
   getCurrentChannelIdInUrl() {
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -114,7 +111,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
       this.channelService.getSingleChannelService(this.channelId);
     });
   }
-
 
   openDialogToEditChannel() {
     this.dialog.open(DialogEditChannelComponent, {
@@ -126,7 +122,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
-
   openDialogToShowMembersInChannel() {
     this.dialog.open(DialogShowMembersInChannelComponent, {
       data: {
@@ -135,7 +130,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
     this.getCurrentChannelIdInUrl();
   }
-
 
   openDialogToAddMembersToChannel() {
     this.dialog.open(DialogAddMembersInChannelComponent, {
@@ -146,7 +140,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.getCurrentChannelIdInUrl();
   }
 
-
   openDetailViewFromUploadedImage(uploadedImageUrl: string) {
     this.dialog.open(DialogDetailViewUploadedDatasComponent, {
       data: {
@@ -154,7 +147,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
       },
     });
   }
-
 
   openDetailViewForAttachedFile(fileUrl: string) {
     this.dialog.open(DialogDetailViewUploadedDatasComponent, {
@@ -164,26 +156,34 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
-
   async sendMessage() {
-    const { loggedInUser, messageContent, channelId, messageService, uploadedFiles } = this;
+    const {
+      loggedInUser,
+      messageContent,
+      channelId,
+      messageService,
+      uploadedFiles,
+    } = this;
     if (!messageContent && !uploadedFiles.length) {
       this.showError();
       return;
     }
-    messageService.createAndAddChannelMessage(
-      channelId, loggedInUser!.uid, loggedInUser!.displayName as string,
-      messageService.removePTags(messageContent), uploadedFiles
-    ).then(() => this.resetMessage())
-      .catch(err => console.error("Couldn't send message:", err));
+    messageService
+      .createAndAddChannelMessage(
+        channelId,
+        loggedInUser!.uid,
+        loggedInUser!.displayName as string,
+        messageService.removePTags(messageContent),
+        uploadedFiles
+      )
+      .then(() => this.resetMessage())
+      .catch((err) => console.error("Couldn't send message:", err));
   }
-
 
   showError() {
     this.messageContainerError = true;
-    setTimeout(() => this.messageContainerError = false, 3000);
+    setTimeout(() => (this.messageContainerError = false), 3000);
   }
-
 
   resetMessage() {
     this.messageContent = '';
@@ -191,7 +191,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.uploadedFiles = [];
     this.executeScrollToBottom();
   }
-
 
   toggleEmojiPicker() {
     const realEmojiButton = document.querySelector(
@@ -202,14 +201,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-
   selectUser(user: User): void {
     this.messageContent = this.messageContent.replace(
       /@[^@]*$/,
       '@' + user.displayName + ' '
     );
   }
-
 
   executeScrollToBottom() {
     setTimeout(() => {
@@ -220,12 +217,10 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-
   scrollToBottom(): void {
     this.messagesContainer.nativeElement.scrollTop =
       this.messagesContainer.nativeElement.scrollHeight;
   }
-
 
   onEmojiClick(messageId: string, emojiType: string): void {
     this.messageService.setChannelMessageEmoji(
@@ -235,12 +230,10 @@ export class ChannelComponent implements OnInit, OnDestroy {
     );
   }
 
-
   openEmojiPopUp(messageId: string) {
     this.selectedMessageId =
       this.selectedMessageId === messageId ? null : messageId;
   }
-
 
   openPopUpEditMessage(message: MessageContent) {
     if (this.loggedInUser?.uid === message.senderId && message.id) {
@@ -249,14 +242,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-
   @HostListener('document:click', ['$event'])
   onCloseEmojiPopUp($event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains($event.target)) {
       this.emojiPopUpIsOpen = false;
     }
   }
-
 
   @HostListener('document:click', ['$event'])
   onCloseEditMessagePopUp($event: MouseEvent): void {
@@ -265,16 +256,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-
   onMessageHover(message: MessageContent) {
     this.showEditMessageButton = this.loggedInUser?.uid === message.senderId;
   }
 
-
   closeEditMenu() {
     this.currentlyEditingMessageId = null;
   }
-
 
   handleMouseLeave(messageId: string): void {
     if (this.selectedMessageId === messageId) {
@@ -289,16 +277,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-
   isMessageBeingEdited(messageId: string): boolean {
     return this.isEditing === messageId;
   }
 
-
   stopEvent(event: Event) {
     event.stopPropagation();
   }
-
 
   fetchAndDisplayMessages(): void {
     this.getParamsAndUser()
@@ -308,13 +293,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
           return this.messageService.getChannelMessages(channelId);
         }),
         takeUntil(this.ngUnsubscribe)
-      ).subscribe((messages) => {
+      )
+      .subscribe((messages) => {
         this.processMessages(messages);
         this.markMessagesAsRead(messages);
         this.executeScrollToBottom();
       });
   }
-
 
   markMessagesAsRead(messages: MessageContent[]): void {
     messages.forEach((message) => {
@@ -324,7 +309,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
     });
   }
 
-
   processMessages(messages: MessageContent[]): void {
     messages.sort((a, b) => a.timestamp - b.timestamp);
     this.messages = messages;
@@ -332,7 +316,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
       this.messages
     );
   }
-
 
   getParamsAndUser(): Observable<[string, User | null]> {
     return combineLatest([
@@ -344,13 +327,17 @@ export class ChannelComponent implements OnInit, OnDestroy {
     );
   }
 
-
   saveEditedMessage(message: MessageContent) {
     const messageId = message.id;
     const channelId = this.channelId;
     const updatedMessageContent = this.updatedMessageContent;
 
-    if (messageId && channelId && this.updatedMessageContent && this.updatedMessageContent !== message.content) {
+    if (
+      messageId &&
+      channelId &&
+      this.updatedMessageContent &&
+      this.updatedMessageContent !== message.content
+    ) {
       this.messageService.updateChannelMessage(
         channelId,
         messageId,
@@ -361,23 +348,19 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.showEditMenu = true;
   }
 
-
   editMessage(messageId: string, currentContent: string) {
     this.isEditing = messageId;
     this.updatedMessageContent = currentContent;
     this.showEditMenu = false;
   }
 
-
   retryLoadImage(user: User) {
     user.photoURL = this.user_images;
   }
 
-
   retryLoadSenderImage(message: MessageContent) {
     message.senderImage = this.user_images;
   }
-
 
   initMessageScrolling() {
     merge(
@@ -393,7 +376,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
         }
       });
   }
-
 
   scrollToMessageById(messageId: string): void {
     const messageElement = document.getElementById(messageId);
@@ -411,29 +393,31 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-
   setFocus(event: any) {
     this.channelQuillInstance = event;
-    this.quillService.setFocus(event)
+    this.quillService.setFocus(event);
   }
-
 
   deleteFile(message: MessageContent, file: any, index: number) {
     const messageId = message.id;
     const channelId = this.channelId;
-    this.storageService.deleteFileFromStorage(file.url)
+    this.storageService
+      .deleteFileFromStorage(file.url)
       .then(() => {
         if (message.attachedFiles && messageId) {
           message.attachedFiles.splice(index, 1);
-          this.messageService.updateAttachedFilesInChannelMessage(channelId, messageId, message.attachedFiles);
-          this.messageService.deleteChannelMessage(channelId, messageId)
+          this.messageService.updateAttachedFilesInChannelMessage(
+            channelId,
+            messageId,
+            message.attachedFiles
+          );
+          this.messageService.deleteChannelMessage(channelId, messageId);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('Error deleting file from storage:', err);
       });
   }
-
 
   checkWindowSize() {
     if (window.innerHeight <= 500) {
@@ -443,25 +427,21 @@ export class ChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-
   checkUploadedFiles() {
     console.log(this.uploadedFiles);
-
   }
 
-
   runChannelMessage(messageId: string) {
-    this.messageService.deleteChannelMessage(this.channelId, messageId)
+    this.messageService
+      .deleteChannelMessage(this.channelId, messageId)
       .then(() => {
         this.isEditing = null;
         this.showEditMenu = true;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error while deleting message:', error);
       });
-
   }
-
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
