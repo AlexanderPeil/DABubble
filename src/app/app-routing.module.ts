@@ -22,7 +22,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'channel/tcgLB0MdDpTD27cGTU95',
+        redirectTo: 'channel/DMoH03MTsuxcytK6BpUb',
         pathMatch: 'full',
       },
       {

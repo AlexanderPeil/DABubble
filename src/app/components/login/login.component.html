@@ -1,21 +1,10 @@
 <!-- Login animation -->
-<div
-  class="animationContainer"
-  *ngIf="containerVisible"
-  [style.background]="background"
->
-  <div
-    [@logoAnimationDesktop]="!isMobile ? logoState : undefined"
-    [@logoAnimationMobile]="isMobile ? logoState : undefined"
-    [style.background-color]="logoBackgroundColor"
-    class="animationLogoName"
-  >
-    <img
-      src="assets/img/animationLogo.svg"
-      alt="App-Logo"
-      class="animationLogo"
-      [style.background-color]="logoBackgroundColor"
-    />
+<div class="animationContainer" *ngIf="containerVisible" [style.background]="background">
+  <div [@logoAnimationDesktop]="!isMobile ? logoState : undefined"
+    [@logoAnimationMobile]="isMobile ? logoState : undefined" [style.background-color]="logoBackgroundColor"
+    class="animationLogoName">
+    <img src="assets/img/animationLogo.svg" alt="App-Logo" class="animationLogo"
+      [style.background-color]="logoBackgroundColor" />
     <div [@nameAnimation]="nameState" class="animationNameContainer">
       <span class="animationAppName">DABubble</span>
     </div>
@@ -36,64 +25,34 @@
   <div class="loginContainer">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <h1>Log in</h1>
-      <span class="formHeaderText"
-        >We recommend you use the same email you use at work.</span
-      >
+      <span class="formHeaderText">We recommend you use the same email you use at work.</span>
 
       <div class="inputContainer">
-        <img
-          class="mailImg"
-          src="assets/img/icons/mail_icon.svg"
-          alt="Email icon"
-        />
-        <input
-          type="email"
-          placeholder="examplename@email.com"
-          formControlName="email"
-          (blur)="markAllAsTouched(loginForm)"
-        />
-        <div
-          *ngIf="
+        <img class="mailImg" src="assets/img/icons/mail_icon.svg" alt="Email icon" />
+        <input type="email" placeholder="examplename@email.com" formControlName="email"
+          (blur)="markAllAsTouched(loginForm)" />
+        <div *ngIf="
             loginForm.get('email')?.hasError('required') && hasUserInteracted
-          "
-          class="notification warning"
-        >
+          " class="notification warning">
           Email is required.
         </div>
-        <div
-          *ngIf="loginForm.get('email')?.hasError('email') && hasUserInteracted"
-          class="notification warning"
-        >
+        <div *ngIf="loginForm.get('email')?.hasError('email') && hasUserInteracted" class="notification warning">
           Please include an '@' and a domain (e.g., '.com') in the email
           address.
         </div>
       </div>
 
       <div class="inputContainer">
-        <img
-          class="passwordImg"
-          src="assets/img/icons/lock_icon.svg"
-          alt="Lock icon"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          formControlName="password"
-          (blur)="markAllAsTouched(loginForm)"
-        />
-        <div
-          *ngIf="
+        <img class="passwordImg" src="assets/img/icons/lock_icon.svg" alt="Lock icon" />
+        <input type="password" placeholder="Password" formControlName="password" (blur)="markAllAsTouched(loginForm)" />
+        <div *ngIf="
             loginForm.get('password')?.hasError('required') && hasUserInteracted
-          "
-          class="notification warning"
-        >
+          " class="notification warning">
           Password is required.
         </div>
       </div>
 
-      <a class="forgotPasswordLink" routerLink="/forgot-password"
-        >Forgot password?</a
-      >
+      <a class="forgotPasswordLink" routerLink="/forgot-password">Forgot password?</a>
       <div class="alternatively">
         <div></div>
         <span>Alternatively</span>
@@ -106,18 +65,10 @@
         Could noch login. Please check your data and try again.
       </div>
       <div class="loginBottomContainer">
-        <button
-          class="loginBtn loginButtonsMobile"
-          type="submit"
-          [disabled]="!loginForm.valid"
-        >
+        <button class="loginBtn loginButtonsMobile" type="submit" [disabled]="!loginForm.valid">
           Login
         </button>
-        <button
-          class="guestLoginbtn loginButtonsMobiles"
-          type="button"
-          (click)="onGuestLogin()"
-        >
+        <button class="guestLoginbtn loginButtonsMobiles" type="button" (click)="onGuestLogin()">
           Guest-Login
         </button>
       </div>
