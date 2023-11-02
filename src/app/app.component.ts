@@ -36,10 +36,10 @@ export class AppComponent implements OnInit, OnDestroy {
             const lastRoute = localStorage.getItem('lastRoute');
             if (lastRoute !== '/login') {
               this.router.navigate([
-                lastRoute || '/main/channel/tcgLB0MdDpTD27cGTU95',
+                lastRoute || '/main/channel/DMoH03MTsuxcytK6BpUb',
               ]);
             } else {
-              this.router.navigate(['/main/channel/tcgLB0MdDpTD27cGTU95']);
+              this.router.navigate(['/main/channel/DMoH03MTsuxcytK6BpUb']);
             }
           }
         });
