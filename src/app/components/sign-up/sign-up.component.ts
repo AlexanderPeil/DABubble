@@ -1,10 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { Subscription } from 'rxjs';
-
 
 @Component({
   selector: 'app-sign-up',
@@ -24,12 +29,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
   private displayNameSubscription?: Subscription;
   hasUserInteracted = false;
 
-
   constructor(
     private authService: AuthService,
     private router: Router,
-    public storageService: StorageService) { }
-
+    public storageService: StorageService
+  ) {}
 
   ngOnInit(): void {
     this.checkBox();
@@ -38,54 +42,62 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.avatarUrls = this.authService.user_images;
   }
 
-
   checkBox() {
     this.checked = new FormControl(false, Validators.requiredTrue);
   }
 
-
   generateNewFormGroup() {
-    this.signUpForm = new FormGroup({
-      displayName: new FormControl(null, [Validators.required, this.fullNameValidator]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, Validators.required),
-      passwordConfirm: new FormControl(null, Validators.required),
-      checked: this.checked
-    }, { validators: Validators.compose([this.passwordsMatchValidator.bind(this)]) });
+    this.signUpForm = new FormGroup(
+      {
+        displayName: new FormControl(null, [
+          Validators.required,
+          this.fullNameValidator,
+        ]),
+        email: new FormControl(null, [Validators.required, Validators.email]),
+        password: new FormControl(null, Validators.required),
+        passwordConfirm: new FormControl(null, Validators.required),
+        checked: this.checked,
+      },
+      {
+        validators: Validators.compose([
+          this.passwordsMatchValidator.bind(this),
+        ]),
+      }
+    );
   }
-
 
   subscribeDisplayName() {
     const displayNameControl = this.signUpForm.get('displayName');
     if (displayNameControl) {
-      this.displayNameSubscription = displayNameControl.valueChanges.subscribe(value => {
-        this.displayName = value;
-      });
+      this.displayNameSubscription = displayNameControl.valueChanges.subscribe(
+        (value) => {
+          this.displayName = value;
+        }
+      );
     }
   }
 
-
-  fullNameValidator(control: AbstractControl): { [key: string]: boolean } | null {
+  fullNameValidator(
+    control: AbstractControl
+  ): { [key: string]: boolean } | null {
     const nameParts = (control.value || '').trim().split(' ');
 
     if (nameParts.length < 2 || nameParts.some((part: any) => !part)) {
-      return { 'fullNameValidator': true };
+      return { fullNameValidator: true };
     }
     return null;
   }
 
-
-
   passwordsMatchValidator(formGroup: AbstractControl): ValidationErrors | null {
     const password = (formGroup.get('password') as FormControl)?.value;
-    const passwordConfirm = (formGroup.get('passwordConfirm') as FormControl)?.value;
+    const passwordConfirm = (formGroup.get('passwordConfirm') as FormControl)
+      ?.value;
 
     if (password !== passwordConfirm) {
       return { passwordsMismatch: true };
     }
     return null;
   }
-
 
   onSubmit() {
     if (this.signUpForm.invalid) {
@@ -95,28 +107,26 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.authServiceCall();
   }
 
-
   authServiceCall() {
     const displayName = this.signUpForm.value.displayName;
     const email = this.signUpForm.value.email;
     const password = this.signUpForm.value.password;
-    this.authService.signUp(displayName, email, password, this.selectedAvatarURL)
+    this.authService
+      .signUp(displayName, email, password, this.selectedAvatarURL)
       .then(() => {
         this.userCreatedFn();
       })
-      .catch((error: { message: string; }) => {
+      .catch((error: { message: string }) => {
         this.signUpFail(error);
       });
   }
 
-
   userCreatedFn() {
     this.userCreated = true;
     setTimeout(() => {
-      this.router.navigate(['/main/channel/tcgLB0MdDpTD27cGTU95']);
+      this.router.navigate(['/main/channel/DMoH03MTsuxcytK6BpUb']);
     }, 3000);
   }
-
 
   signUpFail(error: any) {
     console.log(error);
@@ -127,30 +137,28 @@ export class SignUpComponent implements OnInit, OnDestroy {
     }, 3000);
   }
 
-
   onNextClick(): void {
     this.chooseAvatar = true;
   }
-
 
   onbackClick() {
     this.chooseAvatar = false;
   }
 
-
   selectAvatar(url: string) {
     this.selectedAvatarURL = url;
   }
 
-
   chooseFiletoUpload($event: any) {
-    this.storageService.uploadAvatarService($event).then((url: string) => {
-      this.selectedAvatarURL = url;
-    }).catch((error: any) => {
-      console.error("Error uploading file: ", error);
-    });
+    this.storageService
+      .uploadAvatarService($event)
+      .then((url: string) => {
+        this.selectedAvatarURL = url;
+      })
+      .catch((error: any) => {
+        console.error('Error uploading file: ', error);
+      });
   }
-
 
   markAllAsTouched(control: AbstractControl) {
     this.hasUserInteracted = true;
@@ -165,12 +173,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
     control.markAsTouched();
   }
 
-
-
   ngOnDestroy(): void {
     if (this.displayNameSubscription) {
       this.displayNameSubscription.unsubscribe();
     }
   }
-
 }

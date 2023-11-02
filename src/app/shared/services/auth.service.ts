@@ -144,7 +144,7 @@ export class AuthService {
           photoURL: selectedAvatarURL,
         });
         await this.setUserData(userCredential.user, true);
-        this.router.navigate(['main/channel/tcgLB0MdDpTD27cGTU95']);
+        this.router.navigate(['main/channel/DMoH03MTsuxcytK6BpUb']);
       }
     } catch (error) {
       console.log('An unexpected error occurred. Please try again.', error);
