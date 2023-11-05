@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { User } from '../services/user';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription, map, of, shareReplay, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subscription,
+  map,
+  of,
+  shareReplay,
+  switchMap,
+} from 'rxjs';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import {
   Firestore,
@@ -16,7 +24,7 @@ import {
   where,
   Timestamp,
   Query,
-  DocumentData
+  DocumentData,
 } from '@angular/fire/firestore';
 import {
   Auth,
@@ -39,8 +47,6 @@ import { browserLocalPersistence } from 'firebase/auth';
 @Injectable({
   providedIn: 'root',
 })
-
-
 export class AuthService {
   public user$: Observable<User | null>;
   private userSubscription?: Subscription;
@@ -48,19 +54,18 @@ export class AuthService {
     null
   );
 
-
   constructor(
     public auth: Auth,
     public router: Router,
     public storageService: StorageService,
-    private firestore: Firestore) {
-    this.user$ = new Observable<User | null>(subscriber => {
+    private firestore: Firestore
+  ) {
+    this.user$ = new Observable<User | null>((subscriber) => {
       return onAuthStateChanged(this.auth, subscriber);
     }).pipe(shareReplay(1));
     this.initCurrentUser();
     this.setPersistence();
   }
-
 
   user_images: string[] = [
     'assets/img/avatar1.svg',
@@ -71,7 +76,6 @@ export class AuthService {
     'assets/img/avatar6.svg',
   ];
 
-
   async setPersistence() {
     try {
       await this.auth.setPersistence(browserLocalPersistence);
@@ -80,12 +84,10 @@ export class AuthService {
     }
   }
 
-
   getRandomGuestImage(): string {
     const randomIndex = Math.floor(Math.random() * this.user_images.length);
     return this.user_images[randomIndex];
   }
-
 
   initCurrentUser(): void {
     this.user$
@@ -99,11 +101,9 @@ export class AuthService {
       });
   }
 
-
   get currentUserValue(): User | null {
     return this.currentUser.value;
   }
-
 
   async signIn(email: string, password: string) {
     try {
@@ -125,7 +125,6 @@ export class AuthService {
       throw error;
     }
   }
-
 
   async signUp(
     displayName: string,
@@ -153,7 +152,6 @@ export class AuthService {
     }
   }
 
-
   async signInAnonymously() {
     try {
       const userCredential = await signInAnonymously(this.auth);
@@ -175,7 +173,6 @@ export class AuthService {
     }
   }
 
-
   async signInWithGoogle() {
     const provider = new GoogleAuthProvider();
     try {
@@ -194,7 +191,6 @@ export class AuthService {
     }
   }
 
-
   async forgotPassword(passwordResetEmail: string) {
     try {
       await sendPasswordResetEmail(this.auth, passwordResetEmail);
@@ -203,7 +199,6 @@ export class AuthService {
       throw error;
     }
   }
-
 
   async signOut() {
     const currentUser = this.auth.currentUser;
@@ -218,7 +213,6 @@ export class AuthService {
     this.router.navigate(['login']);
   }
 
-
   async deleteGuestUser(uid: string) {
     try {
       if (this.auth.currentUser && this.auth.currentUser.uid === uid) {
@@ -230,7 +224,6 @@ export class AuthService {
       console.error('Error during deleting guest user:', error);
     }
   }
-
 
   async setUserData(user: FirebaseUser, isOnline?: boolean) {
     const { uid, email, displayName, emailVerified, photoURL } = user;
@@ -248,7 +241,6 @@ export class AuthService {
     return userData;
   }
 
-
   async updateUser(uid: string, data: Partial<User>) {
     try {
       await updateDoc(doc(this.firestore, `users/${uid}`), data);
@@ -257,7 +249,6 @@ export class AuthService {
       throw error;
     }
   }
-
 
   getUserData(uid: string): Observable<User | null> {
     const userDocRef = doc(this.firestore, `users/${uid}`);
@@ -277,28 +268,26 @@ export class AuthService {
     );
   }
 
-
   mapFirestoreDataToUsers(userQuery: Query<DocumentData>): Observable<User[]> {
     return collectionData(userQuery).pipe(
       map((usersData) =>
         usersData.map(
           (data) =>
-          ({
-            uid: data['uid'],
-            email: data['email'],
-            displayName: data['displayName'],
-            displayNameLower: data['displayNameLower'],
-            emailVerified: data['emailVerified'],
-            isOnline: data['isOnline'],
-            photoURL: data['photoURL'],
-            lastActive: data['lastActive'],
-            hasUnreadMessages: data['hasUnreadMessages'],
-          } as User)
+            ({
+              uid: data['uid'],
+              email: data['email'],
+              displayName: data['displayName'],
+              displayNameLower: data['displayNameLower'],
+              emailVerified: data['emailVerified'],
+              isOnline: data['isOnline'],
+              photoURL: data['photoURL'],
+              lastActive: data['lastActive'],
+              hasUnreadMessages: data['hasUnreadMessages'],
+            } as User)
         )
       )
     );
   }
-
 
   getUsers(searchTerm?: string): Observable<User[]> {
     let userQuery;
@@ -315,7 +304,6 @@ export class AuthService {
     return this.mapFirestoreDataToUsers(userQuery);
   }
 
-
   getUsersWithEmail(searchTerm?: string): Observable<User[]> {
     let userQuery;
     if (searchTerm) {
@@ -331,7 +319,6 @@ export class AuthService {
     return this.mapFirestoreDataToUsers(userQuery);
   }
 
-
   getInactiveGuestUsers(): Observable<User[]> {
     const dateOneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
     const firestoreTimestampOneHourAgo = Timestamp.fromDate(dateOneHourAgo);
@@ -344,7 +331,6 @@ export class AuthService {
     return this.mapFirestoreDataToUsers(userQuery);
   }
 
-
   async setUserOnlineStatus(uid: string, isOnline: boolean) {
     const userRef = doc(this.firestore, `users/${uid}`);
     await updateDoc(userRef, {
@@ -353,7 +339,6 @@ export class AuthService {
     });
   }
 
-
   updateLastActive(uid: string) {
     const userRef = doc(this.firestore, `users/${uid}`);
     updateDoc(userRef, {
@@ -361,33 +346,30 @@ export class AuthService {
     });
   }
 
-
   async changeEmail(newEmail: string) {
     const auth = getAuth();
 
     if (!auth.currentUser) {
-      console.error("No user is signed in!");
+      console.error('No user is signed in!');
       return;
     }
 
     try {
       await updateEmail(auth.currentUser, newEmail);
     } catch (error) {
-      console.error("An unexpected error occurred. Please try again", error);
+      console.error('An unexpected error occurred. Please try again', error);
       throw error;
     }
   }
 
-
   async confirmReset(oobCode: string, newPassword: string) {
-    console.log("Attempting to reset password with code:", oobCode);
+    console.log('Attempting to reset password with code:', oobCode);
     try {
       await confirmPasswordReset(this.auth, oobCode, newPassword);
-      console.log("Password reset successful");
+      console.log('Password reset successful');
     } catch (error) {
       console.log('Error during password reset', error);
       throw error;
     }
   }
-
 }

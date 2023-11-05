@@ -4,36 +4,40 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { filter } from 'rxjs/operators';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
-
 export class AppComponent implements OnInit, OnDestroy {
   private userSubscription?: Subscription;
 
-  constructor
-    (private router: Router,
-      private authService: AuthService,
-      private ngZone: NgZone) {
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      localStorage.setItem('lastRoute', event.urlAfterRedirects);
-    });
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private ngZone: NgZone
+  ) {
+    this.router.events
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd
+        )
+      )
+      .subscribe((event: NavigationEnd) => {
+        localStorage.setItem('lastRoute', event.urlAfterRedirects);
+      });
   }
-
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.userSubscription = this.authService.user$.subscribe(user => {
+      this.userSubscription = this.authService.user$.subscribe((user) => {
         this.ngZone.run(() => {
           if (user) {
             const lastRoute = localStorage.getItem('lastRoute');
             if (lastRoute !== '/login') {
-              this.router.navigate([lastRoute || '/main/channel/DMoH03MTsuxcytK6BpUb']);
+              this.router.navigate([
+                lastRoute || '/main/channel/DMoH03MTsuxcytK6BpUb',
+              ]);
             } else {
               this.router.navigate(['/main/channel/DMoH03MTsuxcytK6BpUb']);
             }
@@ -43,9 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }, 2400);
   }
 
-
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();
   }
-
 }
