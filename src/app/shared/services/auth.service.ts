@@ -116,7 +116,7 @@ export class AuthService {
         await this.setUserOnlineStatus(userCredential.user.uid, true);
         const lastRoute =
           localStorage.getItem('lastRoute') ||
-          'main/channel/tcgLB0MdDpTD27cGTU95';
+          'main/channel/DMoH03MTsuxcytK6BpUb';
         this.router.navigate([lastRoute]);
         console.log(lastRoute);
       }
@@ -145,7 +145,7 @@ export class AuthService {
           photoURL: selectedAvatarURL,
         });
         await this.setUserData(userCredential.user, true);
-        this.router.navigate(['main/channel/tcgLB0MdDpTD27cGTU95']);
+        this.router.navigate(['main/channel/DMoH03MTsuxcytK6BpUb']);
       }
     } catch (error) {
       console.log('An unexpected error occurred. Please try again.', error);
@@ -166,7 +166,7 @@ export class AuthService {
         await this.setUserData(userCredential.user, true);
         const lastRoute =
           localStorage.getItem('lastRoute') ||
-          'main/channel/tcgLB0MdDpTD27cGTU95';
+          'main/channel/DMoH03MTsuxcytK6BpUb';
         this.router.navigate([lastRoute]);
       }
     } catch (error) {
@@ -185,7 +185,7 @@ export class AuthService {
         await this.setUserData(user, true);
         const lastRoute =
           localStorage.getItem('lastRoute') ||
-          'main/channel/tcgLB0MdDpTD27cGTU95';
+          'main/channel/DMoH03MTsuxcytK6BpUb';
         this.router.navigate([lastRoute]);
       }
     } catch (error) {
