@@ -31,7 +31,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { DialogCreateChannelComponent } from './components/dialog-create-channel/dialog-create-channel.component';
 import { DialogShowMembersInChannelComponent } from './components/dialog-show-members-in-channel/dialog-show-members-in-channel.component';
-import { MainComponent } from './components/main/main.component';
+import { MainWorkComponent } from './components/main/main-work.component';
 import { DialogAddMembersInChannelComponent } from './components/dialog-add-members-in-channel/dialog-add-members-in-channel.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { DirectMessageComponent } from './components/direct-message/direct-message.component';
@@ -70,7 +70,7 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
     DataProtectionComponent,
     DialogEditChannelComponent,
     DialogShowMembersInChannelComponent,
-    MainComponent,
+    MainWorkComponent,
     DialogAddMembersInChannelComponent,
     DirectMessageComponent,
     DialogDirectMessageProfileComponent,

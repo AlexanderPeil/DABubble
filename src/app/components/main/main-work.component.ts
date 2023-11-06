@@ -4,11 +4,11 @@ import { MessageService } from 'src/app/shared/services/message.service';
 import { ThreadService } from 'src/app/shared/services/thread.service';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
+  selector: 'app-main-work',
+  templateUrl: './main-work.component.html',
+  styleUrls: ['./main-work.component.scss'],
 })
-export class MainComponent implements OnDestroy, OnInit {
+export class MainWorkComponent implements OnDestroy, OnInit {
   checkUserActivityInterval: any;
   logoutInterval!: number;
   userSubscription!: Subscription;
