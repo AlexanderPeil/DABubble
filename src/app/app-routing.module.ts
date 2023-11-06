@@ -6,7 +6,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ImprintComponent } from './components/imprint/imprint.component';
 import { DataProtectionComponent } from './components/data-protection/data-protection.component';
-import { MainWorkComponent } from './components/main/main-work.component';
+import { ContentComponent } from './components/content/content.component';
 import { DirectMessageComponent } from './components/direct-message/direct-message.component';
 import { ChannelComponent } from './components/channel/channel.component';
 import { NewMessageComponent } from './components/new-message/new-message.component';
@@ -18,7 +18,7 @@ const routes: Routes = [
 
   {
     path: 'main',
-    component: MainWorkComponent,
+    component: ContentComponent,
     children: [
       {
         path: '',
