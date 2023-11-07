@@ -29,6 +29,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.getLastRoute();
+  }
+
+
+  getLastRoute() {
     setTimeout(() => {
       this.userSubscription = this.authService.user$.subscribe((user) => {
         this.ngZone.run(() => {
@@ -46,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
       });
     }, 2400);
   }
+
 
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();
