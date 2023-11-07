@@ -26,7 +26,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   screenWidth!: number;
 
   loggedInUser: Observable<User | null> =
-  this.authService.currentUser.asObservable();
+    this.authService.currentUser.asObservable();
 
   constructor(
     public dialog: MatDialog,
@@ -34,7 +34,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     public channelService: ChannelService,
     private router: Router,
     private messageService: MessageService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getUsers();
@@ -89,7 +89,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
-    this.router.navigate(['main', 'direct-message', clickedUser.uid]);
+    this.router.navigate(['content', 'direct-message', clickedUser.uid]);
 
     this.messageService.openChatMobile();
   }
@@ -99,11 +99,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.messageService.openChatMobile();
   }
 
-
   openNewMessageMobile() {
     this.messageService.openChatMobile();
   }
-
 
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();

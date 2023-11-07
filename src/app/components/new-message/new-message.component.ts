@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { DialogDetailViewUploadedDatasComponent } from '../dialog-detail-view-uploaded-datas/dialog-detail-view-uploaded-datas.component';
@@ -25,12 +31,13 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   selectedChannelIdSubscription!: Subscription;
   selectedUserIdSubscription!: Subscription;
   newMessageQuillInstance: any;
-  uploadedFiles: { url: string; type: 'image' | 'data'; }[] = [];
+  uploadedFiles: { url: string; type: 'image' | 'data' }[] = [];
   messageContainerError: boolean = false;
   subscription!: Subscription;
-  @ViewChild('newMessagQuill', { static: false, read: ElementRef }) newMessagQuill!: ElementRef;
-  @ViewChild('newMessageDropdownAbove', { static: false, read: ElementRef }) newMessageDropdownAbove!: ElementRef;
-
+  @ViewChild('newMessagQuill', { static: false, read: ElementRef })
+  newMessagQuill!: ElementRef;
+  @ViewChild('newMessageDropdownAbove', { static: false, read: ElementRef })
+  newMessageDropdownAbove!: ElementRef;
 
   constructor(
     public dialog: MatDialog,
@@ -41,16 +48,17 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     public quillService: QuillService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.setSelectedChannelId();
     this.setSelectedUserId();
-    this.subscription = this.storageService.uploadedFileURL.subscribe((fileData) => {
-      this.uploadedFiles.push(fileData);
-    });
+    this.subscription = this.storageService.uploadedFileURL.subscribe(
+      (fileData) => {
+        this.uploadedFiles.push(fileData);
+      }
+    );
   }
-
 
   openDetailViewFromUploadedImage(uploadedImageUrl: string) {
     this.dialog.open(DialogDetailViewUploadedDatasComponent, {
@@ -60,45 +68,48 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     });
   }
 
-
   onEditorFocus(editorType: 'top' | 'bottom') {
     if (editorType === 'top') {
-      this.newMessageDropdownAbove.nativeElement.classList.add('new-message-top');
+      this.newMessageDropdownAbove.nativeElement.classList.add(
+        'new-message-top'
+      );
       this.newMessagQuill.nativeElement.classList.remove('new-message-bottom');
 
       if (window.innerHeight <= 500) {
-        this.newMessageDropdownAbove.nativeElement.classList.add('new-message-top-max-height');
+        this.newMessageDropdownAbove.nativeElement.classList.add(
+          'new-message-top-max-height'
+        );
       }
-
     } else if (editorType === 'bottom' && window.innerHeight <= 500) {
       this.newMessagQuill.nativeElement.classList.add('new-message-bottom');
-      this.newMessageDropdownAbove.nativeElement.classList.remove('new-message-top');
+      this.newMessageDropdownAbove.nativeElement.classList.remove(
+        'new-message-top'
+      );
     }
   }
 
-
   setSelectedChannelId() {
-    this.selectedChannelIdSubscription = this.quillService.selectedChannelIdSubject.subscribe(channelId => {
-      console.log('this channelid is:', channelId);
+    this.selectedChannelIdSubscription =
+      this.quillService.selectedChannelIdSubject.subscribe((channelId) => {
+        console.log('this channelid is:', channelId);
 
-      if (channelId) {
-        this.selectedChannelId = channelId;
-        this.selectedUserId = null;
-      }
-    });
+        if (channelId) {
+          this.selectedChannelId = channelId;
+          this.selectedUserId = null;
+        }
+      });
   }
-
 
   setSelectedUserId() {
-    this.selectedUserIdSubscription = this.quillService.selectedUserIdSubject.subscribe(userId => {
-      console.log('The userId is:', userId);
-      if (userId) {
-        this.selectedUserId = userId;
-        this.selectedChannelId = null;
-      }
-    })
+    this.selectedUserIdSubscription =
+      this.quillService.selectedUserIdSubject.subscribe((userId) => {
+        console.log('The userId is:', userId);
+        if (userId) {
+          this.selectedUserId = userId;
+          this.selectedChannelId = null;
+        }
+      });
   }
-
 
   async sendMessage() {
     const loggedInUser = this.authService.currentUserValue;
@@ -130,14 +141,24 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
   async processMessageContent(loggedInUser: any, selectedItem: any) {
     try {
-      const messageContent = this.messageService.removePTags(this.messageContent);
+      const messageContent = this.messageService.removePTags(
+        this.messageContent
+      );
 
       if (selectedItem.denotationChar === '#') {
-        await this.sendChannelMessage(loggedInUser, selectedItem, messageContent);
-        this.router.navigate(['/main/channel', selectedItem.id]);
+        await this.sendChannelMessage(
+          loggedInUser,
+          selectedItem,
+          messageContent
+        );
+        this.router.navigate(['/content/channel', selectedItem.id]);
       } else if (['@', '*'].includes(selectedItem.denotationChar)) {
-        await this.sendDirectMessage(loggedInUser, selectedItem, messageContent);
-        this.router.navigate(['/main/direct-message', selectedItem.id]);
+        await this.sendDirectMessage(
+          loggedInUser,
+          selectedItem,
+          messageContent
+        );
+        this.router.navigate(['/content/direct-message', selectedItem.id]);
       }
 
       this.clearMessageContent();
@@ -146,7 +167,11 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  async sendChannelMessage(loggedInUser: any, selectedItem: any, messageContent: string) {
+  async sendChannelMessage(
+    loggedInUser: any,
+    selectedItem: any,
+    messageContent: string
+  ) {
     await this.messageService.createAndAddChannelMessage(
       selectedItem.id,
       loggedInUser!.uid,
@@ -156,7 +181,11 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     );
   }
 
-  async sendDirectMessage(loggedInUser: any, selectedItem: any, messageContent: string) {
+  async sendDirectMessage(
+    loggedInUser: any,
+    selectedItem: any,
+    messageContent: string
+  ) {
     await this.messageService.createAndAddMessage(
       loggedInUser!.uid,
       selectedItem.id,
@@ -172,13 +201,10 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     this.storageService.clearUploadedFiles();
   }
 
-
-
   setFocus(event: any) {
     this.newMessageQuillInstance = event;
-    this.quillService.setFocus(event)
+    this.quillService.setFocus(event);
   }
-
 
   toggleEmojiPicker() {
     const realEmojiButton = document.querySelector(
@@ -188,7 +214,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       realEmojiButton.click();
     }
   }
-  
 
   ngOnDestroy() {
     this.selectedChannelIdSubscription?.unsubscribe();
@@ -196,5 +221,4 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     this.quillService.cleanup();
     this.subscription.unsubscribe();
   }
-
 }

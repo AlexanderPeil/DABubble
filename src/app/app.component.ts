@@ -32,7 +32,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getLastRoute();
   }
 
-
   getLastRoute() {
     setTimeout(() => {
       this.userSubscription = this.authService.user$.subscribe((user) => {
@@ -41,17 +40,16 @@ export class AppComponent implements OnInit, OnDestroy {
             const lastRoute = localStorage.getItem('lastRoute');
             if (lastRoute !== '/login') {
               this.router.navigate([
-                lastRoute || '/main/channel/DMoH03MTsuxcytK6BpUb',
+                lastRoute || '/content/channel/DMoH03MTsuxcytK6BpUb',
               ]);
             } else {
-              this.router.navigate(['/main/channel/DMoH03MTsuxcytK6BpUb']);
+              this.router.navigate(['/content/channel/DMoH03MTsuxcytK6BpUb']);
             }
           }
         });
       });
     }, 2400);
   }
-
 
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();

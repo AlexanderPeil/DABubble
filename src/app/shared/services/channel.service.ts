@@ -28,7 +28,7 @@ export class ChannelService {
   channelData!: Observable<any>;
   channel: any = new Channel();
 
-  constructor(private firestore: Firestore, public route: Router) { }
+  constructor(private firestore: Firestore, public route: Router) {}
 
   addChannelService(channel: Channel) {
     const collectionInstance = collection(this.firestore, 'channels');
@@ -41,7 +41,6 @@ export class ChannelService {
       }
     }
 
-
     addDoc(collectionInstance, channel.toJSON()).then((docRef) => {
       const channelId = docRef.id;
       const updatedData = { channelId };
@@ -51,7 +50,6 @@ export class ChannelService {
       updateDoc(docInstance, updatedData);
     });
   }
-
 
   getChannelService() {
     const collectionInstance = query(
@@ -63,7 +61,6 @@ export class ChannelService {
     }).pipe();
   }
 
-
   updateChannelNameService(changedChannelName: any, channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
     const updateData = {
@@ -74,7 +71,6 @@ export class ChannelService {
       this.channel = doc.data();
     });
   }
-
 
   updateChannelDescriptionService(
     changedChannelDescription: string,
@@ -90,11 +86,12 @@ export class ChannelService {
     });
   }
 
-
   updateChannelMembersService(channelId: string, selectedUsers: User[]) {
     const docInstance = doc(this.firestore, 'channels', channelId);
 
-    const cleanedSelectedUsers = selectedUsers.map(user => this.removeUndefinedFields(user));
+    const cleanedSelectedUsers = selectedUsers.map((user) =>
+      this.removeUndefinedFields(user)
+    );
 
     const updateData = [...this.channel.users, ...cleanedSelectedUsers];
     console.log('Selecetd User is:', cleanedSelectedUsers);
@@ -114,7 +111,6 @@ export class ChannelService {
     return cleaned;
   }
 
-
   deleteChannelService(channelId: string) {
     const docInstance = doc(this.firestore, 'channels', channelId);
     deleteDoc(docInstance).then(() => {
@@ -123,7 +119,6 @@ export class ChannelService {
     this.navigateToOthersChannelAsSoonAsDeleteService();
   }
 
-
   navigateToOthersChannelAsSoonAsDeleteService() {
     const querie = query(
       collection(this.firestore, 'channels'),
@@ -131,13 +126,12 @@ export class ChannelService {
     );
     getDocs(querie).then((querySnapshot) => {
       if (querySnapshot.empty) {
-        this.route.navigate(['/main']);
+        this.route.navigate(['/content']);
       } else {
-        this.route.navigate(['/main/channel/', querySnapshot.docs[0].id]);
+        this.route.navigate(['/content/channel/', querySnapshot.docs[0].id]);
       }
     });
   }
-
 
   getSingleChannelService(channelId: string) {
     const collectionInstance = collection(this.firestore, 'channels');
@@ -146,7 +140,6 @@ export class ChannelService {
       this.channel = doc.data();
     });
   }
-
 
   getChannels(searchTerm?: string): Observable<Channel[]> {
     let channelQuery;
@@ -160,9 +153,10 @@ export class ChannelService {
     } else {
       channelQuery = collection(this.firestore, 'channels');
     }
-    return collectionData(channelQuery, { idField: 'channelId' }) as Observable<Channel[]>;
+    return collectionData(channelQuery, { idField: 'channelId' }) as Observable<
+      Channel[]
+    >;
   }
-
 
   mapFirestoreDataToChannels(
     channelQuery: Query<DocumentData>
@@ -171,9 +165,9 @@ export class ChannelService {
       map((channelsData) =>
         channelsData.map(
           (data) =>
-          ({
-            channelName: data['channelName'],
-          } as Channel)
+            ({
+              channelName: data['channelName'],
+            } as Channel)
         )
       )
     );

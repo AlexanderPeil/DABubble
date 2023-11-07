@@ -124,7 +124,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   userCreatedFn() {
     this.userCreated = true;
     setTimeout(() => {
-      this.router.navigate(['/main/channel/DMoH03MTsuxcytK6BpUb']);
+      this.router.navigate(['/content/channel/DMoH03MTsuxcytK6BpUb']);
     }, 3000);
   }
 
