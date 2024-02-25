@@ -40,7 +40,7 @@ export class ThreadService {
     public storage: Storage,
     public dialog: MatDialog,
     public sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   setChannelName(name: string): void {
     this.currentChannelName = name;

@@ -27,6 +27,7 @@ export class DialogAddMembersInChannelComponent implements OnInit, OnDestroy {
   userAlreadyExists: boolean = false;
   selectedUsers: User[] = [];
   addOnBlur = true;
+  user_images = 'assets/img/avatar1.svg';
 
   private usersSubscription: Subscription | undefined;
 
@@ -119,6 +120,11 @@ export class DialogAddMembersInChannelComponent implements OnInit, OnDestroy {
     if (!this.input.nativeElement.contains(event.target)) {
       this.showUserDropdown = false;
     }
+  }
+
+
+  retryLoadImage(user: User) {
+    user.photoURL = this.user_images;
   }
 
   ngOnDestroy(): void {
